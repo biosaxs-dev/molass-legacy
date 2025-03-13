@@ -1,0 +1,35 @@
+0. Estimator
+
+    3 + 2 + 3 + 2 + 3 + 7 + 2 + 4 + 3
+    22 + 4 + 3
+
+
+1. PeakEditor
+
+
+    def compute_init_params(self, nc, debug=True):
+
+        estimator = self.params_type.get_estimator(self)
+        t0_upper_bound = estimator.get_t0_upper_bound()
+
+        self.init_params = estimator.estimate_params()
+
+        return self.init_params
+
+
+2. InitialInfo
+
+
+
+3. FullOptDialog
+
+    
+
+4. optimizer
+
+    OptimizerMain
+
+    fullopt = fullopt_class(dsets, n_components, drift_type, base_curve=base_curve, shared_memory=shared_memory)
+
+    result = fullopt.solve(init_params, niter=niter, seed=seed, callback=callback, method="bh", debug=debug)
+
