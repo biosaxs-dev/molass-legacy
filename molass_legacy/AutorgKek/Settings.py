@@ -6,7 +6,7 @@
     Copyright (c) 2016-2021, SAXS Team, KEK-PF
 """
 
-from PersistentInfo     import PersistentInfo
+from molass_legacy.KekLib.PersistentInfo import PersistentInfo
 try:
     from molass_legacy._MOLASS.Version        import get_version_string
 except:
