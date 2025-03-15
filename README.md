@@ -13,7 +13,7 @@ pip install -U molass
 ```
 
 > [!NOTE]
-> The molass_legacy package currently depends on molass.
+> The molass_legacy package depends on molass.
 
 See also:
 
