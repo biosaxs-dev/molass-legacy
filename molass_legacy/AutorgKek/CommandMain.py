@@ -1,4 +1,3 @@
-# coding: utf-8
 """
     CommandMain.py
 
@@ -10,8 +9,8 @@ import traceback
 import numpy                as np
 from CommandLineOptions     import parser
 # from KekToolsGP             import AutorgKek
-import molass_legacy.KekLib, GuinierAnalyzer, SerialAnalyzer, Decomposer
-from molass_legacy.AutorgKekAdapter   import AutorgKekAdapter as AutorgKek
+# import KekLib, molass_legacyGuinierAnalyzer, SerialAnalyzer, Decomposer
+from molass_legacy.GuinierAnalyzer.AutorgKekAdapter import AutorgKekAdapter as AutorgKek
 from ResultPrinter          import ResultPrinter
 
 DEBUG = False

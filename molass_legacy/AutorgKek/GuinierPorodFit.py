@@ -1,4 +1,3 @@
-# coding: utf-8
 """
 
     GuinierPorodFit.py
@@ -158,8 +157,7 @@ class GuinierPorodFit:
         f2  = D / q**d + D / q**d - self.I_array[2]
 
         return ( f0, f1, f2 )
-        # ‚±‚Ì–ß‚è’l‚ª ( 0, 0, 0 ) ‚É‚È‚é‚æ‚¤‚È G, Rg, d
-        # ‚ğ‹‚ß‚éB
+        # determine G, Rg, d so that this returns ( 0, 0, 0 ) 
 
     def estimate_init_params( self ):
 

@@ -8,7 +8,7 @@ import sys
 import os
 import time
 import numpy        as np
-from nose.tools     import eq_
+# from nose.tools     import eq_
 from subprocess     import call
 from AtsasTools     import autorg       as autorg_atsas
 from CommandMain    import CommandMain

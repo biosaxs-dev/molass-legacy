@@ -3,15 +3,13 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-molass_legacy documentation
-===========================
+Molass Library Legacy Reference
+===============================
 
-Add your content using ``reStructuredText`` syntax. See the
-`reStructuredText <https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>`_
-documentation for details.
-
+Molass Library Legacy is the libray part of `MOLASS <https://www.jstage.jst.go.jp/article/biophysico/20/1/20_e200001/_article>`_, an analytical tool for SEC-SAXS experiment data currently hosted at `Photon Factory <https://pfwww.kek.jp/saxs/MOLASS.html>`_.
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 4
    :caption: Contents:
 
+   modules
