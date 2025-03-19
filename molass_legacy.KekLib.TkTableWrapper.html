@@ -1,0 +1,994 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>molass_legacy.KekLib.TkTableWrapper module &#8212; Molass Library Legacy  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'molass_legacy.KekLib.TkTableWrapper';</script>
+    <link rel="icon" href="_static/molamola.png"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/molamola.png" class="logo__image only-light" alt="Molass Library Legacy  documentation - Home"/>
+    <script>document.write(`<img src="_static/molamola.png" class="logo__image only-dark" alt="Molass Library Legacy  documentation - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/freesemt/molass-legacy" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/molass_legacy.KekLib.TkTableWrapper.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>molass_legacy.KekLib.TkTableWrapper module</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.ArrayVar"><code class="docutils literal notranslate"><span class="pre">ArrayVar</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.ArrayVar.get"><code class="docutils literal notranslate"><span class="pre">ArrayVar.get()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.ArrayVar.names"><code class="docutils literal notranslate"><span class="pre">ArrayVar.names()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.ArrayVar.set"><code class="docutils literal notranslate"><span class="pre">ArrayVar.set()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.ArrayVar.unset"><code class="docutils literal notranslate"><span class="pre">ArrayVar.unset()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table"><code class="docutils literal notranslate"><span class="pre">Table</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.activate"><code class="docutils literal notranslate"><span class="pre">Table.activate()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.bbox"><code class="docutils literal notranslate"><span class="pre">Table.bbox()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.clear"><code class="docutils literal notranslate"><span class="pre">Table.clear()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.clear_all"><code class="docutils literal notranslate"><span class="pre">Table.clear_all()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.clear_cache"><code class="docutils literal notranslate"><span class="pre">Table.clear_cache()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.clear_sizes"><code class="docutils literal notranslate"><span class="pre">Table.clear_sizes()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.clear_tags"><code class="docutils literal notranslate"><span class="pre">Table.clear_tags()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.curselection"><code class="docutils literal notranslate"><span class="pre">Table.curselection()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.curvalue"><code class="docutils literal notranslate"><span class="pre">Table.curvalue()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.delete_active"><code class="docutils literal notranslate"><span class="pre">Table.delete_active()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.delete_cols"><code class="docutils literal notranslate"><span class="pre">Table.delete_cols()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.delete_rows"><code class="docutils literal notranslate"><span class="pre">Table.delete_rows()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.get"><code class="docutils literal notranslate"><span class="pre">Table.get()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.height"><code class="docutils literal notranslate"><span class="pre">Table.height()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.hidden"><code class="docutils literal notranslate"><span class="pre">Table.hidden()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.icursor"><code class="docutils literal notranslate"><span class="pre">Table.icursor()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.index"><code class="docutils literal notranslate"><span class="pre">Table.index()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.insert_active"><code class="docutils literal notranslate"><span class="pre">Table.insert_active()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.insert_cols"><code class="docutils literal notranslate"><span class="pre">Table.insert_cols()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.insert_rows"><code class="docutils literal notranslate"><span class="pre">Table.insert_rows()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.reread"><code class="docutils literal notranslate"><span class="pre">Table.reread()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.scan_dragto"><code class="docutils literal notranslate"><span class="pre">Table.scan_dragto()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.scan_mark"><code class="docutils literal notranslate"><span class="pre">Table.scan_mark()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.see"><code class="docutils literal notranslate"><span class="pre">Table.see()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.selection_anchor"><code class="docutils literal notranslate"><span class="pre">Table.selection_anchor()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.selection_clear"><code class="docutils literal notranslate"><span class="pre">Table.selection_clear()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.selection_includes"><code class="docutils literal notranslate"><span class="pre">Table.selection_includes()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.selection_set"><code class="docutils literal notranslate"><span class="pre">Table.selection_set()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.set"><code class="docutils literal notranslate"><span class="pre">Table.set()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.spans"><code class="docutils literal notranslate"><span class="pre">Table.spans()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.tag_cell"><code class="docutils literal notranslate"><span class="pre">Table.tag_cell()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.tag_cget"><code class="docutils literal notranslate"><span class="pre">Table.tag_cget()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.tag_col"><code class="docutils literal notranslate"><span class="pre">Table.tag_col()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.tag_configure"><code class="docutils literal notranslate"><span class="pre">Table.tag_configure()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.tag_delete"><code class="docutils literal notranslate"><span class="pre">Table.tag_delete()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.tag_exists"><code class="docutils literal notranslate"><span class="pre">Table.tag_exists()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.tag_includes"><code class="docutils literal notranslate"><span class="pre">Table.tag_includes()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.tag_lower"><code class="docutils literal notranslate"><span class="pre">Table.tag_lower()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.tag_names"><code class="docutils literal notranslate"><span class="pre">Table.tag_names()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.tag_raise"><code class="docutils literal notranslate"><span class="pre">Table.tag_raise()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.tag_row"><code class="docutils literal notranslate"><span class="pre">Table.tag_row()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.validate"><code class="docutils literal notranslate"><span class="pre">Table.validate()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.version"><code class="docutils literal notranslate"><span class="pre">Table.version</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.width"><code class="docutils literal notranslate"><span class="pre">Table.width()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.window_cget"><code class="docutils literal notranslate"><span class="pre">Table.window_cget()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.window_configure"><code class="docutils literal notranslate"><span class="pre">Table.window_configure()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.window_delete"><code class="docutils literal notranslate"><span class="pre">Table.window_delete()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.window_move"><code class="docutils literal notranslate"><span class="pre">Table.window_move()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.window_names"><code class="docutils literal notranslate"><span class="pre">Table.window_names()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.xview"><code class="docutils literal notranslate"><span class="pre">Table.xview()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.xview_moveto"><code class="docutils literal notranslate"><span class="pre">Table.xview_moveto()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.xview_scroll"><code class="docutils literal notranslate"><span class="pre">Table.xview_scroll()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.yview"><code class="docutils literal notranslate"><span class="pre">Table.yview()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.yview_moveto"><code class="docutils literal notranslate"><span class="pre">Table.yview_moveto()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.yview_scroll"><code class="docutils literal notranslate"><span class="pre">Table.yview_scroll()</span></code></a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="module-molass_legacy.KekLib.TkTableWrapper">
+<span id="molass-legacy-keklib-tktablewrapper-module"></span><h1>molass_legacy.KekLib.TkTableWrapper module<a class="headerlink" href="#module-molass_legacy.KekLib.TkTableWrapper" title="Link to this heading">#</a></h1>
+<p>This contains a wrapper class for the tktable widget as well a class for using
+tcl arrays that are, in some instances, required by tktable.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.ArrayVar">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">molass_legacy.KekLib.TkTableWrapper.</span></span><span class="sig-name descname"><span class="pre">ArrayVar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">master</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.ArrayVar" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Variable</span></code></p>
+<p>Class for handling Tcl arrays.</p>
+<p>An array is actually an associative array in Tcl, so this class supports
+some dict operations.</p>
+<p>Construct a variable</p>
+<p>MASTER can be given as master widget.
+VALUE is an optional value (defaults to “”)
+NAME is an optional Tcl name (defaults to PY_VARnum).</p>
+<p>If NAME matches an existing variable and VALUE is omitted
+then the existing value is retained.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.ArrayVar.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.ArrayVar.get" title="Link to this definition">#</a></dt>
+<dd><p>Return value of variable.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.ArrayVar.names">
+<span class="sig-name descname"><span class="pre">names</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.ArrayVar.names" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.ArrayVar.set">
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kw</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.ArrayVar.set" title="Link to this definition">#</a></dt>
+<dd><p>Set the variable to VALUE.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.ArrayVar.unset">
+<span class="sig-name descname"><span class="pre">unset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pattern</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.ArrayVar.unset" title="Link to this definition">#</a></dt>
+<dd><p>Unsets all of the elements in the array. If pattern is given, only
+the elements that match pattern are unset.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">molass_legacy.KekLib.TkTableWrapper.</span></span><span class="sig-name descname"><span class="pre">Table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">master</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kw</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Widget</span></code></p>
+<p>Create and manipulate tables.</p>
+<p>Construct a widget with the parent widget MASTER, a name WIDGETNAME
+and appropriate options.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.activate">
+<span class="sig-name descname"><span class="pre">activate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.activate" title="Link to this definition">#</a></dt>
+<dd><p>Set the active cell to the one indicated by index.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.bbox">
+<span class="sig-name descname"><span class="pre">bbox</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">first</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.bbox" title="Link to this definition">#</a></dt>
+<dd><p>Return the bounding box for the specified cell (range) as a
+4-tuple of x, y, width and height in pixels. It clips the box to
+the visible portion, if any, otherwise an empty tuple is returned.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.clear">
+<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">option</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.clear" title="Link to this definition">#</a></dt>
+<dd><p>This is a convenience routine to clear certain state information
+managed by the table. first and last represent valid table indices.
+If neither are specified, then the command operates on the whole
+table.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.clear_all">
+<span class="sig-name descname"><span class="pre">clear_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">first</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.clear_all" title="Link to this definition">#</a></dt>
+<dd><p>Perform all of the above clear functions on the specified area.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.clear_cache">
+<span class="sig-name descname"><span class="pre">clear_cache</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">first</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.clear_cache" title="Link to this definition">#</a></dt>
+<dd><p>Clear the specified section of the cache, if the table has been
+keeping one.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.clear_sizes">
+<span class="sig-name descname"><span class="pre">clear_sizes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">first</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.clear_sizes" title="Link to this definition">#</a></dt>
+<dd><p>Clear the specified row and column areas of specific height/width
+dimensions. When just one index is specified, for example 2,0, that
+is interpreted as row 2 and column 0.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.clear_tags">
+<span class="sig-name descname"><span class="pre">clear_tags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">first</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.clear_tags" title="Link to this definition">#</a></dt>
+<dd><p>Clear the specified area of tags (all row, column and cell tags).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.curselection">
+<span class="sig-name descname"><span class="pre">curselection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.curselection" title="Link to this definition">#</a></dt>
+<dd><p>With no arguments, it returns the sorted indices of the currently
+selected cells. Otherwise it sets all the selected cells to the given
+value if there is an associated ArrayVar and the state is not
+disabled.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.curvalue">
+<span class="sig-name descname"><span class="pre">curvalue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.curvalue" title="Link to this definition">#</a></dt>
+<dd><p>If no value is given, the value of the cell being edited (indexed
+by active) is returned, else it is set to the given value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.delete_active">
+<span class="sig-name descname"><span class="pre">delete_active</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.delete_active" title="Link to this definition">#</a></dt>
+<dd><p>Deletes text from the active cell. If only one index is given,
+it deletes the character after that index, otherwise it deletes from
+the first index to the second. index can be a number, insert or end.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.delete_cols">
+<span class="sig-name descname"><span class="pre">delete_cols</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">switches</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.delete_cols" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.delete_rows">
+<span class="sig-name descname"><span class="pre">delete_rows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">switches</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.delete_rows" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">first</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.get" title="Link to this definition">#</a></dt>
+<dd><p>Returns the value of the cells specified by the table indices
+first and (optionally) last.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.height">
+<span class="sig-name descname"><span class="pre">height</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.height" title="Link to this definition">#</a></dt>
+<dd><p>If row and kwargs are not given, a list describing all rows for
+which a width has been set is returned.
+If row is given, the height of that row is returnd.
+If kwargs is given, then it sets the key/value pairs, where key is a
+row and value represents the height for the row.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.hidden">
+<span class="sig-name descname"><span class="pre">hidden</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.hidden" title="Link to this definition">#</a></dt>
+<dd><p>When called without args, it returns all the hidden cells (those
+cells covered by a spanning cell). If one index is specified, it
+returns the spanning cell covering that index, if any. If multiple
+indices are specified, it returns 1 if all indices are hidden cells,
+0 otherwise.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.icursor">
+<span class="sig-name descname"><span class="pre">icursor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.icursor" title="Link to this definition">#</a></dt>
+<dd><p>If arg is not specified, return the location of the insertion
+cursor in the active cell. Otherwise, set the cursor to that point in
+the string.</p>
+<p>0 is before the first character, you can also use insert or end for
+the current insertion point or the end of the text. If there is no
+active cell, or the cell or table is disabled, this will return -1.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.index">
+<span class="sig-name descname"><span class="pre">index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.index" title="Link to this definition">#</a></dt>
+<dd><p>Return the integer cell coordinate that corresponds to index in the
+form row, col. If rc is specified, it must be either ‘row’ or ‘col’ so
+only the row or column index is returned.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.insert_active">
+<span class="sig-name descname"><span class="pre">insert_active</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.insert_active" title="Link to this definition">#</a></dt>
+<dd><p>The value is a text string which is inserted at the index postion
+of the active cell. The cursor is then positioned after the new text.
+index can be a number, insert or end.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.insert_cols">
+<span class="sig-name descname"><span class="pre">insert_cols</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">switches</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.insert_cols" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.insert_rows">
+<span class="sig-name descname"><span class="pre">insert_rows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">switches</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.insert_rows" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.reread">
+<span class="sig-name descname"><span class="pre">reread</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.reread" title="Link to this definition">#</a></dt>
+<dd><p>Rereads the old contents of the cell back into the editing buffer.
+Useful for a key binding when &lt;Escape&gt; is pressed to abort the edit
+(a default binding).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.scan_dragto">
+<span class="sig-name descname"><span class="pre">scan_dragto</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.scan_dragto" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.scan_mark">
+<span class="sig-name descname"><span class="pre">scan_mark</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.scan_mark" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.see">
+<span class="sig-name descname"><span class="pre">see</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.see" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.selection_anchor">
+<span class="sig-name descname"><span class="pre">selection_anchor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.selection_anchor" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.selection_clear">
+<span class="sig-name descname"><span class="pre">selection_clear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">first</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.selection_clear" title="Link to this definition">#</a></dt>
+<dd><p>Clear the current X selection.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.selection_includes">
+<span class="sig-name descname"><span class="pre">selection_includes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.selection_includes" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.selection_set">
+<span class="sig-name descname"><span class="pre">selection_set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">first</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.selection_set" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.set">
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.set" title="Link to this definition">#</a></dt>
+<dd><p>If rc is specified (either ‘row’ or ‘col’) then it is assumes that
+args (if given) represents values which will be set into the
+subsequent columns (if row is specified) or rows (for col).
+If index is not None and args is not given, then it will return the
+value(s) for the cell(s) specified.</p>
+<p>If kwargs is given, assumes that each key in kwargs is a index in this
+table and sets the specified index to the associated value. Table
+validation will not be triggered via this method.</p>
+<p>Note that the table must have an associated array (defined through the
+variable option) in order to this work.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.spans">
+<span class="sig-name descname"><span class="pre">spans</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.spans" title="Link to this definition">#</a></dt>
+<dd><p>Manipulate row/col spans.</p>
+<p>When called with no arguments, all known spans are returned as a dict.
+When called with only the index, the span for that index only is
+returned, if any. Otherwise kwargs is assumed to contain keys/values
+pairs used to set spans. A span starts at the row,col defined by a key
+and continues for the specified number of rows,cols specified by
+its value. A span of 0,0 unsets any span on that cell.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.tag_cell">
+<span class="sig-name descname"><span class="pre">tag_cell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tagname</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.tag_cell" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.tag_cget">
+<span class="sig-name descname"><span class="pre">tag_cget</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tagname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">option</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.tag_cget" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.tag_col">
+<span class="sig-name descname"><span class="pre">tag_col</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tagname</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.tag_col" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.tag_configure">
+<span class="sig-name descname"><span class="pre">tag_configure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tagname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">option</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.tag_configure" title="Link to this definition">#</a></dt>
+<dd><p>Query or modify options associated with the tag given by tagname.</p>
+<p>If no option is specified, a dict describing all of the available
+options for tagname is returned. If option is specified, then the
+command returns a list describing the one named option. Lastly, if
+kwargs is given then it corresponds to option-value pairs that should
+be modified.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.tag_delete">
+<span class="sig-name descname"><span class="pre">tag_delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tagname</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.tag_delete" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.tag_exists">
+<span class="sig-name descname"><span class="pre">tag_exists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tagname</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.tag_exists" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.tag_includes">
+<span class="sig-name descname"><span class="pre">tag_includes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tagname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.tag_includes" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.tag_lower">
+<span class="sig-name descname"><span class="pre">tag_lower</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tagname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">belowthis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.tag_lower" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.tag_names">
+<span class="sig-name descname"><span class="pre">tag_names</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pattern</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.tag_names" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.tag_raise">
+<span class="sig-name descname"><span class="pre">tag_raise</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tagname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">abovethis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.tag_raise" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.tag_row">
+<span class="sig-name descname"><span class="pre">tag_row</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tagname</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.tag_row" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.validate">
+<span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.validate" title="Link to this definition">#</a></dt>
+<dd><p>Explicitly validates the specified index based on the current
+callback set for the validatecommand option. Return 0 or 1 based on
+whether the cell was validated.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.version">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">version</span></span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.version" title="Link to this definition">#</a></dt>
+<dd><p>Return tktable’s package version.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.width">
+<span class="sig-name descname"><span class="pre">width</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.width" title="Link to this definition">#</a></dt>
+<dd><p>If column and kwargs are not given, a dict describing all columns
+for which a width has been set is returned.
+If column is given, the width of that column is returnd.
+If kwargs is given, then it sets the key/value pairs, where key is a
+column and value represents the width for the column.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.window_cget">
+<span class="sig-name descname"><span class="pre">window_cget</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">option</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.window_cget" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.window_configure">
+<span class="sig-name descname"><span class="pre">window_configure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">option</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.window_configure" title="Link to this definition">#</a></dt>
+<dd><p>Query or modify options associated with the embedded window given
+by index. This should also be used to add a new embedded window into
+the table.</p>
+<p>If no option is specified, a dict describing all of the available
+options for index is returned. If option is specified, then the
+command returns a list describing the one named option. Lastly, if
+kwargs is given then it corresponds to option-value pairs that should
+be modified.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.window_delete">
+<span class="sig-name descname"><span class="pre">window_delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">indexes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.window_delete" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.window_move">
+<span class="sig-name descname"><span class="pre">window_move</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index_from</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_to</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.window_move" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.window_names">
+<span class="sig-name descname"><span class="pre">window_names</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pattern</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.window_names" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.xview">
+<span class="sig-name descname"><span class="pre">xview</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.xview" title="Link to this definition">#</a></dt>
+<dd><p>If index is not given a tuple containing two fractions is returned,
+each fraction is between 0 and 1. Together they describe the
+horizontal span that is visible in the window.</p>
+<p>If index is given the view in the window is adjusted so that the
+column given by index is displayed at the left edge of the window.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.xview_moveto">
+<span class="sig-name descname"><span class="pre">xview_moveto</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fraction</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.xview_moveto" title="Link to this definition">#</a></dt>
+<dd><p>Adjusts the view in the window so that fraction of the total width
+of the table text is off-screen to the left. The fraction parameter
+must be a fraction between 0 and 1.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.xview_scroll">
+<span class="sig-name descname"><span class="pre">xview_scroll</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">L</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.xview_scroll" title="Link to this definition">#</a></dt>
+<dd><p>Shift the view in the window left or right according to number and
+what. The ‘number’ parameter must be an integer. The ‘what’ parameter
+must be either units or pages or an abbreviation of one of these.</p>
+<p>If ‘what’ is units, the view adjusts left or right by number cells on
+the display; if it is pages then the view adjusts by number screenfuls.
+If ‘number’ is negative then cells farther to the left become visible;
+if it is positive then cells farther to the right become visible.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.yview">
+<span class="sig-name descname"><span class="pre">yview</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.yview" title="Link to this definition">#</a></dt>
+<dd><p>If index is not given a tuple containing two fractions is returned,
+each fraction is between 0 and 1. The first element gives the position
+of the table element at the top of the window, relative to the table
+as a whole. The second element gives the position of the table element
+just after the last one in the window, relative to the table as a
+whole.</p>
+<p>If index is given the view in the window is adjusted so that the
+row given by index is displayed at the top of the window.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.yview_moveto">
+<span class="sig-name descname"><span class="pre">yview_moveto</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fraction</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.yview_moveto" title="Link to this definition">#</a></dt>
+<dd><p>Adjusts the view in the window so that the element given by
+fraction appears at the top of the window. The fraction parameter
+must be a fraction between 0 and 1.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.KekLib.TkTableWrapper.Table.yview_scroll">
+<span class="sig-name descname"><span class="pre">yview_scroll</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">L</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.TkTableWrapper.Table.yview_scroll" title="Link to this definition">#</a></dt>
+<dd><p>Adjust the view in the window up or down according to number and
+what. The ‘number’ parameter must be an integer. The ‘what’ parameter
+must be either units or pages or an abbreviation of one of these.</p>
+<p>If ‘what’ is units, the view adjusts up or down by number cells; if it
+is pages then the view adjusts by number screenfuls.
+If ‘number’ is negative then earlier elements become visible; if it
+is positive then later elements become visible.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.ArrayVar"><code class="docutils literal notranslate"><span class="pre">ArrayVar</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.ArrayVar.get"><code class="docutils literal notranslate"><span class="pre">ArrayVar.get()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.ArrayVar.names"><code class="docutils literal notranslate"><span class="pre">ArrayVar.names()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.ArrayVar.set"><code class="docutils literal notranslate"><span class="pre">ArrayVar.set()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.ArrayVar.unset"><code class="docutils literal notranslate"><span class="pre">ArrayVar.unset()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table"><code class="docutils literal notranslate"><span class="pre">Table</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.activate"><code class="docutils literal notranslate"><span class="pre">Table.activate()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.bbox"><code class="docutils literal notranslate"><span class="pre">Table.bbox()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.clear"><code class="docutils literal notranslate"><span class="pre">Table.clear()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.clear_all"><code class="docutils literal notranslate"><span class="pre">Table.clear_all()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.clear_cache"><code class="docutils literal notranslate"><span class="pre">Table.clear_cache()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.clear_sizes"><code class="docutils literal notranslate"><span class="pre">Table.clear_sizes()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.clear_tags"><code class="docutils literal notranslate"><span class="pre">Table.clear_tags()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.curselection"><code class="docutils literal notranslate"><span class="pre">Table.curselection()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.curvalue"><code class="docutils literal notranslate"><span class="pre">Table.curvalue()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.delete_active"><code class="docutils literal notranslate"><span class="pre">Table.delete_active()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.delete_cols"><code class="docutils literal notranslate"><span class="pre">Table.delete_cols()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.delete_rows"><code class="docutils literal notranslate"><span class="pre">Table.delete_rows()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.get"><code class="docutils literal notranslate"><span class="pre">Table.get()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.height"><code class="docutils literal notranslate"><span class="pre">Table.height()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.hidden"><code class="docutils literal notranslate"><span class="pre">Table.hidden()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.icursor"><code class="docutils literal notranslate"><span class="pre">Table.icursor()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.index"><code class="docutils literal notranslate"><span class="pre">Table.index()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.insert_active"><code class="docutils literal notranslate"><span class="pre">Table.insert_active()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.insert_cols"><code class="docutils literal notranslate"><span class="pre">Table.insert_cols()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.insert_rows"><code class="docutils literal notranslate"><span class="pre">Table.insert_rows()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.reread"><code class="docutils literal notranslate"><span class="pre">Table.reread()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.scan_dragto"><code class="docutils literal notranslate"><span class="pre">Table.scan_dragto()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.scan_mark"><code class="docutils literal notranslate"><span class="pre">Table.scan_mark()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.see"><code class="docutils literal notranslate"><span class="pre">Table.see()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.selection_anchor"><code class="docutils literal notranslate"><span class="pre">Table.selection_anchor()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.selection_clear"><code class="docutils literal notranslate"><span class="pre">Table.selection_clear()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.selection_includes"><code class="docutils literal notranslate"><span class="pre">Table.selection_includes()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.selection_set"><code class="docutils literal notranslate"><span class="pre">Table.selection_set()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.set"><code class="docutils literal notranslate"><span class="pre">Table.set()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.spans"><code class="docutils literal notranslate"><span class="pre">Table.spans()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.tag_cell"><code class="docutils literal notranslate"><span class="pre">Table.tag_cell()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.tag_cget"><code class="docutils literal notranslate"><span class="pre">Table.tag_cget()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.tag_col"><code class="docutils literal notranslate"><span class="pre">Table.tag_col()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.tag_configure"><code class="docutils literal notranslate"><span class="pre">Table.tag_configure()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.tag_delete"><code class="docutils literal notranslate"><span class="pre">Table.tag_delete()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.tag_exists"><code class="docutils literal notranslate"><span class="pre">Table.tag_exists()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.tag_includes"><code class="docutils literal notranslate"><span class="pre">Table.tag_includes()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.tag_lower"><code class="docutils literal notranslate"><span class="pre">Table.tag_lower()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.tag_names"><code class="docutils literal notranslate"><span class="pre">Table.tag_names()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.tag_raise"><code class="docutils literal notranslate"><span class="pre">Table.tag_raise()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.tag_row"><code class="docutils literal notranslate"><span class="pre">Table.tag_row()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.validate"><code class="docutils literal notranslate"><span class="pre">Table.validate()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.version"><code class="docutils literal notranslate"><span class="pre">Table.version</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.width"><code class="docutils literal notranslate"><span class="pre">Table.width()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.window_cget"><code class="docutils literal notranslate"><span class="pre">Table.window_cget()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.window_configure"><code class="docutils literal notranslate"><span class="pre">Table.window_configure()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.window_delete"><code class="docutils literal notranslate"><span class="pre">Table.window_delete()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.window_move"><code class="docutils literal notranslate"><span class="pre">Table.window_move()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.window_names"><code class="docutils literal notranslate"><span class="pre">Table.window_names()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.xview"><code class="docutils literal notranslate"><span class="pre">Table.xview()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.xview_moveto"><code class="docutils literal notranslate"><span class="pre">Table.xview_moveto()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.xview_scroll"><code class="docutils literal notranslate"><span class="pre">Table.xview_scroll()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.yview"><code class="docutils literal notranslate"><span class="pre">Table.yview()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.yview_moveto"><code class="docutils literal notranslate"><span class="pre">Table.yview_moveto()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.TkTableWrapper.Table.yview_scroll"><code class="docutils literal notranslate"><span class="pre">Table.yview_scroll()</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By The Molass Community
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025, The Molass Community.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
