@@ -1,4 +1,4 @@
-<h1 align="center"><img src="docs/_static/molass-legacy.png" width="400"></h1>
+<h1 align="center"><a href="https://freesemt.github.io/molass-legacy"><img src="docs/_static/molass-legacy.png" width="400"></a></h1>
 
 > [!WARNING]
 > This package is currently in preparation to be available in April, 2025.
