@@ -1,7 +1,7 @@
 <h1 align="center"><a href="https://freesemt.github.io/molass-legacy"><img src="docs/_static/molass-legacy.png" width="400"></a></h1>
 
 > [!WARNING]
-> This package is currently in preparation to be available in April, 2025.
+> This package is currently in preparation to be available in May, 2025.
 
 This repository includes legacy codes of [MOLASS](https://www.jstage.jst.go.jp/article/biophysico/20/1/20_e200001/_article).
 
