@@ -17,6 +17,6 @@ pip install -U molass
 
 See also:
 
-- **Molass Repository:** https://github.com/freesemt/molass-library
+- **Molass Library Repository:** https://github.com/nshimizu0721/molass-library
 
 <br>
