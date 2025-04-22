@@ -14,4 +14,10 @@ docs/_build/
 
 docs/source/**
 
-docs/molass_legacy.*.rst
+docs/kpe. out
+docs/pos. xyz
+docs/tpz. out
+
+docs/1a3w*
+docs/rmsd.csv
+docs/*.mp4

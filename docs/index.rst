@@ -105,9 +105,18 @@ Submodules
    source/molass_legacy.Sympy
    source/molass_legacy.Synthesizer
    source/molass_legacy.Test
-   source/molass_legacy.Trials
+   source/molass_legacy.Trials.
    source/molass_legacy.Trimming
    source/molass_legacy.Tutorials
    source/molass_legacy.UV
    source/molass_legacy.V2PropOptimizer
    source/molass_legacy.Wave
+
+
+Tool Functions
+----------------
+
+.. toctree::
+   :maxdepth: 5
+
+   source/EditRst
