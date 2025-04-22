@@ -1,0 +1,80 @@
+SecTheory
+================================
+
+.. automodule:: molass_legacy.SecTheory
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   molass_legacy.SecTheory.BasicModels
+   molass_legacy.SecTheory.BasicProofs
+   molass_legacy.SecTheory.BoundControl
+   molass_legacy.SecTheory.Cavazzini1999
+   molass_legacy.SecTheory.CavazziniProof
+   molass_legacy.SecTheory.ColumnConstants
+   molass_legacy.SecTheory.ColumnIllust
+   molass_legacy.SecTheory.ConformanceDemo
+   molass_legacy.SecTheory.CumsumInverse
+   molass_legacy.SecTheory.DiporeSecSimulation
+   molass_legacy.SecTheory.DiporeSimulation
+   molass_legacy.SecTheory.Distinction
+   molass_legacy.SecTheory.Dondi1986
+   molass_legacy.SecTheory.Dondi2002
+   molass_legacy.SecTheory.DondiProof
+   molass_legacy.SecTheory.Edm
+   molass_legacy.SecTheory.EdmDemo
+   molass_legacy.SecTheory.EdmSpike
+   molass_legacy.SecTheory.EghCompat
+   molass_legacy.SecTheory.ExclCurveUtils
+   molass_legacy.SecTheory.ExclusionCurveSpike
+   molass_legacy.SecTheory.Felinger2005
+   molass_legacy.SecTheory.FitTrialNonCf
+   molass_legacy.SecTheory.FoleyDorseyEmg
+   molass_legacy.SecTheory.HermansEmg
+   molass_legacy.SecTheory.InitialGuess
+   molass_legacy.SecTheory.LanJorgensonEgh
+   molass_legacy.SecTheory.LocalOptimizer
+   molass_legacy.SecTheory.LognormalPoreCF
+   molass_legacy.SecTheory.LognormalStudy
+   molass_legacy.SecTheory.MartinSynge
+   molass_legacy.SecTheory.MolassProof
+   molass_legacy.SecTheory.MomentAnalysis
+   molass_legacy.SecTheory.MonoPore
+   molass_legacy.SecTheory.MonoporeExclCurve
+   molass_legacy.SecTheory.MonoporeSecSimulation
+   molass_legacy.SecTheory.MonoporeSimulation
+   molass_legacy.SecTheory.MwRgFigure
+   molass_legacy.SecTheory.MwRgInfo
+   molass_legacy.SecTheory.NumPlates
+   molass_legacy.SecTheory.OligoporeExclCurve
+   molass_legacy.SecTheory.PeakAsymmetry
+   molass_legacy.SecTheory.PlateNumberEgh
+   molass_legacy.SecTheory.PlateTheory
+   molass_legacy.SecTheory.PoresizeFreedom
+   molass_legacy.SecTheory.RealisticProof
+   molass_legacy.SecTheory.RealisticSolver
+   molass_legacy.SecTheory.RetensionTime
+   molass_legacy.SecTheory.SecCF
+   molass_legacy.SecTheory.SecEstimator
+   molass_legacy.SecTheory.SecPDF
+   molass_legacy.SecTheory.SecParamsPlot
+   molass_legacy.SecTheory.SecParamsSurvey
+   molass_legacy.SecTheory.SecSimulator
+   molass_legacy.SecTheory.Sepsey2014
+   molass_legacy.SecTheory.Sepsey2014b
+   molass_legacy.SecTheory.SepseyProof
+   molass_legacy.SecTheory.ShapeRgFigure
+   molass_legacy.SecTheory.SinglePoreNonCf
+   molass_legacy.SecTheory.StochasticModels
+   molass_legacy.SecTheory.StochasticSolver
+   molass_legacy.SecTheory.T0UpperBound
+   molass_legacy.SecTheory.TriporeExclCurve
+   molass_legacy.SecTheory.TriporeSecSimulation
+   molass_legacy.SecTheory.TriporeSimulation
+   molass_legacy.SecTheory.compare_grm_to_emg

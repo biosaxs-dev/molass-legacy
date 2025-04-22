@@ -1,0 +1,117 @@
+Optimizer
+================================
+
+.. automodule:: molass_legacy.Optimizer
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   molass_legacy.Optimizer.AdhocFigure
+   molass_legacy.Optimizer.AllParameters
+   molass_legacy.Optimizer.AscDscDifference
+   molass_legacy.Optimizer.Asymptotical
+   molass_legacy.Optimizer.BackRunner
+   molass_legacy.Optimizer.BaselineOptimizer
+   molass_legacy.Optimizer.BasicOptimizer
+   molass_legacy.Optimizer.BoundaryView
+   molass_legacy.Optimizer.BoundsAnalysis
+   molass_legacy.Optimizer.BoundsInspection
+   molass_legacy.Optimizer.ColumnInterp
+   molass_legacy.Optimizer.ColumnInterpGPU
+   molass_legacy.Optimizer.ComplementaryView
+   molass_legacy.Optimizer.CompositeInfo
+   molass_legacy.Optimizer.DefaultNumPeaks
+   molass_legacy.Optimizer.DefaultNumPeaks-try
+   molass_legacy.Optimizer.Demo
+   molass_legacy.Optimizer.EghGradient
+   molass_legacy.Optimizer.ElutionComposer
+   molass_legacy.Optimizer.ElutionModelsGPU
+   molass_legacy.Optimizer.FactorCurvePlot
+   molass_legacy.Optimizer.FixedBaselineOptimizer
+   molass_legacy.Optimizer.FullOptDialog
+   molass_legacy.Optimizer.FullOptInput
+   molass_legacy.Optimizer.FullOptResult
+   molass_legacy.Optimizer.FullOptUtils
+   molass_legacy.Optimizer.FuncImporter
+   molass_legacy.Optimizer.FuncReloadUtils
+   molass_legacy.Optimizer.FunctionChanger
+   molass_legacy.Optimizer.FunctionDebugger
+   molass_legacy.Optimizer.FunctionDebuggerUtils
+   molass_legacy.Optimizer.FvScoreConverter
+   molass_legacy.Optimizer.FvScoreDetails
+   molass_legacy.Optimizer.FvScoreInspecor
+   molass_legacy.Optimizer.FvSynthesisOptimizer
+   molass_legacy.Optimizer.FvSynthesizer
+   molass_legacy.Optimizer.FvSynthesizerHistory
+   molass_legacy.Optimizer.GlobalInspector
+   molass_legacy.Optimizer.GuinierRg
+   molass_legacy.Optimizer.InitialInfo
+   molass_legacy.Optimizer.IntegerRatios
+   molass_legacy.Optimizer.JobStateCanvas
+   molass_legacy.Optimizer.JobStateInfo
+   molass_legacy.Optimizer.LrfExporter
+   molass_legacy.Optimizer.LrfOptimizer
+   molass_legacy.Optimizer.ModelDataSet
+   molass_legacy.Optimizer.ModifyStateDialog
+   molass_legacy.Optimizer.MwIntegrity
+   molass_legacy.Optimizer.NaviFrame
+   molass_legacy.Optimizer.NpSharedMemory
+   molass_legacy.Optimizer.NumComponents
+   molass_legacy.Optimizer.NumericalUtils
+   molass_legacy.Optimizer.OptConstants
+   molass_legacy.Optimizer.OptDataSets
+   molass_legacy.Optimizer.OptJobInfo
+   molass_legacy.Optimizer.OptJobResultInfo
+   molass_legacy.Optimizer.OptLogFile
+   molass_legacy.Optimizer.OptLrfInfo
+   molass_legacy.Optimizer.OptLrfInfoDebug
+   molass_legacy.Optimizer.OptStrategyDialog
+   molass_legacy.Optimizer.OptimalElution
+   molass_legacy.Optimizer.OptimizerMain
+   molass_legacy.Optimizer.OptimizerSettings
+   molass_legacy.Optimizer.OptimizerUtils
+   molass_legacy.Optimizer.ParameterTransition
+   molass_legacy.Optimizer.ParameterTransitionPlot
+   molass_legacy.Optimizer.ParamsAdjuster
+   molass_legacy.Optimizer.ParamsInspection
+   molass_legacy.Optimizer.ParamsIterator
+   molass_legacy.Optimizer.ParamsSelector
+   molass_legacy.Optimizer.PenaltyUtils
+   molass_legacy.Optimizer.RatioInterpretIllust
+   molass_legacy.Optimizer.ResidualView
+   molass_legacy.Optimizer.RestartPatcher
+   molass_legacy.Optimizer.ResultAnimation
+   molass_legacy.Optimizer.ResultFolderSelector
+   molass_legacy.Optimizer.ResultProxy
+   molass_legacy.Optimizer.RgCurveInspect
+   molass_legacy.Optimizer.RgDiscreteness
+   molass_legacy.Optimizer.RgSecUpdater
+   molass_legacy.Optimizer.RgVisibleFigure
+   molass_legacy.Optimizer.ScaleAdjustInspect
+   molass_legacy.Optimizer.ScoreTransition
+   molass_legacy.Optimizer.SecConformance
+   molass_legacy.Optimizer.SecInspection
+   molass_legacy.Optimizer.SettingsSerializer
+   molass_legacy.Optimizer.SimpleDebugUtils
+   molass_legacy.Optimizer.StateSequence
+   molass_legacy.Optimizer.StrategicOptimizer
+   molass_legacy.Optimizer.StrategyEditor
+   molass_legacy.Optimizer.StructureFactorBounds
+   molass_legacy.Optimizer.StructureFactorBoundsDemo
+   molass_legacy.Optimizer.SvdTutorial
+   molass_legacy.Optimizer.TheDebugUtils
+   molass_legacy.Optimizer.TheUtils
+   molass_legacy.Optimizer.TwoParamAnalysis
+   molass_legacy.Optimizer.UvBaselineEstimator
+   molass_legacy.Optimizer.ValidComponents
+   molass_legacy.Optimizer.WFM
+   molass_legacy.Optimizer.XrStateFigure
+   molass_legacy.Optimizer.XrUvScaleRatio
+   molass_legacy.Optimizer.optimizer
+   molass_legacy.Optimizer.temp

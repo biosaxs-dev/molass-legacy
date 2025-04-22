@@ -1,0 +1,1834 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Optimizer.Demo &#8212; Molass Library Legacy  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'source/molass_legacy.Optimizer.Demo';</script>
+    <link rel="icon" href="../_static/molamola.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Optimizer.EghGradient" href="molass_legacy.Optimizer.EghGradient.html" />
+    <link rel="prev" title="Optimizer.DefaultNumPeaks-try" href="molass_legacy.Optimizer.DefaultNumPeaks-try.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/molamola.png" class="logo__image only-light" alt="Molass Library Legacy  documentation - Home"/>
+    <script>document.write(`<img src="../_static/molamola.png" class="logo__image only-dark" alt="Molass Library Legacy  documentation - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Alsaker.html">Alsaker</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Alsaker.Bridge.html">Alsaker.Bridge</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Alsaker.Compare.html">Alsaker.Compare</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Alsaker.ComparisonPlot.html">Alsaker.ComparisonPlot</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.ATSAS.html">ATSAS</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ATSAS.Almerge.html">ATSAS.Almerge</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ATSAS.AtsasUtils.html">ATSAS.AtsasUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ATSAS.AtsasVersion.html">ATSAS.AtsasVersion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ATSAS.AutoRg.html">ATSAS.AutoRg</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ATSAS.AutorgRunner.html">ATSAS.AutorgRunner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ATSAS.CorMapAnalysis.html">ATSAS.CorMapAnalysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ATSAS.Crysol.html">ATSAS.Crysol</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ATSAS.DatCmp.html">ATSAS.DatCmp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ATSAS.DatGnom.html">ATSAS.DatGnom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ATSAS.ExecCheck.html">ATSAS.ExecCheck</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.AutorgKek.html">AutorgKek</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.AutorgKek.AppVersion.html">AutorgKek.AppVersion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.AutorgKek.AtsasTools.html">AutorgKek.AtsasTools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.AutorgKek.BiComponentSolver.html">AutorgKek.BiComponentSolver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.AutorgKek.ClientServer.html">AutorgKek.ClientServer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.AutorgKek.CommandLineOptions.html">AutorgKek.CommandLineOptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.AutorgKek.CommandMain.html">AutorgKek.CommandMain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.AutorgKek.CommandMainUtils.html">AutorgKek.CommandMainUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.AutorgKek.DataModels.html">AutorgKek.DataModels</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.AutorgKek.DataModelsAgg.html">AutorgKek.DataModelsAgg</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.AutorgKek.DataModelsTripple.html">AutorgKek.DataModelsTripple</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.AutorgKek.ErrorResult.html">AutorgKek.ErrorResult</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.AutorgKek.Guinier.html">AutorgKek.Guinier</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.AutorgKek.GuinierInterval.html">AutorgKek.GuinierInterval</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.AutorgKek.GuinierPorodFit.html">AutorgKek.GuinierPorodFit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.AutorgKek.HeadAnomalies.html">AutorgKek.HeadAnomalies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.AutorgKek.IntensityData.html">AutorgKek.IntensityData</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.AutorgKek.KekTools.html">AutorgKek.KekTools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.AutorgKek.KekToolsGP.html">AutorgKek.KekToolsGP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.AutorgKek.LightObjects.html">AutorgKek.LightObjects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.AutorgKek.LinRegSmoother.html">AutorgKek.LinRegSmoother</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.AutorgKek.LinearModel.html">AutorgKek.LinearModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.AutorgKek.ODR_WLS.html">AutorgKek.ODR_WLS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.AutorgKek.QrgLimitsAdjuster.html">AutorgKek.QrgLimitsAdjuster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.AutorgKek.Quality.html">AutorgKek.Quality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.AutorgKek.Result.html">AutorgKek.Result</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.AutorgKek.ResultPrinter.html">AutorgKek.ResultPrinter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.AutorgKek.SAngler_WLS.html">AutorgKek.SAngler_WLS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.AutorgKek.Settings.html">AutorgKek.Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.AutorgKek.SmoothSpline.html">AutorgKek.SmoothSpline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.AutorgKek.WLS_Basics.html">AutorgKek.WLS_Basics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.AutorgKek.WLS_Rg.html">AutorgKek.WLS_Rg</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Baseline.html">Baseline</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Baseline.BaseEstimater.html">Baseline.BaseEstimater</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Baseline.BaseScattering.html">Baseline.BaseScattering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Baseline.Baseline.html">Baseline.Baseline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Baseline.BaselineGuinier.html">Baseline.BaselineGuinier</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Baseline.BaselineInspect.html">Baseline.BaselineInspect</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Baseline.BaselineUtils.html">Baseline.BaselineUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Baseline.BoBaseline.html">Baseline.BoBaseline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Baseline.BpaInspect.html">Baseline.BpaInspect</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Baseline.Constants.html">Baseline.Constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Baseline.Convex.html">Baseline.Convex</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Baseline.Debug.html">Baseline.Debug</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Baseline.Demo.html">Baseline.Demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Baseline.FoulingBaseline.html">Baseline.FoulingBaseline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Baseline.Inspect.html">Baseline.Inspect</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Baseline.IntegralBaseline.html">Baseline.IntegralBaseline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Baseline.LambertBeer.html">Baseline.LambertBeer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Baseline.LambertBeerProof.html">Baseline.LambertBeerProof</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Baseline.LambertBeerTester.html">Baseline.LambertBeerTester</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Baseline.LinearAdjustment.html">Baseline.LinearAdjustment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Baseline.LinearBaseline.html">Baseline.LinearBaseline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Baseline.LpmInspect.html">Baseline.LpmInspect</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Baseline.LpmInspect_for_paper.html">Baseline.LpmInspect_for_paper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Baseline.LpmProxy.html">Baseline.LpmProxy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Baseline.MpiAlgebra.html">Baseline.MpiAlgebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Baseline.PatchUtils.html">Baseline.PatchUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Baseline.ScatteringBaseline.html">Baseline.ScatteringBaseline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Baseline.UvBaseCurve.html">Baseline.UvBaseCurve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Baseline.UvBaseSpline.html">Baseline.UvBaseSpline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Baseline.UvBaseline.html">Baseline.UvBaseline</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Batch.html">Batch</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Batch.BatchMappingImpl.html">Batch.BatchMappingImpl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Batch.BatchMappingUtils.html">Batch.BatchMappingUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Batch.BatchUtils.html">Batch.BatchUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Batch.DataBridge.html">Batch.DataBridge</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Batch.DataBridgeUtils.html">Batch.DataBridgeUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Batch.DataWalk.html">Batch.DataWalk</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Batch.FullBatch.html">Batch.FullBatch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Batch.LiteBatch.html">Batch.LiteBatch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Batch.OptDataSetsProxy.html">Batch.OptDataSetsProxy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Batch.StandardProcedure.html">Batch.StandardProcedure</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.BoundedLRF.html">BoundedLRF</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.BoundedLRF.BoundedLrfSolver.html">BoundedLRF.BoundedLrfSolver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.BoundedLRF.ErrorCorrection.html">BoundedLRF.ErrorCorrection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.BoundedLRF.ErrorCorrectionDemo.html">BoundedLRF.ErrorCorrectionDemo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.BoundedLRF.ErrorMonteCarlo.html">BoundedLRF.ErrorMonteCarlo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.BoundedLRF.HardSphereDemo.html">BoundedLRF.HardSphereDemo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.BoundedLRF.IftDemo.html">BoundedLRF.IftDemo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.BoundedLRF.NaiiveLrfSolver.html">BoundedLRF.NaiiveLrfSolver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.BoundedLRF.ReconsiderDemo.html">BoundedLRF.ReconsiderDemo</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.CFSD.html">CFSD</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.CFSD.SimpleDecompose.html">CFSD.SimpleDecompose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.CFSD.SimpleDecomposeDemo.html">CFSD.SimpleDecomposeDemo</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.CharFunc.html">CharFunc</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.CharFunc.CfDomainOptimizer.html">CharFunc.CfDomainOptimizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.CharFunc.CfDomainStudy.html">CharFunc.CfDomainStudy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.CharFunc.CfOptimizationStudy.html">CharFunc.CfOptimizationStudy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.CharFunc.PdfCfStudy.html">CharFunc.PdfCfStudy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.CharFunc.cf2DistFFT.html">CharFunc.cf2DistFFT</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Conc.html">Conc</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Conc.AqBqSimilarity.html">Conc.AqBqSimilarity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Conc.CdInspection.html">Conc.CdInspection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Conc.CdNoiseMix.html">Conc.CdNoiseMix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Conc.ConcDepend.html">Conc.ConcDepend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Conc.ErHypothesis.html">Conc.ErHypothesis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Conc.RdAnim.html">Conc.RdAnim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Conc.SimData.html">Conc.SimData</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.DataStructure.html">DataStructure</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DataStructure.AnalysisRangeInfo.html">DataStructure.AnalysisRangeInfo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DataStructure.BaseSurface.html">DataStructure.BaseSurface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DataStructure.BaseSurfaceDemo.html">DataStructure.BaseSurfaceDemo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DataStructure.CorrectedData.html">DataStructure.CorrectedData</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DataStructure.CrysolUtils.html">DataStructure.CrysolUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DataStructure.DataDebugger.html">DataStructure.DataDebugger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DataStructure.EmgPeak.html">DataStructure.EmgPeak</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DataStructure.InputData.html">DataStructure.InputData</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DataStructure.InputDataUtils.html">DataStructure.InputDataUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DataStructure.LPM.html">DataStructure.LPM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DataStructure.MatrixData.html">DataStructure.MatrixData</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DataStructure.MdViewer.html">DataStructure.MdViewer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DataStructure.MeasuredData.html">DataStructure.MeasuredData</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DataStructure.ModeledData.html">DataStructure.ModeledData</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DataStructure.PeakInfo.html">DataStructure.PeakInfo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DataStructure.RangeInfo.html">DataStructure.RangeInfo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DataStructure.RawData.html">DataStructure.RawData</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DataStructure.ScatteringCurvePlotter.html">DataStructure.ScatteringCurvePlotter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DataStructure.SvdDataSaver.html">DataStructure.SvdDataSaver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DataStructure.SvdDenoise.html">DataStructure.SvdDenoise</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DataStructure.SvdTutorial.html">DataStructure.SvdTutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DataStructure.SvdViewer.html">DataStructure.SvdViewer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DataStructure.UvData.html">DataStructure.UvData</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DataStructure.UvSpecCurve.html">DataStructure.UvSpecCurve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DataStructure.XrSpecCurve.html">DataStructure.XrSpecCurve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DataStructure.XrayData.html">DataStructure.XrayData</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Decomposer.html">Decomposer</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Decomposer.ConvolutionDemo.html">Decomposer.ConvolutionDemo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Decomposer.CurveDecomposer.html">Decomposer.CurveDecomposer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Decomposer.DecompDemo.html">Decomposer.DecompDemo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Decomposer.DecompEditorDebug.html">Decomposer.DecompEditorDebug</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Decomposer.DecompInfo.html">Decomposer.DecompInfo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Decomposer.DecompResetDialog.html">Decomposer.DecompResetDialog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Decomposer.DecompUtils.html">Decomposer.DecompUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Decomposer.DecompViewer.html">Decomposer.DecompViewer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Decomposer.DualEvaluator.html">Decomposer.DualEvaluator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Decomposer.DualOptimzer.html">Decomposer.DualOptimzer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Decomposer.ElutionAutoencoder.html">Decomposer.ElutionAutoencoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Decomposer.ElutionDecomposer.html">Decomposer.ElutionDecomposer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Decomposer.ElutionMixtureModel.html">Decomposer.ElutionMixtureModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Decomposer.ElutionModelEditor.html">Decomposer.ElutionModelEditor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Decomposer.ElutionModelScaler.html">Decomposer.ElutionModelScaler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Decomposer.ErrorAnalysis.html">Decomposer.ErrorAnalysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Decomposer.EvolvingFactorAnalysis.html">Decomposer.EvolvingFactorAnalysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Decomposer.ExistingNmf.html">Decomposer.ExistingNmf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Decomposer.FactorAnalysis.html">Decomposer.FactorAnalysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Decomposer.FitRecord.html">Decomposer.FitRecord</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Decomposer.MF_Tutorial.html">Decomposer.MF_Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Decomposer.ManualDecomposer.html">Decomposer.ManualDecomposer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Decomposer.MatrixFactorization.html">Decomposer.MatrixFactorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Decomposer.ModelEvaluator.html">Decomposer.ModelEvaluator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Decomposer.OptRecsUtils.html">Decomposer.OptRecsUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Decomposer.ScatteringCurveModel.html">Decomposer.ScatteringCurveModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Decomposer.UnifiedDecompResult.html">Decomposer.UnifiedDecompResult</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Decomposer.UnifiedDecompResultTest.html">Decomposer.UnifiedDecompResultTest</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Decomposer.WlsDecomposer.html">Decomposer.WlsDecomposer</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.DENSS.html">DENSS</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="molass_legacy.DENSS.resources.html">DENSS.resources</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.resources.resources.html">DENSS.resources.resources</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="molass_legacy.DENSS.saxstats.html">DENSS.saxstats</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.saxstats.denssopts.html">DENSS.saxstats.denssopts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.saxstats.denssopts-orig.html">DENSS.saxstats.denssopts-orig</a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.saxstats.saxstats.html">DENSS.saxstats.saxstats</a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.saxstats.saxstats-orig.html">DENSS.saxstats.saxstats-orig</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.DenssDriver.html">DENSS.DenssDriver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.DenssFitData.html">DENSS.DenssFitData</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.DenssGui.html">DENSS.DenssGui</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.DenssManager.html">DENSS.DenssManager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.DenssManagerDialog.html">DENSS.DenssManagerDialog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.DenssUtils.html">DENSS.DenssUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.DmaxDependency.html">DENSS.DmaxDependency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.DmaxEstimation.html">DENSS.DmaxEstimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.update-custom-codes.html">DENSS.update-custom-codes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.update-denss.html">DENSS.update-denss</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.DevelUtils.html">DevelUtils</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DevelUtils.FolderWalkers.html">DevelUtils.FolderWalkers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DevelUtils.LegacyImporters.html">DevelUtils.LegacyImporters</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Distance.html">Distance</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Distance.DeviationMeasure.html">Distance.DeviationMeasure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Distance.FrobeniusXdiffmax.html">Distance.FrobeniusXdiffmax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Distance.JensenShannon.html">Distance.JensenShannon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Distance.NormalizedRmsd.html">Distance.NormalizedRmsd</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.ExcelProcess.html">ExcelProcess</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ExcelProcess.ExcelManager.html">ExcelProcess.ExcelManager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ExcelProcess.ExcelTeller.html">ExcelProcess.ExcelTeller</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.DMM.html">DMM</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DMM.Spike.html">DMM.Spike</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DMM.discrete_rv.html">DMM.discrete_rv</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DMM.dmm.html">DMM.dmm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DMM.em.html">DMM.em</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DMM.mm.html">DMM.mm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DMM.model_gm.html">DMM.model_gm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DMM.moments.html">DMM.moments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DMM.test.html">DMM.test</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.EFA.html">EFA</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.EFA.CpcDemo.html">EFA.CpcDemo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.EFA.Demo.html">EFA.Demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.EFA.RotationDemo.html">EFA.RotationDemo</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Elution.html">Elution</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Elution.CurveUtils.html">Elution.CurveUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Elution.Proportional.html">Elution.Proportional</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Elution.Proportional-temp.html">Elution.Proportional-temp</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Env.html">Env</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Env.CheckEnvDialog.html">Env.CheckEnvDialog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Env.EnvInfo.html">Env.EnvInfo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Env.EnvMessages.html">Env.EnvMessages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Env.GpuInfo.html">Env.GpuInfo</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Error.html">Error</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Error.ErrorModel.html">Error.ErrorModel</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Estimators.html">Estimators</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Estimators.BaseEstimator.html">Estimators.BaseEstimator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Estimators.EdmEstimator.html">Estimators.EdmEstimator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Estimators.EghEstimator.html">Estimators.EghEstimator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Estimators.FdEmgEstimator.html">Estimators.FdEmgEstimator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Estimators.LjEghEstimator.html">Estimators.LjEghEstimator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Estimators.RtEmgEstimator.html">Estimators.RtEmgEstimator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Estimators.SdmEstimator.html">Estimators.SdmEstimator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Estimators.SdmEstimatorDebug.html">Estimators.SdmEstimatorDebug</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Estimators.SdmEstimatorImpl.html">Estimators.SdmEstimatorImpl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Estimators.SdmEstimatorProxy.html">Estimators.SdmEstimatorProxy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Estimators.StcEstimator.html">Estimators.StcEstimator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Estimators.TestTools.html">Estimators.TestTools</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.ExcelProcess.html">ExcelProcess</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ExcelProcess.ExcelManager.html">ExcelProcess.ExcelManager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ExcelProcess.ExcelTeller.html">ExcelProcess.ExcelTeller</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Experiment.html">Experiment</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Experiment.ColumnTypeEstimator.html">Experiment.ColumnTypeEstimator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Experiment.ColumnTypes.html">Experiment.ColumnTypes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Experiment.DataUtils.html">Experiment.DataUtils</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Extrapolation.html">Extrapolation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Extrapolation.AlmergeAnalyzer.html">Extrapolation.AlmergeAnalyzer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Extrapolation.AutoRangeInspector.html">Extrapolation.AutoRangeInspector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Extrapolation.ConcOptsDialog.html">Extrapolation.ConcOptsDialog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Extrapolation.ConjugateGradientDemo.html">Extrapolation.ConjugateGradientDemo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Extrapolation.ConjugateGradientThreeD.html">Extrapolation.ConjugateGradientThreeD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Extrapolation.ExSolver.html">Extrapolation.ExSolver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Extrapolation.ExtrapolSolverDialog.html">Extrapolation.ExtrapolSolverDialog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Extrapolation.ExtrapolationAnimation.html">Extrapolation.ExtrapolationAnimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Extrapolation.ExtrapolationControlPanel.html">Extrapolation.ExtrapolationControlPanel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Extrapolation.ExtrapolationDebugger.html">Extrapolation.ExtrapolationDebugger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Extrapolation.ExtrapolationDenssMenu.html">Extrapolation.ExtrapolationDenssMenu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Extrapolation.ExtrapolationProof.html">Extrapolation.ExtrapolationProof</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Extrapolation.ExtrapolationSolver.html">Extrapolation.ExtrapolationSolver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Extrapolation.KnownPeakPenalty.html">Extrapolation.KnownPeakPenalty</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Extrapolation.KnownPeakPenaltyNumba.html">Extrapolation.KnownPeakPenaltyNumba</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Extrapolation.MatrixFactorAlternate.html">Extrapolation.MatrixFactorAlternate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Extrapolation.PeakSetSelector.html">Extrapolation.PeakSetSelector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Extrapolation.PreviewButtonFrame.html">Extrapolation.PreviewButtonFrame</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Extrapolation.PreviewController.html">Extrapolation.PreviewController</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Extrapolation.PreviewData.html">Extrapolation.PreviewData</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Extrapolation.PreviewResultSaver.html">Extrapolation.PreviewResultSaver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Extrapolation.RangeInspector.html">Extrapolation.RangeInspector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Extrapolation.RankInspection.html">Extrapolation.RankInspection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Extrapolation.ScatteringCurveViewer.html">Extrapolation.ScatteringCurveViewer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Extrapolation.SmoothFactorizer.html">Extrapolation.SmoothFactorizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Extrapolation.SmoothnessPenalty.html">Extrapolation.SmoothnessPenalty</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Extrapolation.SmoothnessPenaltyNumba.html">Extrapolation.SmoothnessPenaltyNumba</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Extrapolation.WeightedLRF.html">Extrapolation.WeightedLRF</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Factors.html">Factors</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Factors.LucaLib.html">Factors.LucaLib</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Factors.PyChemLib.html">Factors.PyChemLib</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Factors.PyChemLib2D.html">Factors.PyChemLib2D</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Factors.PyChemLib3D.html">Factors.PyChemLib3D</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Factors.RdfDemo.html">Factors.RdfDemo</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Global.html">Global</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Global.V2Init.html">Global.V2Init</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Gmm.html">Gmm</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Gmm.FoleyGmm.html">Gmm.FoleyGmm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Gmm.FoleyGmm-nearly-original.html">Gmm.FoleyGmm-nearly-original</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Gmm.GmmUtils.html">Gmm.GmmUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Gmm.KPeaks.html">Gmm.KPeaks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Gmm.MatsukenGmm.html">Gmm.MatsukenGmm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Gmm.MatsukenGmm-nearly-original.html">Gmm.MatsukenGmm-nearly-original</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Gmm.MemAnnealing.html">Gmm.MemAnnealing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Gmm.SingleGmm.html">Gmm.SingleGmm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Gmm.ZhiyaZuoGmm.html">Gmm.ZhiyaZuoGmm</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.GuinierAnalyzer.html">GuinierAnalyzer</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.GuinierAnalyzer.AutorgKekAdapter.html">GuinierAnalyzer.AutorgKekAdapter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.GuinierAnalyzer.GuinierDiffViewer.html">GuinierAnalyzer.GuinierDiffViewer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.GuinierAnalyzer.GuinierViewer.html">GuinierAnalyzer.GuinierViewer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.GuinierAnalyzer.SimpleGuinier.html">GuinierAnalyzer.SimpleGuinier</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.GuinierAnalyzer.SimpleGuinierAnalyzer.html">GuinierAnalyzer.SimpleGuinierAnalyzer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.GuinierAnalyzer.SimpleGuinierAnimation.html">GuinierAnalyzer.SimpleGuinierAnimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.GuinierAnalyzer.SimpleGuinierDemo.html">GuinierAnalyzer.SimpleGuinierDemo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.GuinierAnalyzer.SimpleGuinierFolderAnalyzer.html">GuinierAnalyzer.SimpleGuinierFolderAnalyzer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.GuinierAnalyzer.SimpleGuinierGuiUtils.html">GuinierAnalyzer.SimpleGuinierGuiUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.GuinierAnalyzer.SimpleGuinierMain.html">GuinierAnalyzer.SimpleGuinierMain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.GuinierAnalyzer.SimpleGuinierScore.html">GuinierAnalyzer.SimpleGuinierScore</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.GuinierAnalyzer.SimpleGuinierScoreDialog.html">GuinierAnalyzer.SimpleGuinierScoreDialog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.GuinierAnalyzer.SimpleGuinierTester.html">GuinierAnalyzer.SimpleGuinierTester</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.GuinierTools.html">GuinierTools</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.GuinierTools.Alsaker2017.html">GuinierTools.Alsaker2017</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.GuinierTools.Alsaker2017_Test.html">GuinierTools.Alsaker2017_Test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.GuinierTools.CompareGdevMeasures.html">GuinierTools.CompareGdevMeasures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.GuinierTools.CpdDecompDirect.html">GuinierTools.CpdDecompDirect</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.GuinierTools.CpdDecompIndirect.html">GuinierTools.CpdDecompIndirect</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.GuinierTools.CpdDecompIndirectImpl.html">GuinierTools.CpdDecompIndirectImpl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.GuinierTools.CpdDecompUtils.html">GuinierTools.CpdDecompUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.GuinierTools.GuinierDeviation.html">GuinierTools.GuinierDeviation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.GuinierTools.GuinierDeviationTester.html">GuinierTools.GuinierDeviationTester</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.GuinierTools.RgComputer.html">GuinierTools.RgComputer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.GuinierTools.RgCurveDbMaker.html">GuinierTools.RgCurveDbMaker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.GuinierTools.RgCurveUtils.html">GuinierTools.RgCurveUtils</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.GuiParts.html">GuiParts</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.GuiParts.ColumnTypeSelector.html">GuiParts.ColumnTypeSelector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.GuiParts.ConcFactorsEntry.html">GuiParts.ConcFactorsEntry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.GuiParts.FileInfoTable.html">GuiParts.FileInfoTable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.GuiParts.FileInfoTable-no-limit.html">GuiParts.FileInfoTable-no-limit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.GuiParts.NonAsciiPaths.html">GuiParts.NonAsciiPaths</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.GuiParts.UvFolderEntry.html">GuiParts.UvFolderEntry</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.HdcTheory.html">HdcTheory</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.HdcTheory.ElutionCurve.html">HdcTheory.ElutionCurve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.HdcTheory.LaminarFlow.html">HdcTheory.LaminarFlow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.HdcTheory.SpikeDemo.html">HdcTheory.SpikeDemo</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Hplc.html">Hplc</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Hplc.HplcSimulator.html">Hplc.HplcSimulator</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.ICIS.html">ICIS</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ICIS.IcisDemo.html">ICIS.IcisDemo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ICIS.XrayLrfConc.html">ICIS.XrayLrfConc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ICIS.XrayLrfConcProof.html">ICIS.XrayLrfConcProof</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.IFT.html">IFT</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.IFT.IftOptimizeImpl.html">IFT.IftOptimizeImpl</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.InputProcess.html">InputProcess</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.InputProcess.FolderInfo.html">InputProcess.FolderInfo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.InputProcess.InputManager.html">InputProcess.InputManager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.InputProcess.InputTeller.html">InputProcess.InputTeller</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Irregular.html">Irregular</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Irregular.Preprocess.html">Irregular.Preprocess</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Jupyter.html">Jupyter</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Jupyter.Installer.html">Jupyter.Installer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Jupyter.JupyterLab.html">Jupyter.JupyterLab</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.KDE.html">KDE</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KDE.Spike.html">KDE.Spike</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.KekLib.html">KekLib</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.Affine.html">KekLib.Affine</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.ArgParser.html">KekLib.ArgParser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.BasicUtils.html">KekLib.BasicUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.BraceWidgets.html">KekLib.BraceWidgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.CallStack.html">KekLib.CallStack</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.Canvas3D.html">KekLib.Canvas3D</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.CanvasDialog.html">KekLib.CanvasDialog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.CanvasFrame.html">KekLib.CanvasFrame</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.ChangeableLogger.html">KekLib.ChangeableLogger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.CircleGeometry.html">KekLib.CircleGeometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.CleanerThread.html">KekLib.CleanerThread</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.Console.html">KekLib.Console</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.ContextUtils.html">KekLib.ContextUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.ControlKeyState.html">KekLib.ControlKeyState</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.CustomMessageBox.html">KekLib.CustomMessageBox</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.DDList.html">KekLib.DDList</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.DebugCanvas.html">KekLib.DebugCanvas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.DebugPlot.html">KekLib.DebugPlot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.DebugPlotUtils.html">KekLib.DebugPlotUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.DebugUtils.html">KekLib.DebugUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.DiffUtils.html">KekLib.DiffUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.DisguinsingWidgets.html">KekLib.DisguinsingWidgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.DpiAware.html">KekLib.DpiAware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.DraggableArrow.html">KekLib.DraggableArrow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.DraggableCurves.html">KekLib.DraggableCurves</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.DraggableListbox.html">KekLib.DraggableListbox</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.DynamicObjects.html">KekLib.DynamicObjects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.EnvironCheck.html">KekLib.EnvironCheck</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.EvalUtils.html">KekLib.EvalUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.ExcelCOM.html">KekLib.ExcelCOM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.ExcelLogChart.html">KekLib.ExcelLogChart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.ExceptionTracebacker.html">KekLib.ExceptionTracebacker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.FileTimeUtils.html">KekLib.FileTimeUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.GeometryUtils.html">KekLib.GeometryUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.Gmail.html">KekLib.Gmail</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.GuPy.html">KekLib.GuPy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.HookableMessageBox.html">KekLib.HookableMessageBox</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.HtmlColorNames.html">KekLib.HtmlColorNames</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.ImportUtils.html">KekLib.ImportUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.IntegrateUtils.html">KekLib.IntegrateUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.KillableThread.html">KekLib.KillableThread</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.KnownPaths.html">KekLib.KnownPaths</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.LinkedToplevel.html">KekLib.LinkedToplevel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.ListingFrame.html">KekLib.ListingFrame</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.LmfitThreadSafe.html">KekLib.LmfitThreadSafe</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.LogDiff.html">KekLib.LogDiff</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.LogicalExpression.html">KekLib.LogicalExpression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.MachineTypes.html">KekLib.MachineTypes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.MatplotlibUtils.html">KekLib.MatplotlibUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.MemoryUtils.html">KekLib.MemoryUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.MenuButton.html">KekLib.MenuButton</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.MessageBoxUtils.html">KekLib.MessageBoxUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.MinimalTiff.html">KekLib.MinimalTiff</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.MplAnnotate.html">KekLib.MplAnnotate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.MplCanvas.html">KekLib.MplCanvas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.MplUtils.html">KekLib.MplUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.MultiMonitor.html">KekLib.MultiMonitor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.NaturalSort.html">KekLib.NaturalSort</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.NoseTools.html">KekLib.NoseTools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.NoseUtils.html">KekLib.NoseUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.NumInverse.html">KekLib.NumInverse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.NumpyArrayUtils.html">KekLib.NumpyArrayUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.NumpyUtils.html">KekLib.NumpyUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.OnTheFlyUtils.html">KekLib.OnTheFlyUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.OpenPyXlUtil.html">KekLib.OpenPyXlUtil</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.OpenPyXlUtils.html">KekLib.OpenPyXlUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.OurColorMaps.html">KekLib.OurColorMaps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.OurCommonDialog.html">KekLib.OurCommonDialog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.OurCurvature.html">KekLib.OurCurvature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.OurException.html">KekLib.OurException</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.OurGeomdl.html">KekLib.OurGeomdl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.OurGini.html">KekLib.OurGini</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.OurGiniSOF.html">KekLib.OurGiniSOF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.OurImageIO.html">KekLib.OurImageIO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.OurImporter.html">KekLib.OurImporter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.OurManim.html">KekLib.OurManim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.OurManim3D.html">KekLib.OurManim3D</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.OurMatplotlib.html">KekLib.OurMatplotlib</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.OurMatplotlib3D.html">KekLib.OurMatplotlib3D</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.OurMessageBox.html">KekLib.OurMessageBox</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.OurMmap.html">KekLib.OurMmap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.OurMock.html">KekLib.OurMock</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.OurMultiprocessing.html">KekLib.OurMultiprocessing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.OurNavigationToolbar.html">KekLib.OurNavigationToolbar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.OurPipApi.html">KekLib.OurPipApi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.OurPlotUtils.html">KekLib.OurPlotUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.OurProfiler.html">KekLib.OurProfiler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.OurScreenShot.html">KekLib.OurScreenShot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.OurStatsModels.html">KekLib.OurStatsModels</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.OurSubprocess.html">KekLib.OurSubprocess</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.OurTk.html">KekLib.OurTk</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.OurTkinter.html">KekLib.OurTkinter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.OurToplevel.html">KekLib.OurToplevel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.OurTtk.html">KekLib.OurTtk</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.PathUtils.html">KekLib.PathUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.PersistentInfo.html">KekLib.PersistentInfo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.PersistentPy.html">KekLib.PersistentPy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.PlotUtils.html">KekLib.PlotUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.PolygonGeometry.html">KekLib.PolygonGeometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.Polynomial.html">KekLib.Polynomial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.PopupMenuUtils.html">KekLib.PopupMenuUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.ProgressInfo.html">KekLib.ProgressInfo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.ProgressInfoDialog.html">KekLib.ProgressInfoDialog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.ProgressInfoDialog-test.html">KekLib.ProgressInfoDialog-test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.ProgressMinDialog.html">KekLib.ProgressMinDialog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.ReadOnlyText.html">KekLib.ReadOnlyText</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.RecentFolders.html">KekLib.RecentFolders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.RollingStats.html">KekLib.RollingStats</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.RunAsAdmin.html">KekLib.RunAsAdmin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.RunPython.html">KekLib.RunPython</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.SaferSpinbox.html">KekLib.SaferSpinbox</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.SciPyCookbook.html">KekLib.SciPyCookbook</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.SciPyMisc.html">KekLib.SciPyMisc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.ScipyUtils.html">KekLib.ScipyUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.ScrolledFrame.html">KekLib.ScrolledFrame</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.SharedArray.html">KekLib.SharedArray</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.SharedArrayTry.html">KekLib.SharedArrayTry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.SharedArrays.html">KekLib.SharedArrays</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.Shutdown.html">KekLib.Shutdown</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.SimulatedAnnealing.html">KekLib.SimulatedAnnealing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.SingleInstance.html">KekLib.SingleInstance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.SliceUtils.html">KekLib.SliceUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.SplashScreen.html">KekLib.SplashScreen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.StdoutLogger.html">KekLib.StdoutLogger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.StdoutRedirector.html">KekLib.StdoutRedirector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.SubProcess.html">KekLib.SubProcess</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.TestTkUtils.html">KekLib.TestTkUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.TestUtils.html">KekLib.TestUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.TextShowDialog.html">KekLib.TextShowDialog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.ThreadUtils.html">KekLib.ThreadUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.ThreeDimUtils.html">KekLib.ThreeDimUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.TimeUtils.html">KekLib.TimeUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.TkAppInit.html">KekLib.TkAppInit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.TkCustomWidgets.html">KekLib.TkCustomWidgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.TkDebugDnd.html">KekLib.TkDebugDnd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.TkMiniTable.html">KekLib.TkMiniTable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.TkMplUtils.html">KekLib.TkMplUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.TkSizableWidgets.html">KekLib.TkSizableWidgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.TkSupplements.html">KekLib.TkSupplements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.TkTableWrapper.html">KekLib.TkTableWrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.TkTableWrapper-orig.html">KekLib.TkTableWrapper-orig</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.TkTester.html">KekLib.TkTester</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.TkUtils.html">KekLib.TkUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.Unicode.html">KekLib.Unicode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.UpdateDailog.html">KekLib.UpdateDailog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.VersionUtils.html">KekLib.VersionUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.WindowSizeTester.html">KekLib.WindowSizeTester</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.KekLib.mplclofa.html">KekLib.mplclofa</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Kratky.html">Kratky</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Kratky.GuinierKratkyInfo.html">Kratky.GuinierKratkyInfo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Kratky.GuinierKratkyPlots.html">Kratky.GuinierKratkyPlots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Kratky.GuinierKratkyView.html">Kratky.GuinierKratkyView</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.LoaderProcess.html">LoaderProcess</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.LoaderProcess.DataLoader.html">LoaderProcess.DataLoader</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.LRF.html">LRF</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.LRF.ConcMatrix.html">LRF.ConcMatrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.LRF.ElutionMatrix.html">LRF.ElutionMatrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.LRF.EoiiCorrector.html">LRF.EoiiCorrector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.LRF.LrfInfo.html">LRF.LrfInfo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.LRF.LrfInfoProxy.html">LRF.LrfInfoProxy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.LRF.LrfResultPool.html">LRF.LrfResultPool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.LRF.LrfRgUtils.html">LRF.LrfRgUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.LRF.LrfSolver.html">LRF.LrfSolver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.LRF.PnoScdMap.html">LRF.PnoScdMap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.LRF.RegalsDemo.html">LRF.RegalsDemo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.LRF.SimultaneousLRF.html">LRF.SimultaneousLRF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.LRF.UnknownConc.html">LRF.UnknownConc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.LRF.regals.html">LRF.regals</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Mapping.html">Mapping</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Mapping.CurveSimilarity.html">Mapping.CurveSimilarity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Mapping.ElutionMapper.html">Mapping.ElutionMapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Mapping.ElutionMapperAdjuster.html">Mapping.ElutionMapperAdjuster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Mapping.ElutionMapperAnimator.html">Mapping.ElutionMapperAnimator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Mapping.ElutionMapperCanvas.html">Mapping.ElutionMapperCanvas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Mapping.ElutionMapperPlotter.html">Mapping.ElutionMapperPlotter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Mapping.FewerPointMapper.html">Mapping.FewerPointMapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Mapping.ManualAdjuster.html">Mapping.ManualAdjuster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Mapping.MapperConstructor.html">Mapping.MapperConstructor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Mapping.MappingOptimizer.html">Mapping.MappingOptimizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Mapping.MappingParams.html">Mapping.MappingParams</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Mapping.MappingUtils.html">Mapping.MappingUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Mapping.MappingV2Utils.html">Mapping.MappingV2Utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Mapping.PeakCurve.html">Mapping.PeakCurve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Mapping.PeakMapper.html">Mapping.PeakMapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Mapping.PeakMappingRefiner.html">Mapping.PeakMappingRefiner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Mapping.PeakMappingSolver.html">Mapping.PeakMappingSolver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Mapping.ReducedCurve.html">Mapping.ReducedCurve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Mapping.SimplestMapper.html">Mapping.SimplestMapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Mapping.SingleComponent.html">Mapping.SingleComponent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Mapping.SurveyUtils.html">Mapping.SurveyUtils</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.MD.html">MD</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.MD.3d-amin.html">MD.3d-amin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.MD.LjDemo.html">MD.LjDemo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.MD.MdaDemo.html">MD.MdaDemo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.MD.NzDemo.html">MD.NzDemo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.MD.code1.html">MD.code1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.MD.code2.html">MD.code2</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Menus.html">Menus</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Menus.GuiDenssTools.html">Menus.GuiDenssTools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Menus.GuiDevelopment.html">Menus.GuiDevelopment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Menus.GuiMctTools.html">Menus.GuiMctTools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Menus.GuiReferences.html">Menus.GuiReferences</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Menus.GuiSecTools.html">Menus.GuiSecTools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Menus.GuiSettings.html">Menus.GuiSettings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Menus.GuiTutorials.html">Menus.GuiTutorials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Menus.JupyterMenu.html">Menus.JupyterMenu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Menus.V2Menu.html">Menus.V2Menu</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Microfluidics.html">Microfluidics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Microfluidics.AverageSubtractorDialog.html">Microfluidics.AverageSubtractorDialog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Microfluidics.BackgroundMaker.html">Microfluidics.BackgroundMaker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Microfluidics.ConcNormalizer.html">Microfluidics.ConcNormalizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Microfluidics.ConcNormalizerDialog.html">Microfluidics.ConcNormalizerDialog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Microfluidics.DataSubtractor.html">Microfluidics.DataSubtractor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Microfluidics.DelayAdjuster.html">Microfluidics.DelayAdjuster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Microfluidics.DelayOptimizer.html">Microfluidics.DelayOptimizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Microfluidics.FlowSimulator.html">Microfluidics.FlowSimulator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Microfluidics.IndividualSubtractorDialog.html">Microfluidics.IndividualSubtractorDialog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Microfluidics.InspectionInAngles.html">Microfluidics.InspectionInAngles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Microfluidics.MctDecompDialog.html">Microfluidics.MctDecompDialog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Microfluidics.MctRangeInfo.html">Microfluidics.MctRangeInfo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Microfluidics.MethodAdjusterFrame.html">Microfluidics.MethodAdjusterFrame</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Microfluidics.MethodFile.html">Microfluidics.MethodFile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Microfluidics.MethodFileSimulator.html">Microfluidics.MethodFileSimulator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Microfluidics.MicrofluidicElution.html">Microfluidics.MicrofluidicElution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Microfluidics.MicrofluidicMapping.html">Microfluidics.MicrofluidicMapping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Microfluidics.MinimumSurface.html">Microfluidics.MinimumSurface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Microfluidics.PreprocessDialog.html">Microfluidics.PreprocessDialog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Microfluidics.SimpleSolver.html">Microfluidics.SimpleSolver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Microfluidics.SimpleTutorial.html">Microfluidics.SimpleTutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Microfluidics.SimpleUnfolding.html">Microfluidics.SimpleUnfolding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Microfluidics.SubtractorFrame.html">Microfluidics.SubtractorFrame</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Microfluidics.ThreeStateDimerSolver.html">Microfluidics.ThreeStateDimerSolver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Microfluidics.ThreeStateMonomerSolver.html">Microfluidics.ThreeStateMonomerSolver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Microfluidics.TwoStateSolver.html">Microfluidics.TwoStateSolver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Microfluidics.UnfoldingModel.html">Microfluidics.UnfoldingModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Microfluidics.UnfoldingTutorial.html">Microfluidics.UnfoldingTutorial</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.ModelParams.html">ModelParams</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.BaseSliderInfo.html">ModelParams.BaseSliderInfo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.BaselineParams.html">ModelParams.BaselineParams</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.BoundedSecParams.html">ModelParams.BoundedSecParams</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.EdmParams.html">ModelParams.EdmParams</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.EdmParamsSheet.html">ModelParams.EdmParamsSheet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.EdmPlotUtils.html">ModelParams.EdmPlotUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.EdmSliderInfo.html">ModelParams.EdmSliderInfo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.EghAdjuster.html">ModelParams.EghAdjuster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.EghParams.html">ModelParams.EghParams</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.EghParamsSheet.html">ModelParams.EghParamsSheet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.EghPlotUtils.html">ModelParams.EghPlotUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.EmgPlotUtils.html">ModelParams.EmgPlotUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.FdEmgParams.html">ModelParams.FdEmgParams</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.FdEmgParamsSheet.html">ModelParams.FdEmgParamsSheet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.LjEghParams.html">ModelParams.LjEghParams</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.LjEghParamsSheet.html">ModelParams.LjEghParamsSheet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.ModelDebugUtils.html">ModelParams.ModelDebugUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.MonoporeSecParams.html">ModelParams.MonoporeSecParams</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.ParamSetUtils.html">ModelParams.ParamSetUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.ParamsSheetBase.html">ModelParams.ParamsSheetBase</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.RtEmgParams.html">ModelParams.RtEmgParams</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.RtEmgParamsSheet.html">ModelParams.RtEmgParamsSheet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.SdmParams.html">ModelParams.SdmParams</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.SdmParamsSheet.html">ModelParams.SdmParamsSheet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.SdmPlotUtils.html">ModelParams.SdmPlotUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.SdmSliderInfo.html">ModelParams.SdmSliderInfo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.SeccolFunctions.html">ModelParams.SeccolFunctions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.SimpleSecParams.html">ModelParams.SimpleSecParams</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.StcAdjuster.html">ModelParams.StcAdjuster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.StcParams.html">ModelParams.StcParams</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.StcParamsSheet.html">ModelParams.StcParamsSheet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.StcPlotUtils.html">ModelParams.StcPlotUtils</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Models.html">Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Models.AffineContinuityDemo.html">Models.AffineContinuityDemo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Models.CfsEvalPeaks.html">Models.CfsEvalPeaks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Models.CfsEvalPeaksDemo.html">Models.CfsEvalPeaksDemo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Models.Characteristic.html">Models.Characteristic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Models.CharacteristicDemo.html">Models.CharacteristicDemo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Models.EGH.html">Models.EGH</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Models.EMG.html">Models.EMG</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Models.Egh2Emg.html">Models.Egh2Emg</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Models.ElutionCurveModels.html">Models.ElutionCurveModels</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Models.ElutionModelDemo.html">Models.ElutionModelDemo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Models.ElutionModelUtils.html">Models.ElutionModelUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Models.HistoryDemo.html">Models.HistoryDemo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Models.InvertibleSpline.html">Models.InvertibleSpline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Models.ModelUtils.html">Models.ModelUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Models.ModelUtilsException.html">Models.ModelUtilsException</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Models.MomentFitting.html">Models.MomentFitting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Models.Proportional.html">Models.Proportional</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Models.ProportionalDemo.html">Models.ProportionalDemo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Models.RateTheoryDemo.html">Models.RateTheoryDemo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Models.Tentative.html">Models.Tentative</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Models.TentativeDemo.html">Models.TentativeDemo</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.MultiProc.html">MultiProc</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.MultiProc.Driver.html">MultiProc.Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.MultiProc.Manager.html">MultiProc.Manager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.MultiProc.ManagerDialog.html">MultiProc.ManagerDialog</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.MXD.html">MXD</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.MXD.Bayesian.html">MXD.Bayesian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.MXD.FastDecomposer.html">MXD.FastDecomposer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.MXD.MappingDecomposer.html">MXD.MappingDecomposer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.MXD.Spike.html">MXD.Spike</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.ObjectiveFunctions.html">ObjectiveFunctions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ObjectiveFunctions.G0346.html">ObjectiveFunctions.G0346</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ObjectiveFunctions.G0525.html">ObjectiveFunctions.G0525</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ObjectiveFunctions.G0665.html">ObjectiveFunctions.G0665</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ObjectiveFunctions.G0705.html">ObjectiveFunctions.G0705</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ObjectiveFunctions.G1100.html">ObjectiveFunctions.G1100</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ObjectiveFunctions.G2010.html">ObjectiveFunctions.G2010</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.OnTheFly.html">OnTheFly</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.OnTheFly.DebugDialog.html">OnTheFly.DebugDialog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.OnTheFly.DebugImpl.html">OnTheFly.DebugImpl</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="molass_legacy.Optimizer.html">Optimizer</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.AdhocFigure.html">Optimizer.AdhocFigure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.AllParameters.html">Optimizer.AllParameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.AscDscDifference.html">Optimizer.AscDscDifference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.Asymptotical.html">Optimizer.Asymptotical</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.BackRunner.html">Optimizer.BackRunner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.BaselineOptimizer.html">Optimizer.BaselineOptimizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.BasicOptimizer.html">Optimizer.BasicOptimizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.BoundaryView.html">Optimizer.BoundaryView</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.BoundsAnalysis.html">Optimizer.BoundsAnalysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.BoundsInspection.html">Optimizer.BoundsInspection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.ColumnInterp.html">Optimizer.ColumnInterp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.ColumnInterpGPU.html">Optimizer.ColumnInterpGPU</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.ComplementaryView.html">Optimizer.ComplementaryView</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.CompositeInfo.html">Optimizer.CompositeInfo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.DefaultNumPeaks.html">Optimizer.DefaultNumPeaks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.DefaultNumPeaks-try.html">Optimizer.DefaultNumPeaks-try</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Optimizer.Demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.EghGradient.html">Optimizer.EghGradient</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.ElutionComposer.html">Optimizer.ElutionComposer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.ElutionModelsGPU.html">Optimizer.ElutionModelsGPU</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.FactorCurvePlot.html">Optimizer.FactorCurvePlot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.FixedBaselineOptimizer.html">Optimizer.FixedBaselineOptimizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.FullOptDialog.html">Optimizer.FullOptDialog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.FullOptInput.html">Optimizer.FullOptInput</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.FullOptResult.html">Optimizer.FullOptResult</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.FullOptUtils.html">Optimizer.FullOptUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.FuncImporter.html">Optimizer.FuncImporter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.FuncReloadUtils.html">Optimizer.FuncReloadUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.FunctionChanger.html">Optimizer.FunctionChanger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.FunctionDebugger.html">Optimizer.FunctionDebugger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.FunctionDebuggerUtils.html">Optimizer.FunctionDebuggerUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.FvScoreConverter.html">Optimizer.FvScoreConverter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.FvScoreDetails.html">Optimizer.FvScoreDetails</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.FvScoreInspecor.html">Optimizer.FvScoreInspecor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.FvSynthesisOptimizer.html">Optimizer.FvSynthesisOptimizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.FvSynthesizer.html">Optimizer.FvSynthesizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.FvSynthesizerHistory.html">Optimizer.FvSynthesizerHistory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.GlobalInspector.html">Optimizer.GlobalInspector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.GuinierRg.html">Optimizer.GuinierRg</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.InitialInfo.html">Optimizer.InitialInfo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.IntegerRatios.html">Optimizer.IntegerRatios</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.JobStateCanvas.html">Optimizer.JobStateCanvas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.JobStateInfo.html">Optimizer.JobStateInfo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.LrfExporter.html">Optimizer.LrfExporter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.LrfOptimizer.html">Optimizer.LrfOptimizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.ModelDataSet.html">Optimizer.ModelDataSet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.ModifyStateDialog.html">Optimizer.ModifyStateDialog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.MwIntegrity.html">Optimizer.MwIntegrity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.NaviFrame.html">Optimizer.NaviFrame</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.NpSharedMemory.html">Optimizer.NpSharedMemory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.NumComponents.html">Optimizer.NumComponents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.NumericalUtils.html">Optimizer.NumericalUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.OptConstants.html">Optimizer.OptConstants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.OptDataSets.html">Optimizer.OptDataSets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.OptJobInfo.html">Optimizer.OptJobInfo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.OptJobResultInfo.html">Optimizer.OptJobResultInfo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.OptLogFile.html">Optimizer.OptLogFile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.OptLrfInfo.html">Optimizer.OptLrfInfo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.OptLrfInfoDebug.html">Optimizer.OptLrfInfoDebug</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.OptStrategyDialog.html">Optimizer.OptStrategyDialog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.OptimalElution.html">Optimizer.OptimalElution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.OptimizerMain.html">Optimizer.OptimizerMain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.OptimizerSettings.html">Optimizer.OptimizerSettings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.OptimizerUtils.html">Optimizer.OptimizerUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.ParameterTransition.html">Optimizer.ParameterTransition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.ParameterTransitionPlot.html">Optimizer.ParameterTransitionPlot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.ParamsAdjuster.html">Optimizer.ParamsAdjuster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.ParamsInspection.html">Optimizer.ParamsInspection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.ParamsIterator.html">Optimizer.ParamsIterator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.ParamsSelector.html">Optimizer.ParamsSelector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.PenaltyUtils.html">Optimizer.PenaltyUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.RatioInterpretIllust.html">Optimizer.RatioInterpretIllust</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.ResidualView.html">Optimizer.ResidualView</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.RestartPatcher.html">Optimizer.RestartPatcher</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.ResultAnimation.html">Optimizer.ResultAnimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.ResultFolderSelector.html">Optimizer.ResultFolderSelector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.ResultProxy.html">Optimizer.ResultProxy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.RgCurveInspect.html">Optimizer.RgCurveInspect</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.RgDiscreteness.html">Optimizer.RgDiscreteness</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.RgSecUpdater.html">Optimizer.RgSecUpdater</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.RgVisibleFigure.html">Optimizer.RgVisibleFigure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.ScaleAdjustInspect.html">Optimizer.ScaleAdjustInspect</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.ScoreTransition.html">Optimizer.ScoreTransition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.SecConformance.html">Optimizer.SecConformance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.SecInspection.html">Optimizer.SecInspection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.SettingsSerializer.html">Optimizer.SettingsSerializer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.SimpleDebugUtils.html">Optimizer.SimpleDebugUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.StateSequence.html">Optimizer.StateSequence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.StrategicOptimizer.html">Optimizer.StrategicOptimizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.StrategyEditor.html">Optimizer.StrategyEditor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.StructureFactorBounds.html">Optimizer.StructureFactorBounds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.StructureFactorBoundsDemo.html">Optimizer.StructureFactorBoundsDemo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.SvdTutorial.html">Optimizer.SvdTutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.TheDebugUtils.html">Optimizer.TheDebugUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.TheUtils.html">Optimizer.TheUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.TwoParamAnalysis.html">Optimizer.TwoParamAnalysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.UvBaselineEstimator.html">Optimizer.UvBaselineEstimator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.ValidComponents.html">Optimizer.ValidComponents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.WFM.html">Optimizer.WFM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.XrStateFigure.html">Optimizer.XrStateFigure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.XrUvScaleRatio.html">Optimizer.XrUvScaleRatio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.optimizer.html">Optimizer.optimizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Optimizer.temp.html">Optimizer.temp</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Particles.html">Particles</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Particles.SmcModel.html">Particles.SmcModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Particles.SmcSolver.html">Particles.SmcSolver</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Peaks.html">Peaks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Peaks.EditCanvas.html">Peaks.EditCanvas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Peaks.EghSupples.html">Peaks.EghSupples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Peaks.EghTauLimits.html">Peaks.EghTauLimits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Peaks.ElutionModels.html">Peaks.ElutionModels</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Peaks.Hyperbola.html">Peaks.Hyperbola</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Peaks.HyperbolaDemo.html">Peaks.HyperbolaDemo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Peaks.HyperbolaFit.html">Peaks.HyperbolaFit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Peaks.ModeledCurve.html">Peaks.ModeledCurve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Peaks.MomentsUtils.html">Peaks.MomentsUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Peaks.PeProgressConstants.html">Peaks.PeProgressConstants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Peaks.Peak.html">Peaks.Peak</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Peaks.PeakDevel.html">Peaks.PeakDevel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Peaks.PeakEditor.html">Peaks.PeakEditor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Peaks.PeakEditorUtils.html">Peaks.PeakEditorUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Peaks.PeakFronting.html">Peaks.PeakFronting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Peaks.PeakParamsSet.html">Peaks.PeakParamsSet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Peaks.RobustCurve.html">Peaks.RobustCurve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Peaks.RobustPeaks.html">Peaks.RobustPeaks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Peaks.WindowMapping.html">Peaks.WindowMapping</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Protein.html">Protein</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Protein.UvSensitivity.html">Protein.UvSensitivity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Protein.WypMassRatios.html">Protein.WypMassRatios</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.PSD.html">PSD</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.PSD.PsdEstimator.html">PSD.PsdEstimator</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.Python.html">Python</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.QuickAnalysis.html">QuickAnalysis</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.QuickAnalysis.AnalysisGuide.html">QuickAnalysis.AnalysisGuide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.QuickAnalysis.Analyzer.html">QuickAnalysis.Analyzer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.QuickAnalysis.AnalyzerDialogProxy.html">QuickAnalysis.AnalyzerDialogProxy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.QuickAnalysis.Homopeak.html">QuickAnalysis.Homopeak</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.QuickAnalysis.JudgeHolder.html">QuickAnalysis.JudgeHolder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.QuickAnalysis.ModeledPeaks.html">QuickAnalysis.ModeledPeaks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.QuickAnalysis.ModeledPeaksTester.html">QuickAnalysis.ModeledPeaksTester</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.QuickAnalysis.ParammedModel.html">QuickAnalysis.ParammedModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.QuickAnalysis.PeakUtils.html">QuickAnalysis.PeakUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.QuickAnalysis.PreDecomposer.html">QuickAnalysis.PreDecomposer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.QuickAnalysis.RgDiffRatios.html">QuickAnalysis.RgDiffRatios</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.RangeEditors.html">RangeEditors</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.RangeEditors.DecompDummyDialog.html">RangeEditors.DecompDummyDialog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.RangeEditors.DecompDummyFrame.html">RangeEditors.DecompDummyFrame</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.RangeEditors.DecompEditorDialog.html">RangeEditors.DecompEditorDialog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.RangeEditors.DecompEditorFrame.html">RangeEditors.DecompEditorFrame</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.RangeEditors.DecompPlotUtils.html">RangeEditors.DecompPlotUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.RangeEditors.DecompSpecPanel.html">RangeEditors.DecompSpecPanel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.RangeEditors.RangeEditorDialog.html">RangeEditors.RangeEditorDialog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.RangeEditors.RangeEditorFrame.html">RangeEditors.RangeEditorFrame</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.RangeEditors.RangeSpecFrame.html">RangeEditors.RangeSpecFrame</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.RangeEditors.SuperEditorFrame.html">RangeEditors.SuperEditorFrame</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Rank.html">Rank</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Rank.Boundary.html">Rank.Boundary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Rank.RankControl.html">Rank.RankControl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Rank.RankView.html">Rank.RankView</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Rank.SRR.html">Rank.SRR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Rank.SrrStats.html">Rank.SrrStats</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Rank.SrrTutor.html">Rank.SrrTutor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Rank.Synthesized.html">Rank.Synthesized</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.ReAtsas.html">ReAtsas</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ReAtsas.Almerge.html">ReAtsas.Almerge</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ReAtsas.AtsasPlotter.html">ReAtsas.AtsasPlotter</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Reports.html">Reports</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Reports.CharacterFormatter.html">Reports.CharacterFormatter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Reports.ClipboardConstants.html">Reports.ClipboardConstants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Reports.DatgnomExcelFormatter.html">Reports.DatgnomExcelFormatter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Reports.DatgnomResultBook.html">Reports.DatgnomResultBook</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Reports.DefaultFont.html">Reports.DefaultFont</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Reports.ExcelEnvDepend.html">Reports.ExcelEnvDepend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Reports.GuinierAnalysisResultBook.html">Reports.GuinierAnalysisResultBook</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Reports.GuinierExcelFormatter.html">Reports.GuinierExcelFormatter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Reports.ReportUtils.html">Reports.ReportUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Reports.SummaryBook.html">Reports.SummaryBook</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Reports.SummaryExcelFormatter.html">Reports.SummaryExcelFormatter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Reports.ZeroExExcelFormatter.html">Reports.ZeroExExcelFormatter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Reports.ZeroExtrapolationOverlayBook.html">Reports.ZeroExtrapolationOverlayBook</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Reports.ZeroExtrapolationResultBook.html">Reports.ZeroExtrapolationResultBook</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Rgg.html">Rgg</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Rgg.BayesPySpike.html">Rgg.BayesPySpike</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Rgg.Callbacks.html">Rgg.Callbacks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Rgg.GmmSpike.html">Rgg.GmmSpike</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Rgg.KernelDensityDemo.html">Rgg.KernelDensityDemo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Rgg.KernelDensityFix.html">Rgg.KernelDensityFix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Rgg.LogUtils.html">Rgg.LogUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Rgg.MostSimultaneous.html">Rgg.MostSimultaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Rgg.RgRefiner.html">Rgg.RgRefiner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Rgg.RggEghDistribution.html">Rgg.RggEghDistribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Rgg.RggMixtureModel.html">Rgg.RggMixtureModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Rgg.RggUtils.html">Rgg.RggUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Rgg.Spike.html">Rgg.Spike</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Rgg.SpikeData.html">Rgg.SpikeData</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Rgg.UvAdjuster.html">Rgg.UvAdjuster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Rgg.VariationalMixture.html">Rgg.VariationalMixture</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.RgProcess.html">RgProcess</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.RgProcess.RgAnalysis.html">RgProcess.RgAnalysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.RgProcess.RgCurve.html">RgProcess.RgCurve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.RgProcess.RgCurveComputer.html">RgProcess.RgCurveComputer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.RgProcess.RgCurveProxy.html">RgProcess.RgCurveProxy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.RgProcess.RgCurveUtils.html">RgProcess.RgCurveUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.RgProcess.RgManager.html">RgProcess.RgManager</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Saxs.html">Saxs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Saxs.EdBoundary.html">Saxs.EdBoundary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Saxs.EdPlotter.html">Saxs.EdPlotter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Saxs.EdViewer.html">Saxs.EdViewer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Saxs.OurOptics.html">Saxs.OurOptics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Saxs.PhaseRetrieval.html">Saxs.PhaseRetrieval</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Saxs.PhaseRetrievalDemo.html">Saxs.PhaseRetrievalDemo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Saxs.RankAnalysis.html">Saxs.RankAnalysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Saxs.Rdf.html">Saxs.Rdf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Saxs.ReciprocalData.html">Saxs.ReciprocalData</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Saxs.SaxsCurve.html">Saxs.SaxsCurve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Saxs.SaxsCurveUtils.html">Saxs.SaxsCurveUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Saxs.SaxsDetector.html">Saxs.SaxsDetector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Saxs.SaxsSamples.html">Saxs.SaxsSamples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Saxs.SaxsSimulator.html">Saxs.SaxsSimulator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Saxs.Terbium.html">Saxs.Terbium</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Saxs.UnifiedModel.html">Saxs.UnifiedModel</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.SecSaxs.html">SecSaxs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecSaxs.DataSet.html">SecSaxs.DataSet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecSaxs.DataTreatment.html">SecSaxs.DataTreatment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecSaxs.ElCurve.html">SecSaxs.ElCurve</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.SecTheory.html">SecTheory</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.BasicModels.html">SecTheory.BasicModels</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.BasicProofs.html">SecTheory.BasicProofs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.BoundControl.html">SecTheory.BoundControl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.Cavazzini1999.html">SecTheory.Cavazzini1999</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.CavazziniProof.html">SecTheory.CavazziniProof</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.ColumnConstants.html">SecTheory.ColumnConstants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.ColumnIllust.html">SecTheory.ColumnIllust</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.ConformanceDemo.html">SecTheory.ConformanceDemo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.CumsumInverse.html">SecTheory.CumsumInverse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.DiporeSecSimulation.html">SecTheory.DiporeSecSimulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.DiporeSimulation.html">SecTheory.DiporeSimulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.Distinction.html">SecTheory.Distinction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.Dondi1986.html">SecTheory.Dondi1986</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.Dondi2002.html">SecTheory.Dondi2002</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.DondiProof.html">SecTheory.DondiProof</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.Edm.html">SecTheory.Edm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.EdmDemo.html">SecTheory.EdmDemo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.EdmSpike.html">SecTheory.EdmSpike</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.EghCompat.html">SecTheory.EghCompat</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.ExclCurveUtils.html">SecTheory.ExclCurveUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.ExclusionCurveSpike.html">SecTheory.ExclusionCurveSpike</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.Felinger2005.html">SecTheory.Felinger2005</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.FitTrialNonCf.html">SecTheory.FitTrialNonCf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.FoleyDorseyEmg.html">SecTheory.FoleyDorseyEmg</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.HermansEmg.html">SecTheory.HermansEmg</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.InitialGuess.html">SecTheory.InitialGuess</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.LanJorgensonEgh.html">SecTheory.LanJorgensonEgh</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.LocalOptimizer.html">SecTheory.LocalOptimizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.LognormalPoreCF.html">SecTheory.LognormalPoreCF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.LognormalStudy.html">SecTheory.LognormalStudy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.MartinSynge.html">SecTheory.MartinSynge</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.MolassProof.html">SecTheory.MolassProof</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.MomentAnalysis.html">SecTheory.MomentAnalysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.MonoPore.html">SecTheory.MonoPore</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.MonoporeExclCurve.html">SecTheory.MonoporeExclCurve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.MonoporeSecSimulation.html">SecTheory.MonoporeSecSimulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.MonoporeSimulation.html">SecTheory.MonoporeSimulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.MwRgFigure.html">SecTheory.MwRgFigure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.MwRgInfo.html">SecTheory.MwRgInfo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.NumPlates.html">SecTheory.NumPlates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.OligoporeExclCurve.html">SecTheory.OligoporeExclCurve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.PeakAsymmetry.html">SecTheory.PeakAsymmetry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.PlateNumberEgh.html">SecTheory.PlateNumberEgh</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.PlateTheory.html">SecTheory.PlateTheory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.PoresizeFreedom.html">SecTheory.PoresizeFreedom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.RealisticProof.html">SecTheory.RealisticProof</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.RealisticSolver.html">SecTheory.RealisticSolver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.RetensionTime.html">SecTheory.RetensionTime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.SecCF.html">SecTheory.SecCF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.SecEstimator.html">SecTheory.SecEstimator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.SecPDF.html">SecTheory.SecPDF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.SecParamsPlot.html">SecTheory.SecParamsPlot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.SecParamsSurvey.html">SecTheory.SecParamsSurvey</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.SecSimulator.html">SecTheory.SecSimulator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.Sepsey2014.html">SecTheory.Sepsey2014</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.Sepsey2014b.html">SecTheory.Sepsey2014b</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.SepseyProof.html">SecTheory.SepseyProof</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.ShapeRgFigure.html">SecTheory.ShapeRgFigure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.SinglePoreNonCf.html">SecTheory.SinglePoreNonCf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.StochasticModels.html">SecTheory.StochasticModels</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.StochasticSolver.html">SecTheory.StochasticSolver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.T0UpperBound.html">SecTheory.T0UpperBound</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.TriporeExclCurve.html">SecTheory.TriporeExclCurve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.TriporeSecSimulation.html">SecTheory.TriporeSecSimulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.TriporeSimulation.html">SecTheory.TriporeSimulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTheory.compare_grm_to_emg.html">SecTheory.compare_grm_to_emg</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.SecTools.html">SecTools</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTools.AverageMakerDialog.html">SecTools.AverageMakerDialog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTools.DataAverager.html">SecTools.DataAverager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SecTools.LogGuinierKratkyPlotter.html">SecTools.LogGuinierKratkyPlotter</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Selective.html">Selective</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Selective.AdvancedAdapter.html">Selective.AdvancedAdapter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Selective.AdvancedFrame.html">Selective.AdvancedFrame</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Selective.BridgeUtils.html">Selective.BridgeUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Selective.DataFilter.html">Selective.DataFilter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Selective.DevelTest.html">Selective.DevelTest</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Selective.IftOptimizer.html">Selective.IftOptimizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Selective.KpdMinimizer.html">Selective.KpdMinimizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Selective.LrfRgComputer.html">Selective.LrfRgComputer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Selective.LrfSource.html">Selective.LrfSource</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Selective.MinimizerUtils.html">Selective.MinimizerUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Selective.ModelFrameStatus.html">Selective.ModelFrameStatus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Selective.ModelSelectFrame.html">Selective.ModelSelectFrame</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Selective.NumComponents.html">Selective.NumComponents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Selective.PeakProxy.html">Selective.PeakProxy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Selective.PropOptimizer.html">Selective.PropOptimizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Selective.PropOptimizerEDM.html">Selective.PropOptimizerEDM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Selective.PropOptimizerEGH.html">Selective.PropOptimizerEGH</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Selective.PropOptimizerEMG.html">Selective.PropOptimizerEMG</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Selective.PropOptimizerImpl.html">Selective.PropOptimizerImpl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Selective.PropOptimizerSTC.html">Selective.PropOptimizerSTC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Selective.Proportions.html">Selective.Proportions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Selective.RdrChart.html">Selective.RdrChart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Selective.RdrMinimizer.html">Selective.RdrMinimizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Selective.StochasticAdapter.html">Selective.StochasticAdapter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Selective.V1ParamsAdapter.html">Selective.V1ParamsAdapter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Selective.VariedPropAnalysis.html">Selective.VariedPropAnalysis</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.SerialAnalyzer.html">SerialAnalyzer</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.AbnormalityCheck.html">SerialAnalyzer.AbnormalityCheck</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.AffineDemo.html">SerialAnalyzer.AffineDemo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.AnalysisRangeManager.html">SerialAnalyzer.AnalysisRangeManager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.AnalyzerUtil.html">SerialAnalyzer.AnalyzerUtil</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.AnimObjects.html">SerialAnalyzer.AnimObjects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.AveragingDiscussion.html">SerialAnalyzer.AveragingDiscussion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.BasePercentileOffset.html">SerialAnalyzer.BasePercentileOffset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.BasePlane.html">SerialAnalyzer.BasePlane</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.BaseSurfaceSpline.html">SerialAnalyzer.BaseSurfaceSpline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.BpoDependencyDemo.html">SerialAnalyzer.BpoDependencyDemo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ConnectedIntervals.html">SerialAnalyzer.ConnectedIntervals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.CurveFeatures.html">SerialAnalyzer.CurveFeatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.CurveSaverDialog.html">SerialAnalyzer.CurveSaverDialog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.CustomNavigationToolbar.html">SerialAnalyzer.CustomNavigationToolbar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.DataUtils.html">SerialAnalyzer.DataUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.DevSettings.html">SerialAnalyzer.DevSettings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.DeveloperOptions.html">SerialAnalyzer.DeveloperOptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.DraggableLine.html">SerialAnalyzer.DraggableLine</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.DraggablePoints.html">SerialAnalyzer.DraggablePoints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.DriftAnalyzer.html">SerialAnalyzer.DriftAnalyzer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.DriftLinearModel.html">SerialAnalyzer.DriftLinearModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.DriftSimulation.html">SerialAnalyzer.DriftSimulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ElutionBaseCurve.html">SerialAnalyzer.ElutionBaseCurve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ElutionCurve.html">SerialAnalyzer.ElutionCurve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ElutionStainModel.html">SerialAnalyzer.ElutionStainModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ElutionalSmootherUtils.html">SerialAnalyzer.ElutionalSmootherUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.GuinierProofPlot.html">SerialAnalyzer.GuinierProofPlot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.GuinierStartSelector.html">SerialAnalyzer.GuinierStartSelector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.InputOutputDisplay.html">SerialAnalyzer.InputOutputDisplay</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.InputSmootherAveraging.html">SerialAnalyzer.InputSmootherAveraging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.LPM_Animation.html">SerialAnalyzer.LPM_Animation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.LinearityScore.html">SerialAnalyzer.LinearityScore</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.LowPercentileSpline.html">SerialAnalyzer.LowPercentileSpline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.LowRankSolver.html">SerialAnalyzer.LowRankSolver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.MakeItMoreClever.html">SerialAnalyzer.MakeItMoreClever</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.MappingAutoHelper.html">SerialAnalyzer.MappingAutoHelper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.MappingZoomCanvas.html">SerialAnalyzer.MappingZoomCanvas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.MplPlotCanvas.html">SerialAnalyzer.MplPlotCanvas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.NoExcelWarningDialog.html">SerialAnalyzer.NoExcelWarningDialog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.NormalVectorDiff.html">SerialAnalyzer.NormalVectorDiff</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.OptimalSmoothing.html">SerialAnalyzer.OptimalSmoothing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.PairedRangeLogger.html">SerialAnalyzer.PairedRangeLogger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.PlateauRegions.html">SerialAnalyzer.PlateauRegions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.PlotAnnotation.html">SerialAnalyzer.PlotAnnotation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.PreSyncViewer.html">SerialAnalyzer.PreSyncViewer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.PrerecogProxy.html">SerialAnalyzer.PrerecogProxy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ProgressChart.html">SerialAnalyzer.ProgressChart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ProgressInfoUtil.html">SerialAnalyzer.ProgressInfoUtil</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ProofPlot.html">SerialAnalyzer.ProofPlot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.QuantileRegression.html">SerialAnalyzer.QuantileRegression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.QuantileRegressionKeras.html">SerialAnalyzer.QuantileRegressionKeras</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.QuantileRegressionSklearn.html">SerialAnalyzer.QuantileRegressionSklearn</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ResultGui.html">SerialAnalyzer.ResultGui</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ResultTable.html">SerialAnalyzer.ResultTable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.Scattering3dPlot.html">SerialAnalyzer.Scattering3dPlot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.Scattering3dSimple.html">SerialAnalyzer.Scattering3dSimple</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ScatteringBaseCorrector.html">SerialAnalyzer.ScatteringBaseCorrector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ScatteringBaseInvestigator.html">SerialAnalyzer.ScatteringBaseInvestigator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ScatteringBaseUtil.html">SerialAnalyzer.ScatteringBaseUtil</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ScatteringBasecomposite.html">SerialAnalyzer.ScatteringBasecomposite</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ScatteringBasecurve.html">SerialAnalyzer.ScatteringBasecurve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ScatteringBasespline.html">SerialAnalyzer.ScatteringBasespline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ScatteringBasesurface.html">SerialAnalyzer.ScatteringBasesurface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ScatteringPlot.html">SerialAnalyzer.ScatteringPlot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ScatteringViewUtils.html">SerialAnalyzer.ScatteringViewUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SdDebugger.html">SerialAnalyzer.SdDebugger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialAtsasTools.html">SerialAnalyzer.SerialAtsasTools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialControlInfo.html">SerialAnalyzer.SerialControlInfo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialController.html">SerialAnalyzer.SerialController</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialData.html">SerialAnalyzer.SerialData</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialDataLoader.html">SerialAnalyzer.SerialDataLoader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialDataUtils.html">SerialAnalyzer.SerialDataUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialTestUtils.html">SerialAnalyzer.SerialTestUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SettingsDialog.html">SerialAnalyzer.SettingsDialog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SimulatedAnnealing.html">SerialAnalyzer.SimulatedAnnealing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SimulatedExtrapolation.html">SerialAnalyzer.SimulatedExtrapolation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SpecialistOptions.html">SerialAnalyzer.SpecialistOptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SphericalModel.html">SerialAnalyzer.SphericalModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SphericalModelNew.html">SerialAnalyzer.SphericalModelNew</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.StageExtrapolation.html">SerialAnalyzer.StageExtrapolation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.StageGuinier.html">SerialAnalyzer.StageGuinier</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.StageSummary.html">SerialAnalyzer.StageSummary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.Uv2dLpm.html">SerialAnalyzer.Uv2dLpm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.UvBaseSurface.html">SerialAnalyzer.UvBaseSurface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ZeroExtrapolator.html">SerialAnalyzer.ZeroExtrapolator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.create_icon_image.html">SerialAnalyzer.create_icon_image</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.SimTools.html">SimTools</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SimTools.EoiiPlotUtils.html">SimTools.EoiiPlotUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SimTools.ErrorModel.html">SimTools.ErrorModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SimTools.HardSphere.html">SimTools.HardSphere</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Simulative.html">Simulative</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Simulative.ApproxBoundary.html">Simulative.ApproxBoundary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Simulative.ApproxBoundaryDemo.html">Simulative.ApproxBoundaryDemo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Simulative.LognormalPsd.html">Simulative.LognormalPsd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Simulative.PsdSimulation.html">Simulative.PsdSimulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Simulative.SeveralStudies.html">Simulative.SeveralStudies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Simulative.SimulationBridge.html">Simulative.SimulationBridge</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Simulative.SimulationCushion.html">Simulative.SimulationCushion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Simulative.SimulationMain.html">Simulative.SimulationMain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Simulative.SimulativeDemo.html">Simulative.SimulativeDemo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Simulative.TemporaryTrial.html">Simulative.TemporaryTrial</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Solvers.html">Solvers</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Solvers.NcallsEstimator.html">Solvers.NcallsEstimator</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.SSDC.html">SSDC</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SSDC.FolderEntryDialog.html">SSDC.FolderEntryDialog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SSDC.MappingDecomposer.html">SSDC.MappingDecomposer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SSDC.SsdcAnalysis.html">SSDC.SsdcAnalysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SSDC.SsdcAnalysisSdm.html">SSDC.SsdcAnalysisSdm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SSDC.SsdcAnalysisUtils.html">SSDC.SsdcAnalysisUtils</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Stochastic.html">Stochastic</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Stochastic.ColumnSimulation.html">Stochastic.ColumnSimulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Stochastic.ColumnSliceStates.html">Stochastic.ColumnSliceStates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Stochastic.NdSphericalVolume.html">Stochastic.NdSphericalVolume</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Stochastic.StationaryMove.html">Stochastic.StationaryMove</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Synthesizer.html">Synthesizer</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Synthesizer.AppVersion.html">Synthesizer.AppVersion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Synthesizer.AutoRunController.html">Synthesizer.AutoRunController</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Synthesizer.AutoRunTestTools.html">Synthesizer.AutoRunTestTools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Synthesizer.CommandController.html">Synthesizer.CommandController</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Synthesizer.CreateFolderDialog.html">Synthesizer.CreateFolderDialog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Synthesizer.CuntomizedPandasTable.html">Synthesizer.CuntomizedPandasTable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Synthesizer.DebugQueue.html">Synthesizer.DebugQueue</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Synthesizer.Development.html">Synthesizer.Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Synthesizer.ErrorLogCheck.html">Synthesizer.ErrorLogCheck</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Synthesizer.GuiController.html">Synthesizer.GuiController</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Synthesizer.GuiPreferences.html">Synthesizer.GuiPreferences</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Synthesizer.GuiSettingInfo.html">Synthesizer.GuiSettingInfo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Synthesizer.ImageSynthesizer.html">Synthesizer.ImageSynthesizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Synthesizer.PilatusCounter.html">Synthesizer.PilatusCounter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Synthesizer.PilatusImage.html">Synthesizer.PilatusImage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Synthesizer.PilatusImageInfoTable.html">Synthesizer.PilatusImageInfoTable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Synthesizer.PilatusImageInfoTable2.html">Synthesizer.PilatusImageInfoTable2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Synthesizer.PilatusImageProperty.html">Synthesizer.PilatusImageProperty</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Synthesizer.PilatusImageViewer.html">Synthesizer.PilatusImageViewer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Synthesizer.PilatusUtils.html">Synthesizer.PilatusUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Synthesizer.PilatusUtilsNewStyle.html">Synthesizer.PilatusUtilsNewStyle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Synthesizer.PilatusUtilsOldStyle.html">Synthesizer.PilatusUtilsOldStyle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Synthesizer.Preferences.html">Synthesizer.Preferences</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Synthesizer.SAnglerMask.html">Synthesizer.SAnglerMask</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Synthesizer.SynthesizerCommandLineOptions.html">Synthesizer.SynthesizerCommandLineOptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Synthesizer.SynthesizerSettings.html">Synthesizer.SynthesizerSettings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Synthesizer.TestDataGenerator.html">Synthesizer.TestDataGenerator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Synthesizer.ZoomPan.html">Synthesizer.ZoomPan</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Test.html">Test</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Test.Automation.html">Test.Automation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Test.DatasetFilter.html">Test.DatasetFilter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Test.MockMain.html">Test.MockMain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Test.TempInspection.html">Test.TempInspection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Test.TestAllData.html">Test.TestAllData</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Test.TestUtils.html">Test.TestUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Test.Tester.html">Test.Tester</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Test.TesterDialog.html">Test.TesterDialog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Test.TesterLogger.html">Test.TesterLogger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Test.TesterMiscellaneous.html">Test.TesterMiscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Test.TesterSimple.html">Test.TesterSimple</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Trimming.html">Trimming</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Trimming.AutoRestrictor.html">Trimming.AutoRestrictor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Trimming.AutoRestrictorProxy.html">Trimming.AutoRestrictorProxy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Trimming.CdLimit.html">Trimming.CdLimit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Trimming.CustomSigmoid.html">Trimming.CustomSigmoid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Trimming.DataRange.html">Trimming.DataRange</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Trimming.DataRangeTestUtils.html">Trimming.DataRangeTestUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Trimming.DiniSigmoid.html">Trimming.DiniSigmoid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Trimming.EndingAnomaly.html">Trimming.EndingAnomaly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Trimming.FlangeLimit.html">Trimming.FlangeLimit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Trimming.FlowChange.html">Trimming.FlowChange</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Trimming.FlowChangeCandidates.html">Trimming.FlowChangeCandidates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Trimming.FlowChangePrep.html">Trimming.FlowChangePrep</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Trimming.FlowChangeTestUtils.html">Trimming.FlowChangeTestUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Trimming.FlowChangeUtils.html">Trimming.FlowChangeUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Trimming.GradualRegionAnalysis.html">Trimming.GradualRegionAnalysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Trimming.GuinierLimit.html">Trimming.GuinierLimit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Trimming.GuinierRegion.html">Trimming.GuinierRegion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Trimming.MatchingPeaks.html">Trimming.MatchingPeaks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Trimming.MomentTrimming.html">Trimming.MomentTrimming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Trimming.OptViewRange.html">Trimming.OptViewRange</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Trimming.OptimalTrimming.html">Trimming.OptimalTrimming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Trimming.OutlineFigure.html">Trimming.OutlineFigure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Trimming.OutlineFigureSaver.html">Trimming.OutlineFigureSaver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Trimming.PeakRegion.html">Trimming.PeakRegion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Trimming.PeakRegionTestUtils.html">Trimming.PeakRegionTestUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Trimming.PreliminaryRecognition.html">Trimming.PreliminaryRecognition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Trimming.PreliminaryRg.html">Trimming.PreliminaryRg</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Trimming.Sigmoid.html">Trimming.Sigmoid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Trimming.SigmoidApplicability.html">Trimming.SigmoidApplicability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Trimming.SigmoidChain.html">Trimming.SigmoidChain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Trimming.SigmoidDemo.html">Trimming.SigmoidDemo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Trimming.SigmoidGuessX0.html">Trimming.SigmoidGuessX0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Trimming.SpecialSigmoid.html">Trimming.SpecialSigmoid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Trimming.TrimmingDebugDnd.html">Trimming.TrimmingDebugDnd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Trimming.TrimmingDebugUtils.html">Trimming.TrimmingDebugUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Trimming.TrimmingInfo.html">Trimming.TrimmingInfo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Trimming.TrimmingInspection.html">Trimming.TrimmingInspection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Trimming.TrimmingResult.html">Trimming.TrimmingResult</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Trimming.TrimmingUtils.html">Trimming.TrimmingUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Trimming.UvBaseSolver.html">Trimming.UvBaseSolver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Trimming.UvBaseSolverInfo.html">Trimming.UvBaseSolverInfo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Trimming.UvCorrector.html">Trimming.UvCorrector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Trimming.UvCorrectorEgh.html">Trimming.UvCorrectorEgh</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Trimming.UvCorrectorIllust.html">Trimming.UvCorrectorIllust</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Trimming.UvCorrectorSpline.html">Trimming.UvCorrectorSpline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Trimming.UvCorrectorTestUtils.html">Trimming.UvCorrectorTestUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Trimming.UvDiffEffects.html">Trimming.UvDiffEffects</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Tutorials.html">Tutorials</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Tutorials.BhAnimation.html">Tutorials.BhAnimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Tutorials.DualSpace.html">Tutorials.DualSpace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Tutorials.LPM.html">Tutorials.LPM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Tutorials.LinTranAnim.html">Tutorials.LinTranAnim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Tutorials.LinTranAnim-back.html">Tutorials.LinTranAnim-back</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Tutorials.LinearEquations.html">Tutorials.LinearEquations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Tutorials.MatrixFactorization.html">Tutorials.MatrixFactorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Tutorials.MfCorres.html">Tutorials.MfCorres</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Tutorials.MfTutorial0.html">Tutorials.MfTutorial0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Tutorials.MpInverseAnim.html">Tutorials.MpInverseAnim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Tutorials.MpInverseAnim3D.html">Tutorials.MpInverseAnim3D</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Tutorials.MpInverseBasic.html">Tutorials.MpInverseBasic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Tutorials.SvdAnimation.html">Tutorials.SvdAnimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Tutorials.SvdPrecision.html">Tutorials.SvdPrecision</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Tutorials.SvdTutorial2D.html">Tutorials.SvdTutorial2D</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Tutorials.SvdTutorial3D.html">Tutorials.SvdTutorial3D</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Tutorials.VoxelFFT.html">Tutorials.VoxelFFT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Tutorials.VoxelUtils.html">Tutorials.VoxelUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Tutorials.bh-2-1.html">Tutorials.bh-2-1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Tutorials.bh-2-1-1.html">Tutorials.bh-2-1-1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Tutorials.bh-2-2.html">Tutorials.bh-2-2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Tutorials.pythonRotate.html">Tutorials.pythonRotate</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.UV.html">UV</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.UV.Absorbance.html">UV.Absorbance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.UV.AbsorbancePlot.html">UV.AbsorbancePlot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.UV.AbsorbanceSaveDialog.html">UV.AbsorbanceSaveDialog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.UV.AbsorbanceViewUtils.html">UV.AbsorbanceViewUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.UV.AbsorbanceViewer.html">UV.AbsorbanceViewer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.UV.AbsorbanceViewerPub.html">UV.AbsorbanceViewerPub</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.UV.Foldedness.html">UV.Foldedness</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.UV.FoldednessDemo.html">UV.FoldednessDemo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.UV.LrfMappingDemo.html">UV.LrfMappingDemo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.UV.PlainCurve.html">UV.PlainCurve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.UV.PlainCurveUtils.html">UV.PlainCurveUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.UV.Spike.html">UV.Spike</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.UV.UvPreRecog.html">UV.UvPreRecog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.UV.WYF_Ratios.html">UV.WYF_Ratios</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.UV.WYF_RatiosPlot.html">UV.WYF_RatiosPlot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.UV.WYF_RatiosSurvey.html">UV.WYF_RatiosSurvey</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.UV.XrayProportional.html">UV.XrayProportional</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.V2PropOptimizer.html">V2PropOptimizer</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.V2PropOptimizer.PropOptMenu.html">V2PropOptimizer.PropOptMenu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.V2PropOptimizer.PropOptimizer.html">V2PropOptimizer.PropOptimizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.V2PropOptimizer.PropOptimizerDialogs.html">V2PropOptimizer.PropOptimizerDialogs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.V2PropOptimizer.PropOptimizerEDM.html">V2PropOptimizer.PropOptimizerEDM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.V2PropOptimizer.PropOptimizerEGH.html">V2PropOptimizer.PropOptimizerEGH</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.V2PropOptimizer.PropOptimizerSTC.html">V2PropOptimizer.PropOptimizerSTC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.V2PropOptimizer.PropOptimizerUtils.html">V2PropOptimizer.PropOptimizerUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.V2PropOptimizer.RdrChart.html">V2PropOptimizer.RdrChart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.V2PropOptimizer.V1PreviewAdapter.html">V2PropOptimizer.V1PreviewAdapter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.V2PropOptimizer.V1RangeCoverter.html">V2PropOptimizer.V1RangeCoverter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.V2PropOptimizer.VariedPropAnalysis.html">V2PropOptimizer.VariedPropAnalysis</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Wave.html">Wave</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Wave.Beam.html">Wave.Beam</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Wave.Circle.html">Wave.Circle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Wave.Euler.html">Wave.Euler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Wave.Scattering1.html">Wave.Scattering1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Wave.Scattering2.html">Wave.Scattering2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Wave.ScatteringN.html">Wave.ScatteringN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Wave.beam-wave.html">Wave.beam-wave</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Wave.dynamic_image2.html">Wave.dynamic_image2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Wave.image-1.html">Wave.image-1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Wave.image-2.html">Wave.image-2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Wave.image-3.html">Wave.image-3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Wave.image-4.html">Wave.image-4</a></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/freesemt/molass-legacy" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/source/molass_legacy.Optimizer.Demo.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Optimizer.Demo</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="optimizer-demo">
+<h1>Optimizer.Demo<a class="headerlink" href="#optimizer-demo" title="Link to this heading">#</a></h1>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="molass_legacy.Optimizer.DefaultNumPeaks-try.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Optimizer.DefaultNumPeaks-try</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="molass_legacy.Optimizer.EghGradient.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Optimizer.EghGradient</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Molass Community
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025, The Molass Community.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
