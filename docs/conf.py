@@ -1,3 +1,10 @@
+# Add the root directory to the system path
+# This is necessary to import the package correctly in the Sphinx documentation.
+import sys
+import os
+root_dir = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
+sys.path.insert(0, root_dir)
+
 # Configuration file for the Sphinx documentation builder.
 #
 # For the full list of built-in configuration values, see the documentation:
@@ -8,7 +15,7 @@
 
 project = 'Molass Library Legacy'
 copyright = '2025, The Molass Community'
-author = 'The Molass Community'
+author = 'Molass Community'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -25,6 +32,8 @@ autoclass_content = 'both'
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
+# Avoid using "package" in titles
+add_module_names = False  # Removes the "molass." prefix from module names in titles
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output

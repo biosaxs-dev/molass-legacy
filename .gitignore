@@ -12,4 +12,6 @@ __pycache__/
 # Ignore the Sphinx build directory
 docs/_build/
 
+docs/source/**
+
 docs/molass_legacy.*.rst
