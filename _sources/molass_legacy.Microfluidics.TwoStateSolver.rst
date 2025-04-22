@@ -1,7 +1,0 @@
-molass\_legacy.Microfluidics.TwoStateSolver module
-==================================================
-
-.. automodule:: molass_legacy.Microfluidics.TwoStateSolver
-   :members:
-   :undoc-members:
-   :show-inheritance:
