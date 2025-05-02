@@ -6,7 +6,7 @@ on:
 jobs:
   pypi-publish:
     name: upload release to PyPI
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     permissions:
       id-token: write
     steps:
