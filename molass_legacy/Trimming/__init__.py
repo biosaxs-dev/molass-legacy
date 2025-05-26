@@ -1,4 +1,3 @@
-# coding: utf-8
 """
     Trimming.__init__.py
 
@@ -8,6 +7,9 @@ from .CdLimit import CdLimit
 from .FlangeLimit import FlangeLimit
 from .GuinierLimit import GuinierLimit
 from .FlowChange import FlowChange
-from .DataRange import DataRangeDialog
+try:
+    from .DataRange import DataRangeDialog
+except ImportError:
+    pass
 from .TrimmingInfo import *
 from .AutoRestrictor import AutoRestrictor

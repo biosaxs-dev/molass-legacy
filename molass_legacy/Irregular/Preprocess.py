@@ -1,10 +1,9 @@
 """
     Preprocess.py
 
-    Copyright (c) 2022, SAXS Team, KEK-PF
+    Copyright (c) 2022,2025, SAXS Team, KEK-PF
 """
 import numpy as np
-import DebugPlot as plt
 
 NEGATIVE_RATIO_LIMIT = 0.7  # < 0.85 for 20220716/lowSN_BSA_01
 
@@ -13,6 +12,7 @@ def correct_flat_negative_baseline(y, debug=False):
     negetive_ratio = len(np.where(y < 0)[0])/len(y)
     if negetive_ratio > NEGATIVE_RATIO_LIMIT:
         import logging
+        import molass_legacy.KekLib.DebugPlot as plt
         logger = logging.getLogger(__name__)
         logger.warning("temporarily correcting a flat negative_baseline due to negetive_ratio=%.3g", negetive_ratio)
 

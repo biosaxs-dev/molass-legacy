@@ -2,11 +2,10 @@
 """
     Baseline.BaseScattering.py
 
-    Copyright (c) 2020-2024, SAXS Team, KEK-PF
+    Copyright (c) 2020-2025, SAXS Team, KEK-PF
 """
 import numpy as np
 from matplotlib.gridspec import GridSpec
-import molass_legacy.KekLib.DebugPlot as plt
 from molass_legacy.DataStructure.MatrixData import simple_plot_3d
 from .Baseline import compute_baseline
 
@@ -16,6 +15,7 @@ def primary_peak_topx(ecurve):
     return ecurve.primary_peak_i
 
 def old_demo(root, in_folder, show_preview=False):
+    import molass_legacy.KekLib.DebugPlot as plt
     from MeasuredData import MeasuredData
 
     print(in_folder)
@@ -162,6 +162,7 @@ def basescattering_correct(mapped_info, intensity_array, use_mpi=False, end_slic
         yb = P[:,1]
         # TODO: scale
         if debug:
+            import molass_legacy.KekLib.DebugPlot as plt
             with plt.Dp():
                 fig, ax = plt.subplots()
                 ax.set_title("basescattering_correct (2)")

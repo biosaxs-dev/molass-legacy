@@ -1,11 +1,9 @@
 """
-
     CurveSimilarity.py
 
         evaluation of simularity between curves
 
     Copyright (c) 2018-2025, SAXS Team, KEK-PF
-
 """
 import numpy as np
 from scipy.optimize import minimize
@@ -15,7 +13,6 @@ if USE_WLS_FOR_APPROX_MAPPING:
     import statsmodels.api  as sm
 else:
     from scipy              import stats
-import molass_legacy.KekLib.DebugPlot as plt
 
 BETTER_MAPPING_WANTED_SCORE = 0.5
 
@@ -145,6 +142,8 @@ class CurveSimilarity:
                 improved_result = self.try_improve_mapping(slope, intercept, score)
                 if improved_result is not None:
                     if debug:
+                        import molass_legacy.KekLib.DebugPlot as plt
+
                         def plot_mapped_curves(ax, a, b):
                             x = x_curve_.x
                             y = x_curve_.y

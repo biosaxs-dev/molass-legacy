@@ -1,12 +1,11 @@
 """
     FlowChange.py
 
-    Copyright (c) 2021-2023, SAXS Team, KEK-PF
+    Copyright (c) 2021-2025, SAXS Team, KEK-PF
 """
 import logging
 import numpy as np
 from scipy.stats import linregress
-import DebugPlot as plt
 from molass_legacy.KekLib.SciPyCookbook import smooth
 from molass_legacy.KekLib.ExceptionTracebacker import log_exception
 from .PeakRegion import PeakRegion
@@ -129,6 +128,7 @@ class FlowChange:
 
         draw_debug_plot = debug or fig_file is not None
         if draw_debug_plot:
+            import molass_legacy.KekLib.DebugPlot as plt
             def fc_result_plot(gy, pp3, title_trailer=""):
                 from matplotlib.patches import Rectangle
                 from molass_legacy._MOLASS.SerialSettings import get_setting
@@ -318,6 +318,7 @@ class FlowChange:
         L_ratio = abs(L)/height
 
         if debug_info is not None:
+            import molass_legacy.KekLib.DebugPlot as plt
             print("get_safer_point: L=%.3g, L_ratio=%.3g, k=%.3g" % (L, L_ratio, k))
             x_, y_ = debug_info
             plt.push()

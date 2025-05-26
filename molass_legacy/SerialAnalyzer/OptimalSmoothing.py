@@ -2,7 +2,7 @@
 
     OptimalSmoothing.py
 
-    Copyright (c) 2019-2024, SAXS Team, KEK-PF
+    Copyright (c) 2019-2025, SAXS Team, KEK-PF
 
 """
 import numpy as np
@@ -10,7 +10,6 @@ from matplotlib.gridspec import GridSpec
 from molass_legacy.KekLib.SciPyCookbook import smooth
 from scipy.interpolate import UnivariateSpline, LSQUnivariateSpline
 from scipy.stats import linregress
-import DebugPlot as plt
 from molass_legacy._MOLASS.SerialSettings import get_setting
 from molass_legacy.Elution.CurveUtils import MAJOR_PEAK_RATIO
 from molass_legacy.KekLib.ExceptionTracebacker import log_exception
@@ -91,6 +90,7 @@ class OptimalSmoothing:
             self.logger = logging.getLogger(__name__)
 
     def plot_variations(self):
+        import molass_legacy.KekLib.DebugPlot as plt
         from DataUtils import get_in_folder
         x = self.x
         y = self.y
@@ -264,6 +264,7 @@ class OptimalSmoothing:
 
                 # if abs(p - refined_x) > 5:
                 if debug:
+                    import molass_legacy.KekLib.DebugPlot as plt
                     print([p], tobe_refined)
                     x = self.x
                     y = self.y
@@ -315,6 +316,7 @@ class OptimalSmoothing:
             for frm in inspect.stack()[1:]:
                 print("---- : %s %s (%d)" % (frm.filename, frm.function, frm.lineno))
 
+            import molass_legacy.KekLib.DebugPlot as plt
             from molass_legacy.Tools.SpotDebugger import SpotDebugger
             debugger = SpotDebugger(None, (self,))
             debugger.show()
@@ -450,6 +452,7 @@ class OptimalSmoothing:
                 print([k], root_x, (delta_y_ratio, delta_r_ratio), adopt)
 
         if debug:
+            import molass_legacy.KekLib.DebugPlot as plt
             print('-------------- get_good_top_candidates end')
             x = self.x
             y = self.y

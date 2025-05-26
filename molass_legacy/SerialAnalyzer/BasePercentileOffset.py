@@ -12,7 +12,6 @@ import os
 import numpy            as np
 from scipy.stats        import norm
 from bisect             import bisect_right
-import DebugPlot as plt
 
 TABLE_SIZE          = 100
 N_SCALE             = 0.01
@@ -52,6 +51,7 @@ def compute_noise_and_size_sigma_dependency( num_iteretions=1000 ):
                 ys  = sorted( y )
                 zi  = bisect_right( ys, 0 )
                 if False:
+                    import molass_legacy.KekLib.DebugPlot as plt
                     if i==0 and n%10==0 and abs(size_sigma - 9) < 0.1:
                         plt.push()
                         fig, ax = plt.subplots()

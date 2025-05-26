@@ -8,7 +8,6 @@
 import numpy as np
 import logging
 from mpl_toolkits.mplot3d import Axes3D, proj3d
-import molass_legacy.KekLib.DebugPlot as plt
 from molass_legacy.SerialAnalyzer.ElutionCurve import ElutionCurve
 from molass_legacy.KekLib.OurMatplotlib3D import Inset2Din3D
 from molass.PlotUtils.MatrixPlot import compute_3d_xyz, simple_plot_3d, contour_plot
@@ -26,6 +25,7 @@ class MatrixData:
         self.inset = None
 
     def plot(self, ax=None, color=None, alpha=1, title=None, ec_color='orange', inset=True):
+        import molass_legacy.KekLib.DebugPlot as plt
         if ax is None:
             fig = plt.figure()
             ax = fig.add_subplot(111, projection='3d')

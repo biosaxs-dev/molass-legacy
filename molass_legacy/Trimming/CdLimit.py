@@ -1,13 +1,12 @@
 """
     Trimming.CdLimit.py
 
-    Copyright (c) 2020-2024, SAXS Team, KEK-PF
+    Copyright (c) 2020-2025, SAXS Team, KEK-PF
 """
 import numpy as np
 import logging
 from bisect import bisect_right
 from scipy.optimize import minimize
-import molass_legacy.KekLib.DebugPlot as plt
 from molass_legacy.KekLib.GeometryUtils import rotated_argmin
 from molass_legacy._MOLASS.SerialSettings import get_setting
 
@@ -35,6 +34,9 @@ class CdLimit:
         return limit, surely
 
     def get_limit_impl(self, num_points, smooth_bq, retry_argmin=False, debug=False):
+        if debug:
+            import molass_legacy.KekLib.DebugPlot as plt
+
         start = max(1, int(len(self.x)*CD_LIMIT_NOFIT_RATIO))
 
         e_curve = self.e_curve

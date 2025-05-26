@@ -6,7 +6,6 @@
 import numpy as np
 import logging
 from scipy import stats
-import molass_legacy.KekLib.DebugPlot as plt
 from molass_legacy.SerialAnalyzer.AveragingDiscussion import extrapolate
 from molass_legacy.GuinierAnalyzer.SimpleGuinierScore import compute_rg
 from molass_legacy._MOLASS.SerialSettings import get_setting
@@ -51,6 +50,7 @@ class GuinierLimit:
             safe_start = 0
 
         if debug:
+            import molass_legacy.KekLib.DebugPlot as plt
             from molass_legacy.SerialAnalyzer.DataUtils import get_in_folder
             plt.push()
             fig, axes = plt.subplots(ncols=3, figsize=(21,7))
@@ -88,6 +88,7 @@ class GuinierLimit:
         M   = self.matrix_data[aslice, eslice]
 
         if debug:
+            import molass_legacy.KekLib.DebugPlot as plt
             from molass_legacy.DataStructure.MatrixData import simple_plot_3d
             from molass_legacy.SerialAnalyzer.DataUtils import get_in_folder
             plt.push()

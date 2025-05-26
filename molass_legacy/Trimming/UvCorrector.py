@@ -1,12 +1,11 @@
 """
     UvCorrector.py
 
-    Copyright (c) 2021-2022, SAXS Team, KEK-PF
+    Copyright (c) 2021-2025, SAXS Team, KEK-PF
 """
 import numpy as np
 from scipy.stats import linregress
-from ScipyUtils import get_spline
-import DebugPlot as plt
+from molass_legacy.KekLib.ScipyUtils import get_spline
 
 NUM_KNOTS = 8
 FIT_TAIL_RATIO = 0.005
@@ -53,6 +52,7 @@ class UvCorrector:
 
         ret_slice = slice(ret_f, ret_t+1)
         if debug:
+            import molass_legacy.KekLib.DebugPlot as plt
             with plt.Dp():
                 fig, ax = plt.subplots()
                 ax.set_title("get_widest_possible_fit_slice")
@@ -89,6 +89,7 @@ class UvCorrector:
         sspp = sorted(spp3_extra, key=lambda j: -abs(d_spline(j)))
 
         if debug:
+            import molass_legacy.KekLib.DebugPlot as plt
             csy = spline(x)
 
             with plt.Dp():

@@ -1,7 +1,7 @@
 """
     FlowChangeUtils.py
 
-    Copyright (c) 2021-2023, SAXS Team, KEK-PF
+    Copyright (c) 2021-2025, SAXS Team, KEK-PF
 """
 import numpy as np
 from scipy.optimize import curve_fit
@@ -9,7 +9,6 @@ from molass_legacy.KekLib.ExceptionTracebacker import log_exception
 from molass_legacy.KekLib.ScipyUtils import get_spline
 from .Sigmoid import sigmoid, bent_sigmoid, fit_bent_sigmoid, ex_sigmoid
 from .FlowChangeCandidates import OUTSTANDING_RATIO_LIMIT
-import molass_legacy.KekLib.DebugPlot as plt
 
 COV_LIMIT = 1e2
 L_RATIO_IGMORE_LIMIT = 0.14     # > 0.137 for 20160227, < 0.208 for fc1 in Sugiyama, > 0.13 for 20181212, < 0.144 for 20180316
@@ -35,6 +34,7 @@ def fit_sigmoid_impl(x_, y_, height, peak_region, std_p, ppk, outstanding_ratio,
     assert len(x_) > 0
 
     if debug:
+        import molass_legacy.KekLib.DebugPlot as plt
         print("------- ppk=", ppk)
         with plt.Dp():
             fig, ax = plt.subplots()
@@ -92,6 +92,7 @@ def fit_sigmoid_impl_impl(x_, y_, height, peak_region, x0, std_p, outstanding_ra
     p0 = L0, x0, 1, y_lower
 
     if debug:
+        import molass_legacy.KekLib.DebugPlot as plt
         with plt.Dp():
             print("narrower=", narrower)
             fig, ax = plt.subplots()

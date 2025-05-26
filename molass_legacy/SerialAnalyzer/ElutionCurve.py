@@ -9,7 +9,6 @@ import copy
 import logging
 import numpy as np
 from scipy.interpolate import LSQUnivariateSpline
-import molass_legacy.KekLib.DebugPlot as plt
 from molass_legacy._MOLASS.SerialSettings import get_setting
 from molass_legacy.Elution.CurveUtils import proof_plot, simple_plot
 from .CurveFeatures import CurveFeatures
@@ -146,6 +145,7 @@ class ElutionCurve:
         self.paired_ranges = None
 
         if debug_plot:
+            import molass_legacy.KekLib.DebugPlot as plt
             from molass_legacy.KekLib.DebugPlot import get_parent
             fig = plt.figure( figsize=(16, 8) )
             proof_plot(self, get_parent(), fig)
@@ -442,6 +442,7 @@ class ElutionCurve:
             last_ptx = ptx
 
         if debug:
+            import molass_legacy.KekLib.DebugPlot as plt
             x = self.x
             y = self.y
             with plt.Dp():
@@ -473,6 +474,7 @@ class ElutionCurve:
             lower0  = start
 
         if debug:
+            import molass_legacy.KekLib.DebugPlot as plt
             print("pti=", pti)
             x = self.x
             y = self.y
@@ -511,6 +513,7 @@ class ElutionCurve:
             # in case there exists no such points
             upper0  = stop - 1
         if debug:
+            import molass_legacy.KekLib.DebugPlot as plt
             x = self.x
             y = self.y
             with plt.Dp():
@@ -581,6 +584,7 @@ class ElutionCurve:
         # debug = get_setting("local_debug")
 
         if debug:
+            import molass_legacy.KekLib.DebugPlot as plt
             x = self.x
             y = self.y
             with plt.Dp():
@@ -748,6 +752,7 @@ class ElutionCurve:
         min_width = min(MININUM_PEAK_WIDTH, int(len(self.x)*MININUM_PEAK_W_RATIO/2))
 
         if debug:
+            import molass_legacy.KekLib.DebugPlot as plt
             print("min_width=", min_width)
             print("ranges before=", ranges )
             print("self.boundaries=", self.boundaries )
@@ -982,6 +987,7 @@ class ElutionCurve:
             sigma_x2 = lim_x_pairs[-1][1]
             reliable = (width1 >= END_DIFF_WIDTH//8 and slice1.stop < sigma_x1) and (width2 >= END_DIFF_WIDTH//8 and sigma_x2 < start2)
             if debug:
+                import molass_legacy.KekLib.DebugPlot as plt
                 print(self.end_slices, sigma_x1, sigma_x2, start2)
                 print(width1, width2)
 
@@ -1088,6 +1094,7 @@ class ElutionCurve:
             ret_points.append(gx)
 
             if debug:
+                import molass_legacy.KekLib.DebugPlot as plt
                 plt.push()
                 fig, (ax0, ax1, ax2) = plt.subplots(ncols=3, figsize=(21,6))
                 ax0.plot(x_, y_)
