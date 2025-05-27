@@ -1,10 +1,9 @@
 """
     Baseline.py
 
-    Copyright (c) 2020-2024, SAXS Team, KEK-PF
+    Copyright (c) 2020-2025, SAXS Team, KEK-PF
 """
 import numpy as np
-import molass_legacy.KekLib.DebugPlot as plt
 from molass_legacy.Baseline.ScatteringBaseline import ScatteringBaseline
 from .Convex import integrative_curve_convex
 
@@ -112,6 +111,7 @@ def compute_baseline(y, x=None, integral=False, end_slices=None, return_params=F
         ratio = 0
 
     if debug:
+        import molass_legacy.KekLib.DebugPlot as plt
         print("integral=", integral, "ratio=", ratio)
         with plt.Dp():
             fig, ax = plt.subplots()
