@@ -8,7 +8,7 @@ from time import time
 import asyncio
 import numpy as np
 from matplotlib.gridspec import GridSpec
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from bayespy.nodes import Dirichlet, Categorical
 from bayespy.nodes import Gaussian, Wishart
 from bayespy.nodes import Mixture
@@ -160,7 +160,7 @@ def get_component_params(X):
     print("params=", params)
 
 def spike_demo_real(in_folder, num_components=3, correction=True, use_peaks=False):
-    from Batch.StandardProcedure import StandardProcedure
+    from molass_legacy.Batch.StandardProcedure import StandardProcedure
     from RgProcess.RgCurve import RgCurve
 
     sp = StandardProcedure()

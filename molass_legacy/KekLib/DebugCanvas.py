@@ -13,8 +13,8 @@
 import numpy                            as np
 import matplotlib.pyplot                as plt
 from matplotlib.backends.backend_tkagg  import FigureCanvasTkAgg
-from OurTkinter                         import Tk, Dialog
-from TkUtils                            import adjusted_geometry
+from molass_legacy.KekLib.OurTkinter                         import Tk, Dialog
+from molass_legacy.KekLib.TkUtils                            import adjusted_geometry
 
 class DebugCanvas( Dialog ):
     def __init__( self, title, draw_func, parent=None, figsize=None, toolbar=False ):
@@ -61,7 +61,7 @@ class DebugCanvas( Dialog ):
         self.mpl_canvas_widget.pack( fill=Tk.BOTH, expand=1 )
 
         if self.toolbar:
-            from OurMatplotlib  import NavigationToolbar
+            from molass_legacy.KekLib.OurMatplotlib  import NavigationToolbar
             self.toolbar_widget = NavigationToolbar( self.mpl_canvas, cframe )
 
         # it seems that draw_func should be called after the creation of mpl_canvas

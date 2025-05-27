@@ -2,7 +2,7 @@
 
     GuiMain.py
 
-    Copyright (c) 2016-2024, SAXS Team, KEK-PF
+    Copyright (c) 2016-2025, SAXS Team, KEK-PF
 
 """
 import sys
@@ -28,16 +28,15 @@ try:
     import molass_legacy.KekLib.CustomMessageBox as MessageBox
 except:
     import molass_legacy.KekLib.OurMessageBox as MessageBox
-print( 'import CustomMessageBox ok' )
+print( 'import molass_legacy.KekLib.CustomMessageBox ok' )
 from molass_legacy.KekLib.RecentFolders import RecentFolders
-import Decomposer, DataStructure, Extrapolation, GuinierAnalyzer, Microfluidics
-from Menus.GuiSettings import GuiSettingsMenu
-from Menus.GuiSecTools import GuiSecToolsMenu
-from Menus.GuiMctTools import GuiMctToolsMenu
-from Menus.GuiDenssTools import GuiDenssToolsMenu
-from Menus.GuiTutorials import GuiTutorialsMenu
-from Menus.GuiReferences import GuiReferencesMenu
-from Menus.GuiDevelopment import GuiDevelopmentMenu
+from molass_legacy.Menus.GuiSettings import GuiSettingsMenu
+from molass_legacy.Menus.GuiSecTools import GuiSecToolsMenu
+from molass_legacy.Menus.GuiMctTools import GuiMctToolsMenu
+from molass_legacy.Menus.GuiDenssTools import GuiDenssToolsMenu
+from molass_legacy.Menus.GuiTutorials import GuiTutorialsMenu
+from molass_legacy.Menus.GuiReferences import GuiReferencesMenu
+from molass_legacy.Menus.GuiDevelopment import GuiDevelopmentMenu
 
 from molass_legacy.SerialAnalyzer.SerialDataLoader import SerialDataLoader
 from molass_legacy.SerialAnalyzer.SerialDataUtils import get_uv_filename, get_mtd_filename
@@ -47,15 +46,15 @@ from molass_legacy.SerialAnalyzer.AbnormalityCheck import exclude_abnormality
 from molass_legacy.Trimming.PreliminaryRecognition import PreliminaryRecognition
 from molass_legacy.QuickAnalysis.Analyzer import Analyzer
 from molass_legacy._MOLASS.Version import get_version_string, is_developing_version
-from Rank.RankView import RankViewMenu
-from GuiParts.UvFolderEntry import UvFolderEntry
-from Menus.V2Menu import V2Menu
+from molass_legacy.Rank.RankView import RankViewMenu
+from molass_legacy.GuiParts.UvFolderEntry import UvFolderEntry
+from molass_legacy.Menus.V2Menu import V2Menu
 from molass_legacy._MOLASS.SerialSettings import ( initialize_settings,
                                     get_setting, set_setting, save_settings,
                                     clear_temporary_settings, restore_default_setting,
                                     get_settings_folder )
 from molass_legacy.SerialAnalyzer.DevSettings import get_dev_setting, set_dev_setting
-import AutorgKek.Settings
+import molass_legacy.AutorgKek.Settings
 
 analysis_name_re    = re.compile( r'^(.*?)(\d+)(.*)$' )
 distance_symbol_re  = re.compile( r'^(\S+)\s' )
@@ -186,7 +185,7 @@ class GuiMain( Tk.Toplevel ):
         self.after(1000, self.update_menu_states)   # to ensure DENSS Tools menu states update
 
     def check_environment( self ):
-        from Env.EnvInfo import EnvInfo, set_global_env_info
+        from molass_legacy.Env.EnvInfo import EnvInfo, set_global_env_info
         env_info = EnvInfo()
         env_info.show_and_log_if_unavailable(self, self.tmp_logger)
         self.env_info = env_info
@@ -257,7 +256,7 @@ class GuiMain( Tk.Toplevel ):
             self.intial_geometry = self.geometry()
 
     def build_window( self ):
-        from GuiParts.FileInfoTable import FileInfoTable    # must be imported after initialize_settings
+        from molass_legacy.GuiParts.FileInfoTable import FileInfoTable    # must be imported after initialize_settings
 
         global radio_button_text_length
 
@@ -385,7 +384,7 @@ class GuiMain( Tk.Toplevel ):
         self.disable_uv_data.trace('w', self.disable_uv_data_tracer)
 
         # Conc. Factors
-        from GuiParts.ConcFactorsEntry import ConcFactorsEntry
+        from molass_legacy.GuiParts.ConcFactorsEntry import ConcFactorsEntry
 
         grid_row += 1
         self.cfs_entry = ConcFactorsEntry(upper_frame, grid_row)
@@ -658,7 +657,7 @@ class GuiMain( Tk.Toplevel ):
         return self.datarange_dialog is not None
 
     def create_menus( self ):
-        import _MOLASS.SerialSettings
+        import molass_legacy._MOLASS.SerialSettings
         menubar = Tk.Menu( self )
         self.config( menu=menubar )
         self.menubar = menubar
@@ -668,7 +667,7 @@ class GuiMain( Tk.Toplevel ):
 
         menubar.add_cascade( label="Folder", menu=menu0 )
         menu0.add_cascade( label="Recently used data folders", menu=self.recent_menu )
-        self.recent_folders = RecentFolders( size=20, settings=_MOLASS.SerialSettings)
+        self.recent_folders = RecentFolders( size=20, settings=molass_legacy._MOLASS.SerialSettings)
         self.recent_menu_add()
         menu0.add_command( label="Exit", command=self.quit )
 
@@ -1060,7 +1059,7 @@ class GuiMain( Tk.Toplevel ):
             self.set_an_folder_error()
             MessageBox.showerror( "Analysis Folder Error", "The Analysis Result Folder is required.", parent=self )
         else:
-            from GuiParts.NonAsciiPaths import nonascii_path_check
+            from molass_legacy.GuiParts.NonAsciiPaths import nonascii_path_check
             if not nonascii_path_check(an_folder, self):
                 return ok_
 
@@ -1387,7 +1386,7 @@ class GuiMain( Tk.Toplevel ):
         return True
 
     def check_atsas_executability(self):
-        from ATSAS.ExecCheck import atsas_exec_check
+        from molass_legacy.ATSAS.ExecCheck import atsas_exec_check
         return atsas_exec_check(self)
 
     def update_setting_info( self, clear_temp=False ):
@@ -1496,7 +1495,7 @@ class GuiMain( Tk.Toplevel ):
             clear_temporary_settings()
         try:
             save_settings()
-            AutorgKek.Settings.save_settings()    # for saving AutorgKek settings
+            molass_legacy.AutorgKek.Settings.save_settings()    # for saving AutorgKek settings
         except:
             pass
 
@@ -1507,7 +1506,7 @@ class GuiMain( Tk.Toplevel ):
         set_setting( item, value )
 
     def _exit(self):
-        from Optimizer.NpSharedMemory import close_shared_memory
+        from molass_legacy.Optimizer.NpSharedMemory import close_shared_memory
         close_shared_memory()
 
         if self.cleaner is not None:
@@ -1535,7 +1534,7 @@ class GuiMain( Tk.Toplevel ):
         if not reply:
             return
 
-        from DENSS.DenssManagerDialog import terminate_manager
+        from molass_legacy.DENSS.DenssManagerDialog import terminate_manager
         ret = terminate_manager(self)
         if not ret:
             return

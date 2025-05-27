@@ -6,7 +6,7 @@
 import numpy as np
 from scipy.special import iv
 from scipy.interpolate import UnivariateSpline
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 def simple_pdf(t, npi, tpi):
     return iv(1, np.sqrt(4*npi*t/tpi)) * np.sqrt(npi/(t*tpi)) * np.exp(-t/tpi-npi)
@@ -40,7 +40,7 @@ def numerical_inversion_proof(**kwargs):
 def roud_trip(in_folder=None):
     from scipy.optimize import curve_fit
     from molass_legacy._MOLASS.SerialSettings import set_setting
-    from Batch.StandardProcedure import StandardProcedure
+    from molass_legacy.Batch.StandardProcedure import StandardProcedure
     from molass_legacy.Baseline.BaselineUtils import get_corrected_sd_impl
     from molass_legacy.Trimming.PreliminaryRecognition import PreliminaryRecognition
     from molass_legacy.Peaks.ElutionModels import egh

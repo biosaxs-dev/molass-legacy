@@ -9,16 +9,16 @@ import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.patches import Polygon, Circle
-from OurTkinter import Tk, Dialog
-from TkSupplements import tk_set_icon_portable
-from OurMatplotlib import get_color
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.TkSupplements import tk_set_icon_portable
+from molass_legacy.KekLib.OurMatplotlib import get_color
 from OurManim import manim_init, use_default_style, Animation, Collection, TextGroup, Parallelogram, Circles
-from OurMatplotlib import NavigationToolbar
+from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar
 
 class MpInverseAnim(Dialog):
     def __init__(self, parent=None):
         if parent is None:
-            from TkUtils import get_tk_root
+            from molass_legacy.KekLib.TkUtils import get_tk_root
             parent = get_tk_root()
         self.parent = parent
         self.num_frames = 85
@@ -268,7 +268,7 @@ class MpInverseAnim(Dialog):
 
     def save(self):
         import os
-        import CustomMessageBox as MessageBox
+        import molass_legacy.KekLib.CustomMessageBox as MessageBox
         path = os.path.join(os.getcwd(), "anim.mp4")
         self.anim.save(path, writer="ffmpeg")
         MessageBox.showinfo("Save Notification", 'The movie has been saved to "%s"' % path, parent=self)

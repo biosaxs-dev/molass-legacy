@@ -8,7 +8,7 @@
 import os
 import numpy as np
 from Estimators.SdmEstimator import SdmEstimator
-from Optimizer.TheUtils import FILES
+from molass_legacy.Optimizer.TheUtils import FILES
 
 class SdmEstimatorProxy(SdmEstimator):
     def __init__(self, jobfolder):

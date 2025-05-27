@@ -8,7 +8,7 @@ import numpy as np
 from mpl_toolkits.mplot3d import Axes3D
 from scipy.interpolate import UnivariateSpline
 from molass_legacy.Models.ElutionCurveModels import emg
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 def design_figure():
     fig = plt.figure()

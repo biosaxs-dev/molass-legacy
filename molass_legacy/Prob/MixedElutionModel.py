@@ -7,7 +7,7 @@
 import numpy as np
 from sklearn.mixture import GaussianMixture
 from sklearn.cluster import KMeans
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 USE_DPHEM_REDUCTIONE = False
 
@@ -67,7 +67,7 @@ def spike_demo(in_folder, lpm_correct=False, eslice=None):
         x, y = gm_curve()
     else:
         from RawData import RawXray
-        from Saxs.RankAnalysis import RankAnalysis
+        from molass_legacy.Saxs.RankAnalysis import RankAnalysis
         rx = RawXray(in_folder)
         i = rx.get_row_index(0.02)
         x = np.arange(rx.data.shape[1])

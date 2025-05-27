@@ -18,7 +18,7 @@ this_dir = os.path.dirname( os.path.abspath( __file__ ) )
 sys.path.append( this_dir + '/../../lib' )
 import molass_legacy.KekLib
 import OurStatsModels       as sm
-from NumpyUtils             import np_savetxt
+from molass_legacy.KekLib.NumpyUtils             import np_savetxt
 
 SLICE_NUM_POINTS = 400
 LOG_PLOT_A = True

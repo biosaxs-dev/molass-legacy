@@ -17,7 +17,7 @@ else:
 
 from lmfit              import minimize, Parameters, Parameter, report_fit
 from IntensityData      import ACCEPTABLE_BASIC_QUALITY
-# from NumpyUtils         import np_savetxt
+# from molass_legacy.KekLib.NumpyUtils         import np_savetxt
 
 DEBUG = False
 

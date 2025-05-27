@@ -7,7 +7,7 @@ import numpy as np
 from matplotlib.patches import Rectangle
 import molass_legacy.KekLib.DebugPlot as plt
 from molass_legacy.Elution.CurveUtils import simple_plot
-from Optimizer.BasicOptimizer import SCORE_DEV_ALLOW, SCORE_DEV_LIMIT
+from molass_legacy.Optimizer.BasicOptimizer import SCORE_DEV_ALLOW, SCORE_DEV_LIMIT
 from molass_legacy._MOLASS.SerialSettings import get_setting
 
 def plot_mapped_curve(ax, map_params, x, uv_curve):

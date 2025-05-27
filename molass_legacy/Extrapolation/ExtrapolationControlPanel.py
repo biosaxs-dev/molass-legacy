@@ -3,12 +3,12 @@
 
     Copyright (c) 2018-2023, SAXS Team, KEK-PF
 """
-from OurTkinter import Tk
+from molass_legacy.KekLib.OurTkinter import Tk
 from OurTtk import ttk, TtkScale
-from TkSupplements import BlinkingFrame
+from molass_legacy.KekLib.TkSupplements import BlinkingFrame
 from ExtrapolationAnimation import ExtrapolationAnimationDialog, TOO_SMALL_TO_PLOT
 from DevSettings import get_dev_setting
-from TkCustomWidgets import FileEntry
+from molass_legacy.KekLib.TkCustomWidgets import FileEntry
 from SerialDataUtils import serial_np_loadtxt
 
 SCALE_MAX       = 0.2
@@ -291,7 +291,7 @@ class UnknownControlPanel( Tk.Frame ):
             from importlib import reload
             import DENSS.DenssGui
             reload(DENSS.DenssGui)
-        from DENSS.DenssGui import DenssGuiDialog
+        from molass_legacy.DENSS.DenssGui import DenssGuiDialog
         A, B, Z, E, _, C = self.dialog.solver_results[self.row]
         dialog = DenssGuiDialog( self.dialog.parent, self.dialog.q, A, E[0], self.get_file_name() )
         dialog.show()

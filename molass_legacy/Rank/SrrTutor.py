@@ -1,4 +1,3 @@
-# coding: utf-8
 """
 
     Rank.SrrTutor.py
@@ -7,12 +6,12 @@
 
 """
 import numpy as np
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from matplotlib.gridspec import GridSpec
 from molass_legacy._MOLASS.SerialSettings import set_setting
-from Batch.StandardProcedure import StandardProcedure
-from MatrixData import simple_plot_3d
-from DataUtils import get_in_folder
+from molass_legacy.Batch.StandardProcedure import StandardProcedure
+from molass_legacy.DataStructure.MatrixData import simple_plot_3d
+from molass_legacy.SerialAnalyzer.DataUtils import get_in_folder
 
 def rankview_plot(fig, in_folder, sd, M, vec, data_type, xr_type,
                     pre_recog=None, trim=False, i_only=False, j_only=False,

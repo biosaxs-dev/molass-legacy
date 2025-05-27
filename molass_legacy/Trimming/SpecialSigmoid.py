@@ -5,7 +5,7 @@
 """
 import numpy as np
 from matplotlib.patches import Rectangle
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from .Sigmoid import fit_bent_sigmoid, ex_sigmoid
 
 def guess_special_sigmoid_params(fc, debug=False):

@@ -10,11 +10,11 @@ import mpl_toolkits.mplot3d
 from matplotlib.gridspec import GridSpec
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.patches import Polygon, Circle
-from OurTkinter import Tk, Dialog
-from TkSupplements import tk_set_icon_portable
-from OurMatplotlib import get_color
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.TkSupplements import tk_set_icon_portable
+from molass_legacy.KekLib.OurMatplotlib import get_color
 from OurManim import manim_init, use_default_style, Animation, Collection, TextGroup, Parallelogram, rotation, angle
-from OurMatplotlib import NavigationToolbar
+from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar
 from .VoxelUtils import draw_voxel
 
 class VoxelFFT(Dialog):

@@ -12,8 +12,8 @@ import matplotlib.pyplot    as plt
 import matplotlib.gridspec  as gridspec
 from mpl_toolkits.mplot3d   import Axes3D
 from molass_legacy._MOLASS.SerialSettings         import get_setting, get_xray_picking
-from OurTkinter             import Tk
-from TkUtils                import split_geometry
+from molass_legacy.KekLib.OurTkinter             import Tk
+from molass_legacy.KekLib.TkUtils                import split_geometry
 from ResultGui              import ResultGui
 from ScatteringBaseUtil     import apply_baseline_correction_impl
 from ScatteringBasesurface  import ScatteringBasesurface, is_to_plot
@@ -82,7 +82,7 @@ class ScatteringPlot:
         self.left_title  = title
         self.parent = parent
         from DebugCanvas            import DebugCanvas
-        from TkUtils                import is_low_resolution
+        from molass_legacy.KekLib.TkUtils                import is_low_resolution
 
         def draw_func( fig ):
             # fig.set_size_inches( 20, 10 )

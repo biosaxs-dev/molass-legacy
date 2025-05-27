@@ -11,12 +11,12 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as mpl_patches
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from OurTkinter import Tk, Dialog, ttk
-from TkUtils import split_geometry
-from OurMatplotlib import NavigationToolbar
-from TkSupplements import tk_set_icon_portable, BlinkingFrame
-from TkCustomWidgets import FolderEntry
-from TkUtils import is_low_resolution
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog, ttk
+from molass_legacy.KekLib.TkUtils import split_geometry
+from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar
+from molass_legacy.KekLib.TkSupplements import tk_set_icon_portable, BlinkingFrame
+from molass_legacy.KekLib.TkCustomWidgets import FolderEntry
+from molass_legacy.KekLib.TkUtils import is_low_resolution
 from molass_legacy._MOLASS.SerialSettings import get_setting, set_setting, get_xray_picking
 from MicrofluidicElution import get_mtd_elution
 from TwoStateSolver import TwoStateSolver
@@ -399,13 +399,13 @@ class MctDecompDialog(Dialog):
         return None
 
     def make_alt_ranges(self):
-        from PeakInfo import PeakInfo
-        from AnalysisRangeInfo import PairedRange
+        from molass_legacy.DataStructure.PeakInfo import PeakInfo
+        from molass_legacy.DataStructure.AnalysisRangeInfo import PairedRange
 
         start, stop = self.slice_.start, self.slice_.stop
 
         if False:
-            import DebugPlot as dplt
+            import molass_legacy.KekLib.DebugPlot as dplt
             from molass_legacy.Elution.CurveUtils import simple_plot
 
             e_curve = self.xdata.e_curve

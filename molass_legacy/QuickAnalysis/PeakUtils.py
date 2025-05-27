@@ -7,7 +7,7 @@ from .ModeledPeaks import *         # for backward compatibility
 
 def demo_modeled_peaks(in_folder):
     from molass_legacy._MOLASS.SerialSettings import set_setting
-    from Batch.StandardProcedure import StandardProcedure
+    from molass_legacy.Batch.StandardProcedure import StandardProcedure
     from molass_legacy.Trimming.PreliminaryRecognition import PreliminaryRecognition
     from molass_legacy.Elution.CurveUtils import simple_plot
 
@@ -20,7 +20,7 @@ def demo_modeled_peaks(in_folder):
 
 def demo_modeled_peaks_dialog(root, in_folder):
     from molass_legacy._MOLASS.SerialSettings import set_setting
-    from Batch.StandardProcedure import StandardProcedure
+    from molass_legacy.Batch.StandardProcedure import StandardProcedure
     from molass_legacy.Trimming.PreliminaryRecognition import PreliminaryRecognition
     from molass_legacy.Elution.CurveUtils import simple_plot
     from importlib import reload

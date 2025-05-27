@@ -3,7 +3,7 @@
 
     Copyright (c) 2024, SAXS Team, KEK-PF
 """
-from Optimizer.XrUvScaleRatio import xruv_scale_ratio_penalty
+from molass_legacy.Optimizer.XrUvScaleRatio import xruv_scale_ratio_penalty
 PENALTY_SCALE = 1e3
 UV_B_ALLOW_RATIO = 0.1
 

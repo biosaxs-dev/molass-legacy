@@ -8,10 +8,10 @@
 import numpy as np
 from scipy.interpolate import UnivariateSpline
 import logging
-import DebugPlot as plt
-from BasicUtils import ordinal_str
-from NumpyUtils import moving_average
-from OurMatplotlib import get_default_colors
+import molass_legacy.KekLib.DebugPlot as plt
+from molass_legacy.KekLib.BasicUtils import ordinal_str
+from molass_legacy.KekLib.NumpyUtils import moving_average
+from molass_legacy.KekLib.OurMatplotlib import get_default_colors
 from molass_legacy.Models.ElutionCurveModels import EGH, egh_x_from_height_ratio
 from molass_legacy.KekLib.ExceptionTracebacker import log_exception, warnlog_exception
 from molass_legacy._MOLASS.SerialSettings import get_setting
@@ -505,7 +505,7 @@ def get_peaks( curve, max_y=None, allow_wider=False, orig_y=None, logger=None, d
         if ratio < EMG_PEAK_SKIP_OK_RATIO:
             # for cases such as the 2nd peak of 20181203
             if logger is not None:
-                from BasicUtils import ordinal_str
+                from molass_legacy.KekLib.BasicUtils import ordinal_str
                 logger.warning( '%s peak has been skipped due to ratio=%.3g in get_peaks' % (ordinal_str(k+1), ratio) )
             continue
         if top < lower:

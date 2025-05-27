@@ -6,7 +6,7 @@
 """
 import numpy as np
 from scipy.optimize import basinhopping
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from DataUtils import get_in_folder
 from SecTheory.BasicModels import single_pore_elution
 

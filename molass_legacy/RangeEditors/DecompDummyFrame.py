@@ -4,7 +4,7 @@
     Copyright (c) 2023, SAXS Team, KEK-PF
 """
 
-from OurTkinter import Tk
+from molass_legacy.KekLib.OurTkinter import Tk
 
 class DecompDummyFrame(Tk.Frame):
     def __init__(self, parent, model):

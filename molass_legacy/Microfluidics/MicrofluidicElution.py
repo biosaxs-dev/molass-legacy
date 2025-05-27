@@ -43,7 +43,7 @@ class MicrofluidicElution(FlowSimulator):
         start = stop - width
 
         if debug:
-            import DebugPlot as plt
+            import molass_legacy.KekLib.DebugPlot as plt
             import time
             print('length=', length)
             fig = plt.figure()

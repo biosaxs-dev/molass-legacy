@@ -12,7 +12,7 @@ from pomegranate import *
 from molass_legacy.Peaks.ElutionModels import egh_pdf, compute_egh_params
 from Prob.GaussianMixture import hist_to_source
 from .EghDistribution import EghDistribution
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 def sort_dist_params_lists(distributions, weights):
         components = sorted(list(zip(distributions, weights)), key=lambda x: x[0].parameters[0])

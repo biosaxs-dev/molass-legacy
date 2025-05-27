@@ -16,18 +16,18 @@ import sys
 import os
 import re
 
-from OurTkinter         import Tk, FileDialog, ToolTip
+from molass_legacy.KekLib.OurTkinter         import Tk, FileDialog, ToolTip
 import OurMessageBox        as MessageBox
 
 import PilatusCounter
 from PilatusUtils       import get_in_folder_info
 import ChangeableLogger
 from CreateFolderDialog import CreateFolderDialog
-from BasicUtils         import exe_name
+from molass_legacy.KekLib.BasicUtils         import exe_name
 from Preferences        import get_preference
 from Development        import get_devel_info
 from SynthesizerSettings    import clear_settings, get_setting, set_setting, set_mask, get_mask
-from TkSupplements      import SlimButton
+from molass_legacy.KekLib.TkSupplements      import SlimButton
 
 DEFAULT_WATCH_INVERVAL = 180
 

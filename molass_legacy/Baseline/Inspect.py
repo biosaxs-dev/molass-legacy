@@ -4,7 +4,7 @@
     Copyright (c) 2024, SAXS Team, KEK-PF
 """
 import molass_legacy.KekLib.DebugPlot as plt
-from Batch.LiteBatch import LiteBatch
+from molass_legacy.Batch.LiteBatch import LiteBatch
 
 def baseline_inspect_impl(caller):
     print('baseline_inspect_impl')

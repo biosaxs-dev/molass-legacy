@@ -18,7 +18,7 @@ def show_parameter_transition_impl(selector_dialog, debug=True):
         reload(KekLib.OnTheFlyUtils)
         import Optimizer.ResultProxy
     from molass_legacy.KekLib.OnTheFlyUtils import show_progress
-    from Optimizer.ResultProxy import ResultProxy
+    from molass_legacy.Optimizer.ResultProxy import ResultProxy
 
     joblist_folder = selector_dialog.folder.get()
     print("show_parameter_transition_impl: joblist_folder=", joblist_folder)
@@ -70,7 +70,7 @@ def show_parameter_transition_impl(selector_dialog, debug=True):
         from importlib import reload
         import Optimizer.ParameterTransitionPlot as Plot
         reload(Plot)
-        from Optimizer.ParameterTransitionPlot import plot_transition_impl
+        from molass_legacy.Optimizer.ParameterTransitionPlot import plot_transition_impl
         try:
             plot_transition_impl(optimizer, params_array, bounds_array, fv_list)
         except:

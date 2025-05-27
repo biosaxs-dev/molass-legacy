@@ -1,17 +1,16 @@
-# coding: utf-8
 """
     SplashMessage.py
 
-    Copyright (c) 2017-2020, SAXS Team, KEK-PF
+    Copyright (c) 2017-2025, SAXS Team, KEK-PF
 """
 
 import tkinter as Tk
 import tkinter.ttk as ttk
-from TkUtils import adjusted_geometry
-from MultiMonitor import get_selected_monitor
-from SplashScreen import SplashScreen
+from molass_legacy.KekLib.TkUtils import adjusted_geometry
+from molass_legacy.KekLib.MultiMonitor import get_selected_monitor
+from molass_legacy.KekLib.SplashScreen import SplashScreen
 
-splash_message1 = ( "_MOLASS is loading...\n"
+splash_message1 = ( "MOLASS is loading...\n"
                     "Please be patient."
                     )
 

@@ -10,7 +10,7 @@ from matplotlib.gridspec import GridSpec
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.patches import Polygon
 from MeasuredData import MeasuredData
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from MatrixData import simple_plot_3d
 from .Baseline import compute_baseline
 from molass_legacy.SerialAnalyzer.ElutionCurve import ElutionCurve

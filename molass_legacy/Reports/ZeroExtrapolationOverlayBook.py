@@ -11,7 +11,7 @@ import logging
 # from openpyxl               import Workbook
 from OpenPyXlUtil           import save_allowing_user_reply, LINE_WIDTH
 from .ZeroExtrapolationResultBook import create_extrapolation_params_chart_
-from Reports.DefaultFont import set_default_font
+from molass_legacy.Reports.DefaultFont import set_default_font
 set_default_font()
 
 class ZeroExtrapolationOverlayBook:

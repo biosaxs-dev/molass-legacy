@@ -17,8 +17,8 @@ from matplotlib.gridspec import GridSpec
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.widgets import RadioButtons, CheckButtons, Slider
 from scipy.interpolate import UnivariateSpline
-from OurTkinter import Tk, Dialog
-from OurMatplotlib import NavigationToolbar
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar
 from molass_legacy.Peaks.ElutionModels import egh_pdf, emg
 from SecTheory.LanJorgensonEgh import compute_tau, compute_sigma
 
@@ -417,7 +417,7 @@ class ConformanceDemo(Dialog):
         self.sliders = sliders
 
 def demo():
-    from TkUtils import get_tk_root
+    from molass_legacy.KekLib.TkUtils import get_tk_root
     import seaborn
     seaborn.set()
     root = get_tk_root()

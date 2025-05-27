@@ -11,10 +11,10 @@ import os
 import time
 from pyautogui              import screenshot
 from molass_legacy.KekLib.ExceptionTracebacker   import ExceptionTracebacker
-from BasicUtils             import mkdirs_with_retry, clear_dirs_with_retry
-from OurTkinter             import Tk, Dialog, Font
-from TkSupplements          import tk_set_icon_portable
-from TkUtils                import adjusted_geometry, split_geometry, join_geometry, get_max_monitor
+from molass_legacy.KekLib.BasicUtils             import mkdirs_with_retry, clear_dirs_with_retry
+from molass_legacy.KekLib.OurTkinter             import Tk, Dialog, Font
+from molass_legacy.KekLib.TkSupplements          import tk_set_icon_portable
+from molass_legacy.KekLib.TkUtils                import adjusted_geometry, split_geometry, join_geometry, get_max_monitor
 import OurMessageBox        as MessageBox
 from ChangeableLogger       import Logger, arg_join
 

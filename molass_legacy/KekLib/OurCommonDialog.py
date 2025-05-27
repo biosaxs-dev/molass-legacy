@@ -17,7 +17,7 @@
     5) self.grab_release()
     6) changed self.master to self.parent
 """
-from OurTkinter import Tk, TkVersion
+from molass_legacy.KekLib.OurTkinter import Tk, TkVersion
 
 class Dialog( Tk.Toplevel ):
 

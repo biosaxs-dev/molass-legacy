@@ -5,7 +5,7 @@
 """
 import numpy as np
 import molass_legacy.KekLib.DebugPlot as plt
-from Batch.DataBridgeUtils import get_databridge
+from molass_legacy.Batch.DataBridgeUtils import get_databridge
 from molass_legacy.Decomposer.FitRecord import FitRecord
 from molass_legacy.Decomposer.ModelEvaluator import ModelEvaluator
 from molass_legacy.Models.Stochastic.MonoporeUvScaler import adjust_to_uv_scales

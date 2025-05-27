@@ -5,8 +5,8 @@
 """
 import os
 import shutil
-from BasicUtils import home_dir, exe_name
-import CustomMessageBox as MessageBox
+from molass_legacy.KekLib.BasicUtils import home_dir, exe_name
+import molass_legacy.KekLib.CustomMessageBox as MessageBox
 
 def kek_tools_folder():
     return '%s/.KekTools' % (home_dir())

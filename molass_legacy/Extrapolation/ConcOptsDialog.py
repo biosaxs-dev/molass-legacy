@@ -4,9 +4,9 @@
 
     Copyright (c) 2019, SAXS Team, KEK-PF
 """
-from OurTkinter import Tk, Dialog, ttk
-from TkUtils import rational_geometry
-from TkSupplements import tk_set_icon_portable, BlinkingFrame
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog, ttk
+from molass_legacy.KekLib.TkUtils import rational_geometry
+from molass_legacy.KekLib.TkSupplements import tk_set_icon_portable, BlinkingFrame
 from molass_legacy._MOLASS.SerialSettings import get_setting, set_setting
 
 class ConcOptsDialog( Dialog ):

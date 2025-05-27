@@ -5,7 +5,7 @@
 """
 import numpy as np
 from scipy.optimize import minimize
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from .LinearBaseline import USE_END_PARAMS
 if not USE_END_PARAMS:
     from .Constants import SLOPE_SCALE

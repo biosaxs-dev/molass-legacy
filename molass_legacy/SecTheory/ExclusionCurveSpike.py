@@ -37,7 +37,7 @@ class ExclusionCurvepy:
         pass
 
 def demo():
-    import DebugPlot as plt
+    import molass_legacy.KekLib.DebugPlot as plt
 
     rp = 150
 

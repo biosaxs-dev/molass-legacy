@@ -20,7 +20,7 @@ from OpenPyXlUtil           import save_allowing_user_reply
 from molass_legacy._MOLASS.Version                import get_version_string
 from molass_legacy._MOLASS.SerialSettings         import get_setting
 from LinearityScore         import linearity_score100, stderror_score100, FACTOR_WEIGHT
-from Reports.DefaultFont import set_default_font
+from molass_legacy.Reports.DefaultFont import set_default_font
 set_default_font()
 
 CHART_WIDTH     = 25
@@ -90,7 +90,7 @@ class DatgnomResultBook:
         save_allowing_user_reply( self.wb, xlsx_file )
 
     def read_data(self, datgnom_out_file):
-        from ATSAS.DatGnom import datgnom_read_data
+        from molass_legacy.ATSAS.DatGnom import datgnom_read_data
         return datgnom_read_data(datgnom_out_file)
 
     def create_scattering_curve_chart( self ):

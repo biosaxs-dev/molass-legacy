@@ -8,7 +8,7 @@ import numpy as np
 from .BaselineParams import get_num_baseparams
 from molass_legacy._MOLASS.SerialSettings import get_setting
 from molass_legacy.Models.Stochastic.DispersiveUtils import NUM_SDMCOL_PARAMS
-from Optimizer.BasicOptimizer import AVOID_VANISHING_RATIO
+from molass_legacy.Optimizer.BasicOptimizer import AVOID_VANISHING_RATIO
 
 NUM_COL_PARAMS = 6      # N, K, x0, poresize, N0, tI 
 

@@ -8,7 +8,7 @@ from time import time
 import numpy as np
 from scipy.stats import linregress
 from scipy.interpolate import UnivariateSpline
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from sklearn.mixture import GaussianMixture
 from sklearn.cluster import KMeans
 from molass_legacy.Peaks.RobustPeaks import RobustPeaks
@@ -286,7 +286,7 @@ def spike_demo_impl(x0, y0, x1, y1, num_components=None):
 
 
 def spike_demo_real(in_folder):
-    from Batch.StandardProcedure import StandardProcedure
+    from molass_legacy.Batch.StandardProcedure import StandardProcedure
     sp = StandardProcedure()
     sp.load(in_folder, debug=False)
     sd = sp.get_sd()

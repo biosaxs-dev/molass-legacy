@@ -5,7 +5,7 @@
     Copyright (c) 2020-2022, SAXS Team, KEK-PF
 """
 import numpy as np
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from .saxstats.saxstats import Sasrec, clean_up_data, calc_rg_I0_by_guinier, calc_rg_by_guinier_peak, filter_P
 from .DenssUtils import fit_data_impl
 

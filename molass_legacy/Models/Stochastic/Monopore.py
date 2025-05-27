@@ -1,11 +1,11 @@
 """
     Models.Stochastic.Monopore.py
 
-    Copyright (c) 2024, SAXS Team, KEK-PF
+    Copyright (c) 2024-2025, SAXS Team, KEK-PF
 """
 import numpy as np
 from molass_legacy.Models.Tentative import Model
-from SecTheory.BasicModels import robust_single_pore_pdf
+from molass_legacy.SecTheory.BasicModels import robust_single_pore_pdf
 from molass_legacy.Models.ElutionModelUtils import x_from_height_ratio_impl
 
 def monopore_func(x, scale, N, T, t0, me, mp, poresize, rg):

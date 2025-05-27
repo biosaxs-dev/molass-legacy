@@ -6,7 +6,7 @@
 import numpy as np
 from scipy.optimize import minimize, basinhopping
 from datetime import datetime
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from .SecCF import two_site_phi
 from .SecPDF import FftInvPdf
 
@@ -116,7 +116,7 @@ def demo1():
 def real_demo(in_folder, trimming=True, correction=True):
     from scipy.optimize import curve_fit
     from molass_legacy._MOLASS.SerialSettings import set_setting
-    from Batch.StandardProcedure import StandardProcedure
+    from molass_legacy.Batch.StandardProcedure import StandardProcedure
     from molass_legacy.Baseline.BaselineUtils import get_corrected_sd_impl
     from molass_legacy.Trimming.PreliminaryRecognition import PreliminaryRecognition
     from molass_legacy.Elution.CurveUtils import simple_plot
@@ -239,7 +239,7 @@ def real_demo(in_folder, trimming=True, correction=True):
 def real_demo1(in_folder, trimming=True, correction=True):
     from scipy.optimize import curve_fit
     from molass_legacy._MOLASS.SerialSettings import set_setting
-    from Batch.StandardProcedure import StandardProcedure
+    from molass_legacy.Batch.StandardProcedure import StandardProcedure
     from molass_legacy.Baseline.BaselineUtils import get_corrected_sd_impl
     from molass_legacy.Trimming.PreliminaryRecognition import PreliminaryRecognition
     from molass_legacy.Elution.CurveUtils import simple_plot
@@ -308,7 +308,7 @@ def real_demo1(in_folder, trimming=True, correction=True):
 def fitting_demo_impl(in_folder, stochastic_model, init_params):
     from scipy.optimize import curve_fit
     from molass_legacy._MOLASS.SerialSettings import set_setting
-    from Batch.StandardProcedure import StandardProcedure
+    from molass_legacy.Batch.StandardProcedure import StandardProcedure
     from molass_legacy.Baseline.BaselineUtils import get_corrected_sd_impl
     from molass_legacy.Trimming.PreliminaryRecognition import PreliminaryRecognition
     from molass_legacy.Peaks.ElutionModels import egh

@@ -8,7 +8,7 @@
 """
 import numpy as np
 from bisect import bisect_right
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 USE_MINIMIZE = True
 if USE_MINIMIZE:
@@ -93,7 +93,7 @@ def demo():
 
 def demo_real(in_folder):
     from matplotlib.patches import Rectangle
-    from Batch.StandardProcedure import StandardProcedure
+    from molass_legacy.Batch.StandardProcedure import StandardProcedure
     from molass_legacy.Peaks.RobustPeaks import RobustPeaks
     sp = StandardProcedure()
     sp.load(in_folder, debug=False)

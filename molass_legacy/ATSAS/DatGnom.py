@@ -20,7 +20,7 @@ class DatgnomExecutor:
 
         self.exe_path   = None
         if len( autorg_exe_array ) > 0:
-            # examining datgnom5.exe first comes from ATSAS 2.7.1
+            # examining datgnom5.exe first comes from molass_legacy.ATSAS 2.7.1
             # TODO: control this after getting the ATSAS version
             for name in [ 'datgnom4.exe', 'datgnom.exe' ]:
                 datgnom_path = autorg_exe_array[exe_index].replace( 'autorg.exe', name )

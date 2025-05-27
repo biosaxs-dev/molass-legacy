@@ -12,16 +12,16 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.patches import Rectangle
 from matplotlib.gridspec import GridSpec
 from matplotlib.widgets import SpanSelector
-from OurMatplotlib import NavigationToolbar
-from OurTkinter import Tk, Dialog, ttk
-from TkCustomWidgets import FolderEntry
+from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog, ttk
+from molass_legacy.KekLib.TkCustomWidgets import FolderEntry
 from SerialDataUtils import load_intensity_files
 from SaferSpinbox import SaferSpinbox
-from TkSupplements import BlinkingFrame
+from molass_legacy.KekLib.TkSupplements import BlinkingFrame
 from molass_legacy.SerialAnalyzer.ElutionCurve import ElutionCurve
 from molass_legacy.Elution.CurveUtils import simple_plot
 from DataUtils import get_in_folder
-from TkUtils import split_geometry
+from molass_legacy.KekLib.TkUtils import split_geometry
 from .CormapVersion import get_version_string
 from .AngularUnit import angstrom_qv
 
@@ -339,7 +339,7 @@ class CormapMakerDialog(Dialog):
         return ret_ok
 
     def show_not_implemented_error(self, correl_type, transpose):
-        import CustomMessageBox as MessageBox
+        import molass_legacy.KekLib.CustomMessageBox as MessageBox
         MessageBox.showerror("Not Implemented Error",
             '"%s" is not available with "%s"' % (transpose, correl_type),
             parent=self)
@@ -511,7 +511,7 @@ class CormapMakerDialog(Dialog):
             self.popup_menu3.add_command(label='Show Pairwise Map', command=self.show_pairwise_map)
 
     def get_data_from_datcmp(self):
-        from ATSAS.DatCmp import run_datcmp
+        from molass_legacy.ATSAS.DatCmp import run_datcmp
         if self.datcmp_data_input is None:
             files = self.datafiles[self.seq_slice]
             self.datcmp_data_input = run_datcmp(files=files, return_dict=True)

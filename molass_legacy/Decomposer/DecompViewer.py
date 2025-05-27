@@ -10,10 +10,10 @@ import numpy                as np
 import matplotlib.pyplot    as plt
 import matplotlib.patches   as mpl_patches      # 'as patches' does not work properly
 from matplotlib.backends.backend_tkagg  import FigureCanvasTkAgg
-from OurTkinter             import Tk, Dialog
-from TkUtils                import is_low_resolution
-from TkSupplements          import tk_set_icon_portable
-from OurMatplotlib          import NavigationToolbar
+from molass_legacy.KekLib.OurTkinter             import Tk, Dialog
+from molass_legacy.KekLib.TkUtils                import is_low_resolution
+from molass_legacy.KekLib.TkSupplements          import tk_set_icon_portable
+from molass_legacy.KekLib.OurMatplotlib          import NavigationToolbar
 from molass_legacy.Models.ElutionCurveModels     import EGH, EGHA, EMG, EMGA
 from molass_legacy.ElutionDecomposer         import ElutionDecomposer
 from molass_legacy.KekLib.ExceptionTracebacker   import ExceptionTracebacker

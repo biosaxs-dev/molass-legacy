@@ -5,10 +5,10 @@
     Copyright (c) 2016-2023, SAXS Team, KEK-PF
 
 """
-from OurTkinter     import Tk, is_empty_val
+from molass_legacy.KekLib.OurTkinter     import Tk, is_empty_val
 from molass_legacy._MOLASS.SerialSettings import get_setting
 try:
-    import CustomMessageBox         as MessageBox
+    import molass_legacy.KekLib.CustomMessageBox         as MessageBox
 except:
     import OurMessageBox            as MessageBox
 
@@ -83,7 +83,7 @@ class GuiTutorialsMenu(Tk.Menu):
         self._show_video('moore-penrose-inverse.mp4')
 
     def show_affine_transformation(self):
-        from AffineDemo import AffineDemoDialog
+        from molass_legacy.SerialAnalyzer.AffineDemo import AffineDemoDialog
         dialog = AffineDemoDialog( 'Affine transformation demo', parent=self.parent )
         dialog.show()
 

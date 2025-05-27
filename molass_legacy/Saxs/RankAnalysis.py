@@ -8,7 +8,7 @@
 """
 import numpy as np
 from SvdDenoise import get_denoised_data
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 class RankAnalysis:
     def __init__(self, data):

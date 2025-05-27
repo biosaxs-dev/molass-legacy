@@ -9,7 +9,7 @@ import numpy as np
 import scipy.stats as stats
 from scipy.optimize import fsolve
 from sklearn.cluster import AgglomerativeClustering, KMeans
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from .ProbDataUtils import generate_samle_datasets
 
 def spike_demo(in_folder, **kwargs):

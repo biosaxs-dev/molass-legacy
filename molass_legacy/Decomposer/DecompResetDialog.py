@@ -7,10 +7,10 @@
 import re
 import os
 import logging
-from OurTkinter import Tk, Dialog
-from TkSupplements import set_icon
-from TkCustomWidgets import FileEntry
-from ReadOnlyText import ReadOnlyText
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.TkSupplements import set_icon
+from molass_legacy.KekLib.TkCustomWidgets import FileEntry
+from molass_legacy.KekLib.ReadOnlyText import ReadOnlyText
 from DecompEditorFrame import DECOMP_EDITOR_LOG_HEADER, DECOMP_EDITOR_LOG_TRAILER
 from molass_legacy._MOLASS.SerialSettings import get_setting
 

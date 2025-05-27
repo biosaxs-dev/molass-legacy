@@ -4,8 +4,8 @@
     Copyright (c) 2018-2024, Masatsuyo Takahashi, KEK-PF
 """
 import sys
-from OurTkinter import Tk, Dialog, ttk
-from TkSupplements import set_icon
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog, ttk
+from molass_legacy.KekLib.TkSupplements import set_icon
 
 class ProgressMinDialog(Dialog):
     def __init__(self, parent, title="ProgressMinDialog", message=None, num_steps=10, length=200,
@@ -59,7 +59,7 @@ class ProgressMinDialog(Dialog):
 
     def cancel(self, ask=False):
         if ask:
-            import CustomMessageBox as MessageBox
+            import molass_legacy.KekLib.CustomMessageBox as MessageBox
             yn = MessageBox.askyesno( "Cancel comfirmation",
                 "Are you sure to cancel this process?", parent=self )
             if yn:
@@ -92,7 +92,7 @@ def run_with_progress(parent, proc, max_iter=10, title=None, on_return=None, deb
     """
     import queue
     import threading
-    from TkUtils import split_geometry
+    from molass_legacy.KekLib.TkUtils import split_geometry
     if debug:
         import logging
         logger = logging.getLogger(__name__)

@@ -5,7 +5,7 @@
 """
 import numpy as np
 from molass_legacy._MOLASS.SerialSettings import get_setting
-from Optimizer.OptLrfInfo import get_ratio_cy_list
+from molass_legacy.Optimizer.OptLrfInfo import get_ratio_cy_list
 
 def convert_for_display(composites):
     ret_list = []

@@ -26,7 +26,7 @@ def guess_init_params(M):
     return np.array([t0, u, a, b, e, Dz, cinj])
 
 def save_training_data():
-    from Batch.StandardProcedure import StandardProcedure
+    from molass_legacy.Batch.StandardProcedure import StandardProcedure
     print("save_training_data")
 
     data_list = [

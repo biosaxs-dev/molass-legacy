@@ -10,10 +10,10 @@ import matplotlib.pyplot    as plt
 import matplotlib.gridspec  as gridspec
 import matplotlib.patches   as mpl_patches      # 'as patches' does not work properly
 from matplotlib.backends.backend_tkagg  import FigureCanvasTkAgg
-from OurTkinter             import Tk, Dialog
-from TkUtils                import is_low_resolution
-from TkSupplements          import tk_set_icon_portable
-from OurMatplotlib          import NavigationToolbar, get_default_colors
+from molass_legacy.KekLib.OurTkinter             import Tk, Dialog
+from molass_legacy.KekLib.TkUtils                import is_low_resolution
+from molass_legacy.KekLib.TkSupplements          import tk_set_icon_portable
+from molass_legacy.KekLib.OurMatplotlib          import NavigationToolbar, get_default_colors
 from molass_legacy.Models.ElutionCurveModels     import EMG
 from XrayDecomposer         import XrayDecomposer
 

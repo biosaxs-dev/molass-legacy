@@ -8,7 +8,7 @@ import time
 from DataUtils import get_in_folder
 
 def demo(in_folder, sd):
-    import DebugPlot as plt
+    import molass_legacy.KekLib.DebugPlot as plt
     from importlib import reload
     import Models.Characteristic
     reload(Models.Characteristic)    

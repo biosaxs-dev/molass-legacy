@@ -6,13 +6,13 @@
 """
 import os
 import numpy as np
-from OurTkinter import Tk, Dialog
-from TkSupplements import set_icon
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.TkSupplements import set_icon
 import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
 import matplotlib.animation as animation
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from OurMatplotlib import get_color
+from molass_legacy.KekLib.OurMatplotlib import get_color
 from DevSettings import get_dev_setting
 
 TOO_SMALL_TO_PLOT   = 1e-12

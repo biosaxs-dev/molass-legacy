@@ -88,7 +88,7 @@ def guess_single_edm(x, y, init_params=None, debug=False):
     edm = Edm(z=z, L=L, a=a, b=b, u=u, e=e, Dz=Dz, cinj=cinj)
 
     if debug:
-        import DebugPlot as plt
+        import molass_legacy.KekLib.DebugPlot as plt
         with plt.Dp():
             fig, ax = plt.subplots()
             ax.plot(x, y, label="data")

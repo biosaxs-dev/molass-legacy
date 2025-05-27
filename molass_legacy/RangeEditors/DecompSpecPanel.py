@@ -1,7 +1,7 @@
 """
     DecompSpecPanel.py
 
-    Copyright (c) 2018-2024, SAXS Team, KEK-PF
+    Copyright (c) 2018-2025, SAXS Team, KEK-PF
 """
 import os
 import copy
@@ -11,15 +11,15 @@ from matplotlib.gridspec    import GridSpec
 from matplotlib import colors
 import matplotlib
 import seaborn as sns
-from matplotlib.backends.backend_tkagg  import FigureCanvasTkAgg
-from OurTkinter             import Tk
-from TkUtils                import split_geometry
-from OurMatplotlib          import NavigationToolbar, get_color, get_hex_color
-from DisguinsingWidgets     import CheckonLabel
-from molass_legacy._MOLASS.SerialSettings         import get_setting, set_setting
-from PeakInfo               import PeakInfo
-from AnalysisRangeInfo      import PairedRange
-from DecompInfo import DecompInfo
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from molass_legacy.KekLib.OurTkinter import Tk
+from molass_legacy.KekLib.TkUtils import split_geometry
+from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar, get_color, get_hex_color
+from molass_legacy.KekLib.DisguinsingWidgets import CheckonLabel
+from molass_legacy._MOLASS.SerialSettings import get_setting, set_setting
+from molass_legacy.DataStructure.PeakInfo import PeakInfo
+from molass_legacy.DataStructure.AnalysisRangeInfo import PairedRange
+from molass_legacy.Decomposer.DecompInfo import DecompInfo
 
 RANGE_FRAME_HEIGHT      = 60
 
@@ -263,7 +263,7 @@ class SpecPanel(Tk.LabelFrame):     # using LabelFrame to get the border lines
         return self.editor.dialog.get_conc_depend()
 
     def show_range_inspector(self, k):
-        from AnalysisRangeInfo import PairedRange
+        from molass_legacy.DataStructure.AnalysisRangeInfo import PairedRange
         from molass_legacy.PeaksetSelector import PeakSetSelector
         from RangeInspector import RangeInspectorDialog
         row = self.row_no_base + k

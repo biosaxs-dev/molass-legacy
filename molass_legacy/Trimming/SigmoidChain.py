@@ -5,7 +5,7 @@
 """
 import numpy as np
 from scipy.optimize import minimize
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from molass_legacy.KekLib.ExceptionTracebacker import log_exception
 from .Sigmoid import fit_bent_sigmoid, ex_sigmoid
 

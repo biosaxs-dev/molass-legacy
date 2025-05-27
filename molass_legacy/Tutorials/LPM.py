@@ -11,7 +11,7 @@ from matplotlib.gridspec import GridSpec
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.patches import FancyArrowPatch
 from mpl_toolkits.mplot3d import proj3d
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from molass_legacy.DataStructure.LPM import LPM_3d
 from MatrixData import simple_plot_3d
 

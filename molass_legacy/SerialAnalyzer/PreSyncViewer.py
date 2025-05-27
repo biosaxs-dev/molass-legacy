@@ -8,10 +8,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from OurTkinter import Tk, Dialog
-from TkSupplements import tk_set_icon_portable
-from TkUtils import split_geometry
-from OurMatplotlib import NavigationToolbar
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.TkSupplements import tk_set_icon_portable
+from molass_legacy.KekLib.TkUtils import split_geometry
+from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar
 from DataUtils import get_in_folder
 from MatrixData import simple_plot_3d
 
@@ -97,7 +97,7 @@ class PreSyncViewer(Dialog):
         self.popup_menu.add_command(label='Show error data', command=self.show_error_data)
 
     def show_error_data(self):
-        import DebugPlot as plt
+        import molass_legacy.KekLib.DebugPlot as plt
         print('show_error_data')
         xr = self.md.xr
         with pld.Dp(window_title="3D Error View"):

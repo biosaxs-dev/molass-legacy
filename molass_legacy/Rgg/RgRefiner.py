@@ -7,7 +7,7 @@
 import numpy as np
 from scipy.optimize import minimize, basinhopping
 from scipy.interpolate import UnivariateSpline
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from molass_legacy.Peaks.ElutionModels import egh_pdf
 
 TAU_LIMIT_RATIO = 0.5   # relative to sigma

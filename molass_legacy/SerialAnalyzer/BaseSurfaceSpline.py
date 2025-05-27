@@ -1,4 +1,3 @@
-# coding: utf-8
 """
     BaseSurfaceSpline.py
 
@@ -7,9 +6,9 @@
 import numpy as np
 from scipy.optimize import minimize
 from mpl_toolkits.mplot3d import Axes3D
-from ThreeDimUtils import compute_plane
-from AveragingDiscussion import extrapolate
-import DebugPlot as plt
+from molass_legacy.KekLib.ThreeDimUtils import compute_plane
+from .AveragingDiscussion import extrapolate
+import molass_legacy.KekLib.DebugPlot as plt
 
 def compute_concentration(a, b, c, sign=1):
     return ( -b + sign*np.sqrt(b**2 - 4*a*c) ) / (2*a)

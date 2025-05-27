@@ -8,7 +8,7 @@ import numpy as np
 import scipy.stats as stats
 from scipy.optimize import fsolve
 from sklearn.cluster import KMeans
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from .GaussianMixture import gaussian_pdf
 
 USE_MODE_AS_MU_INIT = False

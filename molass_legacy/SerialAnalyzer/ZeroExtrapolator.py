@@ -2,21 +2,21 @@
 
     ZeroExtrapolator.py
 
-    Copyright (c) 2016-2023, SAXS Team, KEK-PF
+    Copyright (c) 2016-2025, SAXS Team, KEK-PF
 """
 import time
 import numpy                as np
 import logging
 from scipy                  import stats
 # from lmfit                  import minimize, Parameters
-from LmfitThreadSafe        import minimize, Parameters
-from BasicUtils             import ordinal_str
-import OurStatsModels       as sm
-from DataModels             import GuinierPorodLmfit
-from molass_legacy._MOLASS.SerialSettings         import get_setting
-from DevSettings            import get_dev_setting
-from ProgressInfo           import on_stop_raise
-from LRF.LrfInfo import LrfInfo
+from molass_legacy.KekLib.LmfitThreadSafe import minimize, Parameters
+from molass_legacy.KekLib.BasicUtils import ordinal_str
+import molass_legacy.KekLib.OurStatsModels as sm
+from molass_legacy.AutorgKek.DataModels import GuinierPorodLmfit
+from molass_legacy._MOLASS.SerialSettings import get_setting
+from molass_legacy.SerialAnalyzer.DevSettings import get_dev_setting
+from molass_legacy.KekLib.ProgressInfo import on_stop_raise
+# from molass_legacy.LRF.LrfInfo import LrfInfo
 
 NUM_EXTRAPOLATION_POINTS    = 5
 USE_ERROR_PROPAGATION   = True
@@ -111,7 +111,7 @@ class ZeroExtrapolator:
         self.use_elution_models = popts.use_elution_models
 
         if USE_LRF_RESULT_POOL:
-            from LRF.LrfResultPool import LrfResultPool
+            from molass_legacy.LRF.LrfResultPool import LrfResultPool
             self.pool = LrfResultPool(pdata, popts)
             self.pool.run_solver()
             self.logger.info("ZeroExtrapolator: using LRF Ppol.")
@@ -146,7 +146,7 @@ class ZeroExtrapolator:
         if self.zx_boundary_method != 'AUTO' or self.guinier_boundary is None or temp_folder is None:
             return
 
-        from NumpyUtils import np_savetxt
+        from molass_legacy.KekLib.NumpyUtils import np_savetxt
 
         aq_latest_list  = result[-1]
         aq_latest_array = np.array( aq_latest_list )
@@ -161,7 +161,7 @@ class ZeroExtrapolator:
         if self.zx_boundary_method != 'AUTO' or self.guinier_boundary is None:
             return
 
-        import matplotlib.pyplot    as plt
+        import matplotlib.pyplot as plt
 
         fig, axes = plt.subplots(nrows=2, ncols=3, figsize=(15,8))
 
@@ -256,7 +256,7 @@ class ZeroExtrapolator:
 
     def dump_data(self, m, ad, C):
         import os
-        from NumpyUtils import np_savetxt
+        from molass_legacy.KekLib.NumpyUtils import np_savetxt
         analysis_folder = get_setting('analysis_folder')
         file = os.path.join(analysis_folder, "C-%d-%d.dat" % (m, ad))
         np_savetxt(file, C.T)

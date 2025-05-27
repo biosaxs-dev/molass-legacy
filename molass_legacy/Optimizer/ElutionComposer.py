@@ -7,7 +7,7 @@
 """
 import numpy as np
 import logging
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from molass_legacy._MOLASS.SerialSettings import get_setting
 
 COMPOSER_CB_TEXT = "try reducing number of components using composite models"

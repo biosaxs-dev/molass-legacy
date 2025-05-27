@@ -17,7 +17,7 @@ def dev_trial_entry(caller):
       from molass_legacy.Trimming.MomentTrimming import set_moment_trimming_info
       import Batch.LiteBatch
       reload(Batch.LiteBatch)
-      from Batch.LiteBatch import create_corrected_sd
+      from molass_legacy.Batch.LiteBatch import create_corrected_sd
       nonlocal corrected_sd
 
       set_moment_trimming_info(caller.serial_data)
@@ -35,20 +35,20 @@ def dev_trial_entry(caller):
    def bridge_test():
       import Alsaker.Bridge
       reload(Alsaker.Bridge)
-      from Alsaker.Bridge import bridge_test_impl
+      from molass_legacy.Alsaker.Bridge import bridge_test_impl
       bridge_test_impl(caller)
 
    def compare_bridge():
       import Alsaker.Compare
       reload(Alsaker.Compare)
-      from Alsaker.Compare import compare_bridge_impl
+      from molass_legacy.Alsaker.Compare import compare_bridge_impl
       nonlocal comparison_result
       comparison_result = compare_bridge_impl(caller, corrected_sd=corrected_sd)
 
    def plot_comparison_result():
       import Alsaker.ComparisonPlot
       reload(Alsaker.ComparisonPlot)
-      from Alsaker.ComparisonPlot import plot_comparison_result_impl
+      from molass_legacy.Alsaker.ComparisonPlot import plot_comparison_result_impl
       plot_comparison_result_impl(corrected_sd, comparison_result)
 
    def v2_baseline_inspect():

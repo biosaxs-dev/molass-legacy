@@ -13,7 +13,7 @@ from scipy.interpolate import UnivariateSpline
 from mpl_toolkits.mplot3d import Axes3D
 from molass_legacy.KekLib.SciPyCookbook import smooth
 from ModeledData import ModeledData, simple_plot_3d
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from SvdDenoise import get_denoised_data
 
 MAX_ITERATION_FMIN_CG   = 10000

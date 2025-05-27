@@ -9,13 +9,13 @@ import numpy as np
 from difflib import SequenceMatcher
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from OurTkinter import Tk, Dialog, ttk, is_empty_val
-from OurMatplotlib import NavigationToolbar
-from TkSupplements import tk_set_icon_portable
-from TkCustomWidgets import FolderEntry
-from TkUtils import is_low_resolution
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog, ttk, is_empty_val
+from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar
+from molass_legacy.KekLib.TkSupplements import tk_set_icon_portable
+from molass_legacy.KekLib.TkCustomWidgets import FolderEntry
+from molass_legacy.KekLib.TkUtils import is_low_resolution
 try:
-    import CustomMessageBox         as MessageBox
+    import molass_legacy.KekLib.CustomMessageBox         as MessageBox
 except:
     import OurMessageBox            as MessageBox
 from XrayData import XrayData

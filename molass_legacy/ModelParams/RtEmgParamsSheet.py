@@ -5,7 +5,7 @@
 """
 import numpy as np
 from .ParamsSheetBase import ParamsSheetBase
-from OurTkinter import Tk
+from molass_legacy.KekLib.OurTkinter import Tk
 from tksheet import Sheet
 
 class RtEmgParamsSheet(ParamsSheetBase):

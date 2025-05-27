@@ -7,7 +7,7 @@
 import numpy as np
 from scipy.optimize import minimize, basinhopping
 from scipy.interpolate import UnivariateSpline
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from .SecPDF import compute_standard_wCD
 
 class CfDomain:

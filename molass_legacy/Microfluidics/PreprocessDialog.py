@@ -6,8 +6,8 @@
 """
 import os
 import numpy as np
-from OurTkinter import Tk, Dialog, ttk
-from TkSupplements import tk_set_icon_portable
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog, ttk
+from molass_legacy.KekLib.TkSupplements import tk_set_icon_portable
 from MethodAdjusterFrame import MethodAdjusterFrame
 from SubtractorFrame import SubtractorFrame
 

@@ -15,13 +15,13 @@ import re
 import warnings
 import time
 
-from BasicUtils             import get_filename_extension
-from OurTkinter             import Tk, Dialog, ttk, Font, FileDialog, is_empty_val, checkFolder
-from TkSupplements          import tk_set_icon_portable
+from molass_legacy.KekLib.BasicUtils             import get_filename_extension
+from molass_legacy.KekLib.OurTkinter             import Tk, Dialog, ttk, Font, FileDialog, is_empty_val, checkFolder
+from molass_legacy.KekLib.TkSupplements          import tk_set_icon_portable
 import OurMessageBox        as MessageBox
 from molass_legacy._MOLASS.SerialSettings         import get_setting, set_setting, ITEM_DEFAULTS
 from DevSettings            import get_dev_setting, set_dev_setting, ITEM_DEFAULTS as DEV_ITEM_DEFAULTS
-from TkCustomWidgets        import FolderEntry
+from molass_legacy.KekLib.TkCustomWidgets        import FolderEntry
 
 ENABLE_Rayleigh_Scatter_OPTION  = False
 ENABLE_XRAY_PROP_CONC_SMOOTHING = False
@@ -599,7 +599,7 @@ class SpecialistOptionsDialog( Dialog ):
             set_setting( 'consider_scatter',    self.consider_scatter.get() )
         set_setting( 'scatter_picking',     self.zero_absorbance.get() )
 
-        from AbsorbancePlot import show_absorbance_figure_util
+        from molass_legacy.UV.AbsorbancePlot import show_absorbance_figure_util
         show_absorbance_figure_util( self, make_temp=True )
 
     def reset_to_defaults( self ):

@@ -13,14 +13,14 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.patches import Rectangle
 from matplotlib.widgets import SpanSelector
-from OurMatplotlib import NavigationToolbar
-from OurTkinter import Tk, Dialog, ttk
-from TkCustomWidgets import FolderEntry
+from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog, ttk
+from molass_legacy.KekLib.TkCustomWidgets import FolderEntry
 from SerialDataUtils import load_intensity_files
 from SaferSpinbox import SaferSpinbox
-from TkSupplements import BlinkingFrame
+from molass_legacy.KekLib.TkSupplements import BlinkingFrame
 from molass_legacy.SerialAnalyzer.ElutionCurve import ElutionCurve
-from TkUtils import split_geometry
+from molass_legacy.KekLib.TkUtils import split_geometry
 from MatrixData import simple_plot_3d
 from molass_legacy._MOLASS.SerialSettings import get_setting
 from DataUtils import get_in_folder
@@ -257,7 +257,7 @@ class ScaledDataDialog(Dialog):
             pass
 
     def draw_cormap(self, M_, qv_, aslice, eslice):
-        from ATSAS.DatCmp import run_datcmp_from_array
+        from molass_legacy.ATSAS.DatCmp import run_datcmp_from_array
 
         E_ = self.E[aslice,eslice]
         datcmp_data = run_datcmp_from_array(qv_, M_, E_, P_threshold=0.05)

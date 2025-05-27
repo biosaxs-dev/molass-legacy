@@ -5,8 +5,8 @@
     Copyright (c) 2020, SAXS Team, KEK-PF
 """
 import logging
-from OurTkinter import Tk, Dialog
-from BasicUtils import Struct
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.BasicUtils import Struct
 
 class MockMain(Dialog):
     def __init__(self, parent):

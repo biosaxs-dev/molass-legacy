@@ -6,7 +6,7 @@
 """
 import re
 from time           import sleep
-from OurTkinter     import Tk
+from molass_legacy.KekLib.OurTkinter     import Tk
 from TkTester       import TestClient, reply_ok, reply_yes, reply_no, messagebox_shown
 from DataUtils      import serial_folder_walk
 

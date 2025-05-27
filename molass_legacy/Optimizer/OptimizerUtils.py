@@ -66,12 +66,12 @@ def show_peak_editor_impl(strategy_dialog, dialog, pe_proxy=None, pe_ready_cb=No
         treat = pe_proxy.get_treat()
         pe = pe_proxy
 
-    from Optimizer.InitialInfo import InitialInfo
+    from molass_legacy.Optimizer.InitialInfo import InitialInfo
     if debug:
         from importlib import reload
         import Optimizer.FullOptDialog
         reload(Optimizer.FullOptDialog)
-    from Optimizer.FullOptDialog import FullOptDialog
+    from molass_legacy.Optimizer.FullOptDialog import FullOptDialog
 
     optinit_info = InitialInfo(trimmed_sd, treat=treat, pe=pe)
     dialog.grab_set()   # temporary fix to the grab_release problem, to be inspected to eventually remove this

@@ -9,7 +9,7 @@ import numpy as np
 from scipy import stats
 # import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from matplotlib.font_manager import FontProperties
 from DataUtils import get_in_folder
 

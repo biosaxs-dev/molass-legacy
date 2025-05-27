@@ -7,12 +7,12 @@
 import numpy as np
 import re
 from mpl_toolkits.mplot3d       import proj3d
-from OurTkinter                 import Tk
-from TkUtils                    import adjusted_geometry, split_geometry
-from TkCustomWidgets            import FileEntry, FolderEntry
+from molass_legacy.KekLib.OurTkinter                 import Tk
+from molass_legacy.KekLib.TkUtils                    import adjusted_geometry, split_geometry
+from molass_legacy.KekLib.TkCustomWidgets            import FileEntry, FolderEntry
 from SimpleGuinierAnalyzer      import SimpleGuinierAnalyzer
 from CanvasFrame                import CanvasFrame
-from OurMatplotlib              import NavigationToolbar
+from molass_legacy.KekLib.OurMatplotlib              import NavigationToolbar
 from CanvasDialog               import CanvasDialog
 from DataUtils                  import get_pytools_folder
 from SerialData                 import SerialData, find_conc_files

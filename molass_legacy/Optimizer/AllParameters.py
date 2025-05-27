@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import re
-from OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
 from ScrolledFrame import ScrolledFrame
 
 class AllParameters(Dialog):

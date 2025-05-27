@@ -7,7 +7,7 @@ import numpy as np
 from scipy.integrate import quad
 from scipy.special import spherical_jn
 from .RotationMatrix import rand_rotation_matrix, rotate_3d_mesh
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 
 def ellipsoid_xyz(center=(0,0,0), a=1, b=1, c=1, n=20):

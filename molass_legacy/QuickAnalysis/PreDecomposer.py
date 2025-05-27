@@ -7,7 +7,7 @@ import logging
 import numpy as np
 import molass_legacy.KekLib.DebugPlot as plt
 from molass_legacy._MOLASS.SerialSettings import get_setting
-from Batch.FullBatch import FullBatch
+from molass_legacy.Batch.FullBatch import FullBatch
 from molass_legacy.UV.UvPreRecog import UvPreRecog
 
 USE_LRF = False

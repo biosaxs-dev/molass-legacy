@@ -11,7 +11,7 @@ import numpy as np
 from sklearn.neighbors import KernelDensity
 from molass_legacy.KekLib.SciPyCookbook import smooth
 from molass_legacy.Peaks.ElutionModels import egh
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from Pomegranate.EghMixtureModel import EghMixtureModel
 from Prob.GaussianMixture import hist_to_source
 
@@ -61,7 +61,7 @@ def spike_demo_impl(xy_list, num_components):
         plt.pop()
 
 def spike_demo_real(in_folder, num_components=3, correction=False, use_peaks=False):
-    from Batch.StandardProcedure import StandardProcedure
+    from molass_legacy.Batch.StandardProcedure import StandardProcedure
     sp = StandardProcedure()
     sp.load(in_folder, debug=False)
     if correction:

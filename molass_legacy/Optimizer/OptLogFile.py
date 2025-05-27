@@ -7,7 +7,7 @@ import re
 
 class OptLogFile:
     def __init__(self, path):
-        from Optimizer.StrategicOptimizer import LOG_IDENTIFICATION
+        from molass_legacy.Optimizer.StrategicOptimizer import LOG_IDENTIFICATION
 
         version_re = re.compile(r"\((\d+-\d+-\d+)")
         optlist_re = re.compile(r"optlist=(\[[^\]]+\])")

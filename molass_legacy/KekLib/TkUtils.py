@@ -111,7 +111,7 @@ def get_tk_root(loc=None, withdraw=True, debug=False):
         logger = logging.getLogger(__name__)
         logger.info("get_tk_root entry")
     import OurTk as Tk
-    from DebugPlot import set_plot_env
+    from molass_legacy.KekLib.DebugPlot import set_plot_env
     root = Tk.Tk()
     if debug:
         logger.info("root ok")

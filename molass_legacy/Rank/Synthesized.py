@@ -9,10 +9,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.colors import to_rgb
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from OurTkinter import Tk, Dialog
-from OurMatplotlib import NavigationToolbar
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar
 from SvdDenoise import get_denoised_data
-# import DebugPlot as plt
+# import molass_legacy.KekLib.DebugPlot as plt
 from DataUtils import get_in_folder
 # from .Boundary import get_boundary
 from Theory.SolidSphere import get_boundary_params

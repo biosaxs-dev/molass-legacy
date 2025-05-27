@@ -6,7 +6,7 @@
 """
 import numpy as np
 from molass_legacy.Baseline.ScatteringBaseline import ScatteringBaseline
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 class Uv2dLpm:
     def __init__(self, a_vector, iy):

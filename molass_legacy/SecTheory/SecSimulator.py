@@ -11,8 +11,8 @@ from matplotlib.gridspec import GridSpec
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.widgets import Slider, Button
 from matplotlib.patches import Rectangle
-from OurTkinter import Tk, Dialog
-from OurMatplotlib import NavigationToolbar
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar
 from molass_legacy._MOLASS.SerialSettings import get_setting
 from molass_legacy.Models.ElutionCurveModels import egh
 from SaferSpinbox import SaferSpinbox
@@ -475,7 +475,7 @@ class SecSimulator(Dialog):
         self.redraw(event)
 
 def demo():
-    from TkUtils import get_tk_root
+    from molass_legacy.KekLib.TkUtils import get_tk_root
 
     root = get_tk_root()
     root.withdraw()

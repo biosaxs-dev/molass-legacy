@@ -31,7 +31,7 @@ def debug_impl_SummaryBook(self):
     from importlib import reload
     import Reports.SummaryBook
     reload(Reports.SummaryBook)
-    from Reports.SummaryBook import SummaryBook
+    from molass_legacy.Reports.SummaryBook import SummaryBook
 
     book_file, controller = self.debug_info
     print("debug_impl: book_file=", book_file)

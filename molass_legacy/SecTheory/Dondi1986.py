@@ -6,7 +6,7 @@
 """
 import numpy as np
 from matplotlib.gridspec import GridSpec
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 def demo():
     lam = 40

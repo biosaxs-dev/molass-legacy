@@ -13,7 +13,7 @@ from matplotlib.patches import Rectangle
 import seaborn
 seaborn.set()
 
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from DataUtils import get_in_folder
 from .Edm import guess_multiple_edms
 

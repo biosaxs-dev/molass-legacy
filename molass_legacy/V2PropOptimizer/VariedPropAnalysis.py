@@ -7,9 +7,9 @@ import re
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-import DebugPlot as dplt
-from OurTkinter import Tk, Dialog
-from OurMatplotlib import NavigationToolbar, get_color
+import molass_legacy.KekLib.DebugPlot as dplt
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar, get_color
 from ScrolledFrame import ScrolledFrame
 from molass_legacy._MOLASS.SerialSettings import get_setting
 from DataUtils import get_in_folder
@@ -208,7 +208,7 @@ class VariedPropAnalysis(Dialog):
                         break
 
     def show_popup_menu(self, event):
-        from TkUtils import split_geometry
+        from molass_legacy.KekLib.TkUtils import split_geometry
         self.create_popup_menu(event)
         canvas = self.mpl_canvas_widget
         cx = canvas.winfo_rootx()
@@ -226,7 +226,7 @@ class VariedPropAnalysis(Dialog):
                 self.popup_menu.add_command(label='Optimize Proportion with STC', command=lambda: self.optimize_proportion('STC'))
 
     def optimize_proportion(self, name, devel=True):
-        import CustomMessageBox as MessageBox
+        import molass_legacy.KekLib.CustomMessageBox as MessageBox
         if devel:
             from importlib import reload
             import V2PropOptimizer.PropOptimizerDialogs

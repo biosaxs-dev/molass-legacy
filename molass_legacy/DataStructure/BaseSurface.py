@@ -6,7 +6,7 @@
 """
 import logging
 import numpy as np
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from MatrixData import simple_plot_3d
 from molass_legacy.Baseline.ScatteringBaseline import ScatteringBaseline
 from ScatteringBasecurve import ScatteringBasecurve

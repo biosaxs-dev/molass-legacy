@@ -3,7 +3,7 @@
 
     Copyright (c) 2021-2022, SAXS Team, KEK-PF
 """
-from OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
 
 class ParamsSelector(Dialog):
     def __init__(self, parent, optimizer, params):

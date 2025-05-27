@@ -7,7 +7,7 @@
 import numpy as np
 # from QuantileRegressionKeras import Model
 from QuantileRegressionSklearn import Model
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 class QuantileRegression:
     def __init__(self, sd):

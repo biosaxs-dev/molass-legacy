@@ -7,8 +7,8 @@ import logging
 from importlib import reload
 import numpy as np
 import pymc as pm
-from Optimizer.StateSequence import save_opt_params
-from Optimizer.OptimizerUtils import OptimizerResult
+from molass_legacy.Optimizer.StateSequence import save_opt_params
+from molass_legacy.Optimizer.OptimizerUtils import OptimizerResult
 
 class SmcSolver:
     def __init__(self, optimizer):

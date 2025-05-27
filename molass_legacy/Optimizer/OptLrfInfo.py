@@ -134,7 +134,7 @@ class OptLrfInfo:
             from importlib import reload
             import Optimizer.GuinierRg
             reload(Optimizer.GuinierRg)
-        from Optimizer.GuinierRg import compute_rg_params_impl
+        from molass_legacy.Optimizer.GuinierRg import compute_rg_params_impl
 
         return compute_rg_params_impl(self)
 
@@ -143,7 +143,7 @@ class OptLrfInfo:
             from importlib import reload
             import Optimizer.RgSecUpdater
             reload(Optimizer.RgSecUpdater)
-        from Optimizer.RgSecUpdater import update_optimizer_impl
+        from molass_legacy.Optimizer.RgSecUpdater import update_optimizer_impl
 
         rg_params, rg_qualities = self.compute_rg_params()
         self.rg_params = rg_params

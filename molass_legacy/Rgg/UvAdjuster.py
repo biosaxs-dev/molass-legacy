@@ -7,7 +7,7 @@
 import numpy as np
 from scipy.optimize import minimize, basinhopping
 from scipy.interpolate import UnivariateSpline
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from molass_legacy.Peaks.ElutionModels import egh_pdf
 
 TAU_LIMIT_RATIO = 0.5   # relative to sigma
@@ -219,7 +219,7 @@ class UvAdjuster:
         ax.plot(x, scale*y, ':', color='blue', label='mapped uv')
 
 def spike_demo(in_folder, sd=None, xr_params=None, seeds=None, mm_no=None):
-    from Batch.StandardProcedure import StandardProcedure
+    from molass_legacy.Batch.StandardProcedure import StandardProcedure
     from molass_legacy.Elution.CurveUtils import simple_plot
 
     if sd is None:
@@ -356,7 +356,7 @@ def get_figure_path(mm_no):
 def compute_all(in_folder, log_file=None):
     import logging
     import re
-    from Batch.StandardProcedure import StandardProcedure
+    from molass_legacy.Batch.StandardProcedure import StandardProcedure
     from molass_legacy.Elution.CurveUtils import simple_plot
     from NumpyArrayUtils import from_space_separated_list_string
 

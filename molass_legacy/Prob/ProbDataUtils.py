@@ -10,7 +10,7 @@ try:
     from numba.core.decorators import jit
 except:
     from numba.decorators import jit
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 @jit(nopython=True)
 def generate_sample_data_impl(y, p, ymax):

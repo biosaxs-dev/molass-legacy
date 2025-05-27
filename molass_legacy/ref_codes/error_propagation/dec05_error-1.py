@@ -9,7 +9,7 @@ sys.path.append( os.path.dirname( os.path.abspath( __file__ ) ) + '/../../lib' )
 import molass_legacy.KekLib, AutorgKek, SerialAnalyzer
 import OurStatsModels       as sm
 from SerialData             import SerialData
-from NumpyUtils             import np_savetxt
+from molass_legacy.KekLib.NumpyUtils             import np_savetxt
 
 sys.path.append( os.path.dirname( os.path.abspath( __file__ ) ) + '/../../..' )
 from TestEnv import env_dict

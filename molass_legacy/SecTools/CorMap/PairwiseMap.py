@@ -8,8 +8,8 @@ import numpy as np
 from bisect import bisect_right
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from OurMatplotlib import NavigationToolbar
-from OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
 from MatrixData import simple_plot_3d
 
 class PairwiseMap(Dialog):

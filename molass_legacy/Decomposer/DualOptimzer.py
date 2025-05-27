@@ -10,7 +10,7 @@ from scipy.optimize import minimize
 from molass_legacy.Models.ElutionCurveModels import EGHA, EMGA, egha, emga
 from molass_legacy._MOLASS.SerialSettings import get_setting
 from DualEvaluator import DualEvaluator
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 ADOPTABLE_LIMIT_RATIO       = 0.02
 ADOPTABLE_LIMIT_RATIO_YET   = 0.03  # for minor peaks
@@ -414,7 +414,7 @@ def get_dual_optimized_info(optimizer_class, x_curve, x, y, fit_recs, hints_dict
     return ret_recs
 
 def get_assert_info(curve, x, y, opt_recs):
-    from BasicUtils import Struct
+    from molass_legacy.KekLib.BasicUtils import Struct
     peaks=[ rec[3].get_assert_info()  for rec in opt_recs ]
 
     y_ = copy.deepcopy(y)

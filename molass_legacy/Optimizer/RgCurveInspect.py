@@ -13,7 +13,7 @@ def rg_curve_inspect(caller):
     from importlib import reload
     import Optimizer.FuncReloadUtils
     reload(Optimizer.FuncReloadUtils)
-    from Optimizer.FuncReloadUtils import reload_optimizer
+    from molass_legacy.Optimizer.FuncReloadUtils import reload_optimizer
 
     print("rg-curve inspect")
     js_canvas = caller.canvas

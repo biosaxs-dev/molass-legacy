@@ -40,7 +40,7 @@ class RgDiffRatios:
         D, E, qv, xr_curve = self.sd.get_xr_data_separate_ly()
 
         if debug:
-            import DebugPlot as plt
+            import molass_legacy.KekLib.DebugPlot as plt
             from molass_legacy.Elution.CurveUtils import simple_plot
             print("paired_ranges=", self.paired_ranges)
             with plt.Dp():

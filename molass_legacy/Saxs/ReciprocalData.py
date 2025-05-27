@@ -10,7 +10,7 @@ import numpy as np
 from scipy import ndimage, interpolate
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
-from NumpyUtils import np_loadtxt_robust
+from molass_legacy.KekLib.NumpyUtils import np_loadtxt_robust
 
 class ReciprocalData:
     def __init__(self, shape):
@@ -90,7 +90,7 @@ class ReciprocalData:
         curve_y = I4chi
 
         if False:
-            import DebugPlot as dplt
+            import molass_legacy.KekLib.DebugPlot as dplt
             dplt.push()
             fig = dplt.figure()
             ax = fig.gca()

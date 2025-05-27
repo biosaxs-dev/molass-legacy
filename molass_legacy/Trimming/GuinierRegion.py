@@ -9,8 +9,8 @@ import numpy as np
 from bisect import bisect_right
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from OurMatplotlib import NavigationToolbar
-from OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
 from MatrixData import simple_plot_3d
 from DataUtils import get_in_folder
 
@@ -178,7 +178,7 @@ class GuinierRegionInspector(Dialog):
         asx = self.gqv[angle_start]
 
         if False:
-            import DebugPlot as dplt
+            import molass_legacy.KekLib.DebugPlot as dplt
             from molass_legacy.Elution.CurveUtils import simple_plot
             dplt.push()
             fig, ax = dplt.subplots()

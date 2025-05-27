@@ -1,11 +1,11 @@
 """
     Batch.LiteBatch.py
 
-    Copyright (c) 2023-2024, SAXS Team, KEK-PF
+    Copyright (c) 2023-2025, SAXS Team, KEK-PF
 """
 import logging
 from molass_legacy._MOLASS.SerialSettings import get_setting
-from Optimizer.FuncImporter import get_objective_function_info
+from molass_legacy.Optimizer.FuncImporter import get_objective_function_info
 from .OptDataSetsProxy import OptDataSetsProxy as OptDataSets
 from .FullBatch import FullBatch
 

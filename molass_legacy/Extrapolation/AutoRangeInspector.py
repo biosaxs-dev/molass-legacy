@@ -9,9 +9,9 @@ from time import sleep
 import queue
 import logging
 import numpy as np
-from OurTkinter import Tk, Dialog
-from ReadOnlyText import ReadOnlyText
-from KillableThread import Thread
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.ReadOnlyText import ReadOnlyText
+from molass_legacy.KekLib.KillableThread import Thread
 from TkTester import AppAgent
 
 class StdoutRedirector:

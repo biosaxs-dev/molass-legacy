@@ -8,9 +8,9 @@ import copy
 import numpy                as np
 from bisect                 import bisect_right
 from mpl_toolkits.mplot3d   import Axes3D, proj3d
-from OurTkinter             import Tk, Dialog
-from TkSupplements          import tk_set_icon_portable
-from TkUtils                import is_low_resolution, split_geometry
+from molass_legacy.KekLib.OurTkinter             import Tk, Dialog
+from molass_legacy.KekLib.TkSupplements          import tk_set_icon_portable
+from molass_legacy.KekLib.TkUtils                import is_low_resolution, split_geometry
 from CanvasFrame            import CanvasFrame
 from molass_legacy._MOLASS.SerialSettings         import get_setting, set_setting, get_xray_picking
 

@@ -5,7 +5,7 @@
 """
 import numpy as np
 from scipy.optimize import curve_fit
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from .DiniSigmoid import dini_sigmoid, dini_sigmoid_inv
 
 HW = 50

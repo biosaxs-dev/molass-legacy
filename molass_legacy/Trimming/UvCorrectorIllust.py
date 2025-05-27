@@ -4,7 +4,7 @@
     Copyright (c) 2021-2022, SAXS Team, KEK-PF
 """
 import numpy as np
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from molass_legacy.Peaks.EghSupples import egh, d_egh
 
 def illust():

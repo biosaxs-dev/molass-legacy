@@ -135,7 +135,7 @@ class AutoExecManager(Dialog):
                 messagebox.showinfo(title="Killed notification", message="the paired processes have been killed.")
 
 def run_manager():
-    from TkUtils import get_tk_root
+    from molass_legacy.KekLib.TkUtils import get_tk_root
     root = get_tk_root()
 
     def show_manager():

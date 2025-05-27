@@ -7,7 +7,7 @@
 """
 import tkinter      as Tk
 import tkinter.constants    as Tkconstants
-from TkSupplements  import SlimButton
+from molass_legacy.KekLib.TkSupplements  import SlimButton
 
 class ScrolledFrame(Tk.Frame):
     """A pure Tkinter scrollable frame that actually works!

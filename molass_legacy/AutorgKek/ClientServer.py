@@ -12,7 +12,7 @@ import itertools
 import time
 import warnings
 from threading              import Thread
-from BasicUtils             import mkdirs_with_retry
+from molass_legacy.KekLib.BasicUtils             import mkdirs_with_retry
 # from KekToolsGP             import AutorgKek
 from molass_legacy.AutorgKekAdapter       import AutorgKekAdapter as AutorgKek
 from ResultPrinter          import ResultPrinter
@@ -124,7 +124,7 @@ class AutorgKekServer:
         elif data == EXECUTE:
             reply = self.execute( args )
         elif data == QVERSION:
-            from AppVersion import get_com_version_string
+            from molass_legacy.AutorgKek.AppVersion import get_com_version_string
             reply = MESSAGE + bytes( ';' + get_com_version_string(), 'utf-8' )
         else:
             args.append( data.decode() )

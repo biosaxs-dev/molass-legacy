@@ -1,12 +1,12 @@
 """
     LrfSolver.py
 
-    Copyright (c) 2021-2023, SAXS Team, KEK-PF
+    Copyright (c) 2021-2025, SAXS Team, KEK-PF
 """
 import logging
 import numpy as np
 from scipy.optimize import fmin_cg, minimize
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from molass_legacy._MOLASS.SerialSettings import get_setting
 from .LrfInfoProxy import LrfInfoProxy
 
@@ -14,16 +14,16 @@ class LrfSolver:
     def __init__(self, pdata, popts, debug=False):
         if debug:
             from importlib import reload
-            import ExtrapolationSolver
-            reload(ExtrapolationSolver)   
-        from ExtrapolationSolver import ExtrapolationSolver
+            import molass_legacy.Extrapolation.ExtrapolationSolver
+            reload(molass_legacy.Extrapolation.ExtrapolationSolver)   
+        from molass_legacy.Extrapolation.ExtrapolationSolver import ExtrapolationSolver
 
         ExtrapolationSolver.__init__(self, pdata, popts)    # required in LrfResultPool
                                                             # for pno, paired_range in enumerate(solver.cnv_ranges)
 
         from importlib import reload
-        import LRF.PnoScdMap
-        reload(LRF.PnoScdMap)
+        import molass_legacy.LRF.PnoScdMap
+        reload(molass_legacy.LRF.PnoScdMap)
         from .PnoScdMap import PnoScdMap
 
         self.xray_index = self.sd.xray_index
@@ -50,11 +50,11 @@ class LrfSolver:
         if self.lrf_bound_correction and lrf_rank >= 2:
             if debug:
                 from importlib import reload
-                import BoundedLRF.BoundedLrfSolver
-                reload(BoundedLRF.BoundedLrfSolver)
-                import LRF.ElutionMatrix
-                reload(LRF.ElutionMatrix)
-            from BoundedLRF.BoundedLrfSolver import BoundedLrfSolver
+                import molass_legacy.BoundedLRF.BoundedLrfSolver
+                reload(molass_legacy.BoundedLRF.BoundedLrfSolver)
+                import molass_legacy.LRF.ElutionMatrix
+                reload(molass_legacy.LRF.ElutionMatrix)
+            from molass_legacy.BoundedLRF.BoundedLrfSolver import BoundedLrfSolver
             from .ElutionMatrix import ElutionMatrix
 
             tried_bounded_lrf = True
@@ -192,12 +192,12 @@ def boundef_lrf_simple(qv, M, C, Pinit, R, K=1):
 
 def demo(root, sd, pno=0, debug=True):
     from bisect import bisect_right
-    from SvdDenoise import get_denoised_data
-    from Theory.Rg import compute_corrected_Rg
-    from Theory.SolidSphere import phi, get_boundary_params_simple
-    from Theory.SynthesizedLRF import synthesized_lrf_spike
-    from Theory.DjKinning1984 import S0
-    from Theory.SfBound import S0_bound
+    from molass_legacy.DataStructure.SvdDenoise import get_denoised_data
+    from molass_legacy.Theory.Rg import compute_corrected_Rg
+    from molass_legacy.Theory.SolidSphere import phi, get_boundary_params_simple
+    from molass_legacy.Theory.SynthesizedLRF import synthesized_lrf_spike
+    from molass_legacy.Theory.DjKinning1984 import S0
+    from molass_legacy.Theory.SfBound import S0_bound
 
     M, E, qv, ecurve = sd.get_xr_data_separate_ly()
 

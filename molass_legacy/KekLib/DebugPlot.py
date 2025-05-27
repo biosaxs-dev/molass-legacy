@@ -8,8 +8,8 @@
 import matplotlib.pyplot as _plt
 from matplotlib.pyplot import FuncFormatter
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from OurTkinter import Tk, Dialog
-from OurMatplotlib import NavigationToolbar
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar
 import matplotlib
 import gc
 # from CallStack import CallStack
@@ -51,7 +51,7 @@ def set_plot_env( parent=None, sub_parent=None ):
         if parent is None:
             parent = sub_parent
         if parent is None:
-            from TkUtils import adjusted_geometry
+            from molass_legacy.KekLib.TkUtils import adjusted_geometry
             parent = Tk.Tk()
             parent.geometry( adjusted_geometry( parent.geometry() ) )
             parent.withdraw()

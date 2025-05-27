@@ -6,7 +6,7 @@
 import numpy as np
 import molass_legacy.KekLib.DebugPlot as plt
 from molass_legacy._MOLASS.SerialSettings import get_setting
-from Batch.LiteBatch import LiteBatch
+from molass_legacy.Batch.LiteBatch import LiteBatch
 from molass_legacy.Peaks.MomentsUtils import compute_moments
 from molass_legacy.DataStructure.LPM import get_corrected
 

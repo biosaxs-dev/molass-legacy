@@ -23,7 +23,7 @@ def runas():
         time.sleep(3)
     else:
         # Re-run the program with admin rights
-        import CustomMessageBox as MessageBox
+        import molass_legacy.KekLib.CustomMessageBox as MessageBox
         MessageBox.askokcancel("RunAsAdmin",
             'Please trust this program and reply "Yes" to the next dialog.'
             )

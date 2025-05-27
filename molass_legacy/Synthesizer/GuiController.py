@@ -21,18 +21,18 @@ import os
 import re
 import ExecutionWindow
 import platform
-from OurTkinter             import Tk, ToolTip
-from TkUtils                import adjusted_geometry, split_geometry
+from molass_legacy.KekLib.OurTkinter             import Tk, ToolTip
+from molass_legacy.KekLib.TkUtils                import adjusted_geometry, split_geometry
 import OurMessageBox        as     MessageBox
 from GuiSettingInfo         import EntryFrame
 from GuiPreferences         import PreferencesDialog
 from Development            import DeveloperOptionsDialog
-from TkSupplements          import BlinkingFrame, tk_set_icon_portable, SlimButton
+from molass_legacy.KekLib.TkSupplements          import BlinkingFrame, tk_set_icon_portable, SlimButton
 from ImageSynthesizer       import ImageSynthesizer
 from PersistentInfo         import PersistentInfo
 from Preferences            import get_preference
 from SynthesizerSettings    import save_settings, get_setting, set_setting
-from AppVersion             import synthesizer_version_string
+from molass_legacy.AutorgKek.AppVersion             import synthesizer_version_string
 from AutoRunController      import AutoRunController
 
 # label_bg_color = 'dim gray'

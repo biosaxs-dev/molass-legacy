@@ -9,7 +9,7 @@ from XrayData import XrayData
 from MicrofluidicElution import get_mtd_elution
 from SimpleUnfolding import proportion_folded
 from SvdDenoise import get_denoised_data
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 def compute_min_norm(G, m, x, M):
     pf = proportion_folded(G, m, x)
@@ -102,7 +102,7 @@ class MinimumSurface:
             import os
             image_folder = r'.\temp\images'
             if not os.path.exists(image_folder) or save_no == 0:
-                from BasicUtils import clear_dirs_with_retry
+                from molass_legacy.KekLib.BasicUtils import clear_dirs_with_retry
                 clear_dirs_with_retry([image_folder])
             path = image_folder + r'\image%03d.png' % save_no
             print([save_no], 'saving...')

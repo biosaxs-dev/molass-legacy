@@ -11,10 +11,10 @@ from matplotlib.gridspec import GridSpec
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.ticker as ticker
 from matplotlib.widgets import Button
-from OurTkinter import Tk, Dialog
-from TkUtils import split_geometry
-from TkSupplements import tk_set_icon_portable
-from OurMatplotlib import NavigationToolbar
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.TkUtils import split_geometry
+from molass_legacy.KekLib.TkSupplements import tk_set_icon_portable
+from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar
 
 @ticker.FuncFormatter
 def major_formatter(x, pos):

@@ -7,7 +7,7 @@
 import numpy as np
 from bisect import bisect_right
 from scipy.optimize import minimize
-import DebugPlot as plt 
+import molass_legacy.KekLib.DebugPlot as plt 
 from molass_legacy.Peaks.ElutionModels import egh
 from Theory.JsPedersen1997 import F1
 from molass_legacy.KekLib.SciPyCookbook import smooth
@@ -301,7 +301,7 @@ def generate_model_dsets(scale=1, drift_type=None, debug=False):
 
 def extract_absorption_components(in_folder):
     from molass_legacy._MOLASS.SerialSettings import get_setting
-    from Batch.StandardProcedure import StandardProcedure
+    from molass_legacy.Batch.StandardProcedure import StandardProcedure
     from MatrixData import simple_plot_3d
     from molass_legacy.ElutionDecomposer import ElutionDecomposer
 

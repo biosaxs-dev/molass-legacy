@@ -9,10 +9,10 @@ import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.patches import Polygon
-from OurTkinter import Tk, Dialog
-from TkSupplements import tk_set_icon_portable
-import DebugPlot as dplt
-from OurMatplotlib import get_color
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.TkSupplements import tk_set_icon_portable
+import molass_legacy.KekLib.DebugPlot as dplt
+from molass_legacy.KekLib.OurMatplotlib import get_color
 from ModeledData import ModeledData
 from MatrixData import simple_plot_3d
 from DraggablePoints import DraggablePoints

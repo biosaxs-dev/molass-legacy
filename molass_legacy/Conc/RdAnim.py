@@ -10,13 +10,13 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from molass_legacy.KekLib.SciPyCookbook import smooth
-from OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
 from tkinter import ttk
 from SvdDenoise import get_denoised_data
 from DataUtils import get_in_folder
 from SerialAtsasTools import AlmergeExecutor
 from molass_legacy._MOLASS.SerialSettings import get_setting
-from BasicUtils import clear_dirs_with_retry
+from molass_legacy.KekLib.BasicUtils import clear_dirs_with_retry
 
 WIDTH = 10
 

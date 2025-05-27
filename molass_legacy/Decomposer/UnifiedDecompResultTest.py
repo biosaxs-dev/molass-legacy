@@ -6,7 +6,7 @@
 import copy
 import logging
 from matplotlib.patches import Rectangle
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 def unit_test(caller):
     from importlib import reload

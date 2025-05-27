@@ -6,11 +6,11 @@
 import os
 import numpy as np
 from molass_legacy.KekLib.OurSubprocess import exec_subprocess
-from ATSAS.AutoRg import autorg_exe_array
-from IntensityData import IntensityData
-from Guinier import Guinier
-from Result import Result
-from ErrorResult import ErrorResult
+from molass_legacy.ATSAS.AutoRg import autorg_exe_array
+from .IntensityData import IntensityData
+from .Guinier import Guinier
+from .Result import Result
+from .ErrorResult import ErrorResult
 
 def autorg(file, exe_index=0, out_file=None, smaxrg=1.3, verbose=False):
     # print( 'autorg: file=', file )

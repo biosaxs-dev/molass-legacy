@@ -14,7 +14,7 @@ def run_decomp_impl(*args, **kwargs):
 
 def get_decompfolder():
     from molass_legacy._MOLASS.SerialSettings import get_setting
-    from BasicUtils import mkdirs_with_retry
+    from molass_legacy.KekLib.BasicUtils import mkdirs_with_retry
 
     decomp_folder = (get_setting('analysis_folder') + '/Decomp').replace('\\', '/')
     if not os.path.exists(decomp_folder):

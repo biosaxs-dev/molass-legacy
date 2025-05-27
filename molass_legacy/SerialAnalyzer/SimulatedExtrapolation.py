@@ -16,10 +16,10 @@ import numpy    as np
 import matplotlib.pyplot        as plt
 from mpl_toolkits.mplot3d       import Axes3D
 from matplotlib.backends.backend_tkagg  import FigureCanvasTkAgg
-from OurTkinter                 import Tk, Dialog
-from BasicUtils                 import clear_dirs_with_retry, get_caller_module
-from TkSupplements              import tk_set_icon_portable
-from NumpyUtils                 import np_savetxt
+from molass_legacy.KekLib.OurTkinter                 import Tk, Dialog
+from molass_legacy.KekLib.BasicUtils                 import clear_dirs_with_retry, get_caller_module
+from molass_legacy.KekLib.TkSupplements              import tk_set_icon_portable
+from molass_legacy.KekLib.NumpyUtils                 import np_savetxt
 from SphericalModel             import XrayScattering
 import OurStatsModels           as sm
 from SerialAtsasTools           import AlmergeExecutor

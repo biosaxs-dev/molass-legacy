@@ -27,7 +27,7 @@ try:
     import molass_legacy.KekLib.CustomMessageBox as MessageBox
 except:
     import molass_legacy.KekLib.OurMessageBox as MessageBox
-print( 'import CustomMessageBox ok' )
+print( 'import molass_legacy.KekLib.CustomMessageBox ok' )
 from molass_legacy.KekLib.RecentFolders import RecentFolders
 import Decomposer, DataStructure, Extrapolation, GuinierAnalyzer
 from Menus.GuiSettings import GuiSettingsMenu
@@ -176,7 +176,7 @@ class GuiMain( Tk.Toplevel ):
         self.after(1000, self.update_menu_states)   # to ensure DENSS Tools menu states update
 
     def check_environment( self ):
-        from Env.EnvInfo import EnvInfo, set_global_env_info
+        from molass_legacy.Env.EnvInfo import EnvInfo, set_global_env_info
         env_info = EnvInfo()
         env_info.show_and_log_if_unavailable(self, self.tmp_logger)
         self.env_info = env_info
@@ -1363,7 +1363,7 @@ class GuiMain( Tk.Toplevel ):
         return True
 
     def check_atsas_executability(self):
-        from ATSAS.ExecCheck import atsas_exec_check
+        from molass_legacy.ATSAS.ExecCheck import atsas_exec_check
         return atsas_exec_check(self)
 
     def update_setting_info( self, clear_temp=False ):
@@ -1508,7 +1508,7 @@ class GuiMain( Tk.Toplevel ):
         if not reply:
             return
 
-        from DENSS.DenssManagerDialog import terminate_manager
+        from molass_legacy.DENSS.DenssManagerDialog import terminate_manager
         ret = terminate_manager(self)
         if not ret:
             return

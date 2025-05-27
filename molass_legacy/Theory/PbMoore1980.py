@@ -10,7 +10,7 @@
         Copyright 2017, 2018, 2019, 2020 The Research Foundation for SUNY
 """
 import numpy as np
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 """
     Y = 4*A@C
@@ -76,7 +76,7 @@ def Ish2Iq(Ish, D, q=(np.arange(500)+1.)/1000):
 
 def ift_intensities(q, I, Ierr, D=None, qc=None, r=None, ne=2):
     if D is None:
-        from DENSS.saxstats.saxstats import estimate_dmax
+        from molass_legacy.DENSS.saxstats.saxstats import estimate_dmax
         Iq = np.array([q, I, Ierr]).T
         D = estimate_dmax(Iq)[0]
         print("estimated dmax = %.4g" % D)

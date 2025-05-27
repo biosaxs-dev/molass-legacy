@@ -83,7 +83,7 @@ class InputTeller:
         sh_array = self.sh_arrays[0]
 
         if False:
-            import DebugPlot as plt
+            import molass_legacy.KekLib.DebugPlot as plt
             from MatrixData import simple_plot_3d
             fig = plt.figure()
             M = sh_array[:,:,1].T

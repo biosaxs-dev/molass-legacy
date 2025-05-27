@@ -18,7 +18,7 @@ class RgCurveDbMaker:
         self.logger = logging.getLogger(__name__)
 
     def make_rg_curves(self, restart_count=None):
-        from Batch.DataWalk import test_data_walk
+        from molass_legacy.Batch.DataWalk import test_data_walk
         print("make_rg_curves: ")
         self.restart_count = restart_count
 

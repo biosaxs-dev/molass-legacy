@@ -25,7 +25,7 @@ def smoothed_error( E, debug=False ):
     return np.array(SE_list).T
 
 def debug_plot_smoothing( x, y, y_ ):
-    import DebugPlot as plt
+    import molass_legacy.KekLib.DebugPlot as plt
     fig = plt.figure()
     ax = fig.gca()
     ax.plot(x, y, 'o', markersize=3)
@@ -90,7 +90,7 @@ class ErrorAnalyzer:
         return X * self.E
 
 def debug_plot_error( M, E_ ):
-    import DebugPlot as plt
+    import molass_legacy.KekLib.DebugPlot as plt
     x = np.arange(E_.shape[0])
     knots = np.linspace(x[0], x[-1], NUM_KNOTS)[1:-1]
     # for j in range(M.shape[1]):
@@ -139,7 +139,7 @@ def theory_simulation_2D():
     num_iter2 = 100
     Y2, std2 = compute_simulated_curve(num_iter2)
 
-    import DebugPlot as plt
+    import molass_legacy.KekLib.DebugPlot as plt
     fig = plt.figure(figsize=(21,7))
     ax1 = fig.add_subplot(131)
     ax2 = fig.add_subplot(132)
@@ -171,7 +171,7 @@ def theory_simulation_2D():
     fig.tight_layout()
     plt.show()
 
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 import matplotlib.animation as animation
 
 class McAnimation:
@@ -260,7 +260,7 @@ class McAnimation:
         return (self.e_curve, self.y_curve, self.text)
 
 def simulated_svd_error_propagation_plot(x, M, E, M_, E_, SE, PE, WE_, eno, formula=True, mpmc=False):
-    import DebugPlot    as plt
+    import molass_legacy.KekLib.DebugPlot    as plt
 
     if formula:
         fig = plt.figure(figsize=(21,7))

@@ -9,7 +9,7 @@ import numpy as np
 from scipy.stats import linregress
 from molass_legacy.KekLib.SciPyCookbook import smooth
 from molass_legacy.KekLib.ExceptionTracebacker import log_exception
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 COUNT_FOR_BREAK = 3
 MIN_HEIGHT_RATIO = 0.05
@@ -126,7 +126,7 @@ def recognize_peaks_roughly(x, y, logger=None, num_peaks=None, min_ratio=MIN_HEI
     pos_ratio = pt/len(y_copy)
     ignore_info = None
     if pos_ratio > EXTREME_POS_RATIO:
-        from BasicUtils import Struct
+        from molass_legacy.KekLib.BasicUtils import Struct
         from GeometryUtils import rotated_argmin
         # like ths last peak in in 20201007_2
         logger.warning("an abnormal peak will be ignored due to pos_ratio=%.3g > %.3g", pos_ratio, EXTREME_POS_RATIO)

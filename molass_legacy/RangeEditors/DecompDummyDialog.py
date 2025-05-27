@@ -4,7 +4,7 @@
     Copyright (c) 2023, SAXS Team, KEK-PF
 """
 
-from OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
 
 class DecompDummyDialog(Dialog):
     def __init__(self, parent, dialog, model):

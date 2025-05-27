@@ -5,7 +5,7 @@
 """
 import numpy as np
 import molass_legacy.KekLib.DebugPlot as plt
-from Optimizer.NumericalUtils import safe_ratios
+from molass_legacy.Optimizer.NumericalUtils import safe_ratios
 # from molass_legacy.Trimming.Sigmoid import sigmoid
 
 VALID_QUIALTY_LIMIT = 0.01

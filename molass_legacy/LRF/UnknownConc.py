@@ -9,7 +9,7 @@ from bisect import bisect_right
 from molass_legacy.Peaks.ElutionModels import egh
 import seaborn
 seaborn.set()
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 def demo1_():
     qv = np.linspace(0.005, 0.4, 400)

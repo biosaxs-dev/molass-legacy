@@ -8,8 +8,8 @@ from scipy.optimize import minimize, basinhopping
 from time import sleep, time
 from molass_legacy._MOLASS.SerialSettings import set_setting
 from molass_legacy.Models.RateTheory.EDM import guess_multiple_impl, edm_impl
-from OurTkinter import Tk
-import DebugPlot as plt
+from molass_legacy.KekLib.OurTkinter import Tk
+import molass_legacy.KekLib.DebugPlot as plt
 from molass_legacy.SerialAnalyzer.ElutionCurve import ElutionCurve
 from .PropOptimizerImpl import compute_range_rgs, PROP_MIN_VALUE, RangeRgComputer
 

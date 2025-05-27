@@ -10,7 +10,7 @@ from molass_legacy._MOLASS.SerialSettings import clear_temporary_settings, set_s
 from SerialTestUtils import prepare_serialdata_env
 from molass_legacy.Trimming.PreliminaryRecognition import PreliminaryRecognition
 from molass_legacy.UV.PlainCurve import make_secondary_e_curve_at
-from Absorbance import Absorbance
+from molass_legacy.UV.Absorbance import Absorbance
 from .FlowChange import FlowChange
 
 class Manipulator:
@@ -26,7 +26,7 @@ class Manipulator:
     def prepare_out_folder(self):
         self.out_folder = "temp/figs"
         if not os.path.exists(self.out_folder):
-            from BasicUtils import mkdirs_with_retry
+            from molass_legacy.KekLib.BasicUtils import mkdirs_with_retry
             mkdirs_with_retry(self.out_folder)
 
     def run_for_all(self):

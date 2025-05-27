@@ -7,7 +7,7 @@
 """
 from molass_legacy._MOLASS.SerialSettings import set_setting, clear_temporary_settings
 from DataUtils import get_pytools_folder, serial_folder_walk
-from Batch.StandardProcedure import StandardProcedure
+from molass_legacy.Batch.StandardProcedure import StandardProcedure
 
 counter = 0
 def test_all_data(callback_all, analysis_copy=False, logger=None, restart_folder=None, index_csv_fh=None):

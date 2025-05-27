@@ -9,7 +9,7 @@ from numpy.random import uniform
 from scipy.interpolate import interp1d
 from scipy.optimize import root
 import matplotlib.pyplot as mplt
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from .EghMixture import egh_pdf, e1, e2, e3
 
 class EghSampler:

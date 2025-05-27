@@ -27,7 +27,7 @@ class DataTreatment:
 
     def save(self, path=None):      
         if path is None:
-            from Optimizer.TheUtils import get_treatment_path
+            from molass_legacy.Optimizer.TheUtils import get_treatment_path
             path = get_treatment_path()
         with open(path, "w") as fh:
             fh.write(self.__repr__())
@@ -35,7 +35,7 @@ class DataTreatment:
     def load(self, path=None, optimizer_folder=None):
         from molass_legacy.KekLib.EvalUtils import eval_file
         if path is None:
-            from Optimizer.TheUtils import get_treatment_path
+            from molass_legacy.Optimizer.TheUtils import get_treatment_path
             path = get_treatment_path(optimizer_folder=optimizer_folder)
         self.path = path
 

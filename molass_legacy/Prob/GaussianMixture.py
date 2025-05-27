@@ -53,7 +53,7 @@ def get_curves(gmm, x):
     return ty, gy_list
 
 def debug_plot_gmm(x, y, sy, gmm, gmm2=None, num_presision = 100):
-    import DebugPlot as plt
+    import molass_legacy.KekLib.DebugPlot as plt
     max_y = np.max(y)
 
     if gmm2 is None:

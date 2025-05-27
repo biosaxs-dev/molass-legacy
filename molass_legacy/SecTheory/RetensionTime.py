@@ -103,7 +103,7 @@ def estimate_init_rgs(rg_curve, trs, t0_upper_bound, debug=False):
     model_rgs = compute_rg_from_retention_time(seccol_params, trs, init_rgs)
 
     if debug:
-        import DebugPlot as plt
+        import molass_legacy.KekLib.DebugPlot as plt
         from DataUtils import get_in_folder
         from scipy.interpolate import UnivariateSpline
         print("seccol_params=", seccol_params)

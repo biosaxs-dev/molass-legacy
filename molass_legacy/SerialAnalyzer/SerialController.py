@@ -14,28 +14,28 @@ import time
 from openpyxl import Workbook
 
 from molass_legacy.KekLib.BasicUtils import get_filename_extension
-from SerialDataUtils import save_xray_base_profiles
-from StageGuinier import run_gunier_analysis, make_guinier_analysis_report
-from StageExtrapolation import control_extrapolation
-from StageSummary import do_summary_stage
+from .SerialDataUtils import save_xray_base_profiles
+from .StageGuinier import run_gunier_analysis, make_guinier_analysis_report
+from .StageExtrapolation import control_extrapolation
+from .StageSummary import do_summary_stage
 from molass_legacy.KekLib.ExcelCOM import cleanup_created_excels
 from molass_legacy._MOLASS.SerialSettings import get_setting, set_setting, save_settings
 from molass_legacy.KekLib.NumpyUtils import np_savetxt
 from molass_legacy.KekLib.BasicUtils import ( clear_dirs_with_retry, mkdirs_with_retry, ordinal_str )
 from molass_legacy.KekLib.ExceptionTracebacker import ExceptionTracebacker
-from AnalysisRangeManager   import get_analysis_ranges_for_exec
+from .AnalysisRangeManager   import get_analysis_ranges_for_exec
 from molass_legacy.DataStructure.AnalysisRangeInfo import convert_to_paired_ranges, report_ranges_from_analysis_ranges
 from molass_legacy.KekLib.ProgressInfo import put_info, send_stop, on_stop_raise, put_error, STATE_FATAL, SAFE_FINISH
-from ProgressInfoUtil import ( NUM_SHEET_TYPES,
-                                        STREAM_BASECOR, STREAM_GUINIER, STREAM_ZERO_EX, STREAM_BASECOR_MAX,
-                                        ProgressCallback )
+from .ProgressInfoUtil import ( NUM_SHEET_TYPES,
+                                STREAM_BASECOR, STREAM_GUINIER, STREAM_ZERO_EX, STREAM_BASECOR_MAX,
+                                ProgressCallback )
 from DevSettings import get_dev_setting
 from DriftSimulation import apply_simulated_baseline_correction
 from molass_legacy.Test.Tester import ( write_to_tester_log,
                             create_log_queue, open_dev_log, write_to_dev_log, close_dev_log,
                             write_from_log_queue
                             )
-from Reports.DefaultFont import set_default_font
+from molass_legacy.Reports.DefaultFont import set_default_font
 set_default_font()
 
 DEBUG = False
@@ -116,7 +116,7 @@ class SerialExecuter:
         self.make_temp_folder()
 
         if self.more_multicore:
-            from ExcelProcess.ExcelTeller import ExcelTeller
+            from molass_legacy.ExcelProcess.ExcelTeller import ExcelTeller
             self.teller = ExcelTeller(log_folder=self.temp_folder)
             self.logger.info('teller created with log_folder=%s', control_info.temp_folder)
 

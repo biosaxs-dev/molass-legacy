@@ -8,7 +8,7 @@ import numpy as np
 import scipy.stats as stats
 from scipy.optimize import fsolve
 from sklearn.cluster import KMeans
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 SQRT_2PI_INV = np.sqrt(2/np.pi)
 SIGMA2A_RATIO = np.sqrt(np.pi/(3*np.pi - 8))

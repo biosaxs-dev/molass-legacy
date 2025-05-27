@@ -34,14 +34,14 @@ def optimizer_main(in_folder, trimming_txt=None, n_components=3,
     strategy = optimizer.get_strategy()
     if strategy.trust_initial_baseline():
         baseline_fixed = True
-        from Optimizer.FixedBaselineOptimizer import FixedBaselineOptimizer
+        from molass_legacy.Optimizer.FixedBaselineOptimizer import FixedBaselineOptimizer
         fb_optimizer = FixedBaselineOptimizer(optimizer)
         result = fb_optimizer.solve(init_params, real_bounds=real_bounds, niter=niter, seed=seed, debug=debug)
     else:
         baseline_fixed = False
         if strategy.baseline_first():
             if nnn == 0:
-                from Optimizer.BaselineOptimizer import BaselineOptimizer
+                from molass_legacy.Optimizer.BaselineOptimizer import BaselineOptimizer
                 baseline_optimizer = BaselineOptimizer(optimizer)
                 baseline_indeces = optimizer.get_baseline_indeces()
                 result = baseline_optimizer.solve(init_params, baseline_indeces)
@@ -51,7 +51,7 @@ def optimizer_main(in_folder, trimming_txt=None, n_components=3,
                                         baseline_fixed=baseline_fixed, debug=debug)
         else:
             if strategy.is_strategic(nnn):
-                from Optimizer.StrategicOptimizer import StrategicOptimizer
+                from molass_legacy.Optimizer.StrategicOptimizer import StrategicOptimizer
                 temp_params = init_params
                 indeces_list = strategy.get_indeces_list(nnn)
                 assert len(indeces_list) == 1   # for now

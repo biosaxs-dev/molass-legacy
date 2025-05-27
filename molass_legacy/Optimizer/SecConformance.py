@@ -7,10 +7,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from tksheet import Sheet
-from OurTkinter import Tk, Dialog
-from OurMatplotlib import NavigationToolbar
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar
 from DataUtils import get_in_folder
-from BasicUtils import ordinal_str, Struct
+from molass_legacy.KekLib.BasicUtils import ordinal_str, Struct
 from SecTheory.RetensionTime import compute_retention_time
 
 class SecConformance(Dialog):

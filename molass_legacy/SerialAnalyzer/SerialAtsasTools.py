@@ -5,4 +5,4 @@
 
     Copyright (c) 2016-2023, SAXS Team, KEK-PF
 """
-from ATSAS.Almerge import AlmergeExecutor
+from molass_legacy.ATSAS.Almerge import AlmergeExecutor

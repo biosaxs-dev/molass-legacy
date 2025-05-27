@@ -9,10 +9,10 @@ import glob
 from shutil import move
 import MDAnalysis as mda
 from MDAnalysisTests.datafiles import PSF, DCD
-from BasicUtils import mkdirs_with_retry
+from molass_legacy.KekLib.BasicUtils import mkdirs_with_retry
 from molass_legacy._MOLASS.SerialSettings import get_setting
 import matplotlib.pyplot as plt
-# import DebugPlot as plt
+# import molass_legacy.KekLib.DebugPlot as plt
 
 def make_folders():
     md_folder = os.path.join(get_setting('analysis_folder'), 'MD')
@@ -42,7 +42,7 @@ def make_pdb_files():
         protein.write(file)
     Rgyr = np.array(Rgyr)
 
-    import DebugPlot as dplt
+    import molass_legacy.KekLib.DebugPlot as dplt
     fig, ax = dplt.subplots()
     ax.plot(Rgyr[:,0], Rgyr[:,1], 'r--', lw=2, label=r"$R_G$")
     ax.set_xlabel("time (ps)")
@@ -51,7 +51,7 @@ def make_pdb_files():
     dplt.show()
 
 def make_mrc_files():
-    from DENSS.DenssUtils import run_pdb2mrc
+    from molass_legacy.DENSS.DenssUtils import run_pdb2mrc
 
     pdb_folder, mrc_folder = make_folders()[0:2]
     num_files = len(os.listdir(mrc_folder))
@@ -66,7 +66,7 @@ def make_mrc_files():
 
 def make_scattering_curves_from_mrc():
     import mrcfile
-    from Saxs.ReciprocalData import ReciprocalData
+    from molass_legacy.Saxs.ReciprocalData import ReciprocalData
 
     mrc_folder, sas_folder = make_folders()[1:3]
     num_files = len(os.listdir(sas_folder))
@@ -112,7 +112,7 @@ def make_scattering_curves_from_pdb():
         crysol.move(path, sas_folder)
 
 import matplotlib.animation as animation
-from OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
 
 class SasAnimation(Dialog):
     def __init__(self, parent, sas_files):
@@ -124,7 +124,7 @@ class SasAnimation(Dialog):
 
     def body(self, body_frame):
         from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-        from OurMatplotlib import NavigationToolbar
+        from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar
 
         cframe = Tk.Frame(body_frame)
         cframe.pack()
@@ -139,7 +139,7 @@ class SasAnimation(Dialog):
         self.mpl_canvas.draw()
 
     def make_animation(self, fig):
-        from NumpyUtils import np_loadtxt
+        from molass_legacy.KekLib.NumpyUtils import np_loadtxt
         sas_files = self.sas_files
         num_frames = len(sas_files)
 

@@ -18,7 +18,7 @@
                 .
                 1000  merge   com()
 """
-from AnalyzerUtil import get_analysis_ranges
+from molass_legacy.SerialAnalyzer.AnalyzerUtil import get_analysis_ranges
 from molass_legacy.KekLib.ProgressInfo import put_info
 from ZeroExtrapolator import NUM_EXTRAPOLATION_POINTS
 from molass_legacy.DataStructure.AnalysisRangeInfo import convert_to_paired_ranges

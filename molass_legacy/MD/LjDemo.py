@@ -1,7 +1,7 @@
 #Import a plotting libraries and a maths library 
 import matplotlib.pyplot as plt
 import numpy as np
-# import DebugPlot as plt
+# import molass_legacy.KekLib.DebugPlot as plt
 # %matplotlib inline
 
 r = np.linspace(0.01,3.0,num=500) # Make a radius vector

@@ -8,7 +8,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpl_patches
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
 from molass_legacy.GuinierAnalyzer.SimpleGuinier import SimpleGuinier
 
 class LogGuinierKratkyPlotter(Dialog):

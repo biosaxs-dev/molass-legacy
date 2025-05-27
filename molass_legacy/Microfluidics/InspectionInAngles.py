@@ -6,11 +6,11 @@
 """
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from OurMatplotlib import NavigationToolbar
-from OurTkinter import Tk, Dialog, ttk
-from OurTkinter import Tk, Dialog
-from TkUtils import split_geometry
-from TkSupplements import tk_set_icon_portable
+from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog, ttk
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.TkUtils import split_geometry
+from molass_legacy.KekLib.TkSupplements import tk_set_icon_portable
 
 class InspectionInAnglesDialog(Dialog):
     def __init__(self, parent, q_vector, e_index, drawn_info):

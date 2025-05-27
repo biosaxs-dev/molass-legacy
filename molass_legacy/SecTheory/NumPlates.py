@@ -4,7 +4,7 @@
     Copyright (c) 2022, SAXS Team, KEK-PF
 """
 import numpy as np
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from molass_legacy.Elution.CurveUtils import simple_plot
 from .RetensionTime import compute_retention_time
 from .MonoPore import compute_mu_sigma

@@ -15,7 +15,7 @@ def atsas_exec_check(parent, debug=False):
     ok = os.path.exists(exe_path)
 
     if not ok or debug:
-        import CustomMessageBox as MessageBox
+        import molass_legacy.KekLib.CustomMessageBox as MessageBox
         folder = os.path.dirname(os.path.dirname(exe_path))
         MessageBox.showerror("ATSAS Installation Info Error",
             'Somethig is wrong with the ATSAS installation under\n'

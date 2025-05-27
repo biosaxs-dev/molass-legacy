@@ -28,7 +28,7 @@ def get_change_name(change_id):
 class AdvancedFrame(Tk.LabelFrame):
     def __init__(self, parent, editor, **kwargs):
         from molass_legacy.KekLib.SaferSpinbox import SaferSpinbox as Spinbox
-        from Selective.Proportions import Proportions_
+        from molass_legacy.Selective.Proportions import Proportions_
         global PROPORTIONS_
         PROPORTIONS_ = Proportions_()
 

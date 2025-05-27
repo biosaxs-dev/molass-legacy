@@ -49,7 +49,7 @@ class PeProxy:
         optimizer_folder = os.path.join(get_setting('analysis_folder'), 'optimized')
         if False:
             if not os.path.exists(optimizer_folder):
-                from BasicUtils import mkdirs_with_retry
+                from molass_legacy.KekLib.BasicUtils import mkdirs_with_retry
                 mkdirs_with_retry(optimizer_folder)
 
         if os.path.exists(self.previous_rg_folder):

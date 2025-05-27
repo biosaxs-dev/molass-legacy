@@ -5,9 +5,9 @@
 """
 import numpy as np
 import molass_legacy.KekLib.DebugPlot as plt
-from Optimizer.TheDebugUtils import convert_score_list, plot_scores
+from molass_legacy.Optimizer.TheDebugUtils import convert_score_list, plot_scores
 from GuinierTools.RgCurveUtils import plot_rg_curves
-from Optimizer.FvScoreConverter import convert_score
+from molass_legacy.Optimizer.FvScoreConverter import convert_score
 
 def plot_objective_state(score_list_pair, fv, xm,
         lrf_info,
@@ -44,7 +44,7 @@ def plot_objective_state(score_list_pair, fv, xm,
     xr_ty = lrf_info.xr_ty
 
     if ratio_interpret:
-        from Optimizer.OptLrfInfo import get_ratio_cy_list
+        from molass_legacy.Optimizer.OptLrfInfo import get_ratio_cy_list
         uv_cy_list = get_ratio_cy_list(uv_y, uv_cy_list)
         uv_ty = uv_y
         xr_cy_list = get_ratio_cy_list(y, xr_cy_list)

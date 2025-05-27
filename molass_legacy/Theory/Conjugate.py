@@ -5,7 +5,7 @@
 """
 import numpy as np
 from scipy.optimize import minimize
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 def compute_conjugate_solutin(M, C, aq, bq):
     def obj_func(p):

@@ -9,8 +9,8 @@ import numpy as np
 
 def get_wyf_ratios(in_folder, *args, **kwargv):
     from molass_legacy._MOLASS.SerialSettings import clear_temporary_settings, clear_v2_temporary_settings
-    from Batch.StandardProcedure import StandardProcedure
-    from Batch.LiteBatch import LiteBatch
+    from molass_legacy.Batch.StandardProcedure import StandardProcedure
+    from molass_legacy.Batch.LiteBatch import LiteBatch
     from molass_legacy.UV.WYF_Ratios import compute_ratios_from_Puv
     from molass_legacy.SerialAnalyzer.DataUtils import cut_upper_folders
 

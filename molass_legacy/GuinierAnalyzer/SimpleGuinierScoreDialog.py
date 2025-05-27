@@ -6,7 +6,7 @@
 """
 import numpy        as np
 from scipy          import stats
-from OurTkinter     import Tk, Dialog
+from molass_legacy.KekLib.OurTkinter     import Tk, Dialog
 from CanvasDialog   import CanvasDialog
 from SimpleGuinier  import KNOT_NO_ADDITION
 from SimpleGuinierScore import ( FWD_GUINIER_SIZE,

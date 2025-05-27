@@ -4,7 +4,7 @@
     Copyright (c) 2024, Masatsuyo Takahashi, KEK-PF
 """
 import threading
-from OurTkinter import Tk, Dialog, ttk
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog, ttk
 from molass_legacy.KekLib.DebugPlot import push, pop, get_parent
 
 class ProgressDialog(Dialog):

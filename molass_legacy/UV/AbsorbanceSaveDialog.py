@@ -7,13 +7,13 @@
 import os
 import numpy                as np
 from bisect                 import bisect_right
-from OurTkinter             import Tk, Dialog
-from BasicUtils             import get_caller_module
-from TkSupplements          import tk_set_icon_portable
+from molass_legacy.KekLib.OurTkinter             import Tk, Dialog
+from molass_legacy.KekLib.BasicUtils             import get_caller_module
+from molass_legacy.KekLib.TkSupplements          import tk_set_icon_portable
 from molass_legacy._MOLASS.SerialSettings         import get_setting
-from TkUtils                import split_geometry
-from TkCustomWidgets        import FileEntry
-from NumpyUtils             import np_savetxt
+from molass_legacy.KekLib.TkUtils                import split_geometry
+from molass_legacy.KekLib.TkCustomWidgets        import FileEntry
+from molass_legacy.KekLib.NumpyUtils             import np_savetxt
 
 class AbsorbanceSaveDialog( Dialog ):
     def __init__( self, parent ):
@@ -117,7 +117,7 @@ class AbsorbanceSaveDialog( Dialog ):
 
                 if False:
                     from mpl_toolkits.mplot3d   import Axes3D
-                    import DebugPlot as dplt
+                    import molass_legacy.KekLib.DebugPlot as dplt
 
                     dplt.push()
                     i = np.arange(data.shape[1])

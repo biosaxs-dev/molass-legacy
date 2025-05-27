@@ -89,7 +89,7 @@ class FolderEntryDialog(Dialog):
     
     def get_info_list(self):
         if self.info_list is None:
-            from Batch.LiteBatch import LiteBatch        
+            from molass_legacy.Batch.LiteBatch import LiteBatch        
             info_list = []
             batch = LiteBatch()     # task: 
             for folder in self.get_folder_list():               

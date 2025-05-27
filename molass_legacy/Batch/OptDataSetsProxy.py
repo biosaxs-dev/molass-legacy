@@ -1,11 +1,11 @@
 """
     Batch.OptDataSetsProxy.py
 
-    Copyright (c) 2023, SAXS Team, KEK-PF
+    Copyright (c) 2023-2025, SAXS Team, KEK-PF
 """
 import numpy as np
 from molass_legacy._MOLASS.SerialSettings import get_setting, set_setting
-from Optimizer.OptDataSets import OptDataSets, get_dsets_impl
+from molass_legacy.Optimizer.OptDataSets import OptDataSets, get_dsets_impl
 
 class DummyRgCurve:
     def __init__(self):

@@ -4,7 +4,7 @@
 
     Copyright (c) 2017, Masatsuyo Takahashi, KEK-PF
 """
-from OurMatplotlib  import NavigationToolbar
+from molass_legacy.KekLib.OurMatplotlib  import NavigationToolbar
 
 class CustomNavigationToolbar( NavigationToolbar ):
     def __init__( self, canvas, window ):

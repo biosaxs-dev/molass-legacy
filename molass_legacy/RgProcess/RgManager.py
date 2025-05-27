@@ -20,7 +20,7 @@ class RgManager:
         return si
 
     def run(self, si):
-        from TkUtils import get_tk_root
+        from molass_legacy.KekLib.TkUtils import get_tk_root
         from .RgAnalysis import RgAnalysisDialog
 
         si.get_buffer_ready()

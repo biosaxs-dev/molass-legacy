@@ -6,9 +6,9 @@
 """
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from OurTkinter import Tk, Dialog, ttk
-from TkUtils import adjusted_geometry
-from TkSupplements import tk_set_icon_portable
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog, ttk
+from molass_legacy.KekLib.TkUtils import adjusted_geometry
+from molass_legacy.KekLib.TkSupplements import tk_set_icon_portable
 
 class ScatteringCurveViewer( Dialog ):
     def __init__(self, parent, editor_frame, sd, ft, scaled_y):

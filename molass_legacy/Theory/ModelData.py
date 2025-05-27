@@ -5,7 +5,7 @@
 """
 import numpy as np
 from bisect import bisect_right
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from molass_legacy.Models.ElutionCurveModels import emg
 from .SolidSphere import a_func, b_to_a_func
 

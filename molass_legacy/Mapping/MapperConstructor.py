@@ -8,11 +8,11 @@
 import copy
 import numpy as np
 import logging
-from OurTkinter             import Tk
+from molass_legacy.KekLib.OurTkinter             import Tk
 import OurMessageBox        as MessageBox
 from .MappingParams import get_mapper_opt_params, get_mapper_simplest_params, set_mapper_opt_params
 from molass_legacy.KekLib.ExceptionTracebacker   import ExceptionTracebacker, log_exception
-from BasicUtils             import Struct
+from molass_legacy.KekLib.BasicUtils             import Struct
 from molass_legacy._MOLASS.SerialSettings         import get_setting, set_setting, INTEGRAL_BASELINE
 from molass_legacy.Test.TesterLogger import write_to_tester_log
 from .ElutionMapper import ElutionMapper
@@ -173,7 +173,7 @@ def optimize_mapper(mapper, opt_params, parent, serial_data, analyzer_dialog, he
                         log_exception(logger, "failed in mapper.optimize: ", n=8)
 
             if debug:
-                import DebugPlot as plt
+                import molass_legacy.KekLib.DebugPlot as plt
                 with plt.Dp():
                     fig, ax = plt.subplots()
                     ax.set_title("optimize_mapper debug")

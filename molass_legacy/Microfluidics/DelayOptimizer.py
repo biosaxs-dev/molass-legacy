@@ -8,7 +8,7 @@ import numpy as np
 from scipy.optimize import minimize
 from SerialDataUtils import get_mtd_filename
 from FlowSimulator import FlowSimulator
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 class DelayOptimizer:
     def __init__(self, in_folder, xdata):

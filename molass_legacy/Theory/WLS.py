@@ -4,7 +4,7 @@
     Copyright (c) 2021, SAXS Team, KEK-PF
 """
 import numpy as np
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 def npWLS(x, y, w=None):
     pass

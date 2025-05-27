@@ -5,7 +5,7 @@
 """
 import logging
 from molass_legacy.SerialAnalyzer.DataUtils import get_pytools_folder, serial_folder_walk
-from Batch.LiteBatch import LiteBatch
+from molass_legacy.Batch.LiteBatch import LiteBatch
 from molass_legacy.KekLib.ExceptionTracebacker import log_exception
 from molass_legacy._MOLASS.SerialSettings import clear_temporary_settings, set_setting
 

@@ -6,7 +6,7 @@
 from importlib import reload
 import Batch.DataBridgeUtils
 reload(Batch.DataBridgeUtils)
-from Batch.DataBridgeUtils import get_lrf_source_impl
+from molass_legacy.Batch.DataBridgeUtils import get_lrf_source_impl
 
 def pds_simulation_impl(editor, show_fixed_demo=False):
     print("psd_simulation_impl")

@@ -10,7 +10,7 @@ from molass_legacy.Peaks.ElutionModels import egh, e1, e2
 from LPM import get_corrected
 from .BoundControl import Penalties
 from .ColumnConstants import Ti_LOWER
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 ESTIMATE_INJECTION_TIME = True
 
@@ -44,7 +44,7 @@ def _pre_optimize_params(ecurve, xr_params, seccol_params, debug=False):
     ret = minimize(objective, (Npc, tI))
 
     if debug:
-        import DebugPlot as plt
+        import molass_legacy.KekLib.DebugPlot as plt
 
         with plt.Dp():
             fig, (ax0, ax1, ax2) = plt.subplots(ncols=3, figsize=(18,5))

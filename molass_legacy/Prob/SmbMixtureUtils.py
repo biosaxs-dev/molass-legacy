@@ -8,7 +8,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.mixture import GaussianMixture
 from lmfit import minimize, Parameters
-import DebugPlot as dplt
+import molass_legacy.KekLib.DebugPlot as dplt
 from .ProbDataUtils import generate_sample_data, plot_hist_data
 from .SmbMixture import smb_pdf
 

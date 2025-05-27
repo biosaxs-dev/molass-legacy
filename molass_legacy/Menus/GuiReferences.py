@@ -6,12 +6,12 @@
 
 """
 import os
-from OurTkinter     import Tk
+from molass_legacy.KekLib.OurTkinter     import Tk
 from molass_legacy._MOLASS.SerialSettings import get_setting
 from molass_legacy._MOLASS.Version import get_version_string
 
 def get_doc_folder_url():
-    from BasicUtils import get_home_folder
+    from molass_legacy.KekLib.BasicUtils import get_home_folder
     # home = os.getcwd().replace( '\\', '/' )
     home = get_home_folder()
     url = 'file://' + home + '/doc'

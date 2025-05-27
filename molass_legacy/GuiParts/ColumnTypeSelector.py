@@ -1,11 +1,11 @@
 """
     GuiParts.ColumnTypeSelector.py
 
-    Copyright (c) 2024, SAXS Team, KEK-PF
+    Copyright (c) 2024-2025, SAXS Team, KEK-PF
 """
 from molass_legacy.KekLib.OurTkinter import Tk, ttk
-from Experiment.ColumnTypes import get_productnames, get_columntype_from_name
-from Experiment.DataUtils import get_columntype
+from molass_legacy.Experiment.ColumnTypes import get_productnames, get_columntype_from_name
+from molass_legacy.Experiment.DataUtils import get_columntype
 
 class ColumnTypeSelector(Tk.Frame):
     def __init__(self, parent, column_name_var=None, excl_limit_var=None):

@@ -4,7 +4,7 @@
     Copyright (c) 2018-2024, SAXS Team, KEK-PF
 """
 import logging
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from molass_legacy.Mapping.SingleComponent import PEAK_EVAL_RANGE_RATIO
 from molass_legacy.KekLib.ExceptionTracebacker import log_exception
 

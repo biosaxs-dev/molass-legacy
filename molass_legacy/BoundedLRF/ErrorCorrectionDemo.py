@@ -10,7 +10,7 @@ from bisect import bisect_right
 from scipy.stats import linregress
 from scipy.interpolate import UnivariateSpline
 from matplotlib.patches import Rectangle
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from Theory.SolidSphere import phi
 from time import time
 
@@ -24,7 +24,7 @@ def save_aq(file, qv, P, Pe):
 
 def demo_impl(sd, f, t):
     from DataUtils import get_in_folder
-    from DENSS.DenssUtils import fit_data
+    from molass_legacy.DENSS.DenssUtils import fit_data
     from .NaiiveLrfSolver import NaiiveLrfSolver
     from .BoundedLrfSolver import BoundedLrfSolver
     from importlib import reload

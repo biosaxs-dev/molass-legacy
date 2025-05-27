@@ -7,9 +7,9 @@
 
 """
 from time import sleep
-from KillableThread import Thread
-from OurTkinter import Tk, Dialog, ScrolledText
-from TkSupplements import set_icon, BlinkingFrame
+from molass_legacy.KekLib.KillableThread import Thread
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog, ScrolledText
+from molass_legacy.KekLib.TkSupplements import set_icon, BlinkingFrame
 from StdoutRedirector import StdoutRedirector
 
 class UpdateDailog(Dialog):

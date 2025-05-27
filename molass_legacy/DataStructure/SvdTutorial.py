@@ -8,8 +8,8 @@ import numpy                as np
 import matplotlib.pyplot    as plt
 from mpl_toolkits.mplot3d   import Axes3D
 from matplotlib.patches     import Circle, Ellipse
-from OurTkinter             import Tk, Dialog
-from TkUtils                import is_low_resolution
+from molass_legacy.KekLib.OurTkinter             import Tk, Dialog
+from molass_legacy.KekLib.TkUtils                import is_low_resolution
 from CanvasFrame            import CanvasFrame
 from OurMatplotlib3D        import pathpatch_2d_to_3d, pathpatch_translate
 

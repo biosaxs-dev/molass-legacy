@@ -6,7 +6,7 @@
 import numpy as np
 from scipy.optimize import minimize
 from bisect import bisect_right
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from .JsPedersen1997 import SolidEllipsoidRev, TriAxialEllipsoid
 
 def ellipsoid_approx_intensities(q, Rg2, Af2):

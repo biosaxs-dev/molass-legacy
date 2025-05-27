@@ -11,7 +11,7 @@ from importlib import reload
 BH_NITER = 100
 
 def estimate_oligopore_distribution_separately(moment_rg_file, column_type, debug=False):
-    from Batch.LiteBatch import LiteBatch
+    from molass_legacy.Batch.LiteBatch import LiteBatch
     from molass_legacy.Models.Stochastic.DatablockUtils import load_datablock_list
     from molass_legacy.Models.Stochastic.OligoporePlotImpl import get_block_lrf_src
     from molass_legacy.Models.Stochastic.OligoporeMoments import study_oligopore_moments_impl

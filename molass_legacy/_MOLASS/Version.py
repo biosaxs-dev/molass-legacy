@@ -2,7 +2,7 @@
 
     Version.py
 
-    Copyright (c) 2016-2024, SAXS Team, KEK-PF
+    Copyright (c) 2016-2025, SAXS Team, KEK-PF
 
 """
 import platform
@@ -14,7 +14,7 @@ def get_version_string(cpuid=False):
     else:
         cpuid = ''
 
-    return '_MOLASS 3.3.9 (2025-03-11 07:23:11 python %s %s%s)' % (
+    return 'MOLASS 3.4.0 (2025-05-27 11:23:11 python %s %s%s)' % (
                 platform.python_version(), platform.architecture()[0], cpuid )
 
 def molass_version_for_publication():

@@ -9,8 +9,8 @@ import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.widgets import Slider
-from OurTkinter import Tk, Dialog
-from OurMatplotlib import NavigationToolbar
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar
 from SecTheory.BasicModels import robust_single_pore_pdf as monopore_pdf
 
 class FactorCurvePlot(Dialog):

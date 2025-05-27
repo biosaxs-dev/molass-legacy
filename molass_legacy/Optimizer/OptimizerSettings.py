@@ -7,7 +7,7 @@ import logging
 import os
 from collections import OrderedDict
 from molass_legacy._MOLASS.SerialSettings import get_setting, set_setting
-from Optimizer.TheUtils import get_optimizer_folder
+from molass_legacy.Optimizer.TheUtils import get_optimizer_folder
 from Experiment.ColumnTypes import PORESIZE_ALLOWANCE
 
 def get_settings_path(optimizer_folder=None):

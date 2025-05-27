@@ -7,8 +7,8 @@ import logging
 import numpy as np
 from ultranest import ReactiveNestedSampler 
 from ultranest.stepsampler import SliceSampler, generate_mixture_random_direction
-from Optimizer.OptimizerUtils import OptimizerResult
-from Optimizer.StateSequence import save_opt_params
+from molass_legacy.Optimizer.OptimizerUtils import OptimizerResult
+from molass_legacy.Optimizer.StateSequence import save_opt_params
 
 NARROW_BIND_ALLOW = 1.0
 

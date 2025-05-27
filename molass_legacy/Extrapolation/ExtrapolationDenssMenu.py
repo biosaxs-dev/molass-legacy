@@ -5,7 +5,7 @@
     Copyright (c) 2019-2020, SAXS Team, KEK-PF
 """
 
-from OurTkinter import Tk
+from molass_legacy.KekLib.OurTkinter import Tk
 from MenuButton import MenuButton
 
 class ExtrapolationDenssMenu(Tk.Frame):
@@ -25,9 +25,9 @@ class ExtrapolationDenssMenu(Tk.Frame):
 
     def submit_all(self):
         print('submit_all')
-        from DENSS.DenssUtils import fit_data
-        from DENSS.DenssManager import get_list
-        import CustomMessageBox as MessageBox
+        from molass_legacy.DENSS.DenssUtils import fit_data
+        from molass_legacy.DENSS.DenssManager import get_list
+        import molass_legacy.KekLib.CustomMessageBox as MessageBox
 
         job_list = get_list()
         num_jobs = len(job_list)
@@ -38,8 +38,8 @@ class ExtrapolationDenssMenu(Tk.Frame):
         if not yn:
             return
 
-        from DENSS.DenssManager import JobInfo
-        from DENSS.DenssManagerDialog import show_manager_dialog
+        from molass_legacy.DENSS.DenssManager import JobInfo
+        from molass_legacy.DENSS.DenssManagerDialog import show_manager_dialog
         jobs = []
         for q, a, e, f in self.data_list:
             qc, ac, ec, dmax = fit_data(q, a, e)
@@ -48,27 +48,27 @@ class ExtrapolationDenssMenu(Tk.Frame):
 
     def show_denss_gui(self):
         print('show_denss_gui')
-        from DENSS.DenssGui import DenssGuiDialog
+        from molass_legacy.DENSS.DenssGui import DenssGuiDialog
         dialog = DenssGuiDialog(self.dialog)
         dialog.show()
 
     def show_denss_manager(self):
         print('show_denss_manager')
-        from DENSS.DenssManagerDialog import show_manager_dialog
+        from molass_legacy.DENSS.DenssManagerDialog import show_manager_dialog
         show_manager_dialog(self.dialog)
 
     def show_ed_viewer(self):
         print('show_ed_viewer')
-        from Saxs.EdViewer import EdViewer
-        from OurMatplotlib import reset_to_default_style
+        from molass_legacy.Saxs.EdViewer import EdViewer
+        from molass_legacy.KekLib.OurMatplotlib import reset_to_default_style
         viewer = EdViewer(self.dialog)
         viewer.show()
         reset_to_default_style()
 
     def show_saxs_simulator(self):
         print('show_saxs_simulator')
-        from Saxs.SaxsSimulator import SaxsSimulator
-        from OurMatplotlib import reset_to_default_style
+        from molass_legacy.Saxs.SaxsSimulator import SaxsSimulator
+        from molass_legacy.KekLib.OurMatplotlib import reset_to_default_style
         simulator = SaxsSimulator(self.parent)
         simulator.show()
         reset_to_default_style()

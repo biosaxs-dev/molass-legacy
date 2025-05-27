@@ -1,7 +1,7 @@
 """
     DecompEditorDialog.py
 
-    Copyright (c) 2018-2024, SAXS Team, KEK-PF
+    Copyright (c) 2018-2025, SAXS Team, KEK-PF
 """
 import os
 import logging
@@ -12,7 +12,8 @@ from molass_legacy.Decomposer.DecompUtils import CorrectedBaseline
 from .DecompDummyFrame import DecompDummyFrame
 from molass_legacy._MOLASS.SerialSettings import get_setting, set_setting
 from molass_legacy._MOLASS.Version import is_developing_version
-from Selective.ModelSelectFrame import enable_edm_model, MODEL_NAMES
+from molass_legacy._MOLASS.Version import is_developing_version
+from molass_legacy.Selective.ModelSelectFrame import enable_edm_model, MODEL_NAMES
 
 class DecompEditorDialog(Dialog):
     def __init__(self, parent, title, sd, mapper, judge_holder, scrollable=False, debug=False):
@@ -36,18 +37,18 @@ class DecompEditorDialog(Dialog):
         set_setting('use_elution_models', 1)    # required to preview in this dialog
         self.global_fit = Tk.IntVar()
         self.global_fit.set(0)
-        self.global_fit.trace("w", self.global_fit_tracer)
+        self.global_fit.trace_add("write", self.global_fit_tracer)
         self.global_frames = [None, None]
 
     def get_model_list(self):
         if is_developing_version():
             from importlib import reload
-            import Models.ElutionCurveModels
-            import Models.RateTheory.EDM
-            import Models.Stochastic.Tripore
-            reload(Models.ElutionCurveModels)
-            reload(Models.RateTheory.EDM)
-            reload(Models.Stochastic.Tripore)
+            import molass_legacy.Models.ElutionCurveModels
+            import molass_legacy.Models.RateTheory.EDM
+            import molass_legacy.Models.Stochastic.Tripore
+            reload(molass_legacy.Models.ElutionCurveModels)
+            reload(molass_legacy.Models.RateTheory.EDM)
+            reload(molass_legacy.Models.Stochastic.Tripore)
         from molass_legacy.Models.ElutionCurveModels import EGHA, EMGA
         if enable_edm_model:
             from molass_legacy.Models.RateTheory.EDM import EDM
@@ -100,8 +101,8 @@ class DecompEditorDialog(Dialog):
     def body(self, default_body_frame, devel=True):
         if devel:
             from importlib import reload
-            import RangeEditors.DecompEditorFrame
-            reload(RangeEditors.DecompEditorFrame)
+            import molass_legacy.RangeEditors.DecompEditorFrame
+            reload(molass_legacy.RangeEditors.DecompEditorFrame)
         from .DecompEditorFrame import DecompEditorFrame
         set_icon( self )
 
@@ -172,9 +173,9 @@ class DecompEditorDialog(Dialog):
                 self.frames[k].pack_forget()
 
     def buttonbox(self, devel=False):
-        from Selective.ModelSelectFrame import ModelSelectFrame
-        from Selective.AdvancedFrame import AdvancedFrame
-        from Extrapolation.PreviewButtonFrame import PreviewButtonFrame
+        from molass_legacy.Selective.ModelSelectFrame import ModelSelectFrame
+        from molass_legacy.Selective.AdvancedFrame import AdvancedFrame
+        from molass_legacy.Extrapolation.PreviewButtonFrame import PreviewButtonFrame
 
         box = Tk.Frame(self)
         box.pack(fill=Tk.X)

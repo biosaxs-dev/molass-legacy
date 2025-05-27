@@ -15,8 +15,8 @@ if len(sys.argv) > 1 and sys.argv[1].find("demo") >= 0:
     sys.path.append(this_dir + '/..')
     import molass_legacy.KekLib, SerialAnalyzer
 
-import DebugPlot as plt
-from Optimizer.StructureFactorBounds import StructureFactorBounds
+import molass_legacy.KekLib.DebugPlot as plt
+from molass_legacy.Optimizer.StructureFactorBounds import StructureFactorBounds
 from Theory.SolidSphere import phi
 
 def demo(qv=None, lrf_info=None, gk_info=None):

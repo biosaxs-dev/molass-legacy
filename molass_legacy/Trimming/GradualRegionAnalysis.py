@@ -9,8 +9,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from OurMatplotlib import NavigationToolbar
-from OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
 from ScrolledFrame import ScrolledFrame
 from DataUtils import get_in_folder
 from molass_legacy.GuinierAnalyzer.SimpleGuinier import SimpleGuinier
@@ -31,7 +31,7 @@ class GradualRegionAnalysis(Dialog):
         cv = pre_recog.cs.get_uniformly_mapped_a_curve()
 
         if debug:
-            import DebugPlot as dplt
+            import molass_legacy.KekLib.DebugPlot as dplt
             x = xr_ecurve.x
             y = xr_ecurve.y
             with dplt.Dp():

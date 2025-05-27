@@ -7,8 +7,8 @@ import os
 import logging
 from importlib import reload
 from molass_legacy._MOLASS.WorkUtils import get_temp_folder
-from Optimizer.StateSequence import save_opt_params
-from Optimizer.OptimizerUtils import OptimizerResult
+from molass_legacy.Optimizer.StateSequence import save_opt_params
+from molass_legacy.Optimizer.OptimizerUtils import OptimizerResult
 
 prior_module_dict = {
 

@@ -1,16 +1,16 @@
 """
     BoundedLrfSolver.py
 
-    Copyright (c) 2023, SAXS Team, KEK-PF
+    Copyright (c) 2023-2025, SAXS Team, KEK-PF
 """
 import numpy as np
 from scipy.optimize import minimize
 from bisect import bisect_right
-import DebugPlot as plt
-from SvdDenoise import get_denoised_data
+import molass_legacy.KekLib.DebugPlot as plt
+from molass_legacy.DataStructure.SvdDenoise import get_denoised_data
 from molass_legacy.KekLib.SciPyCookbook import smooth
-from LRF.LrfRgUtils import compute_rg_from_qvDEP
-from Theory.SolidSphere import phi
+from molass_legacy.LRF.LrfRgUtils import compute_rg_from_qvDEP
+from molass_legacy.Theory.SolidSphere import phi
 from .ErrorCorrection import compute_corrected_error
 
 class BoundedLrfSolver:

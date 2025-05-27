@@ -15,13 +15,13 @@ from molass_legacy.AutorgKek.KekToolsGP import AutorgKek, ErrorResult
 from molass_legacy.AutorgKek.LightObjects import LightIntensity, LightResult
 from molass_legacy.AutorgKek.AtsasTools import autorg as autorg_atsas
 from molass_legacy.KekLib.ProgressInfo import put_info
-from ProgressInfoUtil import STREAM_GUINIER
-from AnalyzerUtil import make_guinier_result_stamp, exists_guinier_analysis_result
-from Reports.ReportUtils import get_header_record, make_record, make_guinier_analysis_book
+from .ProgressInfoUtil import STREAM_GUINIER
+from .AnalyzerUtil import make_guinier_result_stamp, exists_guinier_analysis_result
+from molass_legacy.Reports.ReportUtils import get_header_record, make_record, make_guinier_analysis_book
 from molass_legacy.GuinierAnalyzer.SimpleGuinier import QUALITY_BOUNDARY_QRG
 from molass_legacy.GuinierAnalyzer.AutorgKekAdapter import AutorgKekAdapter
 from molass_legacy.Test.Tester import compare_tester_rg
-from Reports.DefaultFont import set_default_font
+from molass_legacy.Reports.DefaultFont import set_default_font
 set_default_font()
 
 NUM_LATEST_RGS          = 5

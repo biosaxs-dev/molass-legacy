@@ -12,18 +12,18 @@ import numpy as np
 import queue
 import matplotlib.pyplot    as plt
 from matplotlib.backends.backend_tkagg  import FigureCanvasTkAgg
-from KillableThread import Thread
-from OurTkinter import Tk, Dialog, ttk, ScrolledText, is_empty_val
-from TkSupplements import set_icon
-from TkCustomWidgets import FileEntry, FolderEntry
-from ReadOnlyText import ReadOnlyText
-import CustomMessageBox as MessageBox
-from BasicUtils import mkdirs_with_retry
+from molass_legacy.KekLib.KillableThread import Thread
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog, ttk, ScrolledText, is_empty_val
+from molass_legacy.KekLib.TkSupplements import set_icon
+from molass_legacy.KekLib.TkCustomWidgets import FileEntry, FolderEntry
+from molass_legacy.KekLib.ReadOnlyText import ReadOnlyText
+import molass_legacy.KekLib.CustomMessageBox as MessageBox
+from molass_legacy.KekLib.BasicUtils import mkdirs_with_retry
 from molass_legacy._MOLASS.SerialSettings import get_setting
-from OurMatplotlib import get_color
+from molass_legacy.KekLib.OurMatplotlib import get_color
 from .DenssUtils import get_outfolder
-from NumpyUtils import np_loadtxt
-import DebugPlot as dplt
+from molass_legacy.KekLib.NumpyUtils import np_loadtxt
+import molass_legacy.KekLib.DebugPlot as dplt
 
 class StdoutRedirector:
     def __init__(self, queue):
@@ -496,15 +496,15 @@ class DenssGuiDialog(Dialog):
 
     def show_ed_viewer(self):
         print('show_ed_viewer')
-        from Saxs.EdViewer import EdViewer
-        from OurMatplotlib import reset_to_default_style
+        from molass_legacy.Saxs.EdViewer import EdViewer
+        from molass_legacy.KekLib.OurMatplotlib import reset_to_default_style
         viewer = EdViewer(self)
         viewer.show()
         reset_to_default_style()
 
     def illustrate_dmax(self):
         from .DmaxEstimation import illustrate_dmax
-        from DebugPlot import DialogWrapper
+        from molass_legacy.KekLib.DebugPlot import DialogWrapper
 
         with DialogWrapper(parent=self, window_title="Illustration"):
             fig, ax = dplt.subplots()

@@ -6,8 +6,8 @@
 """
 import numpy as np
 from .GaussianMixture import gm_curve
-from OurMatplotlib import get_color
-import DebugPlot as plt
+from molass_legacy.KekLib.OurMatplotlib import get_color
+import molass_legacy.KekLib.DebugPlot as plt
 
 SHOW_PROPORTIONS = False
 

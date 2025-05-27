@@ -7,7 +7,7 @@ from time import time
 import numpy as np
 from scipy import optimize
 from matplotlib.gridspec import GridSpec
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from SvdDenoise import get_denoised_data
 from molass_legacy.Models.ElutionCurveModels import (EGHA, EGH, egh, egh_x_from_height_ratio,
                                 EMGA, EMG, emg, emg_x_from_height_ratio)

@@ -13,8 +13,8 @@ from scipy.interpolate      import UnivariateSpline
 from scipy import optimize
 from scipy.spatial import distance
 import logging
-from BasicUtils             import Struct
-from molass_legacy.SerialAnalyzer.ElutionCurve           import ElutionCurve, PEAK_INFO_FIND_RATIO
+from molass_legacy.KekLib.BasicUtils import Struct
+from molass_legacy.SerialAnalyzer.ElutionCurve import ElutionCurve, PEAK_INFO_FIND_RATIO
 from molass_legacy.Elution.CurveUtils      import get_probably_corresponding_index
 from molass_legacy._MOLASS.SerialSettings         import ( get_setting, reset_setting, set_setting,
                                         UV_BASE_NO, UV_BASE_CONST,
@@ -23,15 +23,15 @@ from molass_legacy._MOLASS.SerialSettings         import ( get_setting, reset_se
                                         INTEGRAL_BASELINE
                                         )
 from .MappingParams import set_mapper_opt_params, get_mapper_opt_params, MappedInfo
-from ScatteringBaseCorrector    import compute_baseline_using_LPM_impl
-from molass_legacy.Baseline.ScatteringBaseline     import ScatteringBaseline
-from CanvasDialog           import CanvasDialog
-from molass_legacy.KekLib.ExceptionTracebacker   import ExceptionTracebacker, log_exception
-from AnimObjects            import AnimMapper
+from molass_legacy.SerialAnalyzer.ScatteringBaseCorrector import compute_baseline_using_LPM_impl
+from molass_legacy.Baseline.ScatteringBaseline import ScatteringBaseline
+from molass_legacy.KekLib.CanvasDialog import CanvasDialog
+from molass_legacy.KekLib.ExceptionTracebacker import ExceptionTracebacker, log_exception
+# from molass_legacy.SerialAnalyzer.AnimObjects import AnimMapper
 from .PeakMapper import PeakMapper
 from .SingleComponent       import SingleComponent, PEAK_EVAL_RANGE_RATIO
 from molass_legacy.UV.XrayProportional import make_proportional_mapping_info_impl
-import DebugPlot            as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 # EQUALIZE_OUTSIDE_OF_FC  = True
 ZEROS_TO_OUTSIDE_OF_FC  = True
@@ -1251,7 +1251,7 @@ class ElutionMapper:
 
         if False:
             from matplotlib.patches import Polygon
-            from OurMatplotlib      import get_default_colors
+            from molass_legacy.KekLib.OurMatplotlib      import get_default_colors
             print( 'x_area=', x_area, 'keep_positive=', keep_positive )
             colors = get_default_colors()
 

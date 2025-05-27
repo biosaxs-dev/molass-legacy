@@ -5,8 +5,8 @@
 """
 import numpy as np
 from scipy.optimize import minimize
-import DebugPlot as plt
-from DENSS.DenssUtils import fit_data
+import molass_legacy.KekLib.DebugPlot as plt
+from molass_legacy.DENSS.DenssUtils import fit_data
 from SvdDenoise import get_denoised_data
 
 def get_primary_scurve(qv, D, E, ecurve, width=11):

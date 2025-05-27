@@ -8,12 +8,12 @@ import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
 from matplotlib.patches import Rectangle
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from OurTkinter import Tk, Dialog, ttk
-from OurMatplotlib import NavigationToolbar
-from DataUtils import get_in_folder
-from molass_legacy.AutorgKekAdapter import AutorgKekAdapter
-from Env.EnvInfo import get_global_env_info
-from SaferSpinbox import SaferSpinbox 
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog, ttk
+from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar
+from molass_legacy.SerialAnalyzer.DataUtils import get_in_folder
+from molass_legacy.GuinierAnalyzer.AutorgKekAdapter import AutorgKekAdapter
+from molass_legacy.Env.EnvInfo import get_global_env_info
+from molass_legacy.KekLib.SaferSpinbox import SaferSpinbox 
 from molass_legacy.KekLib.ExceptionTracebacker import log_exception
 
 TITLE_FONTSIZE = 16
@@ -412,7 +412,7 @@ class RangeInspectorDialog(Dialog):
         ax.errorbar(x, rg, rg_error, fmt='o', markersize=5, capsize=3, elinewidth=3, mfc='black', color=color, label=label)
 
     def show_quality_warning(self):
-        import CustomMessageBox as MessageBox
+        import molass_legacy.KekLib.CustomMessageBox as MessageBox
         self.update()
         if self.conc_depend == 1:
             rank_mismatch_message = ".\n"
@@ -596,7 +596,7 @@ class RangeInspectorDialog(Dialog):
         if self.scattering_curve is None:
             ret = True
         else:
-            import CustomMessageBox as MessageBox
+            import molass_legacy.KekLib.CustomMessageBox as MessageBox
             interval, manip_info = self.manip_infos[-1]
             assert interval == self.last_range
             Rg, Rg_stdev, basic_quality = manip_info[0:3]
@@ -625,7 +625,7 @@ class RangeInspectorDialog(Dialog):
             return [j - self.j0 for j in self.last_range]
 
     def auto_inspection(self):
-        from AutoRangeInspector import AutoRangeInspector
+        from .AutoRangeInspector import AutoRangeInspector
         ari = AutoRangeInspector(self, self)
         ari.inspect()
 
@@ -650,7 +650,7 @@ class RangeInspectorDialog(Dialog):
             return
 
         if self.almerge_executer is None:
-            from ATSAS.Almerge import AlmergeExecutor
+            from molass_legacy.ATSAS.Almerge import AlmergeExecutor
             self.almerge_executer = AlmergeExecutor()
 
         slice_ = slice(start, stop)
@@ -661,7 +661,7 @@ class RangeInspectorDialog(Dialog):
         print('result.exz_array.shape', result.exz_array.shape)
         self.almerge_y = result.exz_array[:,1]/self.top_c
         if False:
-            import DebugPlot as dplt
+            import molass_legacy.KekLib.DebugPlot as dplt
             dplt.push()
             fig, ax = dplt.subplots()
             ax.set_yscale("log")

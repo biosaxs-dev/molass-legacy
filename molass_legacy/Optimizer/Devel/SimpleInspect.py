@@ -6,13 +6,13 @@
 import os
 import numpy as np
 import molass_legacy.KekLib.DebugPlot as plt
-from Optimizer.BasicOptimizer import UV_XR_RATIO_ALLOW
+from molass_legacy.Optimizer.BasicOptimizer import UV_XR_RATIO_ALLOW
 
 def simple_inspect_impl(optimizer, work_params):
     from importlib import reload
     import Optimizer.XrUvScaleRatio
     reload(Optimizer.XrUvScaleRatio)
-    from Optimizer.XrUvScaleRatio import xruv_scale_ratio_penalty
+    from molass_legacy.Optimizer.XrUvScaleRatio import xruv_scale_ratio_penalty
     print("simple_inspect_impl")
     xr_params, xr_baseparams, rg_params, (a, b), uv_params, uv_baseparams, (c, d), sdmcol_params = optimizer.split_params_simple(work_params)
 

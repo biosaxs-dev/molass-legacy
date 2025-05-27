@@ -9,7 +9,7 @@ from scipy.optimize import minimize
 from matplotlib.patches import Rectangle
 from time import time
 from molass_legacy.KekLib.SciPyCookbook import smooth
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from SvdDenoise import get_denoised_data
 from .SolidSphere import phi
 from .Rg import compute_corrected_Rg

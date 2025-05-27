@@ -5,7 +5,7 @@
 """
 import numpy as np
 from bisect import bisect_right
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from  MatrixData import simple_plot_3d
 from .Foldedness import Foldedness
 

@@ -6,7 +6,7 @@
 
 """
 from molass_legacy._MOLASS.SerialSettings import get_setting, set_setting, get_beamline_name
-from OurTkinter import Tk
+from molass_legacy.KekLib.OurTkinter import Tk
 
 class ConcFactorsEntry:
     def __init__(self, frame, grid_row):

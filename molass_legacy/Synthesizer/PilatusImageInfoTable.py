@@ -14,7 +14,7 @@ import logging
 import traceback
 from datetime               import datetime
 
-from OurTkinter             import Tk, ToolTip
+from molass_legacy.KekLib.OurTkinter             import Tk, ToolTip
 import OurMessageBox        as     MessageBox
 from TkTableWrapper         import ArrayVar, Table
 from ChangeableLogger       import Logger

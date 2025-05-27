@@ -7,8 +7,8 @@
 
 """
 
-from OurTkinter import Tk
-from TkUtils import adjusted_geometry, split_geometry, join_geometry
+from molass_legacy.KekLib.OurTkinter import Tk
+from molass_legacy.KekLib.TkUtils import adjusted_geometry, split_geometry, join_geometry
 
 class LinkedToplevel(Tk.Toplevel):
     def __init__(self, root, body=None):

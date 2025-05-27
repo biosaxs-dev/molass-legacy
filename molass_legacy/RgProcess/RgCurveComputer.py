@@ -9,8 +9,8 @@ import logging
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from OurTkinter import Tk, Dialog
-from Optimizer.TheUtils import get_optimizer_folder
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
+from molass_legacy.Optimizer.TheUtils import get_optimizer_folder
 
 class RgCurveComputerDialog(Dialog):
     def __init__(self, parent, dialog, jobno):
@@ -83,7 +83,7 @@ class RgCurveComputerDialog(Dialog):
 
     def dummy_simulation(self):
         import shutil
-        from Optimizer.OptDataSets import get_current_rg_folder
+        from molass_legacy.Optimizer.OptDataSets import get_current_rg_folder
 
         optimizer_folder = get_optimizer_folder()
         job000_folder = os.path.join(os.path.join(optimizer_folder, "jobs"), "000")

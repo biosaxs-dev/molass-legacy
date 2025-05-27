@@ -6,9 +6,9 @@
 import numpy as np
 from scipy.optimize import minimize
 from .JsPedersen1997 import F1, P6
-from Saxs.SaxsSamples import EllipsoidVoxels
-from Saxs.ReciprocalData import ReciprocalData
-import DebugPlot as plt
+from molass_legacy.Saxs.SaxsSamples import EllipsoidVoxels
+from molass_legacy.Saxs.ReciprocalData import ReciprocalData
+import molass_legacy.KekLib.DebugPlot as plt
 
 class Anisotropy:
     def __init__(self):

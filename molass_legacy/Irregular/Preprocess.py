@@ -4,7 +4,7 @@
     Copyright (c) 2022, SAXS Team, KEK-PF
 """
 import numpy as np
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 NEGATIVE_RATIO_LIMIT = 0.7  # < 0.85 for 20220716/lowSN_BSA_01
 

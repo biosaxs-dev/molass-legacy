@@ -9,8 +9,8 @@ import numpy as np
 from matplotlib.gridspec import GridSpec
 from matplotlib.patches import Polygon
 import matplotlib.animation as animation
-import DebugPlot as plt
-from OurMatplotlib import get_color
+import molass_legacy.KekLib.DebugPlot as plt
+from molass_legacy.KekLib.OurMatplotlib import get_color
 from .DiscretePdf import DiscretePdf
 
 def create_vertices(i, j):

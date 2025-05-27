@@ -6,7 +6,7 @@
 import numpy as np
 from scipy.optimize import minimize
 from bisect import bisect_right
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from SvdDenoise import get_denoised_data
 
 class NaiiveLrfSolver:

@@ -9,7 +9,7 @@ import numpy as np
 
 def pdb2crysol_impl(pdbid, out_folder):
     from Pdb.PypdbLite import get_pdb_file
-    from ATSAS.Crysol import CrysolExecutor
+    from molass_legacy.ATSAS.Crysol import CrysolExecutor
 
     ret = get_pdb_file(pdbid, filetype='pdb')
     pdb_file = pdbid + '.pdb'

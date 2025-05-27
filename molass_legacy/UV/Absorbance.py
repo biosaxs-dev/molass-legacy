@@ -8,19 +8,19 @@ import copy
 from scipy                  import stats
 from bisect                 import bisect_right
 import logging
-from ChangeableLogger       import arg_join
+from molass_legacy.KekLib.ChangeableLogger import arg_join
 # from lmfit                  import minimize, Parameters
-from LmfitThreadSafe        import minimize, Parameters
-from molass_legacy._MOLASS.SerialSettings         import get_setting, INTEGRAL_BASELINE
+from molass_legacy.KekLib.LmfitThreadSafe import minimize, Parameters
+from molass_legacy._MOLASS.SerialSettings import get_setting, INTEGRAL_BASELINE
 from molass_legacy.SerialAnalyzer.ElutionCurve           import ElutionCurve
-from molass_legacy.Baseline.ScatteringBaseline     import ScatteringBaseline
-from ScatteringBasecurve    import ScatteringBasecurve
-from ScatteringBasespline   import ScatteringBasespline
-from BasePlane              import LowPercentilePlane, LambertBeerPlane
-from molass_legacy.UVBaseSurface          import UvBaseSurface
-from molass_legacy.Test.TesterLogger      import write_to_tester_log
-from ThreeDimUtils          import compute_plane
-import DebugPlot as plt
+from molass_legacy.Baseline.ScatteringBaseline import ScatteringBaseline
+from molass_legacy.SerialAnalyzer.ScatteringBasecurve import ScatteringBasecurve
+from molass_legacy.SerialAnalyzer.ScatteringBasespline import ScatteringBasespline
+from molass_legacy.SerialAnalyzer.BasePlane import LowPercentilePlane, LambertBeerPlane
+from molass_legacy.SerialAnalyzer.UvBaseSurface import UvBaseSurface
+from molass_legacy.Test.TesterLogger import write_to_tester_log
+from molass_legacy.KekLib.ThreeDimUtils import compute_plane
+import molass_legacy.KekLib.DebugPlot as plt
 
 POSITVE_SMALL_VALUE     = 1e-5
 MIN_ASC_WIDTH           = 10
@@ -406,7 +406,7 @@ class Absorbance:
             lpp = LowPercentilePlane(self.data, self.wl_vector, self.a_vector, ix, iy, self.index, debug)
             params = lpp.get_params()
         else:
-            from molass_legacy.UV2dLpm import Uv2dLpm
+            from molass_legacy.SerialAnalyzer.Uv2dLpm import Uv2dLpm
             lpm = Uv2dLpm(self.a_vector, iy)
             params = lpm.get_params()
 

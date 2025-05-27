@@ -11,11 +11,11 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as mpl_patches
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from OurTkinter import Tk, Dialog, ttk, is_empty_val
-from OurMatplotlib import NavigationToolbar
-from TkSupplements import tk_set_icon_portable, BlinkingFrame
-from TkCustomWidgets import FolderEntry
-from TkUtils import is_low_resolution
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog, ttk, is_empty_val
+from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar
+from molass_legacy.KekLib.TkSupplements import tk_set_icon_portable, BlinkingFrame
+from molass_legacy.KekLib.TkCustomWidgets import FolderEntry
+from molass_legacy.KekLib.TkUtils import is_low_resolution
 from molass_legacy._MOLASS.SerialSettings import get_setting, get_xray_picking
 from DelayOptimizer import DelayOptimizer
 from molass_legacy._MOLASS.SerialSettings import set_setting

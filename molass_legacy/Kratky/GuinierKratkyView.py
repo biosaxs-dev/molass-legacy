@@ -266,15 +266,15 @@ class GuinierKratkyView(Dialog):
             from importlib import reload
             import Optimizer.SvdTutorial
             reload(Optimizer.SvdTutorial)
-        from Optimizer.SvdTutorial import SvdTutorial
+        from molass_legacy.Optimizer.SvdTutorial import SvdTutorial
 
         dialog = SvdTutorial(self.parent, self)
         dialog.show()
 
     def show_reducibility(self):
         import molass_legacy.KekLib.CustomMessageBox as MessageBox
-        from Optimizer.ElutionComposer import make_composites_from_deviations
-        from Optimizer.CompositeInfo import convert_for_display
+        from molass_legacy.Optimizer.ElutionComposer import make_composites_from_deviations
+        from molass_legacy.Optimizer.CompositeInfo import convert_for_display
 
         ratios = self.gk_info.compute_adjacent_deviation_ratios()
         composites = make_composites_from_deviations(ratios)

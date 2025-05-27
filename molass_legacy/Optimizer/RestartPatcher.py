@@ -99,7 +99,7 @@ def patch_and_restart_impl(caller, optimizer, init_params, jobname):
             from importlib import reload
             import Optimizer.Devel.DevMeasureInspect
             reload(Optimizer.Devel.DevMeasureInspect)
-            from Optimizer.Devel.DevMeasureInspect import dev_measure_inspect
+            from molass_legacy.Optimizer.Devel.DevMeasureInspect import dev_measure_inspect
             print("devtest_slider_params")
             dev_measure_inspect(optimizer, work_params)
 
@@ -107,7 +107,7 @@ def patch_and_restart_impl(caller, optimizer, init_params, jobname):
             from importlib import reload
             import Optimizer.Devel.CodePatch
             reload(Optimizer.Devel.CodePatch)
-            from Optimizer.Devel.CodePatch import code_patch
+            from molass_legacy.Optimizer.Devel.CodePatch import code_patch
             print("devtest_slider_params")
             current_folder = caller.get_curr_work_folder()      # in case of FullOptDialog
             code_patch(optimizer, work_params, current_folder)
@@ -126,7 +126,7 @@ def patch_and_restart_impl(caller, optimizer, init_params, jobname):
             from importlib import reload
             import Optimizer.Devel.SimpleInspect
             reload(Optimizer.Devel.SimpleInspect)
-            from Optimizer.Devel.SimpleInspect import simple_inspect_impl
+            from molass_legacy.Optimizer.Devel.SimpleInspect import simple_inspect_impl
             print("devtest_slider_params")
             simple_inspect_impl(optimizer, work_params)
 

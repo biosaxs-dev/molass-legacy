@@ -6,9 +6,9 @@
     Copyright (c) 2017-2019, SAXS Team, KEK-PF
 
 """
-from OurTkinter             import Tk, Dialog
-from TkSupplements          import tk_set_icon_portable
-from TkUtils                import is_low_resolution
+from molass_legacy.KekLib.OurTkinter             import Tk, Dialog
+from molass_legacy.KekLib.TkSupplements          import tk_set_icon_portable
+from molass_legacy.KekLib.TkUtils                import is_low_resolution
 from CanvasFrame            import CanvasFrame
 
 class InvestigatorDialog( Dialog ):

@@ -2,17 +2,17 @@
 
     StageSummary.py
 
-    Copyright (c) 2016-2023, SAXS Team, KEK-PF
+    Copyright (c) 2016-2025, SAXS Team, KEK-PF
 
 """
 import os
 from openpyxl import Workbook
-from Reports.ReportUtils import make_summary_book
+from molass_legacy.Reports.ReportUtils import make_summary_book
 from molass_legacy.KekLib.ExcelCOM import merge_into_a_book
 from molass_legacy.KekLib.ProgressInfo import put_info
-from ProgressInfoUtil import NUM_SHEET_TYPES, STREAM_ZERO_EX
+from .ProgressInfoUtil import NUM_SHEET_TYPES, STREAM_ZERO_EX
 from molass_legacy._MOLASS.SerialSettings import get_setting
-from Reports.DefaultFont import set_default_font
+from molass_legacy.Reports.DefaultFont import set_default_font
 set_default_font()
 
 def do_summary_stage(self):

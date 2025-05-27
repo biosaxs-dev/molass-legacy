@@ -17,7 +17,7 @@ import cv2
 from PIL            import ImageGrab
 from PIL            import Image    as ImagePIL
 
-from BasicUtils     import mkdirs_with_retry, clear_dirs_with_retry
+from molass_legacy.KekLib.BasicUtils     import mkdirs_with_retry, clear_dirs_with_retry
 from TestTkUtils    import split_geometry, geometry_fix
 from MachineTypes   import get_chassistype_name, get_display_resolution, get_monitors
 # from PilatusImage   import PilatusImage

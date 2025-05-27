@@ -6,9 +6,9 @@
 import numpy as np
 import molass_legacy.KekLib.DebugPlot as plt
 from molass_legacy.Peaks.ElutionModels import emg
-from Optimizer.TheDebugUtils import convert_score_list, plot_scores
+from molass_legacy.Optimizer.TheDebugUtils import convert_score_list, plot_scores
 from GuinierTools.RgCurveUtils import plot_rg_curves
-from Optimizer.FvScoreConverter import convert_score
+from molass_legacy.Optimizer.FvScoreConverter import convert_score
 
 USE_EMG_TR = False
 

@@ -37,7 +37,7 @@ class EdPlotter:
         s3y = m+s*3
 
         if False:
-            import DebugPlot as plt
+            import molass_legacy.KekLib.DebugPlot as plt
             plt.plot(d)
             plt.plot([0, len(d)-1], [m, m], ':')
             plt.plot([0, len(d)-1], [s3y, s3y], ':')
@@ -171,7 +171,7 @@ def ed_scatter(fig, axes, data, file):
     return esc
 
 def get_log_items(path):
-    from DENSS.DenssUtils import get_denss_log_items
+    from molass_legacy.DENSS.DenssUtils import get_denss_log_items
     return get_denss_log_items(path)
 
 def get_name_for_title(file):

@@ -36,7 +36,7 @@ def _pre_optimize_params(ecurve, xr_params, debug=False):
     ret = minimize(objective, (Ti, Np))
 
     if debug:
-        import DebugPlot as plt
+        import molass_legacy.KekLib.DebugPlot as plt
 
         with plt.Dp():
             fig, (ax0, ax1, ax2) = plt.subplots(ncols=3, figsize=(18,5))

@@ -9,13 +9,13 @@ import numpy                as np
 import copy
 import logging
 from matplotlib.patches     import Polygon
-from TkUtils                import is_low_resolution
+from molass_legacy.KekLib.TkUtils                import is_low_resolution
 from molass_legacy._MOLASS.SerialSettings         import get_setting, get_xray_picking, XARY_BASE_LINEAR, XARY_BASE_QUADRATIC, XARY_BASE_SPLINED
 from molass_legacy.SerialAnalyzer.ElutionBaseCurve       import ElutionBaseCurve
 from molass_legacy.Baseline.ScatteringBaseline     import ScatteringBaseline
 from ScatteringBasecurve    import ScatteringBasecurve
 from ScatteringBasespline   import ScatteringBasespline
-from Affine                 import Affine
+from molass_legacy.KekLib.Affine                 import Affine
 from DebugCanvas            import DebugCanvas
 from DevSettings            import get_dev_setting
 
@@ -98,7 +98,7 @@ def compute_baseline_using_LPM_impl(baseline_type, num_iterations, i, y, p_final
         baseline_total = temp_baseline
 
     if False:
-        import DebugPlot as plt
+        import molass_legacy.KekLib.DebugPlot as plt
         plt.plot( y )
         plt.plot( xray_baseline )
         plt.show()
@@ -215,7 +215,7 @@ class ScatteringBaseCorrector:
 
         self.logger.info( 'correct_all_q_planes done with p_finals %.3g-%.3g.', self.lpm_params[0][1], self.lpm_params[-1][1])
         if False:
-            import DebugPlot as plt
+            import molass_legacy.KekLib.DebugPlot as plt
             lpm_params = np.array(self.lpm_params)
             plt.push()
             fig, ax = plt.subplots()

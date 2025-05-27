@@ -6,7 +6,7 @@
 import numpy as np
 from scipy.optimize import minimize, root
 from scipy.stats import linregress
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from molass_legacy._MOLASS.SerialSettings import get_setting
 from molass_legacy.Peaks.ElutionModels import emg, egh
 from LPM import get_corrected

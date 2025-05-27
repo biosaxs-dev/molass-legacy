@@ -12,9 +12,9 @@
 """
 import matplotlib.pyplot                as plt
 from matplotlib.backends.backend_tkagg  import FigureCanvasTkAgg
-from OurTkinter                         import Tk, Dialog
-from TkUtils                            import split_geometry, is_low_resolution
-from OurMatplotlib                      import NavigationToolbar
+from molass_legacy.KekLib.OurTkinter                         import Tk, Dialog
+from molass_legacy.KekLib.TkUtils                            import split_geometry, is_low_resolution
+from molass_legacy.KekLib.OurMatplotlib                      import NavigationToolbar
 
 DEBUG = False
 

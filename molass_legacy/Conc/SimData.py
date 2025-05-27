@@ -6,9 +6,9 @@
 """
 from bisect import bisect_right
 import numpy as np
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from scipy.interpolate import UnivariateSpline, LSQUnivariateSpline
-from DENSS.DenssUtils import fit_data_impl
+from molass_legacy.DENSS.DenssUtils import fit_data_impl
 from molass_legacy.Models.ElutionCurveModels import emg
 
 class SimData:

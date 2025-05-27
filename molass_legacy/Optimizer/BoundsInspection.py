@@ -5,7 +5,7 @@
 """
 import os
 import numpy as np
-from OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
 from tksheet import Sheet
 
 class BoundsInspection(Dialog):

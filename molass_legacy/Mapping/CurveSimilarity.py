@@ -56,7 +56,7 @@ def compute_similarlity_factors(A, B, reg_info, a_curve, x_curve, reg_info_ref=N
     spline_vector = x_curve.y_for_spline
 
     if False:
-        import DebugPlot as plt
+        import molass_legacy.KekLib.DebugPlot as plt
         fig = plt.figure()
         ax = fig.gca()
         ax.plot(spline_vector, label='spline_vector')
@@ -251,7 +251,7 @@ class CurveSimilarity:
         scale = self.x_curve.max_y/self.orig_a_curve.max_y
         mapped_y = self.orig_a_curve.spline(j)*scale
         if False:
-            import DebugPlot as plt
+            import molass_legacy.KekLib.DebugPlot as plt
             from molass_legacy.Elution.CurveUtils import simple_plot
             plt.push()
             fig, axes = plt.subplots(nrows=1, ncols=3, figsize=(21,7))

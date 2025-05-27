@@ -10,7 +10,7 @@
 """
 from __future__ import division, print_function, unicode_literals
 
-from OurTkinter     import Tk, Dialog, ttk, tk_set_icon_portable
+from molass_legacy.KekLib.OurTkinter     import Tk, Dialog, ttk, tk_set_icon_portable
 import OurMessageBox    as MessageBox
 from Preferences    import get_preference, set_preference, save_preferences
 

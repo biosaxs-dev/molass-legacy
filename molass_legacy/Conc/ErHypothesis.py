@@ -12,10 +12,10 @@ from matplotlib.gridspec import GridSpec
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.patches import Rectangle
 from matplotlib.widgets import Button
-from OurTkinter import Tk, Dialog
-from TkUtils import split_geometry
-from TkSupplements import tk_set_icon_portable
-from OurMatplotlib import NavigationToolbar
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.TkUtils import split_geometry
+from molass_legacy.KekLib.TkSupplements import tk_set_icon_portable
+from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar
 from ModeledData import ModeledData
 from MatrixData import simple_plot_3d
 from molass_legacy.Models.ElutionCurveModels import emg_x_from_height_ratio
@@ -197,7 +197,7 @@ class ErHypothesisDialog(Dialog):
             ax_.plot(self.qvector, b, color='pink', label='$B_2$')
 
     def solve_several_ways(self):
-        import DebugPlot as dplt
+        import molass_legacy.KekLib.DebugPlot as dplt
 
         if self.conc < 0.5:
             rank_pairs = [(1, 1), (2, 1), (2, 2), (3, 2), (0, 1), (0, 2)]
@@ -278,8 +278,8 @@ class ErHypothesisDialog(Dialog):
 
     def save_data(self, out_folder=None):
         from DataUtils import get_pytools_folder
-        from BasicUtils import clear_dirs_with_retry
-        from NumpyUtils import np_savetxt
+        from molass_legacy.KekLib.BasicUtils import clear_dirs_with_retry
+        from molass_legacy.KekLib.NumpyUtils import np_savetxt
 
         if out_folder is None:
             out_folder = get_pytools_folder() + '/temp'

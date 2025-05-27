@@ -7,7 +7,7 @@
 import logging
 import numpy as np
 from matplotlib.gridspec import GridSpec
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from molass_legacy.Trimming.PreliminaryRecognition import PreliminaryRecognition
 
 def concatinate_data(pre_recog, X, U):

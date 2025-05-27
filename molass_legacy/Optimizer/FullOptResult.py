@@ -171,7 +171,7 @@ class FullOptResult:
         return os.path.join(self.optimizer_folder, "rg-curve")
 
     def get_init_info(self):
-        from Optimizer.InitialInfo import InitialInfo
+        from molass_legacy.Optimizer.InitialInfo import InitialInfo
         return InitialInfo(result=self)
 
     def get_demo_index(self):
@@ -208,7 +208,7 @@ class FullOptResult:
         return self.x_list[self.best_index]
 
     def get_result_iterator(self, all=False):
-        from Optimizer.ParamsIterator import create_iterator
+        from molass_legacy.Optimizer.ParamsIterator import create_iterator
         if all:
             for i, params in enumerate(self.x_list):
                 yield i, params
@@ -223,7 +223,7 @@ class FullOptResult:
 
 def get_result_from_workfolder(workfolder, replace_specs=None):
     from molass_legacy._MOLASS.SerialSettings import set_setting
-    from Batch.LiteBatch import LiteBatch
+    from molass_legacy.Batch.LiteBatch import LiteBatch
     from molass_legacy.Trimming.PreliminaryRecognition import PreliminaryRecognition
 
     in_data_path = os.path.join(workfolder, FILES[1])

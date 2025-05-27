@@ -4,7 +4,7 @@
     Copyright (c) 2021-2023, SAXS Team, KEK-PF
 """
 import numpy as np
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 class ColumnInterp:
     def __init__(self, D, j0=None):

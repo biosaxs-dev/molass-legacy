@@ -5,7 +5,7 @@
 """
 from molass_legacy._MOLASS.SerialSettings import clear_temporary_settings, set_setting
 import molass_legacy.KekLib.DebugPlot as plt
-from Batch.LiteBatch import LiteBatch     
+from molass_legacy.Batch.LiteBatch import LiteBatch     
 
 class MappingBatch(LiteBatch):
     def __init__(self, mapping_src):
@@ -17,7 +17,7 @@ class MappingBatch(LiteBatch):
             from importlib import reload
             import Batch.BatchMappingImpl
             reload(Batch.BatchMappingImpl)
-            from Batch.BatchMappingImpl import show_mapped_result_impl
+            from molass_legacy.Batch.BatchMappingImpl import show_mapped_result_impl
             show_mapped_result_impl(self, uv_x, uv_y_, xr_x, xr_y_, debug=debug)
 
         if debug:

@@ -11,12 +11,12 @@ from matplotlib.patches import Polygon
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import mpl_toolkits.mplot3d.art3d as art3d
 from matplotlib import animation
-from OurTkinter import Tk, Dialog
-from TkSupplements import tk_set_icon_portable
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.TkSupplements import tk_set_icon_portable
 from OurManim import manim_init
 from OurMatplotlib3D import pathpatch_2d_to_3d, pathpatch_translate, plot_parallelogram3d, plot_parallelepiped
-from OurMatplotlib import NavigationToolbar
-import DebugPlot as plt
+from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar
+import molass_legacy.KekLib.DebugPlot as plt
 
 def spike():
     manim_init()
@@ -55,7 +55,7 @@ def spike():
 class MpInverseAnim3D(Dialog):
     def __init__(self, parent=None):
         if parent is None:
-            from TkUtils import get_tk_root
+            from molass_legacy.KekLib.TkUtils import get_tk_root
             parent = get_tk_root()
         self.parent = parent
         self.manipulating = False
@@ -243,7 +243,7 @@ class MpInverseAnim3D(Dialog):
 
     def save(self):
         import os
-        import CustomMessageBox as MessageBox
+        import molass_legacy.KekLib.CustomMessageBox as MessageBox
         path = os.path.join(os.getcwd(), "anim.mp4")
         self.anim.save(path, writer="ffmpeg")
         MessageBox.showinfo("Save Notification", 'The movie has been saved to "%s"' % path, parent=self)

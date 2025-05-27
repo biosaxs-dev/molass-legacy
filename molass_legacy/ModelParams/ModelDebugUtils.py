@@ -3,7 +3,7 @@
 
     Copyright (c) 2022, SAXS Team, KEK-PF
 """
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 def model_plot(x, y, xr_cy_list, xr_ty, uv_x, uv_y, uv_cy_list, uv_ty):
 

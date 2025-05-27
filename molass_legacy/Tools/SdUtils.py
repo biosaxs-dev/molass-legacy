@@ -6,7 +6,7 @@
 
 def get_sd(in_folder, trimming=True, correction=True):
     from molass_legacy._MOLASS.SerialSettings import set_setting
-    from Batch.StandardProcedure import StandardProcedure
+    from molass_legacy.Batch.StandardProcedure import StandardProcedure
     from molass_legacy.Trimming.PreliminaryRecognition import PreliminaryRecognition
     from molass_legacy.Baseline.BaselineUtils import get_corrected_sd_impl
 

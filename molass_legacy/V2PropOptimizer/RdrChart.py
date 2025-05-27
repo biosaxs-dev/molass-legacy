@@ -4,7 +4,7 @@
     Copyright (c) 2024, SAXS Team, KEK-PF
 """
 import numpy as np
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 def draw_rdr_chart(title, rdr, devel=True):
     indeces = [str(i) for i in range(len(rdr))]

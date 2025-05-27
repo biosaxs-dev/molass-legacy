@@ -13,7 +13,7 @@ from sklearn import mixture
 import MatplotlibUtils          # required for annotate3D
 from molass_legacy.Peaks.ElutionModels import egh
 from Prob.GaussianMixture import gaussian_pdf
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from RgProcess.RgCurve import make_availability_slices
 from .SpikeData import generate_demo_data, FULL_PARAMS, normal_pdf
 from .RggUtils import convert_to_probabilitic_data, plot_histogram_2d
@@ -166,7 +166,7 @@ def spike_demo_impl(data_list, num_components=None, num_precision=100):
     return gmm
 
 def spike_demo_real(in_folder, num_components=3, correction=True, use_peaks=False):
-    from Batch.StandardProcedure import StandardProcedure
+    from molass_legacy.Batch.StandardProcedure import StandardProcedure
     from RgProcess.RgCurve import RgCurve
 
     sp = StandardProcedure()

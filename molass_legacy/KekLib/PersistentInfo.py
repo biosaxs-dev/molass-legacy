@@ -16,7 +16,7 @@ else:
     read_open_mode  = 'r'
     write_open_mode = 'w'
 
-from BasicUtils     import home_dir, exe_name
+from molass_legacy.KekLib.BasicUtils     import home_dir, exe_name
 
 def kek_tools_folder():
     return '%s/.KekTools' % ( home_dir() )
@@ -63,7 +63,7 @@ class PersistentInfo:
                 self.alt_folder = alt_folder
             except:
                 try:
-                    import CustomMessageBox as MessageBox
+                    import molass_legacy.KekLib.CustomMessageBox as MessageBox
                 except:
                     import OurMessageBox as MessageBox
                 try:
@@ -108,7 +108,7 @@ class PersistentInfo:
                     pass
                 else:
                     try:
-                        import CustomMessageBox as MessageBox
+                        import molass_legacy.KekLib.CustomMessageBox as MessageBox
                     except:
                         import OurMessageBox as MessageBox
                     MessageBox.showwarning( 'Broken Settings Notification',

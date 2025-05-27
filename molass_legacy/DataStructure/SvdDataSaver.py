@@ -5,12 +5,12 @@
     Copyright (c) 2019, SAXS Team, KEK-PF
 """
 import os
-from OurTkinter import Tk, Dialog
-from TkSupplements import tk_set_icon_portable
-from TkCustomWidgets import FolderEntry
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.TkSupplements import tk_set_icon_portable
+from molass_legacy.KekLib.TkCustomWidgets import FolderEntry
 from molass_legacy._MOLASS.SerialSettings import get_setting
-from BasicUtils import mkdirs_with_retry
-from NumpyUtils import np_savetxt
+from molass_legacy.KekLib.BasicUtils import mkdirs_with_retry
+from molass_legacy.KekLib.NumpyUtils import np_savetxt
 
 class SvdDataSaverDialog(Dialog):
     def __init__(self, parent, data_name, svd_results, num_components, location=None):
@@ -88,7 +88,7 @@ class SvdDataSaverDialog(Dialog):
         n = self.num_components.get()
 
         if False:
-            import DebugPlot as plt
+            import molass_legacy.KekLib.DebugPlot as plt
             fig = plt.figure()
             ax = fig.gca()
             axt = ax.twinx()

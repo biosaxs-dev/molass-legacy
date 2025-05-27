@@ -6,7 +6,7 @@
 
 """
 import numpy as np
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from molass_legacy.SerialAnalyzer.ElutionCurve import ElutionCurve
 from molass_legacy.Elution.CurveUtils import simple_plot
 

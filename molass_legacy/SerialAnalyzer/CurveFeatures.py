@@ -11,7 +11,7 @@
 import numpy as np
 import logging
 from scipy.interpolate import UnivariateSpline, LSQUnivariateSpline
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 PEAK_TOP_WEIGHT     = 1.0
 MAJOR_POINT_WEIGHT  = 0.5      # MAJOR_POINT_WEIGHT==OTHER_POINT_WEIGHT for 20190305_2

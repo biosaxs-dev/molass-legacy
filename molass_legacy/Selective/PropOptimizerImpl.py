@@ -85,7 +85,7 @@ class RangeRgComputer:
                 start = int(np.mean(region_array[:,1,0]))
                 stop = int(np.mean(region_array[:,1,1]))
                 if debug:
-                    import DebugPlot as plt
+                    import molass_legacy.KekLib.DebugPlot as plt
                     with plt.Dp():
                         fig, ax = plt.subplots()
                         ax.set_title("region_list debug")

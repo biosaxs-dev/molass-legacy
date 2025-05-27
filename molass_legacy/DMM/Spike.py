@@ -7,7 +7,7 @@
 from time import time
 import numpy as np
 from molass_legacy.Peaks.ElutionModels import egh
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from .dmm import DMM
 from Prob.GaussianMixture import hist_to_source
 
@@ -39,7 +39,7 @@ def spike_demo_impl(x, y, num_compoments=None):
     plt.pop()
 
 def spike_demo_real(in_folder):
-    from Batch.StandardProcedure import StandardProcedure
+    from molass_legacy.Batch.StandardProcedure import StandardProcedure
     sp = StandardProcedure()
     sp.load(in_folder, debug=False)
     sd = sp.get_sd()

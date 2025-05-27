@@ -6,7 +6,7 @@
 import logging
 import numpy as np
 from scipy.stats import linregress
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from molass_legacy.KekLib.SciPyCookbook import smooth
 from molass_legacy.KekLib.ExceptionTracebacker import log_exception
 from .PeakRegion import PeakRegion
@@ -378,7 +378,7 @@ class FlowChange:
                 test_pattern = get_setting("test_pattern")
                 if test_pattern is None and not self.special_case_warned:
                     try:
-                        import CustomMessageBox as MessageBox
+                        import molass_legacy.KekLib.CustomMessageBox as MessageBox
                         from molass_legacy._MOLASS.Version import get_version_string
                         parent = plt.get_parent()       # note that enable_debug_plot==1 and this parent it the main dialog
                         if get_version_string().find("_MOLASS 1") >= 0:

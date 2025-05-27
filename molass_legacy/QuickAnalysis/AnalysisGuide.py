@@ -30,7 +30,7 @@ class AnalysisGuide:
             better sigma points by considering asymmetry
         """
         if debug:
-            import DebugPlot as plt
+            import molass_legacy.KekLib.DebugPlot as plt
             x = self.mapper.x_curve.x
             y = self.mapper.x_curve.y
             fig = plt.figure()

@@ -7,7 +7,7 @@ import os
 import numpy as np
 
 def make_twin_callback_txt(params_type, i, in_file, out_file):
-    from Optimizer.StateSequence import read_callback_txt_impl, save_opt_params
+    from molass_legacy.Optimizer.StateSequence import read_callback_txt_impl, save_opt_params
     fv_list, x_list = read_callback_txt_impl(in_file)
     fh = open(out_file, 'w')
     for j, (fv_rec, params) in enumerate(zip(fv_list, x_list)):

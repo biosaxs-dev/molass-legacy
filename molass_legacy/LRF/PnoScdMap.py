@@ -43,7 +43,7 @@ class PnoScdMap:
         self.scd_colors = scd_colors
         self.logger.info("pno_map=%s, scd_colors=%s", str(pno_map), str(scd_colors))
         if debug:
-            import DebugPlot as plt
+            import molass_legacy.KekLib.DebugPlot as plt
             ecurve = sd.xray_curve
             x = ecurve.x
             y = ecurve.y

@@ -54,7 +54,7 @@ def plot_column_legend(ax, poresizes, colors):
         ax.text(R+x+0.2, R+y, "Poresize: %3.0f" % size, va="center", fontsize=16)
 
 def demo():
-    import DebugPlot as plt
+    import molass_legacy.KekLib.DebugPlot as plt
 
     fig, (ax1, ax2, ax3, ax4) = plt.subplots(ncols=4, figsize=(18,4.5))
 

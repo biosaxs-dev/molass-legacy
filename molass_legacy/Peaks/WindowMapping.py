@@ -10,13 +10,13 @@ if USE_BASINHOPPING:
     from scipy.optimize import basinhopping
 else:
     from scipy.optimize import minimize
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from molass_legacy.QuickAnalysis.PeakUtils import recognize_peaks
 from molass_legacy.Peaks.ElutionModels import egh
 
 def demo(parent, in_folder):
     from molass_legacy._MOLASS.SerialSettings import set_setting
-    from Batch.StandardProcedure import StandardProcedure
+    from molass_legacy.Batch.StandardProcedure import StandardProcedure
     from molass_legacy.Elution.CurveUtils import simple_plot
 
     sp = StandardProcedure()

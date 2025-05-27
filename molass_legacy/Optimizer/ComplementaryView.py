@@ -9,14 +9,14 @@ import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from bisect import bisect_right
-from OurTkinter import Tk, Dialog
-from OurMatplotlib import NavigationToolbar
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar
 from molass_legacy._MOLASS.SerialSettings import get_setting
 from DataUtils import get_in_folder
-from BasicUtils import ordinal_str
+from molass_legacy.KekLib.BasicUtils import ordinal_str
 from .LrfExporter import LrfExporter
-from AnalyzerUtil import compute_conc_factor_util
-from Saxs.SaxsCurveUtils import percentile_normalize
+from molass_legacy.SerialAnalyzer.AnalyzerUtil import compute_conc_factor_util
+from molass_legacy.Saxs.SaxsCurveUtils import percentile_normalize
 from molass_legacy._MOLASS.Version import is_developing_version
 
 TOGGLE_BUTTON_TEXTS = ["Show", "Hide"]
@@ -263,7 +263,7 @@ class ComplementaryView(Dialog):
             return
 
         if event.button == 3:
-            from TkUtils import split_geometry
+            from molass_legacy.KekLib.TkUtils import split_geometry
             self.create_popup_menu(event)
             rootx = self.winfo_rootx()
             rooty = self.winfo_rooty()

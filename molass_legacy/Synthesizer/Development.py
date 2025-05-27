@@ -26,7 +26,7 @@ DEFAULT_DEVELOPER_OPTIONS = {
 development_info    = PersistentInfo( 'development.dump', DEFAULT_DEVELOPER_OPTIONS )
 development_        = development_info.get_dictionary()
 
-from OurTkinter import Tk, Dialog, tk_set_icon_portable
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog, tk_set_icon_portable
 
 DEBUG = False
 

@@ -12,7 +12,7 @@ import subprocess
 from OurSubprocess          import exec_subprocess
 from molass_legacy._MOLASS.SerialSettings         import get_setting
 from Result                 import Result
-from ATSAS.AutoRg import autorg_exe_array
+from molass_legacy.ATSAS.AutoRg import autorg_exe_array
 
 dataline_re = re.compile( r'^\s*\d' )
 
@@ -91,7 +91,7 @@ class AlmergeExecutor:
         return Result( exz_array=exz_array, overlap_from_max=overlap_from_max )
 
     def execute_matrix(self, q, M, E, c_vector, out_file=None):
-        from NumpyUtils import np_savetxt
+        from molass_legacy.KekLib.NumpyUtils import np_savetxt
 
         temp_folder = get_setting('temp_folder')
         datafiles = []

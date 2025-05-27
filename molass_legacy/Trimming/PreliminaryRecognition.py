@@ -324,7 +324,7 @@ class PreliminaryRecognition:
         res_params = np.array( [A, B-shift])
 
         if False:
-            import DebugPlot as plt
+            import molass_legacy.KekLib.DebugPlot as plt
             uv_curve = self.pre_recog_copy.absorbance.a_curve
             xray_curve = self.pre_recog_copy.xray_curve
             fig, axes = plt.subplots(nrows=1, ncols=2, figsize=(14,7))

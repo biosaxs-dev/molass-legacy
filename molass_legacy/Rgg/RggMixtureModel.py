@@ -15,7 +15,7 @@ from pomegranate import *
 from .RggEghDistribution import RggEghDistribution
 from Rgg.RggUtils import convert_to_probabilitic_data
 from .Callbacks import VisualizationtCallback
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 USE_RG = True
 if not USE_RG:

@@ -7,7 +7,7 @@ import numpy as np
 from mpl_toolkits.mplot3d import Axes3D 
 # import matplotlib.pyplot as plt 
 import matplotlib.animation as animation
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from OurManim import manim_init
 
 def spike():

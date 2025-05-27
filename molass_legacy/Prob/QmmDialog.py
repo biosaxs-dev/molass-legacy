@@ -11,9 +11,9 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.patches import Polygon
 import matplotlib.ticker as ticker
-from OurTkinter import Tk, Dialog
-from OurMatplotlib import NavigationToolbar, get_color
-import DebugPlot as dplt
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar, get_color
+import molass_legacy.KekLib.DebugPlot as dplt
 from OurPlotUtils import draw_as_image
 from DataUtils import get_in_folder
 from .GroupingMatrix import GroupingMatrix, num_to_char
@@ -25,7 +25,7 @@ DISTINCTION_Q = 0.15
 DISTINCTION_WL = 220
 APPLY_DENSS_FIT = True
 if APPLY_DENSS_FIT:
-    from DENSS.DenssUtils import fit_data
+    from molass_legacy.DENSS.DenssUtils import fit_data
 
 class QmmDialog(Dialog):
     def __init__(self, parent, controller, **kwargs):
@@ -150,7 +150,7 @@ class QmmFrame(Tk.Frame):
             return
 
         if event.button == 3:
-            from TkUtils import split_geometry
+            from molass_legacy.KekLib.TkUtils import split_geometry
             self.create_popup_menu()
             w, h, x, y = split_geometry(self.dialog.geometry())
             self.popup_menu.post(x + event.x + 20, y + h - event.y - 50)
@@ -566,8 +566,8 @@ class QmmFrame(Tk.Frame):
 
     def add_rg_values_from_v1_result(self, ax):
         from DataUtils import get_pytools_folder
-        from Reports.ReportUtils import just_load_guinier_result
-        from NumpyUtils import np_loadtxt
+        from molass_legacy.Reports.ReportUtils import just_load_guinier_result
+        from molass_legacy.KekLib.NumpyUtils import np_loadtxt
         report_folder = get_pytools_folder() + '/reports/20180602'
         # report_folder = get_pytools_folder() + '/reports/sample_data'
         guinier_result_csv = report_folder + '/.guinier_result/--serial_result.csv'

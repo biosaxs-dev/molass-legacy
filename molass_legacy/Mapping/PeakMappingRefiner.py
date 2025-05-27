@@ -16,9 +16,9 @@ import OurStatsModels   as sm
 from molass_legacy.SerialAnalyzer.ElutionCurve       import ElutionCurve
 from molass_legacy.Elution.CurveUtils  import simple_plot
 from molass_legacy.KekLib.SciPyCookbook      import smooth
-from BasicUtils         import Struct
+from molass_legacy.KekLib.BasicUtils         import Struct
 from molass_legacy.KekLib.ExceptionTracebacker import ExceptionTracebacker
-import DebugPlot        as plt
+import molass_legacy.KekLib.DebugPlot        as plt
 
 NUM_ROOTS_TO_AVOID_NOISE    = 5     # dupicate
 

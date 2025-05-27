@@ -51,7 +51,7 @@ def submit(job_info):
 class DenssManager:
     def __init__(self, log_folder, use_gpu):
         from multiprocessing import Pool, Manager
-        from BasicUtils import rename_existing_file
+        from molass_legacy.KekLib.BasicUtils import rename_existing_file
         from ChangeableLogger import Logger
         log_path = log_folder+'/denss_manager.log'
         rename_existing_file(log_path, ext=".log")

@@ -4,7 +4,7 @@
     Copyright (c) 2024, SAXS Team, KEK-PF
 """
 
-from OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
 from MenuButton import MenuButton
 
 class PropOptMenu(Tk.Frame):

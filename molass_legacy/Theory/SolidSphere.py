@@ -8,7 +8,7 @@ from scipy.integrate import quad
 from scipy.special import spherical_jn
 from scipy.interpolate import UnivariateSpline
 from scipy.optimize import minimize
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 def f_imp(s, R):
 

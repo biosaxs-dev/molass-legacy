@@ -9,7 +9,7 @@
 import numpy as np
 from molass_legacy.Models.ElutionCurveModels import emg
 from DataModels import GuinierPorod
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from MatrixData import simple_plot_3d
 
 class ModeledData:

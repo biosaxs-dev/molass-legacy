@@ -1,17 +1,14 @@
 """
     RgProcess.RgCurveProxy.py
 
-    Copyright (c) 2022-2024, SAXS Team, KEK-PF
+    Copyright (c) 2022-2025, SAXS Team, KEK-PF
 """
 import os
 import logging
 from time import time
 import numpy as np  # used in the eval, in cases where the value is like 'np.int64(140)'
-from importlib import reload
-import RgProcess.RgCurve
-reload(RgProcess.RgCurve)
-from RgProcess.RgCurve import RgCurve
 from numpy import array, int64      # array and int64 are referenced during the eval below
+from molass_legacy.RgProcess.RgCurve import RgCurve
 from molass_legacy.Trimming import TrimmingInfo   # used in eval_file
 
 class RgCurveProxy(RgCurve):

@@ -12,7 +12,7 @@ import os
 import numpy            as np
 from scipy.stats        import norm
 from bisect             import bisect_right
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 TABLE_SIZE          = 100
 N_SCALE             = 0.01

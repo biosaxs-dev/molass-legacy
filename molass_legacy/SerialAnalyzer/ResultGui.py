@@ -1,4 +1,3 @@
-# coding: utf-8
 """
     ResultGui.py
 
@@ -7,18 +6,17 @@
 
 import os
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from OurTkinter             import Tk
-from TkUtils                import adjusted_geometry
-from TkSupplements          import tk_set_icon_portable
+from molass_legacy.KekLib.OurTkinter import Tk
+from molass_legacy.KekLib.TkUtils import adjusted_geometry
+from molass_legacy.KekLib.TkSupplements import tk_set_icon_portable
 from molass_legacy.AutorgKek.AtsasTools import autorg as autorg_atsas
 # from KekToolsGP             import autorg   as autorg_kekpf
-import GuinierAnalyzer
-from molass_legacy.AutorgKekAdapter       import AutorgKekAdapter
-from ProofPlot              import Plotter
-from ResultTable            import ResultTable
-from molass_legacy._MOLASS.SerialSettings         import get_setting
-from TextShowDialog         import TextShowDialog
-from NumpyUtils             import np_savetxt
+from molass_legacy.GuinierAnalyzer.AutorgKekAdapter import AutorgKekAdapter
+from molass_legacy.SerialAnalyzer.ProofPlot import Plotter
+from molass_legacy.SerialAnalyzer.ResultTable import ResultTable
+from molass_legacy._MOLASS.SerialSettings import get_setting
+from molass_legacy.KekLib.TextShowDialog import TextShowDialog
+from molass_legacy.KekLib.NumpyUtils import np_savetxt
 
 class ResultGui( Tk.Toplevel ):
     def __init__( self, parent, folder, file, np_array=None, atsas_exe_index=0,

@@ -9,9 +9,9 @@ import numpy as np
 from mpl_toolkits.mplot3d   import Axes3D
 from matplotlib.collections import PolyCollection
 from LmfitThreadSafe        import minimize, Parameters
-from OurTkinter             import Tk, Dialog
+from molass_legacy.KekLib.OurTkinter             import Tk, Dialog
 from CanvasFrame            import CanvasFrame
-from TkUtils                import is_low_resolution
+from molass_legacy.KekLib.TkUtils                import is_low_resolution
 from DataModels             import _GuinierPorod
 
 USE_GUNIER_POROD_MODEL  = True

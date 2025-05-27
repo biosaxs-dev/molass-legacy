@@ -12,7 +12,7 @@ from mpl_toolkits.mplot3d import proj3d
 import matplotlib.animation as animation
 from shapely.geometry import LineString, Point
 from descartes import PolygonPatch
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 """
 From:

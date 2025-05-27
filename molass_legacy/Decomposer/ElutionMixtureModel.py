@@ -16,7 +16,7 @@ try:
 except:
     from numba.decorators import jit
 from lmfit import minimize, Parameters
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 @jit(nopython=True)
 def generate_samples(x, y, n):

@@ -5,8 +5,8 @@
     Copyright (c) 2018, Masatsuyo Takahashi, KEK-PF
 """
 import numpy as np
-from OurTkinter         import Tk, Dialog
-from TkUtils            import is_low_resolution
+from molass_legacy.KekLib.OurTkinter         import Tk, Dialog
+from molass_legacy.KekLib.TkUtils            import is_low_resolution
 from CanvasFrame        import CanvasFrame
 from DriftAnalyzer      import DriftAnalyzer
 from DataModels         import _GuinierPorod

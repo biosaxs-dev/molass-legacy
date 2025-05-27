@@ -9,7 +9,7 @@ from bisect import bisect_right
 from scipy.stats import linregress
 from scipy.interpolate import UnivariateSpline
 from matplotlib.patches import Rectangle
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from Theory.SolidSphere import phi
 
 def demo_impl(sd, f, t):
@@ -21,7 +21,7 @@ def demo_impl(sd, f, t):
     import BoundedLRF.BoundedLrfSolver
     reload(BoundedLRF.BoundedLrfSolver)
     from .BoundedLrfSolver import BoundedLrfSolver
-    from DENSS.DenssUtils import fit_data
+    from molass_legacy.DENSS.DenssUtils import fit_data
 
     print("demo_impl")
 

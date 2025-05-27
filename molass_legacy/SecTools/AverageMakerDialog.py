@@ -7,15 +7,15 @@
 import os
 import re
 import logging
-from OurTkinter import Tk, Dialog, ttk, is_empty_val
-from TkSupplements import tk_set_icon_portable, BlinkingFrame
-from TkCustomWidgets import FolderEntry
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog, ttk, is_empty_val
+from molass_legacy.KekLib.TkSupplements import tk_set_icon_portable, BlinkingFrame
+from molass_legacy.KekLib.TkCustomWidgets import FolderEntry
 try:
-    import CustomMessageBox         as MessageBox
+    import molass_legacy.KekLib.CustomMessageBox         as MessageBox
 except:
     import OurMessageBox            as MessageBox
 from SerialDataUtils import get_xray_files
-from BasicUtils import clear_dirs_with_retry, num_files_in
+from molass_legacy.KekLib.BasicUtils import clear_dirs_with_retry, num_files_in
 from .DataAverager import average_impl
 
 class AverageMakerDialog(Dialog):

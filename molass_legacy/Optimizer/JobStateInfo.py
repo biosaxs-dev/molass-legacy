@@ -55,7 +55,7 @@ class JobStateInfo:
     def get_optlogfile(self):
         if self.optlogfile is None:
             from molass_legacy._MOLASS.SerialSettings import get_setting
-            from Optimizer.OptLogFile import OptLogFile
+            from molass_legacy.Optimizer.OptLogFile import OptLogFile
             work_folder = get_setting("optworking_folder")
             path = os.path.join(work_folder, 'optimizer.log')
             self.optlogfile = OptLogFile(path)

@@ -178,7 +178,7 @@ class OptimalTrimming:
 
 def spike(in_folder, logger, debug=False):
     from molass_legacy._MOLASS.SerialSettings import set_setting
-    from Batch.StandardProcedure import StandardProcedure
+    from molass_legacy.Batch.StandardProcedure import StandardProcedure
     from molass_legacy.Trimming.PreliminaryRecognition import PreliminaryRecognition
 
     set_setting("in_folder", in_folder)

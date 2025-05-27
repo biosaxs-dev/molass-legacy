@@ -1,13 +1,13 @@
 """
     Models/RateTheory/EDM.py
 
-    Copyright (c) 2023-2024, SAXS Team, KEK-PF
+    Copyright (c) 2023-2025, SAXS Team, KEK-PF
 """
 import numpy as np
 from scipy.optimize import minimize, basinhopping
 from matplotlib.widgets import Slider, Button
 import molass_legacy.KekLib.DebugPlot as plt
-from SecTheory.Edm import edm_func
+from molass_legacy.SecTheory.Edm import edm_func
 from molass_legacy.QuickAnalysis.ModeledPeaks import recognize_peaks
 from molass_legacy.Models.ElutionCurveModels import egha
 from molass_legacy.Models.Tentative import Model

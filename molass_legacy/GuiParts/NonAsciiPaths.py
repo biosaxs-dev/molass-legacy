@@ -20,7 +20,7 @@ def nonascii_path_check(path, parent):
     parent.set_an_folder_error()
     parent.update()
 
-    import CustomMessageBox as MessageBox
+    import molass_legacy.KekLib.CustomMessageBox as MessageBox
     yes = MessageBox.askyesno("Multibyte Path Option Query",
         '"%s"\n'
         "seems to include multi-byte characters\n"

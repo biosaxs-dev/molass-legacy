@@ -8,14 +8,14 @@ from importlib import reload
 def prepare_data(input_folders, exec_spec):
     import Batch.BatchUtils
     reload(Batch.BatchUtils)
-    from Batch.BatchUtils import load_lrfsrc
+    from molass_legacy.Batch.BatchUtils import load_lrfsrc
 
     use_mapping = exec_spec.get('use_mapping')
 
     info_list = []
     for k, folder in enumerate(input_folders):
         if k == 1 and use_mapping is not None and use_mapping:
-            from Batch.BatchMappingUtils import load_lrfsrc_with_mapping
+            from molass_legacy.Batch.BatchMappingUtils import load_lrfsrc_with_mapping
             lrfsrc = load_lrfsrc_with_mapping(folder, lrfsrc)
         else:
             lrfsrc = load_lrfsrc(folder)

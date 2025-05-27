@@ -50,7 +50,7 @@ def get_annotate_position(ax, debug=False):
     ymin, ymax = ax.get_ylim()
 
     if debug:
-        import DebugPlot as dplt
+        import molass_legacy.KekLib.DebugPlot as dplt
 
         print("centx, centy, radius=", centx, centy, radius)
         print("xmin, xmax=", xmin, xmax)

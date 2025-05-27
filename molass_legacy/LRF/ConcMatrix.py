@@ -67,7 +67,7 @@ class ConcMatrix:
         self.cdl_list.append(len(C_list))
 
         if False:
-            import DebugPlot as plt
+            import molass_legacy.KekLib.DebugPlot as plt
             C_ = np.array(C_list)
             fig = plt.figure(figsize=(14,7))
             ax1 = fig.add_subplot(121)
@@ -94,9 +94,9 @@ class ConcMatrix:
         x = self.x
 
         if debug:
-            import DebugPlot as plt
-            from OurMatplotlib import get_color
-            from AnalysisRangeInfo import shift_paired_ranges
+            import molass_legacy.KekLib.DebugPlot as plt
+            from molass_legacy.KekLib.OurMatplotlib import get_color
+            from molass_legacy.DataStructure.AnalysisRangeInfo import shift_paired_ranges
             print('conc_factor=', self.conc_factor)
             print('paired_ranges=', self.paired_ranges, 'conc_depend=', self.conc_depend)
             j0 = self.j0

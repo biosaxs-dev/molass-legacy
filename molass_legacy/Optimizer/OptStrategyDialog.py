@@ -64,10 +64,10 @@ class OptStrategyDialog(Dialog):
     def body(self, body_frame, devel=True):
         if devel:
             from importlib import reload
-            import GuiParts.ColumnTypeSelector
-            reload(GuiParts.ColumnTypeSelector)
-        from Experiment.DataUtils import get_columntype
-        from GuiParts.ColumnTypeSelector import ColumnTypeSelector
+            import molass_legacy.GuiParts.ColumnTypeSelector
+            reload(molass_legacy.GuiParts.ColumnTypeSelector)
+        from molass_legacy.Experiment.DataUtils import get_columntype
+        from molass_legacy.GuiParts.ColumnTypeSelector import ColumnTypeSelector
 
         HasA_debug = False
 
@@ -574,7 +574,7 @@ class OptStrategyDialog(Dialog):
         self.elution_model_gui.trace_add("write", self.elution_model_gui_tracer)
 
     def get_model_name(self):
-        from Optimizer.OptimizerUtils import get_model_name
+        from molass_legacy.Optimizer.OptimizerUtils import get_model_name
         elution_model = self.elution_model_gui.get()
         func = MODEL_TO_FUNC[elution_model]
         return get_model_name(func)
@@ -860,7 +860,7 @@ class OptStrategyDialog(Dialog):
             from importlib import reload
             import Optimizer.StrategyEditor
             reload(Optimizer.StrategyEditor)
-        from Optimizer.StrategyEditor import StrategyEditor
+        from molass_legacy.Optimizer.StrategyEditor import StrategyEditor
 
         editor = StrategyEditor(self)
         editor.show()

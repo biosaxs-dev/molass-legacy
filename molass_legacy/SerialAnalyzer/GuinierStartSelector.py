@@ -17,10 +17,10 @@ import matplotlib.pyplot    as plt
 import matplotlib.gridspec  as gridspec
 from matplotlib.patches     import Polygon
 from matplotlib.backends.backend_tkagg  import FigureCanvasTkAgg
-from OurTkinter             import Tk, Dialog
-from BasicUtils             import get_caller_module
-from TkSupplements          import tk_set_icon_portable
-from OurMatplotlib          import NavigationToolbar
+from molass_legacy.KekLib.OurTkinter             import Tk, Dialog
+from molass_legacy.KekLib.BasicUtils             import get_caller_module
+from molass_legacy.KekLib.TkSupplements          import tk_set_icon_portable
+from molass_legacy.KekLib.OurMatplotlib          import NavigationToolbar
 
 GUNIER_PLOT_SIZE    = 100
 GUNIER_START_MAX    = 60

@@ -5,7 +5,7 @@
 """
 import numpy        as np
 from scipy          import stats
-from NumpyUtils     import get_valid_index, np_loadtxt_robust
+from molass_legacy.KekLib.NumpyUtils     import get_valid_index, np_loadtxt_robust
 from HeadAnomalies  import HeadAnomalies
 
 BASIC_CHECK_LENGTH          = 10
@@ -163,7 +163,7 @@ class IntensityData:
         array_ = np.array( eval_array )
 
         if DEBUG:
-            from NumpyUtils import np_savetxt
+            from molass_legacy.KekLib.NumpyUtils import np_savetxt
             np_savetxt( "observe_basic_condition.csv", array_ )
 
         self.slope_array        = array_[:,SLOPE_INDEX]

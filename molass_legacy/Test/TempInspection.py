@@ -6,7 +6,7 @@
 import os
 from time import sleep
 from DataUtils import get_in_folder
-from BasicUtils import clear_dirs_with_retry
+from molass_legacy.KekLib.BasicUtils import clear_dirs_with_retry
 
 fh = None
 

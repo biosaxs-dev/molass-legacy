@@ -6,7 +6,7 @@
 
 """
 
-from OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
 
 class TesterSimple(Dialog):
     def __init__(self, parent, in_folder, sd, callback, mapper=None, debug=False):
@@ -34,8 +34,8 @@ class TesterSimple(Dialog):
 
 def show_dialog(in_folder, callback, add_mapper=False, analysis_copy=False, debug=False):
     from molass_legacy._MOLASS.SerialSettings import set_setting
-    from Batch.StandardProcedure import StandardProcedure
-    from TkUtils import get_tk_root
+    from molass_legacy.Batch.StandardProcedure import StandardProcedure
+    from molass_legacy.KekLib.TkUtils import get_tk_root
 
     set_setting('in_folder', in_folder)
 

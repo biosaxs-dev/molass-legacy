@@ -9,7 +9,7 @@ import numpy as np
 from matplotlib.gridspec import GridSpec
 from matplotlib.patches import Polygon
 from CorrectedData import CorrectedXray
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from MatrixData import simple_plot_3d
 
 def demo(in_folder):

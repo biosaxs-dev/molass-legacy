@@ -8,9 +8,9 @@ import time
 import logging
 from io import StringIO
 import gc
-from BasicUtils import get_caller_module
-from OurTkinter import Tk, Dialog, ttk, Font, ScrolledText
-from TkSupplements import tk_set_icon_portable, BlinkingFrame, FLASH_STOP_JUST
+from molass_legacy.KekLib.BasicUtils import get_caller_module
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog, ttk, Font, ScrolledText
+from molass_legacy.KekLib.TkSupplements import tk_set_icon_portable, BlinkingFrame, FLASH_STOP_JUST
 import OurMessageBox as MessageBox
 from ProgressInfo import STATE_INIT, STATE_DOING, STATE_DONE, STATE_ERROR, STATE_FATAL, SAFE_FINISH, cleanup_queues
 

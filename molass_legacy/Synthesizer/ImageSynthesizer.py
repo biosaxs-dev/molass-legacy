@@ -8,7 +8,7 @@
     Copyright (c) 2015-2020, SAXS Team, KEK-PF
 """
 import re
-from OurTkinter             import Tk
+from molass_legacy.KekLib.OurTkinter             import Tk
 import OurMessageBox            as MessageBox
 
 import logging
@@ -26,7 +26,7 @@ from SAnglerMask            import SAnglerMask
 from Preferences            import get_preference
 from SynthesizerSettings    import get_setting, get_mask
 from Development            import get_devel_info
-from AppVersion             import synthesizer_version_string
+from molass_legacy.AutorgKek.AppVersion             import synthesizer_version_string
 
 import gettext
 _ = gettext.gettext

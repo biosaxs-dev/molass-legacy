@@ -9,7 +9,7 @@ from molass_legacy.KekLib.OurTkinter import Tk, Dialog, ttk, Font, FileDialog
 from molass_legacy.KekLib.TkSupplements import tk_set_icon_portable
 import molass_legacy.KekLib.OurMessageBox as MessageBox
 from molass_legacy.KekLib.TkCustomWidgets import FolderEntry
-from ATSAS.AutoRg import set_exe_array, get_autorg_exe_paths
+from molass_legacy.ATSAS.AutoRg import set_exe_array, get_autorg_exe_paths
 from molass_legacy._MOLASS.SerialSettings import get_setting, set_setting, ITEM_DEFAULTS, ALTERNATIVE_WEIGHTS, load_settings_dict, save_settings
 from molass_legacy.KekLib.TkCustomWidgets import FolderEntry
 from molass_legacy.KekLib.ListingFrame import ListingFrame
@@ -424,7 +424,7 @@ class SettingsDialog(Dialog):
         self.refresh_atsas_exe_path_listing(atsas_exe_paths)
 
     def show_absorbance_figure( self ):
-        from AbsorbancePlot import show_absorbance_figure_util
+        from molass_legacy.UV.AbsorbancePlot import show_absorbance_figure_util
         show_absorbance_figure_util( self )
 
     def apply( self ):  # overrides parent class method

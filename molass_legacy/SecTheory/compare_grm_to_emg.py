@@ -12,7 +12,7 @@ lib_dir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(lib_dir)
 kek_lib = os.path.join(lib_dir, "KekLib")
 sys.path.append(kek_lib)
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from molass_legacy.Peaks.ElutionModels import emg
 from SecTheory.BasicModels import fit_single_pore, robust_single_pore_pdf
 

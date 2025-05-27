@@ -5,7 +5,7 @@
 """
 import numpy as np
 from scipy.optimize import curve_fit
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from .Sigmoid import ex_sigmoid
 from molass_legacy.Peaks.EghSupples import d_egh
 

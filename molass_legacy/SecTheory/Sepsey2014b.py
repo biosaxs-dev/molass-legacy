@@ -5,7 +5,7 @@
 """
 import numpy as np
 from scipy.optimize import basinhopping
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 def ng(rg, rp, nperm, me):
     rho = rg/rp

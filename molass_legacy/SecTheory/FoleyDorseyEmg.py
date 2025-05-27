@@ -5,7 +5,7 @@
 """
 import numpy as np
 from scipy.optimize import minimize, root
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from molass_legacy._MOLASS.SerialSettings import get_setting
 from molass_legacy.Peaks.ElutionModels import egh, emg
 from LPM import get_corrected
@@ -44,7 +44,7 @@ def _pre_optimize_params(ecurve, xr_params, seccol_params, debug=False):
     ret = minimize(objective, (Npc, tI))
 
     if debug:
-        import DebugPlot as plt
+        import molass_legacy.KekLib.DebugPlot as plt
         print("tI=", tI)
 
         with plt.Dp():

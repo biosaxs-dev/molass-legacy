@@ -6,7 +6,7 @@
 """
 import numpy                as np
 from molass_legacy.SerialAnalyzer.ElutionCurve           import ElutionCurve
-from AnalysisRangeInfo      import convert_to_paired_ranges
+from molass_legacy.DataStructure.AnalysisRangeInfo      import convert_to_paired_ranges
 from PairedRangeLogger      import log_paired_ranges
 
 DEBUG   = False

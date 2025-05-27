@@ -12,14 +12,14 @@ import matplotlib.gridspec  as gridspec
 from mpl_toolkits.mplot3d   import Axes3D
 from matplotlib.widgets     import Button
 from matplotlib.backends.backend_tkagg  import FigureCanvasTkAgg
-from OurTkinter             import Tk, Dialog
-from TkUtils                import is_low_resolution
-from BasicUtils             import get_caller_module
-from TkSupplements          import tk_set_icon_portable
-from OurMatplotlib          import NavigationToolbar
+from molass_legacy.KekLib.OurTkinter             import Tk, Dialog
+from molass_legacy.KekLib.TkUtils                import is_low_resolution
+from molass_legacy.KekLib.BasicUtils             import get_caller_module
+from molass_legacy.KekLib.TkSupplements          import tk_set_icon_portable
+from molass_legacy.KekLib.OurMatplotlib          import NavigationToolbar
 from molass_legacy._MOLASS.SerialSettings         import get_setting
-from TkUtils                import split_geometry
-from TkCustomWidgets        import FileEntry
+from molass_legacy.KekLib.TkUtils                import split_geometry
+from molass_legacy.KekLib.TkCustomWidgets        import FileEntry
 from .AbsorbanceViewUtils import draw_3d
 import matplotlib
 USE_CANVAS_3D = True

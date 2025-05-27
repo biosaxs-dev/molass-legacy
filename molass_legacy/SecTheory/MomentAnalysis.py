@@ -7,7 +7,7 @@ import numpy as np
 from scipy.optimize import root
 from molass_legacy.Peaks.ElutionModels import compute_moments
 from .BasicModels import robust_single_pore_pdf_scaled as elutionmodel_func
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 def estimate_sec_params(ecurve, debug=False):
     x = ecurve.x

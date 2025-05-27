@@ -35,7 +35,7 @@
 """
 import copy
 import numpy as np
-from PeakInfo import PeakInfo
+from molass_legacy.DataStructure.PeakInfo import PeakInfo
 from molass_legacy._MOLASS.SerialSettings import set_setting
 
 class PairedRange:

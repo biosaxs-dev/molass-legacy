@@ -10,7 +10,7 @@ from sklearn.mixture import GaussianMixture
 from sklearn.cluster import KMeans
 from molass_legacy.Peaks.ElutionModels import egh
 from .FastDecomposer import FastDecomposer
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 def spike_demo():
     x = np.arange(500)
@@ -65,7 +65,7 @@ def spike_demo_impl(x, y, num_compoments=None):
     plt.pop()
 
 def spike_demo_real(in_folder):
-    from Batch.StandardProcedure import StandardProcedure
+    from molass_legacy.Batch.StandardProcedure import StandardProcedure
     sp = StandardProcedure()
     sp.load(in_folder, debug=False)
     sd = sp.get_sd()

@@ -7,7 +7,7 @@
 """
 import numpy as np
 import imageio.v3 as iio
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 def save_the_figure_trial_impl( self, folder, analysis_name ):
     # print( 'save_the_figure: ', folder, analysis_name )
@@ -35,7 +35,7 @@ def save_the_figure_trial_impl( self, folder, analysis_name ):
         value=white)
 
     if True:
-        import DebugPlot as plt
+        import molass_legacy.KekLib.DebugPlot as plt
         plt.show()
         with plt.Dp():
             fig, ax = plt.subplots()

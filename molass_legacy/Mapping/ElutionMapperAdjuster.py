@@ -9,12 +9,12 @@
 """
 
 import logging
-from OurTkinter import Tk, Font
-from TkSupplements import BlinkingFrame
-from ReadOnlyText import CopyableLabel
+from molass_legacy.KekLib.OurTkinter import Tk, Font
+from molass_legacy.KekLib.TkSupplements import BlinkingFrame
+from molass_legacy.KekLib.ReadOnlyText import CopyableLabel
 from CanvasFrame import CanvasFrame
 from molass_legacy._MOLASS.SerialSettings import get_setting, set_setting
-from OurMatplotlib import NavigationToolbar
+from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar
 from .MappingParams import MappingParams
 
 UV_BASELINE_METHOD_LPM  = 1
@@ -223,7 +223,7 @@ class ElutionMapperAdjuster(Tk.Frame):
         return Tk.NORMAL if self.uv_baseline_opt.get() == 1 else Tk.DISABLED
 
     def uv_baseline_opt_tracer( self, *args ):
-        import CustomMessageBox as MessageBox
+        import molass_legacy.KekLib.CustomMessageBox as MessageBox
 
         uv_adjust_suppressed = get_setting('uv_adjust_suppressed')
         if not uv_adjust_suppressed:

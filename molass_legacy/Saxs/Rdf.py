@@ -9,9 +9,9 @@ import numpy as np
 from scipy.integrate import quad
 from scipy.interpolate import UnivariateSpline
 from molass_legacy._MOLASS.SerialSettings import get_setting
-from NumpyUtils import np_loadtxt_robust
+from molass_legacy.KekLib.NumpyUtils import np_loadtxt_robust
 from molass_legacy.AutorgKekAdapter import AutorgKekAdapter
-from ATSAS.DatGnom import DatgnomExecutor
+from molass_legacy.ATSAS.DatGnom import DatgnomExecutor
 
 class Rdf:
     def __init__(self, q, I):
@@ -41,7 +41,7 @@ class AtsasDatGnomDdf:
     def guess_best_dmax(self):
         temp_folder = get_setting('analysis_folder') + '/.temp'
         if not os.path.exists(temp_folder):
-            from BasicUtils import mkdirs_with_retry
+            from molass_legacy.KekLib.BasicUtils import mkdirs_with_retry
             mkdirs_with_retry(temp_folder)
         self.out_file = temp_folder + '/datgnom_temp.out'
         rg = self.guinier_result.Rg
@@ -52,7 +52,7 @@ class AtsasDatGnomDdf:
         return dmax
 
     def get_pr_curve(self, debug=False):
-        from ATSAS.DatGnom import datgnom_read_data
+        from molass_legacy.ATSAS.DatGnom import datgnom_read_data
 
         def positive_value( v ):
             v_ = float(v)
@@ -76,7 +76,7 @@ class AtsasDatGnomDdf:
         ret = np.array(rows)
 
         if debug:
-            import DebugPlot as plt
+            import molass_legacy.KekLib.DebugPlot as plt
             fig, axes = plt.subplots(nrows=1,  ncols=2, figsize=(14, 6))
             ax1, ax2 = axes
 

@@ -14,16 +14,16 @@ import matplotlib.patches as mpl_patches
 from matplotlib.widgets import Button
 
 import logging
-from OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
 from DataUtils import cut_upper_folders
 from DecompUtils import CorrectedBaseline, make_range_info_impl, decompose_elution_better, get_peak2elem_dict
 from molass_legacy.Models.ElutionCurveModels import EMGA
 from molass_legacy.ElutionDecomposer import ElutionDecomposer
 from ExtrapolationSolver import ExtrapolationSolver
 from molass_legacy.PeaksetSelector import PeakSetSelector
-from AnalysisRangeInfo import convert_to_paired_ranges
-from OurMatplotlib import get_color
-import DebugPlot as dplt
+from molass_legacy.DataStructure.AnalysisRangeInfo import convert_to_paired_ranges
+from molass_legacy.KekLib.OurMatplotlib import get_color
+import molass_legacy.KekLib.DebugPlot as dplt
 from molass_legacy._MOLASS.SerialSettings import get_setting, set_setting
 from ConjugateGradientThreeD import GdTreedPlot
 

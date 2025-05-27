@@ -8,7 +8,7 @@ from scipy.stats import linregress
 from scipy.optimize import curve_fit
 from ScipyUtils import get_spline
 from molass_legacy.Peaks.ElutionModels import egh
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from .UvCorrector import UvCorrector
 
 class UvCorrectorSpline(UvCorrector):

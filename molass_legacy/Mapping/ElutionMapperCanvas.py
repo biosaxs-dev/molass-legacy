@@ -108,9 +108,6 @@ class ElutionMapperCanvas(Dialog):
         self._show()
 
     def body(self, body_frame):   # overrides parent class method
-        from importlib import reload
-        import Mapping.ElutionMapperPlotter
-        reload(Mapping.ElutionMapperPlotter)
         from .ElutionMapperPlotter import ElutionMapperPlotter
 
         tk_set_icon_portable( self, module=self.caller_module )
@@ -540,9 +537,9 @@ class ElutionMapperCanvas(Dialog):
     def show_range_editor_dialog(self, debug=True):
         if debug:
             from importlib import reload
-            import RangeEditors.RangeEditorDialog
-            reload(RangeEditors.RangeEditorDialog)
-        from RangeEditors.RangeEditorDialog import RangeEditorDialog
+            import molass_legacy.RangeEditors.RangeEditorDialog
+            reload(molass_legacy.RangeEditors.RangeEditorDialog)
+        from molass_legacy.RangeEditors.RangeEditorDialog import RangeEditorDialog
 
         self.grab_set()     # temporary fix to the grab_release problem
         self.change_depedent_states(Tk.DISABLED)
@@ -561,12 +558,12 @@ class ElutionMapperCanvas(Dialog):
         mdv.show()
 
     def show_decomp_editor( self, counter=None, debug=True):
-        import Decomposer
+        # import Decomposer
         if debug:
             from importlib import reload
-            import RangeEditors.DecompEditorDialog
-            reload(RangeEditors.DecompEditorDialog)
-        from RangeEditors.DecompEditorDialog import DecompEditorDialog
+            import molass_legacy.RangeEditors.DecompEditorDialog
+            reload(molass_legacy.RangeEditors.DecompEditorDialog)
+        from molass_legacy.RangeEditors.DecompEditorDialog import DecompEditorDialog
 
         self.decomp_btn_blink.stop()
         self.grab_set()     # temporary fix to the grab_release problem
@@ -690,8 +687,8 @@ class ElutionMapperCanvas(Dialog):
 
     def do_devel_test(self):
         from importlib import reload
-        import Tools.EmbedCushion
-        reload(Tools.EmbedCushion)
+        import molass_legacy.Tools.EmbedCushion
+        reload(molass_legacy.Tools.EmbedCushion)
         from molass_legacy.Tools.EmbedCushion import embed_cushion
 
         embed_cushion(self)

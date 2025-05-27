@@ -4,8 +4,8 @@
     Copyright (c) 2024, SAXS Team, KEK-PF
 """
 import queue
-from OurTkinter import Tk, Dialog, ttk
-from ReadOnlyText import ReadOnlyText
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog, ttk
+from molass_legacy.KekLib.ReadOnlyText import ReadOnlyText
 
 class PropOptimizerProgress(Dialog):
     def __init__(self, parent, job_args):
@@ -40,7 +40,7 @@ class PropOptimizerProgress(Dialog):
         Dialog.cancel(self)
 
     def start_optimizer(self):
-        from KillableThread import Thread
+        from molass_legacy.KekLib.KillableThread import Thread
         self.progress_queue = queue.Queue()
         self.thread = Thread(
                         target=self.optimizer_thread,

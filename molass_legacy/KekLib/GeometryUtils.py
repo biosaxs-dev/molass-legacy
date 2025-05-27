@@ -22,7 +22,7 @@ def rotated_argmin(theta, wy, debug=False):
     rx, ry = rotate(theta, wx_, wy_)
     m = np.argmin(ry)
     if debug:
-        import DebugPlot as plt
+        import molass_legacy.KekLib.DebugPlot as plt
         print('m=', m)
         degrees = 180*theta/np.pi
         plt.push()
@@ -49,7 +49,7 @@ def rotated_argminmax(theta, wy, debug=False):
     m2 = np.argmax(ry)
 
     if debug:
-        import DebugPlot as plt
+        import molass_legacy.KekLib.DebugPlot as plt
         degrees = 180*theta/np.pi
         plt.push()
         fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(14, 7))

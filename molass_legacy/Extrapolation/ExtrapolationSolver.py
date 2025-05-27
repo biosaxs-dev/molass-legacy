@@ -1,7 +1,7 @@
 """
     ExtrapolationSolver.py
 
-    Copyright (c) 2018-2023, SAXS Team, KEK-PF
+    Copyright (c) 2018-2025, SAXS Team, KEK-PF
 """
 import os
 import copy
@@ -10,12 +10,12 @@ import numpy as np
 import logging
 from scipy import optimize
 from molass_legacy._MOLASS.SerialSettings import get_setting
-from DevSettings import get_dev_setting
-from SvdDenoise import get_denoised_data, get_denoised_error
-from KnownPeakPenalty import compute_known_error_impl, compute_known_error_grad_impl
-from Conc.ConcDepend import compute_distinct_cd
-from LRF.LrfInfo import LrfInfo
-import DebugPlot as plt
+from molass_legacy.SerialAnalyzer.DevSettings import get_dev_setting
+from molass_legacy.DataStructure.SvdDenoise import get_denoised_data, get_denoised_error
+from .KnownPeakPenalty import compute_known_error_impl, compute_known_error_grad_impl
+from molass_legacy.Conc.ConcDepend import compute_distinct_cd
+from molass_legacy.LRF.LrfInfo import LrfInfo
+import molass_legacy.KekLib.DebugPlot as plt
 
 # SA_DEBUGGING = os.environ.get('SA_DEBUGGING', None)
 SA_DEBUGGING = False
@@ -82,7 +82,7 @@ class ExtrapolationSolver:
         print( 'data.shape=', data.shape )
 
         if SA_DEBUGGING:
-            from ExtrapolationDebugger import ExtrapolationDebugger
+            from .ExtrapolationDebugger import ExtrapolationDebugger
             self.debugger = ExtrapolationDebugger()
         else:
             self.debugger = None
@@ -133,9 +133,9 @@ class ExtrapolationSolver:
                             ):
         if debug:
             from importlib import reload
-            import LRF.ConcMatrix
-            reload(LRF.ConcMatrix)       
-        from LRF.ConcMatrix import ConcMatrix
+            import molass_legacy.LRF.ConcMatrix
+            reload(molass_legacy.LRF.ConcMatrix)       
+        from molass_legacy.LRF.ConcMatrix import ConcMatrix
 
         paired_ranges = self.cnv_ranges
 
@@ -261,11 +261,11 @@ class ExtrapolationSolver:
 
         weight_matrix_type = get_setting('weight_matrix_type')
         if weight_matrix_type == 1:
-            from WeightedLRF import compute_reciprocally_weighted_matrices
+            from .WeightedLRF import compute_reciprocally_weighted_matrices
             Cr, Dr = compute_reciprocally_weighted_matrices(self.conc_dependence, C_, D_)
             self.logger.info("using concentration-reciprocal weights.")
             if DEBUG_WEIGHT_MATRIX:
-                from MatrixData import simple_plot_3d
+                from molass_legacy.DataStructure.MatrixData import simple_plot_3d
                 fig = plt.figure(figsize=(21,7))
                 ax1 = fig.add_subplot(131, projection='3d')
                 ax2 = fig.add_subplot(132, projection='3d')
@@ -650,7 +650,7 @@ def run_extrapolation_solver_with_progress(
     import queue
     import threading
     from ProgressMinDialog import ProgressMinDialog
-    from TkUtils import split_geometry
+    from molass_legacy.KekLib.TkUtils import split_geometry
 
     w, h, x, y = split_geometry( parent.winfo_geometry() )
     geometry_info = "+%d+%d" % (parent.winfo_rootx() + int(w*0.7), parent.winfo_rooty() + int(h*0.8))

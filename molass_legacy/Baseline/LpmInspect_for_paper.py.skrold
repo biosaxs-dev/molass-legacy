@@ -12,17 +12,17 @@ from mpl_toolkits.mplot3d import Axes3D
 from matplotlib import animation
 from matplotlib.patches import Polygon
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from OurMatplotlib import NavigationToolbar
-from DENSS.DenssUtils import fit_data
-import DebugPlot as dplt
+from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar
+from molass_legacy.DENSS.DenssUtils import fit_data
+import molass_legacy.KekLib.DebugPlot as dplt
 from molass_legacy._MOLASS.SerialSettings import get_setting
 from MatrixData import simple_plot_3d
 from .Baseline import compute_baseline, better_integrative_curve, END_WIDTH
 from molass_legacy.SerialAnalyzer.ElutionCurve import ElutionCurve
 from LPM import LPM_3d
 from DataUtils import cut_upper_folders
-from OurTkinter import Tk, Dialog
-from TkSupplements import BlinkingFrame
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.TkSupplements import BlinkingFrame
 
 TITLE_FONTSIZE = 16
 LEGEND_FONTSIZE = 11

@@ -8,7 +8,7 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 SAFE_START_RATIO = 0.9
 POSITIVE_SMALL_VALUE = 1e-10

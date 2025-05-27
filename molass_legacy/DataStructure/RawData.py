@@ -7,7 +7,7 @@
 import numpy as np
 from bisect import bisect_right
 from SerialDataUtils import load_intensity_files, load_uv_array
-from NumpyUtils import np_loadtxt
+from molass_legacy.KekLib.NumpyUtils import np_loadtxt
 from molass_legacy._MOLASS.SerialSettings import get_setting, get_xray_picking
 from MatrixData import simple_plot_3d
 
@@ -81,7 +81,7 @@ class RawXray(RawMatrix):
 
         debug = False
         if debug:
-            import DebugPlot as plt
+            import molass_legacy.KekLib.DebugPlot as plt
             print('exclude_elution_impl: ', from_, to_)
 
             k = self.get_row_index(0.02)

@@ -8,9 +8,9 @@
 import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from OurTkinter import Tk, Dialog
-from TkSupplements import tk_set_icon_portable
-from OurMatplotlib import NavigationToolbar
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.TkSupplements import tk_set_icon_portable
+from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar
 
 class AlmergeAnalyzerDialog( Dialog ):
     def __init__( self, parent, mc_vector, sd, ranges ):

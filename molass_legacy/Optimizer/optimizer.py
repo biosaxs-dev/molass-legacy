@@ -36,10 +36,10 @@ def main_impl(optdict, optlist):
     from molass_legacy.KekLib.ChangeableLogger import Logger
     from molass_legacy._MOLASS.Version import get_version_string
     from molass_legacy._MOLASS.SerialSettings import set_setting
-    from Optimizer.OptimizerSettings import OptimizerSettings
-    from Optimizer.OptimizerMain import optimizer_main
-    from Optimizer.TheUtils import get_analysis_folder_from_work_folder
-    from Optimizer.SettingsSerializer import unserialize_for_optimizer
+    from molass_legacy.Optimizer.OptimizerSettings import OptimizerSettings
+    from molass_legacy.Optimizer.OptimizerMain import optimizer_main
+    from molass_legacy.Optimizer.TheUtils import get_analysis_folder_from_work_folder
+    from molass_legacy.Optimizer.SettingsSerializer import unserialize_for_optimizer
 
     work_folder = optdict['-w']
     os.chdir(work_folder)
@@ -102,7 +102,7 @@ def main_impl(optdict, optlist):
         if shm_name is None or shm_name  == "None":
             shared_memory = None
         else:
-            from Optimizer.NpSharedMemory import get_shm_proxy
+            from molass_legacy.Optimizer.NpSharedMemory import get_shm_proxy
             shared_memory = get_shm_proxy(shm_name)
 
         solver = optdict.get('-S')

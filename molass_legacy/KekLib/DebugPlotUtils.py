@@ -8,10 +8,10 @@
 """
 from time import sleep
 import matplotlib.pyplot as _plt
-from OurTkinter import Tk
-from TkUtils import adjusted_geometry
-import DebugPlot as dplt
-from DebugPlot import set_plot_env
+from molass_legacy.KekLib.OurTkinter import Tk
+from molass_legacy.KekLib.TkUtils import adjusted_geometry
+import molass_legacy.KekLib.DebugPlot as dplt
+from molass_legacy.KekLib.DebugPlot import set_plot_env
 
 root = None
 

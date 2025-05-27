@@ -10,12 +10,12 @@ import matplotlib.pyplot as plt
 import mpl_toolkits.mplot3d
 from matplotlib.gridspec import GridSpec
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from OurTkinter import Tk
+from molass_legacy.KekLib.OurTkinter import Tk
 from OurToplevel import OurToplevel
-from TkSupplements import tk_set_icon_portable
-from OurMatplotlib import get_color, MplBackGround, reset_to_default_style
+from molass_legacy.KekLib.TkSupplements import tk_set_icon_portable
+from molass_legacy.KekLib.OurMatplotlib import get_color, MplBackGround, reset_to_default_style
 from OurManim import manim_init, use_default_style, Animation, Collection, TextGroup, Parallelogram, rotation, angle
-from OurMatplotlib import NavigationToolbar
+from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar
 from .EdPlotter import ed_scatter
 
 class EdViewer(OurToplevel):

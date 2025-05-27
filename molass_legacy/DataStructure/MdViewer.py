@@ -11,8 +11,8 @@ from matplotlib.gridspec import GridSpec
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.widgets import Slider
-from OurTkinter import Tk, Dialog
-from OurMatplotlib import NavigationToolbar
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar
 from MatrixData import compute_3d_xyz
 
 class MdViewer(Dialog):

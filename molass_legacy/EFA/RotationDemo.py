@@ -10,8 +10,8 @@ from matplotlib.gridspec import GridSpec
 from matplotlib.patches import Polygon
 import matplotlib.animation as animation
 from CorrectedData import CorrectedXray
-import DebugPlot as plt
-from OurMatplotlib import get_color
+import molass_legacy.KekLib.DebugPlot as plt
+from molass_legacy.KekLib.OurMatplotlib import get_color
 from MatrixData import simple_plot_3d
 from ModeledData import ModeledData
 from Tutorials.MatrixFactorization import draw_PQ, generate_random_points

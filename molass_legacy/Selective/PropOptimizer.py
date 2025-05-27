@@ -80,7 +80,7 @@ def compute_optimal_proportion_impl(progress_queue, job_args):
     func(progress_queue, job_args)
 
 def compute_optimal_proportion(progress_queue, job_args, debug=True):
-    from DebugPlot import exec_in_threaded_mainloop, quit_threaded_mainloop
+    from molass_legacy.KekLib.DebugPlot import exec_in_threaded_mainloop, quit_threaded_mainloop
 
     if debug:
         def exec_closure():

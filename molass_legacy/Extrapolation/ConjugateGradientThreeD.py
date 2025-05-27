@@ -15,7 +15,7 @@ import mpl_toolkits.mplot3d.axes3d as p3
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.patches as mpl_patches
 import matplotlib.animation as animation
-from OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
 
 TITLE_FONTSIZE  = 16
 USE_3D_WORKAROUND   = False

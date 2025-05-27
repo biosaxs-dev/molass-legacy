@@ -8,8 +8,8 @@ import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.widgets import Slider
-from OurTkinter import Tk, Dialog
-from OurMatplotlib import NavigationToolbar
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar
 from SecTheory.BasicModels import robust_single_pore_pdf as monopore_pdf
 
 class SecInspection(Dialog):
@@ -161,7 +161,7 @@ class SecInspection(Dialog):
             return
 
     def show_popup_menu(self, event):
-        from TkUtils import split_geometry
+        from molass_legacy.KekLib.TkUtils import split_geometry
 
         self.create_popup_menu(event)
         canvas = self.mpl_canvas_widget
@@ -180,7 +180,7 @@ class SecInspection(Dialog):
             import Optimizer.FactorCurvePlot
             from importlib import reload
             reload(Optimizer.FactorCurvePlot)
-        from Optimizer.FactorCurvePlot import FactorCurvePlot
+        from molass_legacy.Optimizer.FactorCurvePlot import FactorCurvePlot
 
         print("draw_factor_curves")
 

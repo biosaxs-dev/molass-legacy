@@ -14,7 +14,7 @@ import numpy                            as np
 from mpl_toolkits.mplot3d               import Axes3D
 import matplotlib.pyplot                as plt
 from matplotlib.backends.backend_tkagg  import FigureCanvasTkAgg
-from OurTkinter                         import Tk, Dialog
+from molass_legacy.KekLib.OurTkinter                         import Tk, Dialog
 
 class MplPlotCanvas( Tk.Toplevel ):
     def __init__( self, title, draw_func, parent=None ):

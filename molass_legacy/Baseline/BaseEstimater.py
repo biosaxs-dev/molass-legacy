@@ -6,7 +6,7 @@
 """
 import numpy as np
 from bisect import bisect_right
-import DebugPlot as plt 
+import molass_legacy.KekLib.DebugPlot as plt 
 
 """
     
@@ -20,7 +20,7 @@ class BaseEstimater:
 
 def demo(in_folder):
     from molass_legacy._MOLASS.SerialSettings import get_setting
-    from Batch.StandardProcedure import StandardProcedure
+    from molass_legacy.Batch.StandardProcedure import StandardProcedure
     from MatrixData import simple_plot_3d
 
     sp = StandardProcedure()

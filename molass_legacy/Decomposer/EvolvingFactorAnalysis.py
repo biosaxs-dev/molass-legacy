@@ -13,9 +13,9 @@ from matplotlib.collections import PolyCollection
 from matplotlib             import colors as mcolors
 from molass_legacy.Models.ElutionCurveModels     import EMGA, EGHA
 from XrayDecomposer         import XrayDecomposer, proof_plot
-import DebugPlot as dplt
-from BasicUtils import clear_dirs_with_retry
-from NumpyUtils import np_savetxt
+import molass_legacy.KekLib.DebugPlot as dplt
+from molass_legacy.KekLib.BasicUtils import clear_dirs_with_retry
+from molass_legacy.KekLib.NumpyUtils import np_savetxt
 
 CONCENTRATION_NOMALIZE  = True
 NUM_SVS_TO_SHOW         = 5

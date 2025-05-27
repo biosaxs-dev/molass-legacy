@@ -7,16 +7,16 @@
 import os
 import re
 import logging
-from OurTkinter import Tk, Dialog, ttk, is_empty_val
-from TkSupplements import tk_set_icon_portable, BlinkingFrame
-from TkCustomWidgets import FolderEntry
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog, ttk, is_empty_val
+from molass_legacy.KekLib.TkSupplements import tk_set_icon_portable, BlinkingFrame
+from molass_legacy.KekLib.TkCustomWidgets import FolderEntry
 try:
-    import CustomMessageBox         as MessageBox
+    import molass_legacy.KekLib.CustomMessageBox         as MessageBox
 except:
     import OurMessageBox            as MessageBox
 from SerialDataUtils import get_xray_files
 from DataSubtractor import subtract_impl
-from BasicUtils import mkdirs_with_retry
+from molass_legacy.KekLib.BasicUtils import mkdirs_with_retry
 from SerialDataUtils import get_mtd_filename
 
 class AverageSubtractorDialog(Dialog):
@@ -239,7 +239,7 @@ class AverageSubtractorDialog(Dialog):
             self.subtract_btn.config(state=Tk.NORMAL)
 
     def save_background_data(self):
-        from NumpyUtils import np_savetxt_with_comments
+        from molass_legacy.KekLib.NumpyUtils import np_savetxt_with_comments
         folder = self.in_folder2.get()
         if not os.path.exists(folder):
             mkdirs_with_retry(folder)

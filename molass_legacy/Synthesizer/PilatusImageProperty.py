@@ -14,7 +14,7 @@ import sys
 import os
 import re
 from PIL            import Image, TiffImagePlugin
-from OurTkinter     import Tk, tk_set_icon_portable
+from molass_legacy.KekLib.OurTkinter     import Tk, tk_set_icon_portable
 import OurMessageBox    as MessageBox
 
 IMAGEDESCRIPTION = TiffImagePlugin.IMAGEDESCRIPTION     # 270

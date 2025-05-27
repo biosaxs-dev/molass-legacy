@@ -8,7 +8,7 @@ def get_databridge(decomp_editor, devel=True):
     from importlib import reload
     import Batch.DataBridge
     reload(Batch.DataBridge)
-    from Batch.DataBridge import DataBridge
+    from molass_legacy.Batch.DataBridge import DataBridge
     sd = decomp_editor.judge_holder.sd_orig
     pre_recog = decomp_editor.judge_holder.pre_recog
     params_array = decomp_editor.get_current_params_array()

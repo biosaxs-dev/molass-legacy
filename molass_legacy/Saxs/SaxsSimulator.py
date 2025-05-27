@@ -11,17 +11,17 @@ import mpl_toolkits.mplot3d
 import matplotlib.cm as cm
 from matplotlib.gridspec import GridSpec
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
 from OurToplevel import OurToplevel
-from TkUtils import split_geometry
-from TkSupplements import tk_set_icon_portable
-from OurMatplotlib import get_color, MplBackGround, reset_to_default_style
+from molass_legacy.KekLib.TkUtils import split_geometry
+from molass_legacy.KekLib.TkSupplements import tk_set_icon_portable
+from molass_legacy.KekLib.OurMatplotlib import get_color, MplBackGround, reset_to_default_style
 from OurManim import manim_init, use_default_style, Animation, Collection, TextGroup, Parallelogram, rotation, angle
-from OurMatplotlib import NavigationToolbar
+from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar
 from .EdPlotter import get_name_for_title, EdPlotter
 from .SaxsDetector import SaxsDetector
 from .SaxsCurve import SaxsCurve
-from NumpyUtils import np_loadtxt_robust
+from molass_legacy.KekLib.NumpyUtils import np_loadtxt_robust
 
 class SaxsSimulator(OurToplevel):
     def __init__(self, parent, path=None, data=None, save_button=False, animate=False, on_close=None):
@@ -194,7 +194,7 @@ class SaxsSimulator(OurToplevel):
         pass
 
     def show_ball(self):
-        from Saxs.SaxsSamples import BallVoxels
+        from molass_legacy.Saxs.SaxsSamples import BallVoxels
         ball = BallVoxels(radius=0.2)
         self.path = "a ball"
         self.data = ball.get_data(density=0.1)
@@ -203,7 +203,7 @@ class SaxsSimulator(OurToplevel):
         reset_to_default_style()
 
     def show_ellipsoid(self):
-        from Saxs.SaxsSamples import EllipsoidVoxels
+        from molass_legacy.Saxs.SaxsSamples import EllipsoidVoxels
         ball = EllipsoidVoxels(radii=(0.24, 0.2, 0.16))
         self.path = "an ellipsoid"
         self.data = ball.get_data(density=0.1)
@@ -212,7 +212,7 @@ class SaxsSimulator(OurToplevel):
         reset_to_default_style()
 
     def show_disc(self):
-        from Saxs.SaxsSamples import DiscVoxels
+        from molass_legacy.Saxs.SaxsSamples import DiscVoxels
         disc = DiscVoxels(radius=0.3)
         self.path = "a disc"
         self.data = disc.get_data(density=0.1)
@@ -221,7 +221,7 @@ class SaxsSimulator(OurToplevel):
         reset_to_default_style()
 
     def show_rod(self):
-        from Saxs.SaxsSamples import DiscVoxels
+        from molass_legacy.Saxs.SaxsSamples import DiscVoxels
         disc = DiscVoxels(radius=0.05, height=0.5)
         self.path = "a rod"
         self.data = disc.get_data(density=0.1)
@@ -230,7 +230,7 @@ class SaxsSimulator(OurToplevel):
         reset_to_default_style()
 
     def show_torus(self):
-        from Saxs.SaxsSamples import TorusVoxels
+        from molass_legacy.Saxs.SaxsSamples import TorusVoxels
         torus = TorusVoxels(R=0.6, r=0.2)
         self.path = "a torus"
         self.data = torus.get_data(density=0.1)
@@ -243,7 +243,7 @@ class SaxsSimulator(OurToplevel):
 
         analysis_folder = get_setting('analysis_folder')
         if analysis_folder is None:
-            import CustomMessageBox as MessageBox
+            import molass_legacy.KekLib.CustomMessageBox as MessageBox
             MessageBox.showinfo(
                 'Retry Suggestion',
                 'This operation requires an output folder.\n'

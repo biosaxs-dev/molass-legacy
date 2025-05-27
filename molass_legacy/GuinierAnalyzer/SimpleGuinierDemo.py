@@ -7,7 +7,7 @@ import os
 from bisect import bisect_right
 import numpy as np
 import time
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from DataUtils import get_in_folder
 from SvdDenoise import get_denoised_data
 from SimpleGuinier import SimpleGuinier

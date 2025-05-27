@@ -11,7 +11,7 @@ import logging
 from bisect import bisect_right
 from molass_legacy._MOLASS.SerialSettings import set_setting
 import molass_legacy.KekLib.DebugPlot as plt
-from Conc.ConcDepend import CD_COLORS, CD_BOUNDARIES
+from molass_legacy.Conc.ConcDepend import CD_COLORS, CD_BOUNDARIES
 from molass_legacy.QuickAnalysis.PreDecomposer import PreDecomposer
 
 def rdr_is_uncomputable(rdr_hints, k):
@@ -111,7 +111,7 @@ class JudgeHolder:
         return self.cd_list
 
     def add_conc_depend_info(self):
-        from Conc.ConcDepend import ConcDepend
+        from molass_legacy.Conc.ConcDepend import ConcDepend
         rdr_hints = self.get_rdr_hints()
 
         q, data, error = self.sd.get_xray_data()

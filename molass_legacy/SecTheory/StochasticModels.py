@@ -7,7 +7,7 @@
 import numpy as np
 from scipy.special import iv
 from scipy.optimize import basinhopping
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 def stochastic(x, h, tpi, npi, scale, t0):
     x_ = x*scale - t0
@@ -16,7 +16,7 @@ def stochastic(x, h, tpi, npi, scale, t0):
 def demo(parent, in_folder, trimming=True, correction=False, p0=None):
     from scipy.optimize import curve_fit
     from molass_legacy._MOLASS.SerialSettings import set_setting
-    from Batch.StandardProcedure import StandardProcedure
+    from molass_legacy.Batch.StandardProcedure import StandardProcedure
     from molass_legacy.Baseline.BaselineUtils import get_corrected_sd_impl
     from molass_legacy.Trimming.PreliminaryRecognition import PreliminaryRecognition
     from molass_legacy.Elution.CurveUtils import simple_plot

@@ -163,7 +163,7 @@ def result_animation_bridge(selector_dialog, debug=False):
         from importlib import reload
         import Optimizer.ResultAnimation
         reload(Optimizer.ResultAnimation)
-    from Optimizer.ResultAnimation import show_result_animation_impl
+    from molass_legacy.Optimizer.ResultAnimation import show_result_animation_impl
     show_result_animation_impl(selector_dialog)
 
 def parameter_transition_brigde(selector_dialog, debug=False):
@@ -171,7 +171,7 @@ def parameter_transition_brigde(selector_dialog, debug=False):
         from importlib import reload
         import Optimizer.ParameterTransition
         reload(Optimizer.ParameterTransition)
-    from Optimizer.ParameterTransition import show_parameter_transition_impl
+    from molass_legacy.Optimizer.ParameterTransition import show_parameter_transition_impl
     try:
         show_parameter_transition_impl(selector_dialog)
     except:

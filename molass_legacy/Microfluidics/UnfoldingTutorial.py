@@ -9,11 +9,11 @@ import numpy as np
 from lmfit import Parameters, minimize
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from OurTkinter import Tk, Dialog, ttk, is_empty_val
-from OurMatplotlib import NavigationToolbar
-from TkSupplements import tk_set_icon_portable
-from TkCustomWidgets import FolderEntry
-from TkUtils import is_low_resolution
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog, ttk, is_empty_val
+from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar
+from molass_legacy.KekLib.TkSupplements import tk_set_icon_portable
+from molass_legacy.KekLib.TkCustomWidgets import FolderEntry
+from molass_legacy.KekLib.TkUtils import is_low_resolution
 from MenuButton import MenuButton
 from UnfoldingModel import UnfoldingModel
 

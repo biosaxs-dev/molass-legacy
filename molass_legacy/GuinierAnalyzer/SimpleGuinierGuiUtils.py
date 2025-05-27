@@ -5,8 +5,8 @@
     Copyright (c) 2017, Masatsuyo Takahashi, KEK-PF
 """
 import numpy        as np
-from OurTkinter     import Tk, Font
-from TkUtils        import adjusted_geometry
+from molass_legacy.KekLib.OurTkinter     import Tk, Font
+from molass_legacy.KekLib.TkUtils        import adjusted_geometry
 
 window_title    = 'Guinier Analyzer 0.0.1'
 

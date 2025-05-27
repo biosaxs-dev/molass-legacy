@@ -9,7 +9,7 @@
 import numpy as np
 from scipy.optimize import minimize
 from scipy.interpolate import UnivariateSpline
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 """
     see rotated-hyperbola.ipynb

@@ -111,7 +111,7 @@ class MethodFile:
             self.start_v = v[self.start]
             self.end_v = v[self.end]
         except:
-            import DebugPlot as plt
+            import molass_legacy.KekLib.DebugPlot as plt
             fig = plt.figure()
             ax = fig.gca()
             ax.plot(t, v)
@@ -132,9 +132,9 @@ class MethodFile:
             y.append(v_)
 
         if debug:
-            import DebugPlot as plt
+            import molass_legacy.KekLib.DebugPlot as plt
             import time
-            # from NumpyUtils import np_savetxt
+            # from molass_legacy.KekLib.NumpyUtils import np_savetxt
             # np_savetxt('matrix.csv', matrix)
             colname = self.colnames[2+j*2].replace('St.', '')
             fig = plt.figure()
@@ -178,7 +178,7 @@ class MethodFile:
         i = w[0][-1]
 
         if False:
-            import DebugPlot as plt
+            import molass_legacy.KekLib.DebugPlot as plt
             n = np.arange(len(t))
             print(list(zip(n, t, v)))
             print([i, self.start, self.end])

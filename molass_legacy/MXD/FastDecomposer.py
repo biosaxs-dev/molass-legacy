@@ -6,7 +6,7 @@
 """
 import numpy as np
 from bisect import bisect_right
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from molass_legacy.Peaks.RobustPeaks import RobustPeaks
 from molass_legacy.Peaks.ElutionModels import egh, compute_egh_params
 from Prob.GaussianMixture import hist_to_source

@@ -7,8 +7,8 @@
 import numpy as np
 from scipy.optimize import minimize
 from matplotlib.gridspec import GridSpec
-import DebugPlot as plt
-from OurMatplotlib import get_color
+import molass_legacy.KekLib.DebugPlot as plt
+from molass_legacy.KekLib.OurMatplotlib import get_color
 from ModeledData import ModeledData, simple_plot_3d
 from XrayData import XrayData
 from molass_legacy.ElutionDecomposer import ElutionDecomposer

@@ -12,7 +12,7 @@ import numpy as np
 import matplotlib.patches as patches
 import matplotlib.path as path
 import matplotlib.animation as animation
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 class AnimatedHistogram:
     def __init__(self, data, num_bins, num_frames, update_data=False, patch_options=None):

@@ -5,7 +5,7 @@
     Copyright (c) 2022, SAXS Team, KEK-PF
 """
 import numpy as np
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 def hard_sphere_curves():
     from bisect import bisect_right

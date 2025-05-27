@@ -7,16 +7,16 @@
 
 """
 import numpy                as np
-from BasicUtils             import clear_dirs_with_retry, Struct
+from molass_legacy.KekLib.BasicUtils             import clear_dirs_with_retry, Struct
 from molass_legacy.KekLib.ExceptionTracebacker   import ExceptionTracebacker
 from ChangeableLogger       import Logger
 from molass_legacy._MOLASS.SerialSettings         import set_setting
 from SerialDataUtils        import get_mtd_filename
-from AbnormalityCheck       import bubble_check
+from molass_legacy.SerialAnalyzer.AbnormalityCheck       import bubble_check
 from InputSmootherAveraging import ConcentrationSmootherAveraging
-from OurTkinter             import Tk
-from DebugPlot              import set_plot_env
-from TkUtils                import adjusted_geometry, get_tk_root
+from molass_legacy.KekLib.OurTkinter             import Tk
+from molass_legacy.KekLib.DebugPlot              import set_plot_env
+from molass_legacy.KekLib.TkUtils                import adjusted_geometry, get_tk_root
 
 def create_our_logger(temp_dir):
     # clear_dirs_with_retry( [ temp_dir ] )
@@ -244,7 +244,7 @@ def get_uv_elution_vector( sd, correct_base=True, use_LB=False, plot=False):
         base = 0
 
         if plot:
-            import DebugPlot as plt
+            import molass_legacy.KekLib.DebugPlot as plt
             plt.plot( a_vector )
             if type(base) != int:
                 plt.plot( base, color='red' )

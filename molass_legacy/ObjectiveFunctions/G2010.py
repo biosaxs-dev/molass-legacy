@@ -6,13 +6,13 @@
 import numpy as np
 from molass_legacy.KekLib.ExceptionTracebacker import log_exception
 from molass_legacy.Models.RateTheory.EDM import edm_impl
-from Optimizer.BasicOptimizer import BasicOptimizer, PENALTY_SCALE, UV_XR_RATIO_ALLOW, UV_XR_RATIO_SCALE
-from Optimizer.NumericalUtils import safe_ratios
+from molass_legacy.Optimizer.BasicOptimizer import BasicOptimizer, PENALTY_SCALE, UV_XR_RATIO_ALLOW, UV_XR_RATIO_SCALE
+from molass_legacy.Optimizer.NumericalUtils import safe_ratios
 from molass_legacy._MOLASS.SerialSettings import get_setting, set_setting
 from ModelParams.SeccolFunctions import rgfit_secconf_eval
 from SecTheory.BoundControl import Penalties
-from Optimizer.TheDebugUtils import convert_score_list
-from Optimizer.PenaltyUtils import compute_mapping_penalty
+from molass_legacy.Optimizer.TheDebugUtils import convert_score_list
+from molass_legacy.Optimizer.PenaltyUtils import compute_mapping_penalty
 
 EGH_LOG_ALPHA = np.log(0.1)
 BAD_PARAMS_RETURN = 1e8

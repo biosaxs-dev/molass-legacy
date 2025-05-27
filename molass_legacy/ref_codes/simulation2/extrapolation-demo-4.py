@@ -18,8 +18,8 @@ this_dir = os.path.dirname( os.path.abspath( __file__ ) )
 sys.path.append( this_dir + '/../../lib' )
 import molass_legacy.KekLib, AutorgKek, SerialAnalyzer
 import OurStatsModels       as sm
-from BasicUtils             import clear_dirs_with_retry
-from NumpyUtils             import np_savetxt
+from molass_legacy.KekLib.BasicUtils             import clear_dirs_with_retry
+from molass_legacy.KekLib.NumpyUtils             import np_savetxt
 from SerialAtsasTools       import AlmergeExecutor
 
 print( sys.argv )

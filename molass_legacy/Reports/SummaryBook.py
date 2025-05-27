@@ -20,12 +20,12 @@ from openpyxl.chart.data_source     import StrRef
 from OpenPyXlUtil           import save_allowing_user_reply
 from molass_legacy.AutorgKek.AppVersion import autoguinier_version_for_publication
 from molass_legacy._MOLASS.Version import get_version_string, molass_version_for_publication
-from ATSAS.AtsasVersion import atsas_version_for_publication
+from molass_legacy.ATSAS.AtsasVersion import atsas_version_for_publication
 from molass_legacy._MOLASS.SerialSettings import get_setting, SHOW_TEXT_DICT, get_beamline_name, get_xray_picking
 from molass_legacy.UV.PlainCurveUtils import get_flat_wavelength
 from LinearityScore         import linearity_score100, stderror_score100, FACTOR_WEIGHT
 from TimeUtils              import seconds_to_datetime
-from Reports.DefaultFont import set_default_font
+from molass_legacy.Reports.DefaultFont import set_default_font
 set_default_font()
 
 NUM_SCORE_FACTORS   = 5

@@ -12,7 +12,7 @@ import sys
 import time
 import logging
 
-from OurTkinter     import Tk
+from molass_legacy.KekLib.OurTkinter     import Tk
 import OurMessageBox  as MessageBox
 from OurMock        import MagicMock
 

@@ -5,7 +5,7 @@
 """
 import numpy as np
 from scipy.integrate import quad
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 
 def demo1():

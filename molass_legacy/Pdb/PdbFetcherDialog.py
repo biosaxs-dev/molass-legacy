@@ -9,12 +9,12 @@ import sys
 import re
 import logging
 import queue
-from KillableThread import Thread
-from OurTkinter import Tk, Dialog, ScrolledText
-from TkCustomWidgets import FolderEntry
+from molass_legacy.KekLib.KillableThread import Thread
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog, ScrolledText
+from molass_legacy.KekLib.TkCustomWidgets import FolderEntry
 from molass_legacy._MOLASS.SerialSettings import get_setting
-from BasicUtils import is_empty_dir, mkdirs_with_retry
-from DENSS.DenssUtils import run_pdb2mrc
+from molass_legacy.KekLib.BasicUtils import is_empty_dir, mkdirs_with_retry
+from molass_legacy.DENSS.DenssUtils import run_pdb2mrc
 
 count_re = re.compile(r'(\d+)$')
 
@@ -152,7 +152,7 @@ class PdbFetcherDialog(Dialog):
         if not ok:
             return
 
-        from BasicUtils import get_home_folder
+        from molass_legacy.KekLib.BasicUtils import get_home_folder
         self.fetch_btn.config(state=Tk.DISABLED)
 
         out_folder = self.out_folder.get()

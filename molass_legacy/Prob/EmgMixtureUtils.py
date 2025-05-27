@@ -10,9 +10,9 @@ import matplotlib.animation as animation
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from sklearn.mixture import GaussianMixture
 from lmfit import minimize, Parameters
-from OurTkinter import Tk, Dialog
-from OurMatplotlib import NavigationToolbar
-import DebugPlot as dplt
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar
+import molass_legacy.KekLib.DebugPlot as dplt
 from .ProbDataUtils import generate_samle_datasets, plot_hist_data
 from .EmgMixture import emg_pdf
 

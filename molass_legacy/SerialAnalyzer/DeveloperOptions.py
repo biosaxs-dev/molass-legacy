@@ -18,17 +18,17 @@ import re
 import warnings
 import time
 
-from OurTkinter             import Tk, Dialog, ttk, Font, FileDialog
-from TkSupplements          import tk_set_icon_portable
+from molass_legacy.KekLib.OurTkinter             import Tk, Dialog, ttk, Font, FileDialog
+from molass_legacy.KekLib.TkSupplements          import tk_set_icon_portable
 import OurMessageBox        as MessageBox
 from DevSettings            import get_dev_setting, set_dev_setting
-from TkCustomWidgets        import FolderEntry
-from BasicUtils             import get_home_folder
+from molass_legacy.KekLib.TkCustomWidgets        import FolderEntry
+from molass_legacy.KekLib.BasicUtils             import get_home_folder
 from molass_legacy._MOLASS.SerialSettings         import clear_settings, get_setting, set_setting
 from MultiMonitor           import get_max_monitor, get_monitor_list, PYTHON_DEMO_MONITOR
-from TkUtils                import adjusted_geometry
+from molass_legacy.KekLib.TkUtils                import adjusted_geometry
 
-from ReadOnlyText           import ReadOnlyText
+from molass_legacy.KekLib.ReadOnlyText           import ReadOnlyText
 from MachineTypes           import is_on_virtual_machine, get_cpuid
 
 ENABLE_HIRES_MODE_CHANGE    = False

@@ -1,13 +1,13 @@
 """
     Selective.ModelSelectFrame.py
 
-    Copyright (c) 2024, SAXS Team, KEK-PF
+    Copyright (c) 2024-2025, SAXS Team, KEK-PF
 """
 
 from molass_legacy.KekLib.OurTkinter import Tk, ttk
 from molass_legacy._MOLASS.SerialSettings import get_setting
 from molass_legacy._MOLASS.Version import is_developing_version
-from GuiParts.ColumnTypeSelector import ColumnTypeSelector
+from molass_legacy.GuiParts.ColumnTypeSelector import ColumnTypeSelector
 
 enable_edm_model = get_setting('enable_edm_model')
 if enable_edm_model:

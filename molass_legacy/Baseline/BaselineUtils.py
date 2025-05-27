@@ -43,9 +43,9 @@ def create_xr_baseline_object(unified_baseline_type=None):
         assert False
 
 def demo(in_folder, logger):
-    import DebugPlot as plt
+    import molass_legacy.KekLib.DebugPlot as plt
     from molass_legacy._MOLASS.SerialSettings import set_setting
-    from Batch.StandardProcedure import StandardProcedure
+    from molass_legacy.Batch.StandardProcedure import StandardProcedure
     from molass_legacy.Trimming.PreliminaryRecognition import PreliminaryRecognition
     from molass_legacy.UV.PlainCurve import make_secondary_e_curve_at
     from MatrixData import simple_plot_3d

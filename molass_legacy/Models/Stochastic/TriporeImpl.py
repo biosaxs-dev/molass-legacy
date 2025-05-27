@@ -12,8 +12,8 @@ from molass_legacy.Models.ElutionCurveModels import egha
 from molass_legacy.Models.Tentative import Model
 from molass_legacy.Models.ElutionModelUtils import x_from_height_ratio_impl
 from molass_legacy.KekLib.BasicUtils import Struct
-from SecTheory.SecCF import gec_tripore_phi
-from SecTheory.SecPDF import FftInvPdf
+from molass_legacy.SecTheory.SecCF import gec_tripore_phi
+from molass_legacy.SecTheory.SecPDF import FftInvPdf
 
 PORESIZES = np.array([170,  55,  40])   # see meeting-docs/20231218/index.html
 POREPROPS = np.array([0.1, 0.3, 0.6])   # see as above

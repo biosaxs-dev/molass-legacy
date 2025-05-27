@@ -13,10 +13,10 @@ import numpy                as np
 import matplotlib.pyplot    as plt
 from matplotlib.backends.backend_tkagg  import FigureCanvasTkAgg
 import matplotlib.animation as anm
-from OurTkinter             import Tk, Dialog
-from TkUtils                import is_low_resolution
-from BasicUtils             import get_caller_module
-from TkSupplements          import tk_set_icon_portable
+from molass_legacy.KekLib.OurTkinter             import Tk, Dialog
+from molass_legacy.KekLib.TkUtils                import is_low_resolution
+from molass_legacy.KekLib.BasicUtils             import get_caller_module
+from molass_legacy.KekLib.TkSupplements          import tk_set_icon_portable
 from LightObjects           import AnyObject
 from .MapperConstructor import create_mapper
 from .ElutionMapperPlotter import ElutionMapperPlotter

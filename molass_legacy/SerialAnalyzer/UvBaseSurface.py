@@ -63,7 +63,7 @@ class UvBaseSurface:
         self.baseshift  = slope*j + intercept
 
         if False:
-            import DebugPlot as plt
+            import molass_legacy.KekLib.DebugPlot as plt
             fig = plt.figure()
             ax = fig.gca()
             ax.plot(self.baseshift)

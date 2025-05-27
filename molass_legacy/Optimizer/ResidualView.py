@@ -6,9 +6,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from OurTkinter import Tk, Dialog
-from OurMatplotlib import NavigationToolbar
-from BasicUtils import ordinal_str
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar
+from molass_legacy.KekLib.BasicUtils import ordinal_str
 from DataUtils import get_in_folder
 from MatrixData import simple_plot_3d
 

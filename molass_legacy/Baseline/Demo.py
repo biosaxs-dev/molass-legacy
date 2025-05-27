@@ -10,7 +10,7 @@ from mpl_toolkits.mplot3d import Axes3D
 from matplotlib import animation
 from matplotlib.patches import Polygon
 from MeasuredData import MeasuredData
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from ThreeDimViewer import ThreeDimViewer
 from MatrixData import simple_plot_3d
 from .Baseline import compute_baseline, better_integrative_curve

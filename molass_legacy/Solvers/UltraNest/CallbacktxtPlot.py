@@ -5,13 +5,13 @@
 """
 import numpy as np
 import molass_legacy.KekLib.DebugPlot as plt
-from Optimizer.FvScoreConverter import convert_score
+from molass_legacy.Optimizer.FvScoreConverter import convert_score
 
 def plot_callback_txt_impl(caller):
     from importlib import reload
     import Optimizer.FuncReloadUtils
     reload(Optimizer.FuncReloadUtils)
-    from Optimizer.FuncReloadUtils import reload_optimizer
+    from molass_legacy.Optimizer.FuncReloadUtils import reload_optimizer
     print("plot_callback_txt_impl")
     caller.update_information()
     canvas = caller.canvas

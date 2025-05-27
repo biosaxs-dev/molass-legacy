@@ -16,7 +16,7 @@ import numpy as np
 import pylab as pl
 import copy
 
-from OurTkinter         import Tk, ToolTip
+from molass_legacy.KekLib.OurTkinter         import Tk, ToolTip
 from Preferences        import get_preference
 from OurColorMaps       import CmapAlbulaLikeDynamic, Diverging
 # from matplotlib.colors import SymLogNorm
@@ -29,8 +29,8 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.backend_bases import key_press_handler
 from matplotlib.figure  import Figure
-from TkSupplements      import tk_set_icon_portable
-from OurMatplotlib      import NavigationToolbar, CoordinateFormatter, DataCursor, ColorBar
+from molass_legacy.KekLib.TkSupplements      import tk_set_icon_portable
+from molass_legacy.KekLib.OurMatplotlib      import NavigationToolbar, CoordinateFormatter, DataCursor, ColorBar
 from ControlKeyState    import set_shift_key_state, set_ctrl_key_state
 
 value_shift = 10

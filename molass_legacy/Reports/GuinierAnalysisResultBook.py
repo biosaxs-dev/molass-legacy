@@ -17,7 +17,7 @@ from molass_legacy.KekLib.ExceptionTracebacker import ExceptionTracebacker
 from molass_legacy.KekLib.HtmlColorNames import *
 from molass_legacy._MOLASS.SerialSettings import get_setting
 from molass_legacy.SerialAnalyzer.DevSettings import get_dev_setting
-from Reports.DefaultFont import set_default_font
+from molass_legacy.Reports.DefaultFont import set_default_font
 set_default_font()
 
 CHART_WIDTH     = 54

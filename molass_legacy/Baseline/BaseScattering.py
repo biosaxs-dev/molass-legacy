@@ -103,7 +103,7 @@ def old_demo(root, in_folder, show_preview=False):
     plt.show()
 
 def demo(parent, in_folder, force_integral=False):
-    from Batch.StandardProcedure import StandardProcedure
+    from molass_legacy.Batch.StandardProcedure import StandardProcedure
     from molass_legacy.Trimming.PreliminaryRecognition import PreliminaryRecognition
     from molass_legacy.Mapping.MapperConstructor import create_mapper
 

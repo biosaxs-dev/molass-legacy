@@ -17,7 +17,7 @@ import shutil
 import logging
 from OurException       import OurException
 from SynthesizerSettings    import set_setting, set_mask
-from BasicUtils         import mkdirs_with_retry, exe_name
+from molass_legacy.KekLib.BasicUtils         import mkdirs_with_retry, exe_name
 from PilatusUtils       import get_data_info
 from ImageSynthesizer   import ImageSynthesizer
 from Preferences        import set_preference

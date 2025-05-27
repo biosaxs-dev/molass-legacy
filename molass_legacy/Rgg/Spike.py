@@ -15,7 +15,7 @@ from SliceUtils import slice_consecutives
 from pomegranate import *
 from molass_legacy.Peaks.ElutionModels import egh
 from Prob.GaussianMixture import gaussian_pdf
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from .RggMixtureModel import RggMixtureModel
 from .RggUtils import plot_histogram_2d
 from molass_legacy.Peaks.ElutionModels import egh_pdf
@@ -231,7 +231,7 @@ def spike_demo_impl(data_list, num_components=None, use_peaks=False, seed=None, 
     return fit_result
 
 def get_data_info(in_folder, correction, both=False):
-    from Batch.StandardProcedure import StandardProcedure
+    from molass_legacy.Batch.StandardProcedure import StandardProcedure
     from RgProcess.RgCurve import RgCurve
 
     sp = StandardProcedure()

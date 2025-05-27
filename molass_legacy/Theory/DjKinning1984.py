@@ -4,7 +4,7 @@
     Copyright (c) 2021, SAXS Team, KEK-PF
 """
 import numpy as np
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from .SolidSphere import phi
 
 def S0(q, R, K=1):

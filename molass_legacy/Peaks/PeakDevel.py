@@ -30,25 +30,25 @@ def devel_test_impl(self):
     def show_restart_patcher():
         import Optimizer.RestartPatcher
         reload(Optimizer.RestartPatcher)
-        from Optimizer.RestartPatcher import patch_and_restart_from_editor
+        from molass_legacy.Optimizer.RestartPatcher import patch_and_restart_from_editor
         patch_and_restart_from_editor(self)
 
     def test_fixedbaseline_optimizer():
         import Optimizer.FixedBaselineOptimizer
         reload(Optimizer.FixedBaselineOptimizer)
-        from Optimizer.FixedBaselineOptimizer import test_optimizer
+        from molass_legacy.Optimizer.FixedBaselineOptimizer import test_optimizer
         test_optimizer(self)
 
     def debug_objective_function():
         import Optimizer.SimpleDebugUtils
         reload(Optimizer.SimpleDebugUtils)
-        from Optimizer.SimpleDebugUtils import debug_optimizer
+        from molass_legacy.Optimizer.SimpleDebugUtils import debug_optimizer
         debug_optimizer(self.fullopt, self.init_params)
 
     def test_estimate_uvbaseline():
         import Optimizer.UvBaselineEstimator
         reload(Optimizer.UvBaselineEstimator)
-        from Optimizer.UvBaselineEstimator import test_estimate_uvbaseline_impl
+        from molass_legacy.Optimizer.UvBaselineEstimator import test_estimate_uvbaseline_impl
         test_estimate_uvbaseline_impl(self.fullopt, self.init_params)
 
     extra_button_specs = [

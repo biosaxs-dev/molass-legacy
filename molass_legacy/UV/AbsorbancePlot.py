@@ -9,8 +9,8 @@ from bisect                 import bisect_right
 import matplotlib.pyplot    as plt
 import matplotlib.gridspec  as gridspec
 from mpl_toolkits.mplot3d   import Axes3D
-from Absorbance             import Absorbance
-from AnalyzerUtil           import compute_conc_factor_util
+from molass_legacy.UV.Absorbance             import Absorbance
+from molass_legacy.SerialAnalyzer.AnalyzerUtil           import compute_conc_factor_util
 from molass_legacy._MOLASS.SerialSettings         import get_setting
 
 DEBUG = False
@@ -278,7 +278,7 @@ class AbsorbancePlot:
 
     def draw_3d_for_setting_gui( self, parent, title, absorbance_baseline_type=None ):
         from DebugCanvas            import DebugCanvas
-        from TkUtils                import is_low_resolution
+        from molass_legacy.KekLib.TkUtils                import is_low_resolution
 
         def draw_func( fig ):
             # fig.set_size_inches( 20, 10 )

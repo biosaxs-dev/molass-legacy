@@ -3,7 +3,7 @@
 
     Copyright (c) 2024, SAXS Team, KEK-PF
 """
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 def show_asc_dsc_difference(js_canvas, debug=True):
     print(show_asc_dsc_difference)

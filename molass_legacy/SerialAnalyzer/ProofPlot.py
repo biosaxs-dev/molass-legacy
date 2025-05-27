@@ -10,7 +10,7 @@ import matplotlib.pyplot    as plt
 from matplotlib.ticker      import FuncFormatter
 from bisect                 import bisect_right
 from PlotUtils              import get_wider_range, convert_to_the_level
-from OurMatplotlib          import convert_to_fixed_font_latex
+from molass_legacy.KekLib.OurMatplotlib          import convert_to_fixed_font_latex
 
 DEBUG = False
 

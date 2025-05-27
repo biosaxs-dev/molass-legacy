@@ -9,8 +9,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.widgets import Slider, Button, RadioButtons, TextBox, CheckButtons #, RangeSlider
-from OurTkinter import Tk, Dialog, ScrolledText
-from TkSupplements import set_icon
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog, ScrolledText
+from molass_legacy.KekLib.TkSupplements import set_icon
 from StdoutRedirector import StdoutRedirector
 
 class DenssFitDataDialog(Dialog):

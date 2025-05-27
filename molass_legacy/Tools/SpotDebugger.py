@@ -3,14 +3,14 @@
 
     Copyright (c) 2023, SAXS Team, KEK-PF
 """
-from OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
 
 parents = []
 
 class SpotDebugger(Dialog):
     def __init__(self, parent, debug_info):
         if parent is None:
-            from TkUtils import adjusted_geometry
+            from molass_legacy.KekLib.TkUtils import adjusted_geometry
             parent = Tk.Tk()
             parents.append(parent)
             parent.geometry( adjusted_geometry( parent.geometry() ) )

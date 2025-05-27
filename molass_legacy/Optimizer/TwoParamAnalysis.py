@@ -6,8 +6,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from OurTkinter import Tk, Dialog, ToolTip
-from OurMatplotlib import NavigationToolbar
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog, ToolTip
+from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar
 from molass_legacy._MOLASS.SerialSettings import get_setting
 from ttkwidgets import TickScale
 from DataUtils import get_in_folder

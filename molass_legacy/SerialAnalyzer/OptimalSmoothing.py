@@ -10,7 +10,7 @@ from matplotlib.gridspec import GridSpec
 from molass_legacy.KekLib.SciPyCookbook import smooth
 from scipy.interpolate import UnivariateSpline, LSQUnivariateSpline
 from scipy.stats import linregress
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from molass_legacy._MOLASS.SerialSettings import get_setting
 from molass_legacy.Elution.CurveUtils import MAJOR_PEAK_RATIO
 from molass_legacy.KekLib.ExceptionTracebacker import log_exception

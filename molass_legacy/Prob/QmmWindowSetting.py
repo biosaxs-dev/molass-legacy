@@ -11,8 +11,8 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.widgets import SpanSelector
 from matplotlib.patches import Rectangle
 from bisect import bisect_right
-from OurTkinter import Tk, Dialog
-from OurMatplotlib import NavigationToolbar
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar
 from molass_legacy._MOLASS.SerialSettings import get_setting, set_setting
 
 class QmmWindowSetting(Dialog):

@@ -24,7 +24,7 @@ class Manipulator:
     def prepare_out_folder(self):
         self.out_folder = "temp/figs"
         if not os.path.exists(self.out_folder):
-            from BasicUtils import mkdirs_with_retry
+            from molass_legacy.KekLib.BasicUtils import mkdirs_with_retry
             mkdirs_with_retry(self.out_folder)
 
     def run_for_all(self):

@@ -11,7 +11,7 @@ from importlib import reload
 BH_NITER = 100
 
 def estimate_column_parameters_separately(moment_rg_file, column_type, debug=False):
-    from Batch.LiteBatch import LiteBatch
+    from molass_legacy.Batch.LiteBatch import LiteBatch
     from molass_legacy.Models.Stochastic.DatablockUtils import load_datablock_list, get_block_lrf_src
     from molass_legacy.Models.Stochastic.MomentUtils import compute_egh_moments
     from molass_legacy.Models.Stochastic.DispersiveMonopore import guess_params_using_moments

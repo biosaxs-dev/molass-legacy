@@ -46,7 +46,7 @@ class StructureFactorBounds:
                 bq_bounds_list.append(self.bounds[1]*aq_)
 
         if debug:
-            import DebugPlot as plt
+            import molass_legacy.KekLib.DebugPlot as plt
             qv = self.qv
             with plt.Dp():
                 fig, ax = plt.subplots()

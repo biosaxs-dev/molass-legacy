@@ -4,7 +4,7 @@
     Copyright (c) 2019-2022, SAXS Team, KEK-PF
 """
 from molass_legacy._MOLASS.SerialSettings import get_setting
-from MachineTypes import get_bootup_state
+from molass_legacy.KekLib.MachineTypes import get_bootup_state
 
 env_info = None
 
@@ -36,7 +36,7 @@ class EnvInfo:
             return
 
         try:
-            from ATSAS.AtsasUtils import get_version
+            from molass_legacy.ATSAS.AtsasUtils import get_version
             self.atsas_version = get_version()
             self.atsas_is_available = self.atsas_version is not None
         except:
@@ -47,6 +47,7 @@ class EnvInfo:
             self.atsas_is_available = False
 
     def set_excel_availability(self):
+        from molass_legacy.KekLib.ExceptionTracebacker import ExceptionTracebacker
         revoke_excel = get_setting('revoke_excel')
         if not self.normal or revoke_excel:
             self.excel_version = None
@@ -55,7 +56,7 @@ class EnvInfo:
             return
 
         try:
-            from ExcelCOM import excel_availability
+            from molass_legacy.KekLib.ExcelCOM import excel_availability
             self.excel_version = excel_availability()
             self.excel_is_available = self.excel_version is not None
             com_error = None
@@ -106,7 +107,7 @@ class EnvInfo:
         else:
             logger.warning(excel_availability_message)
             if dialog is not None and get_setting('no_excel_warning'):
-                from NoExcelWarningDialog import NoExcelWarningDialog
+                from molass_legacy.SerialAnalyzer.NoExcelWarningDialog import NoExcelWarningDialog
                 warn_dialog = NoExcelWarningDialog(dialog, com_error)
                 warn_dialog.show()
 

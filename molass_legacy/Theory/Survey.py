@@ -4,7 +4,7 @@
     Copyright (c) 2020, SAXS Team, KEK-PF
 """
 
-from Batch.StandardProcedure import StandardProcedure
+from molass_legacy.Batch.StandardProcedure import StandardProcedure
 from molass_legacy.Trimming.PreliminaryRecognition import PreliminaryRecognition
 from .SphericalFit import compute_bq_score
 

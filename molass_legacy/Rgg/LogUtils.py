@@ -8,7 +8,7 @@ import logging
 import numpy as np
 import re
 from NumpyArrayUtils import from_space_separated_list_string
-from Batch.StandardProcedure import StandardProcedure
+from molass_legacy.Batch.StandardProcedure import StandardProcedure
 from .UvAdjuster import spike_demo
 
 def find_best_score(in_folder, log_file):
@@ -92,7 +92,7 @@ def find_best_score(in_folder, log_file):
     print([n], seeds_list[n], fv_array[n])
 
 def get_result_from_log(seeds, test_log):
-    from BasicUtils import Struct
+    from molass_legacy.KekLib.BasicUtils import Struct
 
     seeds_key = "(%d, %d)" % seeds
     re_opts = re.MULTILINE | re.DOTALL

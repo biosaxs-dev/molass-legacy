@@ -7,7 +7,7 @@
 import numpy as np
 from pomegranate import *
 from molass_legacy.Peaks.ElutionModels import egh_pdf, compute_egh_params
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 class EghDistribution:
     def __init__(self, tR, sigma, tau=0):

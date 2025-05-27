@@ -4,7 +4,7 @@
     Copyright (c) 2020-2023, SAXS Team, KEK-PF
 """
 import numpy as np
-from OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
 from TkMiniTable import TkMiniTable
 import tkinter.font as font
 

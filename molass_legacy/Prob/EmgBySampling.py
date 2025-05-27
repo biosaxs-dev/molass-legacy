@@ -10,7 +10,7 @@ from matplotlib.gridspec import GridSpec
 import matplotlib.animation as animation
 from matplotlib.patches import Polygon
 from .AnimatedHistogram import AnimatedHistogram
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 FONTSIZE = 16
 

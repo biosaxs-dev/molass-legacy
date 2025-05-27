@@ -13,7 +13,7 @@ import os
 import logging
 from ctypes import WinDLL, WinError
 from ctypes.wintypes import DWORD, BOOL, HANDLE
-from KillableThread import Thread
+from molass_legacy.KekLib.KillableThread import Thread
 
 class CleanerThread:
     def __init__(self, parent_pid, cleanup=None):

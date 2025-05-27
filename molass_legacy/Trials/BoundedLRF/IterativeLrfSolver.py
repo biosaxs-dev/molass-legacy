@@ -5,7 +5,7 @@
 """
 import numpy as np
 from bisect import bisect_right
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from SvdDenoise import get_denoised_data
 from SimpleGuinier import SimpleGuinier
 from molass_legacy.Trimming.Sigmoid import sigmoid

@@ -7,7 +7,7 @@ import numpy as np
 from scipy.optimize import minimize
 from scipy.optimize import basinhopping
 from bisect import bisect_right
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from MatrixData import simple_plot_3d
 from SvdDenoise import get_denoised_data
 from molass_legacy.Peaks.EghSupples import egh, d_egh

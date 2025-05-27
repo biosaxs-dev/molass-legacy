@@ -9,7 +9,7 @@ import numpy as np
 from matplotlib.gridspec import GridSpec
 
 def demo(use_cf=True):
-    import DebugPlot as plt
+    import molass_legacy.KekLib.DebugPlot as plt
     if use_cf:
         from SecTheory.SecCF import sdm_tripore
         from SecTheory.SecPDF import FftInvPdf

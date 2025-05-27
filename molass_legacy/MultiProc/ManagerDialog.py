@@ -8,9 +8,9 @@ import numpy as np
 from time import strftime, localtime
 import logging
 import queue
-from OurTkinter import Tk, Dialog, ttk
-from TkUtils import get_widget_geometry
-from TkSupplements import set_icon
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog, ttk
+from molass_legacy.KekLib.TkUtils import get_widget_geometry
+from molass_legacy.KekLib.TkSupplements import set_icon
 from ScrolledFrame import ScrolledFrame
 
 dialogs = []
@@ -59,7 +59,7 @@ def show_manager_dialog_impl(dialog_class, parent, jobs=None):
         return
 
     from .Manager import activate_manager, get_list
-    from BasicUtils import get_home_folder
+    from molass_legacy.KekLib.BasicUtils import get_home_folder
     from EnvInfo import get_global_env_info
 
     log_folder = get_home_folder() + '/log'
@@ -96,7 +96,7 @@ def terminate_manager(parent):
         if state > -3:
             num_remaining_jobs += 1
     if num_remaining_jobs > 0:
-        import CustomMessageBox as MessageBox
+        import molass_legacy.KekLib.CustomMessageBox as MessageBox
         MessageBox.showinfo(
                 'Cancel All Confirmation',
                 'There are %d DENSS jobs remaininig.\n' % num_remaining_jobs
@@ -408,7 +408,7 @@ class ManagerDialog(Dialog):
 
     def cancel_job(self, job_id):
         print('cancel_job', job_id)
-        import CustomMessageBox as MessageBox
+        import molass_legacy.KekLib.CustomMessageBox as MessageBox
         yn = MessageBox.askyesno(
                 'Cancel Job Confirmation',
                 'Do you really want to cancel job %03d ?' % job_id,
@@ -420,7 +420,7 @@ class ManagerDialog(Dialog):
         self.cancel_job_impl(job_id)
 
     def cancel_all_jobs(self):
-        import CustomMessageBox as MessageBox
+        import molass_legacy.KekLib.CustomMessageBox as MessageBox
         yn = MessageBox.askyesno(
                 'Cancel All Confirmation',
                 'Do you really want to cancel all jobs?',

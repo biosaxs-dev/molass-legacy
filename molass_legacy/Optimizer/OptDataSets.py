@@ -8,8 +8,8 @@ import logging
 import numpy as np
 from molass_legacy._MOLASS.SerialSettings import get_setting, set_setting
 from .TheUtils import get_optimizer_folder
-from RgProcess.RgCurve import check_rg_folder, RgCurve
-from RgProcess.RgCurveProxy import RgCurveProxy
+from molass_legacy.RgProcess.RgCurve import check_rg_folder, RgCurve
+from molass_legacy.RgProcess.RgCurveProxy import RgCurveProxy
 import molass_legacy.KekLib.DebugPlot as plt
 
 def get_current_rg_folder(compute_rg=False, possibly_relocated=True, current_folder=None):
@@ -148,7 +148,7 @@ class OptDataSets:
 
             if False:
                 # this plot failes to appear
-                import DebugPlot as plt
+                import molass_legacy.KekLib.DebugPlot as plt
                 from MatrixData import simple_plot_3d
                 with plt.Dp():
                     fig, (ax1, ax2)= plt.subplots(ncols=2, figsize=(12,5), subplot_kw=dict(projection="3d"))
@@ -163,7 +163,7 @@ class OptDataSets:
         recompute_rg_curve = get_setting("recompute_rg_curve")
         if recompute_rg_curve:
             import shutil
-            from Optimizer.TheUtils import get_optimizer_folder
+            from molass_legacy.Optimizer.TheUtils import get_optimizer_folder
             from molass_legacy.KekLib.BasicUtils import clear_dirs_with_retry
 
             optimizer_folder = get_optimizer_folder()

@@ -160,7 +160,7 @@ class FunctionDebugger(Dialog):
             from importlib import reload
             import Optimizer.BoundsInspection
             reload(Optimizer.BoundsInspection)
-        from Optimizer.BoundsInspection import BoundsInspection
+        from molass_legacy.Optimizer.BoundsInspection import BoundsInspection
         parent = self.js_canvas.dialog.parent
         dialog = BoundsInspection(parent, self.fullopt, self.temp_params)
         dialog.show()

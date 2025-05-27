@@ -13,9 +13,9 @@ import matplotlib.gridspec as gridspec
 from matplotlib.ticker import FuncFormatter
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from OurTkinter import Tk, Dialog
-from TkSupplements import tk_set_icon_portable
-from OurMatplotlib import NavigationToolbar
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.TkSupplements import tk_set_icon_portable
+from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar
 
 N  = 301
 NUM_ITERATIONS  = 100

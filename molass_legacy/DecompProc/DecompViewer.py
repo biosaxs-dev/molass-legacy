@@ -6,12 +6,12 @@
 """
 from time import sleep
 import numpy as np
-from OurTkinter import Tk, Dialog, ttk
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog, ttk
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg  import FigureCanvasTkAgg
 from matplotlib.gridspec import GridSpec
-import DebugPlot as dplt
-from OurMatplotlib import NavigationToolbar
+import molass_legacy.KekLib.DebugPlot as dplt
+from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar
 
 class DecompViewer(Dialog):
     def __init__(self, parent):

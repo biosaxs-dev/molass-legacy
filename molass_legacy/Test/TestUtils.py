@@ -12,21 +12,21 @@ def execute_for_all_data(root_folder, func):
     serial_folder_walk(root_folder, func)
 
 def show_test_dialog(root, in_folder, prepare_func, tester_func, frame_func=None, v2_standard=True):
-    from OurTkinter import Tk, Dialog
-    from Batch.StandardProcedure import StandardProcedure
+    from molass_legacy.KekLib.OurTkinter import Tk, Dialog
+    from molass_legacy.Batch.StandardProcedure import StandardProcedure
     from molass_legacy.Trimming.PreliminaryRecognition import PreliminaryRecognition
     from SecSaxs.DataTreatment import DataTreatment
-    from Optimizer.StateSequence import StateSequence
-    from Optimizer.OptimizerSettings import OptimizerSettings
-    from Optimizer.InitialInfo import InitialInfo
-    from Optimizer.OptDataSets import OptDataSets
-    from Optimizer.OptJobInfo import OptJobInfo
-    from Optimizer.FuncImporter import import_objective_function
+    from molass_legacy.Optimizer.StateSequence import StateSequence
+    from molass_legacy.Optimizer.OptimizerSettings import OptimizerSettings
+    from molass_legacy.Optimizer.InitialInfo import InitialInfo
+    from molass_legacy.Optimizer.OptDataSets import OptDataSets
+    from molass_legacy.Optimizer.OptJobInfo import OptJobInfo
+    from molass_legacy.Optimizer.FuncImporter import import_objective_function
     from DataUtils import get_in_folder
-    from BasicUtils import Struct
+    from molass_legacy.KekLib.BasicUtils import Struct
 
     if root is None:
-        from TkUtils import get_tk_root
+        from molass_legacy.KekLib.TkUtils import get_tk_root
         root = get_tk_root()
 
     sp = StandardProcedure()

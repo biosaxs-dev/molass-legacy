@@ -5,7 +5,7 @@
     Copyright (c) 2020, SAXS Team, KEK-PF
 """
 
-from OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
 from MenuButton import MenuButton
 
 class QmmMenu(Tk.Frame):
@@ -45,7 +45,7 @@ class QmmMenu(Tk.Frame):
 
     def show_qmm_dialog(self, mm_type):
         from Prob.QmmController import get_qmm_controller
-        from AbnormalityCheck import update_abnormality_fix_state
+        from molass_legacy.SerialAnalyzer.AbnormalityCheck import update_abnormality_fix_state
 
         dialog = self.dialog
 
@@ -65,7 +65,7 @@ class QmmMenu(Tk.Frame):
             ret = dialog.qmm_controller.show_dialog(dialog)
         except:
             try:
-                import CustomMessageBox         as MessageBox
+                import molass_legacy.KekLib.CustomMessageBox         as MessageBox
             except:
                 import OurMessageBox            as MessageBox
             if dialog.testing:

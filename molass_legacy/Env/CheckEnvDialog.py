@@ -3,8 +3,8 @@
 
     Copyright (c) 2019-2022, SAXS Team, KEK-PF
 """
-from OurTkinter import Tk, Dialog
-from ReadOnlyText import ReadOnlyText
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.ReadOnlyText import ReadOnlyText
 from .EnvMessages import get_env_messages
 
 class CheckEnvDialog(Dialog):

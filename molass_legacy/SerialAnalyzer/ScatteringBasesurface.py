@@ -10,7 +10,7 @@ from ScatteringBaseUtil     import SMALL_ANGLE_LIMIT
 from molass_legacy.Baseline.ScatteringBaseline     import ScatteringBaseline
 from ScatteringBasecurve    import ScatteringBasecurve
 from ScatteringBasespline   import ScatteringBasespline
-# from NumpyUtils             import np_savetxt
+# from molass_legacy.KekLib.NumpyUtils             import np_savetxt
 from molass_legacy._MOLASS.SerialSettings         import get_setting
 from molass_legacy.SerialAnalyzer.ElutionBaseCurve       import ElutionBaseCurve
 from molass_legacy.KekLib.ExceptionTracebacker   import ExceptionTracebacker

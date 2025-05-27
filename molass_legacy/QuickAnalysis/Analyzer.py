@@ -63,7 +63,7 @@ class Analyzer:
         from molass_legacy.SerialAnalyzer.ProgressInfoUtil import estimate_init_max_dist
         from molass_legacy.KekLib.ProgressInfo import ProgressInfo
         from molass_legacy.KekLib.ProgressInfoDialog import ProgressInfoDialog
-        import Extrapolation
+        # import Extrapolation
         from .AnalyzerDialogProxy import AnalyzerDialogProxy
         from molass_legacy.SerialAnalyzer.InputOutputDisplay import InputOutputDisplay
         from molass_legacy.SerialAnalyzer.AnalyzerUtil import compute_conc_factor_util

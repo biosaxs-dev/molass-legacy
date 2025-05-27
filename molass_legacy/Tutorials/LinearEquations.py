@@ -7,7 +7,7 @@
 import numpy as np
 import matplotlib.ticker as ticker
 from OurManim import latex_init
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 def show_figs():
     latex_init()

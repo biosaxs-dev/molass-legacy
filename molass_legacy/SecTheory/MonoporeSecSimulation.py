@@ -10,7 +10,7 @@ from scipy.optimize import minimize, basinhopping
 from matplotlib.gridspec import GridSpec
 
 def demo(use_cf=True):
-    import DebugPlot as plt
+    import molass_legacy.KekLib.DebugPlot as plt
     if use_cf:
         from SecTheory.SecCF import sdm_monopore
         from SecTheory.SecPDF import FftInvPdf
@@ -57,7 +57,7 @@ def demo(use_cf=True):
         plt.show()
 
 def compare_stochastic_dispersive():
-    import DebugPlot as plt
+    import molass_legacy.KekLib.DebugPlot as plt
     from SecTheory.SecCF import shifted_phi, sdm_monopore
     from SecTheory.SecPDF import FftInvPdf
     gec_monopore_pdf = FftInvPdf(shifted_phi)
@@ -106,7 +106,7 @@ def compare_stochastic_dispersive():
         plt.show()
 
 def compare_simple_curve():
-    import DebugPlot as plt
+    import molass_legacy.KekLib.DebugPlot as plt
     from SecTheory.SecCF import sdm_monopore
     from SecTheory.SecPDF import FftInvPdf
     monopore_pdf = FftInvPdf(sdm_monopore)

@@ -15,12 +15,12 @@ import matplotlib
 import matplotlib.pyplot    as plt
 import matplotlib.patches   as mpl_patches      # 'as patches' does not work properly
 from matplotlib.backends.backend_tkagg  import FigureCanvasTkAgg
-from OurTkinter             import Tk
-from OurMatplotlib          import NavigationToolbar
+from molass_legacy.KekLib.OurTkinter             import Tk
+from molass_legacy.KekLib.OurMatplotlib          import NavigationToolbar
 import OurMessageBox        as MessageBox
-from TkUtils                import is_low_resolution, split_geometry
-from BasicUtils             import get_caller_module
-from TkSupplements          import tk_set_icon_portable, BlinkingFrame
+from molass_legacy.KekLib.TkUtils                import is_low_resolution, split_geometry
+from molass_legacy.KekLib.BasicUtils             import get_caller_module
+from molass_legacy.KekLib.TkSupplements          import tk_set_icon_portable, BlinkingFrame
 from molass_legacy.UV.AbsorbanceViewer import AbsorbanceViewer
 from PlotAnnotation         import add_flow_change_annotation
 from molass_legacy._MOLASS.SerialSettings         import get_setting, set_setting, get_xray_picking

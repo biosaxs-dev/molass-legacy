@@ -1,14 +1,14 @@
 """
     V2Menu.py
 
-    Copyright (c) 2021-2024, SAXS Team, KEK-PF
+    Copyright (c) 2021-2025, SAXS Team, KEK-PF
 """
 
 from molass_legacy.KekLib.OurTkinter import Tk, Dialog
 from molass_legacy.KekLib.MenuButton import MenuButton
 from molass_legacy._MOLASS.Version import is_developing_version
 from molass_legacy._MOLASS.SerialSettings import clear_v2_temporary_settings
-from Global.V2Init import update_sec_settings
+from molass_legacy.Global.V2Init import update_sec_settings
 
 class V2Menu(Tk.Frame):
     def __init__(self, parent, dialog, adjusted_sd=False):
@@ -59,10 +59,10 @@ class V2Menu(Tk.Frame):
     def show_peak_editor(self, pe_proxy=None, debug=True):
         if debug:
             from importlib import reload
-            import Optimizer.OptStrategyDialog
-            reload(Optimizer.OptStrategyDialog)
-        from Optimizer.OptStrategyDialog import OptStrategyDialog
-        from Optimizer.OptimizerUtils import show_peak_editor_impl
+            import molass_legacy.Optimizer.OptStrategyDialog
+            reload(molass_legacy.Optimizer.OptStrategyDialog)
+        from molass_legacy.Optimizer.OptStrategyDialog import OptStrategyDialog
+        from molass_legacy.Optimizer.OptimizerUtils import show_peak_editor_impl
         clear_v2_temporary_settings()
         update_sec_settings()
 
@@ -108,9 +108,9 @@ class V2Menu(Tk.Frame):
     def show_result_folder_selector(self, proc_name, debug=False):
         if debug:
             from importlib import reload
-            import Optimizer.ResultFolderSelector
-            reload(Optimizer.ResultFolderSelector)
-        from Optimizer.ResultFolderSelector import show_result_folder_selector_impl
+            import molass_legacy.Optimizer.ResultFolderSelector
+            reload(molass_legacy.Optimizer.ResultFolderSelector)
+        from molass_legacy.Optimizer.ResultFolderSelector import show_result_folder_selector_impl
 
         clear_v2_temporary_settings()
         update_sec_settings()

@@ -13,9 +13,9 @@ from DataUtils import get_in_folder
 from .OptimalElution import compute_optimal_elution
 from MatrixData import simple_plot_3d
 from RawData import get_row_index_impl
-from OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from OurMatplotlib import NavigationToolbar
+from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar
 
 BUG_FIX_WITH_REDRAW = False
 TITLE_FONTSIZE = 16

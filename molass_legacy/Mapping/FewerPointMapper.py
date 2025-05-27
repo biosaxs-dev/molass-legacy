@@ -9,7 +9,7 @@ import numpy as np
 from scipy import stats
 from scipy.interpolate import UnivariateSpline
 from matplotlib.gridspec import GridSpec
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from molass_legacy.Trimming.PreliminaryRecognition import PreliminaryRecognition
 from molass_legacy.Elution.CurveUtils import simple_plot
 from molass_legacy.Peaks.RobustCurve import RobustCurve, plot_curve, gaussian

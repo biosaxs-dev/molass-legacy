@@ -14,12 +14,12 @@
 """
 import os
 
-from OurTkinter import Tk, FileDialog, is_empty_val
+from molass_legacy.KekLib.OurTkinter import Tk, FileDialog, is_empty_val
 try:
-    import CustomMessageBox as MessageBox
+    import molass_legacy.KekLib.CustomMessageBox as MessageBox
 except:
     import OurMessageBox    as MessageBox
-from TkSupplements import SlimButton
+from molass_legacy.KekLib.TkSupplements import SlimButton
 from TkSizableWidgets import SizableEntry
 
 class FileNodeEntry( Tk.Frame ):

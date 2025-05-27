@@ -158,7 +158,7 @@ class JobStateCanvas(Tk.Frame):
             self.draw_indexed_state(i)
 
     def draw_suptitle(self):
-        from Optimizer.OptimizerUtils import get_model_name, get_method_name
+        from molass_legacy.Optimizer.OptimizerUtils import get_model_name, get_method_name
         job_info = self.dialog.get_job_info()
         job_name = job_info[0]
         in_folder = get_in_folder()
@@ -477,7 +477,7 @@ class JobStateCanvas(Tk.Frame):
             from importlib import reload
             import Optimizer.ComplementaryView
             reload(Optimizer.ComplementaryView)
-        from Optimizer.ComplementaryView import ComplementaryView
+        from molass_legacy.Optimizer.ComplementaryView import ComplementaryView
 
         self.dialog.grab_set()  # temporary fix to the grab_release problem
 
@@ -619,7 +619,7 @@ class JobStateCanvas(Tk.Frame):
             import Optimizer.RgVisibleFigure
             from importlib import reload
             reload(Optimizer.RgVisibleFigure)
-        from Optimizer.RgVisibleFigure import RgVisibleFigure
+        from molass_legacy.Optimizer.RgVisibleFigure import RgVisibleFigure
         dialog = RgVisibleFigure(self.parent, self, with_range=with_range)
         dialog.show()
 
@@ -636,7 +636,7 @@ class JobStateCanvas(Tk.Frame):
             import Optimizer.AscDscDifference
             from importlib import reload
             reload(Optimizer.AscDscDifference)
-        from Optimizer.AscDscDifference import show_asc_dsc_difference
+        from molass_legacy.Optimizer.AscDscDifference import show_asc_dsc_difference
         show_asc_dsc_difference(self)
 
     def draw_all_parameters(self, debug=False):
@@ -644,7 +644,7 @@ class JobStateCanvas(Tk.Frame):
             import Optimizer.AllParameters
             from importlib import reload
             reload(Optimizer.AllParameters)
-        from Optimizer.AllParameters import AllParameters
+        from molass_legacy.Optimizer.AllParameters import AllParameters
         fv, max_num_evals = self.get_fv_array()
         xmin, xmax = self.get_xlim_prog_axes()
         plot = AllParameters(self.parent, self.fullopt, self.demo_info[1], self.curr_index, self.best_index, fv[:,0], xmin, xmax)
@@ -655,7 +655,7 @@ class JobStateCanvas(Tk.Frame):
             import Optimizer.SecInspection
             from importlib import reload
             reload(Optimizer.SecInspection)
-        from Optimizer.SecInspection import SecInspection
+        from molass_legacy.Optimizer.SecInspection import SecInspection
         dialog = SecInspection(self.parent, self)
         dialog.show()
 
@@ -673,7 +673,7 @@ class JobStateCanvas(Tk.Frame):
             import Optimizer.FunctionDebugger
             from importlib import reload
             reload(Optimizer.FunctionDebugger)
-        from Optimizer.FunctionDebugger import FunctionDebugger
+        from molass_legacy.Optimizer.FunctionDebugger import FunctionDebugger
         debugger = FunctionDebugger(self.parent, self.dialog, self, composite=composite)
         debugger.show()
 
@@ -682,7 +682,7 @@ class JobStateCanvas(Tk.Frame):
             import Optimizer.FvScoreInspecor
             from importlib import reload
             reload(Optimizer.FvScoreInspecor)
-        from Optimizer.FvScoreInspecor import FvScoreInspecor
+        from molass_legacy.Optimizer.FvScoreInspecor import FvScoreInspecor
         designer = FvScoreInspecor(self.parent, self)
         designer.show()
 
@@ -691,7 +691,7 @@ class JobStateCanvas(Tk.Frame):
             import Optimizer.ScoreTransition
             from importlib import reload
             reload(Optimizer.ScoreTransition)
-        from Optimizer.ScoreTransition import ScoreTransition
+        from molass_legacy.Optimizer.ScoreTransition import ScoreTransition
         fv, xmax = self.get_fv_array()
         compare = ScoreTransition(self.dialog, self, self.fullopt, self.demo_info[1], fv, self.best_index)
         compare.show()
@@ -727,7 +727,7 @@ class JobStateCanvas(Tk.Frame):
             import Optimizer.FunctionChanger
             from importlib import reload
             reload(Optimizer.FunctionChanger)
-        from Optimizer.FunctionChanger import FunctionChanger
+        from molass_legacy.Optimizer.FunctionChanger import FunctionChanger
         dialog = FunctionChanger(self.parent, self)
         dialog.show()
 
@@ -745,7 +745,7 @@ class JobStateCanvas(Tk.Frame):
             import Optimizer.MwIntegrity
             from importlib import reload
             reload(Optimizer.MwIntegrity)
-        from Optimizer.MwIntegrity import MwIntegrityPlot
+        from molass_legacy.Optimizer.MwIntegrity import MwIntegrityPlot
         dialog = MwIntegrityPlot(self.parent, self)
         dialog.show()
 
@@ -780,7 +780,7 @@ class JobStateCanvas(Tk.Frame):
             import Optimizer.AdhocFigure
             from importlib import reload
             reload(Optimizer.AdhocFigure)
-        from Optimizer.AdhocFigure import show_adhoc_figure_impl
+        from molass_legacy.Optimizer.AdhocFigure import show_adhoc_figure_impl
         show_adhoc_figure_impl(self)
     
     def change_view_widths(self):
@@ -819,6 +819,6 @@ class JobStateCanvas(Tk.Frame):
         from importlib import reload
         import Optimizer.XrStateFigure
         reload(Optimizer.XrStateFigure)
-        from Optimizer.XrStateFigure import show_this_figure_impl
+        from molass_legacy.Optimizer.XrStateFigure import show_this_figure_impl
         show_this_figure_impl(self)
 

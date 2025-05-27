@@ -488,7 +488,7 @@ class BasicOptimizer:
         from importlib import reload
         import Optimizer.OptLrfInfoDebug
         reload(Optimizer.OptLrfInfoDebug)
-        from Optimizer.OptLrfInfoDebug import OptLrfInfoProxy
+        from molass_legacy.Optimizer.OptLrfInfoDebug import OptLrfInfoProxy
         return OptLrfInfoProxy(self.qvector, self.xrD, self.xrE, x, y, xr_ty, xr_cy_list, uv_x, uv_y, uv_ty, uv_cy_list, self.composite)
 
     def update_rg_params(self, lrf_info):
@@ -921,7 +921,7 @@ class BasicOptimizer:
         return moments_list
     
     def get_strategy(self):
-        from Optimizer.Strategies.DefaultStrategy import DefaultStrategy
+        from molass_legacy.Optimizer.Strategies.DefaultStrategy import DefaultStrategy
         return DefaultStrategy()
     
     def is_stochastic(self):

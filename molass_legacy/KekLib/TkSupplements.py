@@ -25,7 +25,7 @@ else:
 def pad_text( text, length ):
     return text + ' ' * ( length - len(text) )
 
-from BasicUtils import exe_name, get_caller_module
+from molass_legacy.KekLib.BasicUtils import exe_name, get_caller_module
 
 """
     Icon files are supposed to be placed in the same folder,

@@ -2,14 +2,14 @@
 
     QuickAnalysis.AnalyzerDialogProxy.py
 
-    Copyright (c) 2020-2024, SAXS Team, KEK-PF
+    Copyright (c) 2020-2025, SAXS Team, KEK-PF
 
 """
 from molass_legacy._MOLASS.SerialSettings import get_setting, set_setting
 
 class AnalyzerDialogProxy:
     def __init__(self, parent, sd, mapper, judge_holder, correction_necessity):
-        from Extrapolation.PreviewButtonFrame import PreviewButtonFrame
+        from molass_legacy.Extrapolation.PreviewButtonFrame import PreviewButtonFrame
         self.parent = parent
         self.doing_sec  = parent.use_mtd_conc == 0
         self.sd = sd

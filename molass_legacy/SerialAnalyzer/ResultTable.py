@@ -8,7 +8,7 @@
 """
 
 import os
-from OurTkinter             import Tk, ToolTip
+from molass_legacy.KekLib.OurTkinter             import Tk, ToolTip
 import OurMessageBox        as     MessageBox
 from TkMiniTable            import TkMiniTable
 from molass_legacy._MOLASS.SerialSettings               import get_setting

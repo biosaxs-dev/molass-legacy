@@ -6,7 +6,7 @@
 import numpy as np
 from .JsPedersen1997 import F1
 from .DjKinning1984 import P0, S0
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 def S0_bound(q, R, K=1):
     return  1 - K * 3 / (q*R)**2

@@ -5,7 +5,7 @@
     Copyright (c) 2018-2022, SAXS Team, KEK-PF
 
 """
-from OurTkinter import Tk
+from molass_legacy.KekLib.OurTkinter import Tk
 
 class GuiMctToolsMenu(Tk.Menu):
     def __init__(self, parent, dialog, menubar ):

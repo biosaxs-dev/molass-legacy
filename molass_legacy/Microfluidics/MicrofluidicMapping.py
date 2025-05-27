@@ -10,11 +10,11 @@ from scipy.interpolate import UnivariateSpline
 from lmfit import minimize, Parameters
 from molass_legacy.Mapping.SingleComponent import SingleComponent
 from molass_legacy._MOLASS.SerialSettings import set_setting
-from AnalysisRangeInfo import AnalysisRangeInfo
+from molass_legacy.DataStructure.AnalysisRangeInfo import AnalysisRangeInfo
 
 DEBUG = False
 if DEBUG:
-    import DebugPlot as plt
+    import molass_legacy.KekLib.DebugPlot as plt
 
 def make_microfluidic_mapping_info_impl(mapper, opt_params):
     mapper.opt_params = opt_params

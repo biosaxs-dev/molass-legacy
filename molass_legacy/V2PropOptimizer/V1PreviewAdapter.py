@@ -6,7 +6,7 @@
 import numpy as np
 from molass_legacy._MOLASS.SerialSettings import set_setting
 from molass_legacy.Mapping.MapperConstructor import create_mapper
-from AnalyzerUtil import compute_conc_factor_util
+from molass_legacy.SerialAnalyzer.AnalyzerUtil import compute_conc_factor_util
 from Extrapolation.PreviewData import PreviewOptions
 
 class ZxDialogProxy:

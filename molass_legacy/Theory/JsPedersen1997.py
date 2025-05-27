@@ -7,7 +7,7 @@ import numpy as np
 from scipy.integrate import quad, dblquad, nquad
 from scipy.optimize import minimize
 from numba.core.decorators import jit
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 def F1(q, R):
     qR = q*R

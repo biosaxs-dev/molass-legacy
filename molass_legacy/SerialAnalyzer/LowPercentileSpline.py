@@ -7,9 +7,9 @@
 import numpy as np
 from scipy.interpolate import RectBivariateSpline
 from BasePlane import LowPercentilePlane
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 # import matplotlib.pyplot as plt
-from OurMatplotlib import get_color
+from molass_legacy.KekLib.OurMatplotlib import get_color
 
 USE_OVERLAPPING_PLANES  = False
 USE_AVERAGED_JOINTS     = False

@@ -7,7 +7,7 @@ import logging
 import numpy as np
 from bisect import bisect_right
 from itertools import combinations
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 ALLOWANCE_RATIO = 0.05
 

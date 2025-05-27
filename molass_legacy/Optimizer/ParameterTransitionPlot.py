@@ -12,8 +12,8 @@ from molass_legacy.KekLib.DebugPlot import push, pop, get_parent
 from molass_legacy.SerialAnalyzer.DataUtils import get_in_folder
 from molass_legacy.KekLib.ScrolledFrame import ScrolledFrame
 from molass_legacy._MOLASS.SerialSettings import get_setting
-from Optimizer.FvScoreConverter import convert_scores
-from Optimizer.ParamsIterator import create_iterator
+from molass_legacy.Optimizer.FvScoreConverter import convert_scores
+from molass_legacy.Optimizer.ParamsIterator import create_iterator
 
 class ParameterTransitionPlot(Dialog):
     def __init__(self, parent, optimizer, params_array, bounds_array, fv_list):

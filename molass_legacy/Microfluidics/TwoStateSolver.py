@@ -9,7 +9,7 @@ import time
 import numpy as np
 from scipy import optimize, stats
 from lmfit import Parameters, minimize
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from molass_legacy.KekLib.SciPyCookbook import smooth
 from SimpleUnfolding import proportion_folded
 from SvdDenoise import get_denoised_data
@@ -133,7 +133,7 @@ class TwoStateSolver:
 
     def draw_components_with_bands(self, ax, data, index, title=None, start=0, detail=False):
         from matplotlib.patches import Polygon
-        from OurMatplotlib import get_color
+        from molass_legacy.KekLib.OurMatplotlib import get_color
         from GeometryUtils import polygon_area_centroid
 
         x = np.arange(start, start+data.shape[1])

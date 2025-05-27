@@ -17,7 +17,7 @@ import sys, argparse, os
 import logging
 from .saxstats import saxstats as saxs
 from .saxstats import denssopts as dopts
-from BasicUtils import Struct
+from molass_legacy.KekLib.BasicUtils import Struct
 
 MAXNUM_STEPS = 20000
 
@@ -204,7 +204,7 @@ def fit_data_bc(q, a, e, extrapolate=False):    # backward compatible
     return sasrec.qc, sasrec.Ic, sasrec.Icerr, sasrec.D
 
 def get_dmax_with_datgnom(file_path):
-    from Saxs.Rdf import AtsasDatGnomDdf
+    from molass_legacy.Saxs.Rdf import AtsasDatGnomDdf
     ddf = AtsasDatGnomDdf(file_path)
     dmax = ddf.guess_best_dmax()
     return dmax
@@ -283,7 +283,7 @@ def run_denss_impl_dummy(qc, ac, ec, dmax, infile_name):
 
 def get_denssfolder(parent=None):
     from molass_legacy._MOLASS.SerialSettings import get_setting
-    from BasicUtils import mkdirs_with_retry
+    from molass_legacy.KekLib.BasicUtils import mkdirs_with_retry
 
     analysis_folder = get_setting('analysis_folder')
     if analysis_folder is None or analysis_folder == "":
@@ -335,7 +335,7 @@ def get_denss_log_items(path):
 def run_pdb2mrc(in_file, queue=None):
     import time
     from SubProcess import Popen    # suppresses the child process window.
-    from BasicUtils import get_home_folder
+    from molass_legacy.KekLib.BasicUtils import get_home_folder
     print("Generating an mrc file.")
     script_path = os.path.join(get_home_folder(), r'lib\DENSS\bin\denss.pdb2mrc.py')
     python  = sys.executable.replace('pythonw.exe', 'python.exe')       # running with pythonw.exe seems inappropriate

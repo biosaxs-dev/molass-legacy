@@ -5,10 +5,10 @@
     Copyright (c) 2017, Masatsuyo Takahashi, KEK-PF
 """
 import numpy as np
-from OurTkinter             import Tk
-from TkUtils                import is_low_resolution
+from molass_legacy.KekLib.OurTkinter             import Tk
+from molass_legacy.KekLib.TkUtils                import is_low_resolution
 from CanvasFrame            import CanvasFrame
-from OurMatplotlib          import get_default_colors
+from molass_legacy.KekLib.OurMatplotlib          import get_default_colors
 from SimpleGuinier          import SimpleGuinier
 
 class GuinierFrame( Tk.Frame ):

@@ -1,15 +1,15 @@
 """
     PreviewButtonFrame.py
 
-    Copyright (c) 2018-2024, SAXS Team, KEK-PF
+    Copyright (c) 2018-2025, SAXS Team, KEK-PF
 """
 import sys
 import logging
 from molass_legacy.KekLib.OurTkinter import Tk
 from molass_legacy._MOLASS.SerialSettings import get_setting, set_setting
-from PreviewData import PreviewData, PreviewOptions
+from .PreviewData import PreviewData, PreviewOptions
 from molass_legacy.KekLib.BasicUtils import Struct
-from LRF.PnoScdMap import PnoScdMap
+from molass_legacy.LRF.PnoScdMap import PnoScdMap
 DEBUG_SD = False
 if DEBUG_SD:
     from molass_legacy.SerialAnalyzer.SdDebugger import SdDebugger
@@ -326,9 +326,9 @@ class PreviewButtonFrame(Tk.LabelFrame):
     def show_zx_preview_using_pool(self, pdata, popts, debug=False):
         if debug:
             from importlib import reload
-            import LRF.LrfResultPool
-            reload(LRF.LrfResultPool)       
-        from LRF.LrfResultPool import LrfResultPool
+            import molass_legacy.LRF.LrfResultPool
+            reload(molass_legacy.LRF.LrfResultPool)       
+        from molass_legacy.LRF.LrfResultPool import LrfResultPool
         self.pool = LrfResultPool(pdata, popts)
         self.pool.run_solver(self.dialog)
         last_change_id = self.get_last_change_id_from_advanced_frame()

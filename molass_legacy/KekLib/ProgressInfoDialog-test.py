@@ -13,10 +13,10 @@ import time
 import logging
 from io import StringIO
 
-from BasicUtils             import get_caller_module
-from OurTkinter             import Tk, Dialog, ttk, Font, ScrolledText
-from TkSupplements          import tk_set_icon_portable, BlinkingFrame, FLASH_STOP_JUST
-from TkUtils                import split_geometry, join_geometry
+from molass_legacy.KekLib.BasicUtils             import get_caller_module
+from molass_legacy.KekLib.OurTkinter             import Tk, Dialog, ttk, Font, ScrolledText
+from molass_legacy.KekLib.TkSupplements          import tk_set_icon_portable, BlinkingFrame, FLASH_STOP_JUST
+from molass_legacy.KekLib.TkUtils                import split_geometry, join_geometry
 import OurMessageBox        as MessageBox
 from Settings               import get_setting
 from ProgressInfo           import STATE_INIT, STATE_DOING, STATE_DONE, STATE_ERROR, STATE_FATAL, SAFE_FINISH, cleanup_queues

@@ -6,7 +6,7 @@
     Copyright (c) 2019-2022, SAXS Team, KEK-PF
 
 """
-from OurTkinter import Tk
+from molass_legacy.KekLib.OurTkinter import Tk
 
 class MenuButton(Tk.Button):
     def __init__(self, parent, text, command_list=[]):

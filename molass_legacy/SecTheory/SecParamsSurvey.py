@@ -11,8 +11,8 @@ columntype_id = None
 
 def inspect_sec_params(in_folder, *args, **kwargv):
     from molass_legacy._MOLASS.SerialSettings import clear_temporary_settings, clear_v2_temporary_settings, set_setting, get_setting
-    from Batch.StandardProcedure import StandardProcedure
-    from Batch.LiteBatch import LiteBatch
+    from molass_legacy.Batch.StandardProcedure import StandardProcedure
+    from molass_legacy.Batch.LiteBatch import LiteBatch
     from molass_legacy.SerialAnalyzer.DataUtils import cut_upper_folders
     from molass_legacy.Tools.EmbedDialog import open_dialog
     from Experiment.ColumnTypes import update_sec_settings_by_id

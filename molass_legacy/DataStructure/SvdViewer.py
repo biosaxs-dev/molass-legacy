@@ -10,9 +10,9 @@ import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from OurTkinter import Tk, Dialog
-from TkUtils import is_low_resolution
-from TkSupplements import tk_set_icon_portable
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.TkUtils import is_low_resolution
+from molass_legacy.KekLib.TkSupplements import tk_set_icon_portable
 from molass_legacy._MOLASS.SerialSettings import get_setting
 from ScatteringBaseCorrector import ScatteringBaseCorrector
 from ScatteringViewUtils import compute_baselines, draw_3d_scattering
@@ -27,7 +27,7 @@ MAX_NUM_SVALUES = 10
 
 ADD_TOOLBAR = False
 if ADD_TOOLBAR:
-    from OurMatplotlib import NavigationToolbar
+    from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar
 
 
 class SvdViewer(Dialog):

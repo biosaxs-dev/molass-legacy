@@ -12,7 +12,7 @@ def lognormal_pdf(x, mu, sigma):
     return 1/(x*sigma*R2PI) * np.exp(-(np.log(x) - mu)**2/(2*sigma**2))
 
 def demo():
-    import DebugPlot as plt
+    import molass_legacy.KekLib.DebugPlot as plt
 
     x = np.linspace(0.01, 10, 200)
 

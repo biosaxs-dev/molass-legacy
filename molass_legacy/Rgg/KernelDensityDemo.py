@@ -7,7 +7,7 @@
 import numpy as np
 from pomegranate import GaussianKernelDensity
 from .KernelDensityFix import UniformKernelDensity
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 def demo():
     x = np.linspace(0, 50, 1000)

@@ -1,12 +1,10 @@
-# coding: utf-8
 """
-
     IntensitySmootherAveraging.py
 
     Copyright (c) 2016, Masatsuyo Takahashi, KEK-PF
 """
-import numpy                    as np
-from molass_legacy.ElutionalSmootherUtils     import LightIntensityData
+import numpy as np
+from molass_legacy.SerialAnalyzer.ElutionalSmootherUtils import LightIntensityData
 
 class IntensitySmootherAveraging:
     def __init__( self, intensity_array, num_curves_averaged ):

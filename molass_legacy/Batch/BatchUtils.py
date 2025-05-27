@@ -5,7 +5,7 @@
 """
 import os
 from molass_legacy._MOLASS.SerialSettings import clear_temporary_settings, set_setting
-from Batch.LiteBatch import LiteBatch     
+from molass_legacy.Batch.LiteBatch import LiteBatch     
 
 def load_lrfsrc(in_folder, clear=True):
     if clear:
@@ -16,7 +16,7 @@ def load_lrfsrc(in_folder, clear=True):
     return lrf_src
 
 def load_v2_result(job_folder):
-    from Optimizer.FullOptResult import FullOptResult
+    from molass_legacy.Optimizer.FullOptResult import FullOptResult
 
     in_data_info_txt = os.path.join(job_folder, "in_data_info.txt")
     with open(in_data_info_txt) as fh:

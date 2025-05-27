@@ -161,7 +161,7 @@ class Inset2Din3D:
             self.annotations.append(an)
 
 def inset_3d_demo():
-    import DebugPlot as dplt
+    import molass_legacy.KekLib.DebugPlot as dplt
 
     fig = dplt.figure()
     ax = fig.add_subplot(111, projection='3d')

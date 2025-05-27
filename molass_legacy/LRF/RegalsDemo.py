@@ -7,7 +7,7 @@
 import numpy as np
 from .regals import component, concentration_class, profile_class, mixture, regals
 from SvdDenoise import get_denoised_data
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 def demo(sp, sd):
     pdata, popts = sp.get_lrf_args(sd)

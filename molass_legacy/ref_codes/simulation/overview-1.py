@@ -9,7 +9,7 @@ from Intensity              import Intensity
 sys.path.append( os.path.dirname( os.path.abspath( __file__ ) ) + '/../../../lib' )
 import molass_legacy.KekLib
 import OurStatsModels       as sm
-from NumpyUtils             import np_savetxt
+from molass_legacy.KekLib.NumpyUtils             import np_savetxt
 
 max_intensity = 0.03
 error_level = 0.002

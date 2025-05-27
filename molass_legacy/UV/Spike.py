@@ -6,12 +6,12 @@
 """
 import numpy as np
 import logging
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from .UvPreRecog import UvPreRecog
 
 def spike(in_folder, logger, fig_file=None):
     from molass_legacy._MOLASS.SerialSettings import set_setting
-    from Batch.StandardProcedure import StandardProcedure
+    from molass_legacy.Batch.StandardProcedure import StandardProcedure
     from molass_legacy.Trimming.PreliminaryRecognition import PreliminaryRecognition
 
     set_setting("in_folder", in_folder)

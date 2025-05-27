@@ -6,7 +6,7 @@
 import os
 import re
 import subprocess
-from BasicUtils import Struct
+from molass_legacy.KekLib.BasicUtils import Struct
 from .AutoRg import autorg_exe_array
 
 class CrysolExecutor:

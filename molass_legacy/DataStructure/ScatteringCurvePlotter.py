@@ -11,9 +11,9 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.widgets import Button
 from matplotlib.patches import Rectangle
-from OurTkinter import Tk, Dialog
-from TkSupplements import tk_set_icon_portable
-from OurMatplotlib import get_color, NavigationToolbar
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.TkSupplements import tk_set_icon_portable
+from molass_legacy.KekLib.OurMatplotlib import get_color, NavigationToolbar
 from SerialDataUtils import serial_np_loadtxt
 
 DEFAULT_CENTER  = 0.15

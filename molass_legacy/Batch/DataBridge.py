@@ -4,7 +4,7 @@
     Copyright (c) 2024, SAXS Team, KEK-PF
 """
 import logging
-from Batch.FullBatch import FullBatch
+from molass_legacy.Batch.FullBatch import FullBatch
 
 class DataBridge(FullBatch):
     def __init__(self, sd, pre_recog, treat=None):

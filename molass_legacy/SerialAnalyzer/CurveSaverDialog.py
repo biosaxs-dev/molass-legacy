@@ -6,8 +6,8 @@
 """
 import os
 import numpy as np
-from OurTkinter import Tk, Dialog
-from TkCustomWidgets import FolderEntry
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.TkCustomWidgets import FolderEntry
 
 class CurveSaverDialog(Dialog):
     def __init__(self, parent, curve_list, folder_init):
@@ -81,7 +81,7 @@ class CurveSaverDialog(Dialog):
         folder = self.save_folder.get()
 
         if not os.path.exists(folder):
-            from BasicUtils import mkdirs_with_retry
+            from molass_legacy.KekLib.BasicUtils import mkdirs_with_retry
             mkdirs_with_retry(folder)
 
         for k, row in enumerate(self.var_list):

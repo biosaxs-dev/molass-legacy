@@ -4,7 +4,7 @@
 
     Copyright (c) 2019, SAXS Team, KEK-PF
 """
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from MatrixData import simple_plot_3d
 from MeasuredData import MeasuredData
 from DataUtils import get_in_folder

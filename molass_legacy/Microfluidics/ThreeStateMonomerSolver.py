@@ -9,7 +9,7 @@ import time
 import numpy as np
 from scipy import optimize, stats
 from lmfit import Parameters, minimize
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from molass_legacy.KekLib.SciPyCookbook import smooth
 from SimpleUnfolding import RT
 from SvdDenoise import get_denoised_data
@@ -145,7 +145,7 @@ class ThreeStateMonomerSolver:
         detail=False is not used here. It is just for interface compatibility with TwoStateSolver
         """
         from matplotlib.patches import Polygon
-        from OurMatplotlib import get_color
+        from molass_legacy.KekLib.OurMatplotlib import get_color
         from GeometryUtils import polygon_area_centroid
 
         x = np.arange(data.shape[1]) + start

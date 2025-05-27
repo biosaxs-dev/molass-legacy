@@ -25,7 +25,7 @@ def get_optimizer_folder():
     return optimizer_folder
 
 def get_treatment_path(optimizer_folder=None):
-    from Optimizer.TheUtils import get_optimizer_folder
+    from molass_legacy.Optimizer.TheUtils import get_optimizer_folder
     if optimizer_folder is None:
         optimizer_folder = get_optimizer_folder()
     return os.path.join(optimizer_folder, "treatment.txt")
@@ -48,7 +48,7 @@ def guess_n_compnents_trial(dsets, logger):
     logger.info("n_components guessed as %d from len(epeaks)=%d", n_compnents, n)
 
     if False:
-        import DebugPlot as plt
+        import molass_legacy.KekLib.DebugPlot as plt
         from molass_legacy.Elution.CurveUtils import simple_plot
 
         plt.push()
@@ -114,7 +114,7 @@ def load_class(class_code):
 
 def get_sd_from_folder_impl(in_folder, logger, ver_date=None):
     from molass_legacy.SerialAnalyzer.AnalyzerUtil import compute_conc_factor_util
-    from Batch.StandardProcedure import StandardProcedure
+    from molass_legacy.Batch.StandardProcedure import StandardProcedure
     from molass_legacy.Trimming.PreliminaryRecognition import PreliminaryRecognition
     from SecSaxs.DataTreatment import DataTreatment
 

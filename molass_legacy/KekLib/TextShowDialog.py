@@ -10,8 +10,8 @@
 """
 from __future__ import division, print_function, unicode_literals
 
-from OurTkinter         import Tk, Dialog
-from TkSupplements      import tk_set_icon_portable
+from molass_legacy.KekLib.OurTkinter         import Tk, Dialog
+from molass_legacy.KekLib.TkSupplements      import tk_set_icon_portable
 
 class TextShowDialog( Dialog ):
 

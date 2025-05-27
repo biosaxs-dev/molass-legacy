@@ -12,7 +12,7 @@ from DataUtils import get_in_folder
 VERY_SMALL_VALUE = 1e-6
 
 def demo(in_folder, sd, extra_peaks=0):
-    import DebugPlot as plt
+    import molass_legacy.KekLib.DebugPlot as plt
     from molass_legacy.Models.ElutionCurveModels import egha, emga
     from SecTheory.Edm import edm_func
     from importlib import reload

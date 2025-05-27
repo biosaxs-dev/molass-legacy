@@ -6,7 +6,7 @@
 """
 
 import numpy as np
-import DebugPlot as dplt
+import molass_legacy.KekLib.DebugPlot as dplt
 from SerialAtsasTools import AlmergeExecutor
 
 class Almerge(AlmergeExecutor):

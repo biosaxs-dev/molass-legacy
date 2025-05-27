@@ -1,7 +1,7 @@
 """
     LrfResultPool.py
 
-    Copyright (c) 2021-2023, SAXS Team, KEK-PF
+    Copyright (c) 2021-2025, SAXS Team, KEK-PF
 """
 import logging
 from molass_legacy._MOLASS.SerialSettings import get_setting
@@ -21,18 +21,18 @@ class LrfResultPool:
     def run_solver(self, parent=None, debug=False):
         if debug:
             from importlib import reload
-            import PeakSetSelector
-            reload(PeakSetSelector)  
-        from molass_legacy.PeaksetSelector import PeakSetSelector
+            import molass_legacy.Extrapolation.PeakSetSelector
+            reload(molass_legacy.Extrapolation.PeakSetSelector)  
+        from molass_legacy.Extrapolation.PeakSetSelector import PeakSetSelector
 
         if USE_LRF_SOLVER:
             if debug:
                 from importlib import reload
-                import LRF.LrfSolver
-                reload(LRF.LrfSolver)       
+                import molass_legacy.LRF.LrfSolver
+                reload(molass_legacy.LRF.LrfSolver)       
             from .LrfSolver import LrfSolver as Solver
         else:
-            from ExtrapolationSolver import ExtrapolationSolver as Solver
+            from molass_legacy.Extrapolation.ExtrapolationSolver import ExtrapolationSolver as Solver
 
         self.logger.info('cnv_ranges=%s, num_ranges=%s', str(self.pdata.cnv_ranges), str(self.pdata.num_ranges))
 
@@ -60,9 +60,9 @@ class LrfResultPool:
     def show_dialog(self, parent, editor_frame=None, last_change_id=None, debug=True):
         if debug:
             from importlib import reload
-            import Extrapolation.ExtrapolSolverDialog
-            reload(Extrapolation.ExtrapolSolverDialog)
-        from Extrapolation.ExtrapolSolverDialog import ExtrapolSolverDialog
+            import molass_legacy.Extrapolation.ExtrapolSolverDialog
+            reload(molass_legacy.Extrapolation.ExtrapolSolverDialog)
+        from molass_legacy.Extrapolation.ExtrapolSolverDialog import ExtrapolSolverDialog
         self.dialog = ExtrapolSolverDialog(parent, self, editor_frame=editor_frame, last_change_id=last_change_id)
         self.dialog.show()
 

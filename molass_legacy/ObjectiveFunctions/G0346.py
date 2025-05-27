@@ -7,13 +7,13 @@ import numpy as np
 from molass_legacy.KekLib.ExceptionTracebacker import log_exception
 from molass_legacy.Peaks.ElutionModels import egh
 from molass_legacy.Peaks.EghSupples import compute_AB
-from Optimizer.BasicOptimizer import BasicOptimizer, BAD_PARAMS_RETURN, WEAK_PENALTY_SCALE, UV_XR_RATIO_ALLOW, UV_XR_RATIO_SCALE
+from molass_legacy.Optimizer.BasicOptimizer import BasicOptimizer, BAD_PARAMS_RETURN, WEAK_PENALTY_SCALE, UV_XR_RATIO_ALLOW, UV_XR_RATIO_SCALE
 from ModelParams.BoundedSecParams import BoundedSecParams
 from ModelParams.EghParams import construct_egh_params_type
-from Optimizer.NumericalUtils import safe_ratios
+from molass_legacy.Optimizer.NumericalUtils import safe_ratios
 from molass_legacy._MOLASS.SerialSettings import get_setting, set_setting
-from Optimizer.TheDebugUtils import convert_score_list
-from Optimizer.PenaltyUtils import compute_mapping_penalty
+from molass_legacy.Optimizer.TheDebugUtils import convert_score_list
+from molass_legacy.Optimizer.PenaltyUtils import compute_mapping_penalty
 
 PENALTY_SCALE = 1e3
 EGH_LOG_ALPHA = np.log(0.1)
@@ -39,7 +39,7 @@ class G0346(BasicOptimizer):
             from importlib import reload
             import Optimizer.BasicOptimizer
             reload(Optimizer.BasicOptimizer)
-            from Optimizer.BasicOptimizer import BasicOptimizer
+            from molass_legacy.Optimizer.BasicOptimizer import BasicOptimizer
         BasicOptimizer.__init__(self, dsets, n_components, params_type, kwargs)
 
     def objective_func(self, p, plot=False, debug=False, fig_info=None, axis_info=None, return_full=False, return_lrf_info=False, lrf_debug=False):

@@ -11,12 +11,12 @@
 
 """
 import os
-from OurTkinter             import Tk
+from molass_legacy.KekLib.OurTkinter             import Tk
 from molass_legacy._MOLASS.SerialSettings         import get_setting
-from BasicUtils             import mkdirs_with_retry, get_caller_module
+from molass_legacy.KekLib.BasicUtils             import mkdirs_with_retry, get_caller_module
 from molass_legacy._MOLASS.Version                import get_version_string
 from molass_legacy._MOLASS.SerialSettings         import get_setting, set_setting
-from AnalysisRangeInfo      import AnalysisRangeInfo
+from molass_legacy.DataStructure.AnalysisRangeInfo      import AnalysisRangeInfo
 
 def make_guinier_result_stamp( self ):
 

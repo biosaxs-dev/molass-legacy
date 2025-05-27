@@ -65,27 +65,27 @@ class ExcelManager:
         return action
 
     def guinier_book(self, args):
-        from Reports.GuinierExcelFormatter import add_guinier_annonations
+        from molass_legacy.Reports.GuinierExcelFormatter import add_guinier_annonations
         self.logger.info('gunier_book: %s', str(args))
         add_guinier_annonations(self.excel_client, args, self.logger)
 
     def range_extrapolation_book(self, args):
-        from Reports.ZeroExExcelFormatter import add_result_format_setting
+        from molass_legacy.Reports.ZeroExExcelFormatter import add_result_format_setting
         self.logger.info('range_extrapolation_book: %s', str(args))
         add_result_format_setting(self.excel_client, args, self.logger)
 
     def range_datgnom_book(self, args):
-        from Reports.DatgnomExcelFormatter import add_datgnom_format_setting
+        from molass_legacy.Reports.DatgnomExcelFormatter import add_datgnom_format_setting
         self.logger.info('range_datgnom_book: %s', str(args))
         add_datgnom_format_setting(self.excel_client, args, self.logger)
 
     def range_overlay_book(self, args):
-        from Reports.ZeroExExcelFormatter import add_overlay_format_setting
+        from molass_legacy.Reports.ZeroExExcelFormatter import add_overlay_format_setting
         self.logger.info('range_overlay_book: %s', str(args))
         add_overlay_format_setting(self.excel_client, args, self.logger)
 
     def summary_book(self, args):
-        from Reports.SummaryExcelFormatter import add_summary_format_setting
+        from molass_legacy.Reports.SummaryExcelFormatter import add_summary_format_setting
         self.logger.info('summary_book: %s', str(args))
         add_summary_format_setting(self.excel_client, args, self.logger)
 

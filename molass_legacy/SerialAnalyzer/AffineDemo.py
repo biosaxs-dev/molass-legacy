@@ -9,11 +9,11 @@ import numpy                as np
 import matplotlib.pyplot    as plt
 from matplotlib.patches     import Polygon
 from matplotlib.backends.backend_tkagg  import FigureCanvasTkAgg
-from OurTkinter             import Tk, Dialog
-from TkUtils                import is_low_resolution
-from TkSupplements          import tk_set_icon_portable
-from BasicUtils             import get_caller_module
-from Affine                 import Affine
+from molass_legacy.KekLib.OurTkinter             import Tk, Dialog
+from molass_legacy.KekLib.TkUtils                import is_low_resolution
+from molass_legacy.KekLib.TkSupplements          import tk_set_icon_portable
+from molass_legacy.KekLib.BasicUtils             import get_caller_module
+from molass_legacy.KekLib.Affine                 import Affine
 
 
 def demo_plot( fig, src_points, tgt_points, with_proof=False ):

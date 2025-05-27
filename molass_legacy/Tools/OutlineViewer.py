@@ -10,9 +10,9 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.widgets import Button, SpanSelector
 from matplotlib.patches import Polygon
-from OurTkinter import Tk, Dialog
-from OurMatplotlib import get_color, NavigationToolbar
-from TkUtils import is_low_resolution
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.OurMatplotlib import get_color, NavigationToolbar
+from molass_legacy.KekLib.TkUtils import is_low_resolution
 from molass_legacy._MOLASS.SerialSettings import get_setting, set_setting
 
 USE_PLOT_SURFACE = False

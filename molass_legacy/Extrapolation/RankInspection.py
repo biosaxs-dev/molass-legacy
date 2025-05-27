@@ -10,9 +10,9 @@ from matplotlib.gridspec import GridSpec
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 import matplotlib.ticker as ticker
-from OurTkinter import Tk, Dialog
-from TkSupplements import tk_set_icon_portable
-from OurMatplotlib import NavigationToolbar, get_color
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.TkSupplements import tk_set_icon_portable
+from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar, get_color
 from OurPlotUtils import draw_as_image
 from SvdDenoise import get_denoised_data
 

@@ -7,9 +7,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from OurTkinter import Tk, Dialog
-from Optimizer.NaviFrame import NaviFrame
-from Optimizer.FvScoreConverter import convert_score
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
+from molass_legacy.Optimizer.NaviFrame import NaviFrame
+from molass_legacy.Optimizer.FvScoreConverter import convert_score
 
 class ScoreTransition(Dialog):
     def __init__(self, parent, js_canvas, optimizer, x_array, fv_array, best_index):
@@ -63,7 +63,7 @@ class ScoreTransition(Dialog):
             import Optimizer.TheDebugUtils
             from importlib import reload
             reload(Optimizer.TheDebugUtils)
-        from Optimizer.TheDebugUtils import plot_scores
+        from molass_legacy.Optimizer.TheDebugUtils import plot_scores
 
         self.curr_index = index
 

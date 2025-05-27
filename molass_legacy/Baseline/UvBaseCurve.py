@@ -5,7 +5,7 @@
 """
 import numpy as np
 from scipy.optimize import minimize, basinhopping
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from molass_legacy.UV.PlainCurve import make_secondary_e_curve_at
 from molass_legacy.Trimming.Sigmoid import guess_bent_sigmoid, ex_sigmoid
 from molass_legacy.Peaks.EghSupples import egh, d_egh

@@ -15,14 +15,14 @@ import tkinter.font as Font
 import tkinter.ttk as ttk
 # import tkinter.tix as tix
 
-from TkSupplements      import tk_set_icon_portable     # for backward compatibility
+from molass_legacy.KekLib.TkSupplements      import tk_set_icon_portable     # for backward compatibility
 
 try:
     from idlelib.tooltip import Hovertip as ToolTip
 except:
     from idlelib.ToolTip import ToolTip
 
-# from TkSupplements      import tk_set_icon_portable
+# from molass_legacy.KekLib.TkSupplements      import tk_set_icon_portable
 
 def is_empty_val( val ):
     return val is None or val == '' or val[0] == '<' or val == 'None' 
@@ -250,7 +250,7 @@ class Dialog(Tk.Toplevel):
         else:
             vloc, hloc = location.split(" ")
             self.update()
-            from TkUtils import split_geometry
+            from molass_legacy.KekLib.TkUtils import split_geometry
             W, H, X, Y = split_geometry(parent.geometry())
             w, h, x, y = split_geometry(self.geometry())
             # print([rootx, rooty])

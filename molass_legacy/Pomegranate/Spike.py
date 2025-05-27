@@ -9,7 +9,7 @@ import asyncio
 import numpy as np
 from pomegranate import *
 from molass_legacy.Peaks.ElutionModels import egh
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from .EghMixtureModel import EghMixtureModel
 
 def normal_pdf(x, mu, sigma):
@@ -89,7 +89,7 @@ def spike_demo_impl(xy_list, num_components=None, use_peaks=False):
             break
 
 def spike_demo_real(in_folder, num_components=3, correction=False, use_peaks=False):
-    from Batch.StandardProcedure import StandardProcedure
+    from molass_legacy.Batch.StandardProcedure import StandardProcedure
     sp = StandardProcedure()
     sp.load(in_folder, debug=False)
     if correction:

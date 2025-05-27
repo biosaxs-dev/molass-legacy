@@ -456,7 +456,7 @@ class SimultaneousSolver:
 def spike_demo(in_folder, num_components=4, num_trials=1, seeds=None, result=None):
     from time import time
     import logging
-    from Batch.StandardProcedure import StandardProcedure
+    from molass_legacy.Batch.StandardProcedure import StandardProcedure
     from molass_legacy.Elution.CurveUtils import simple_plot
     from RgProcess.RgCurve import RgCurve
     from molass_legacy.SerialAnalyzer.DataUtils import get_in_folder

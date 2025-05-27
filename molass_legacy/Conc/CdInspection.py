@@ -10,10 +10,10 @@ import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.ticker as ticker
-from OurTkinter import Tk, Dialog
-from TkUtils import split_geometry
-from TkSupplements import tk_set_icon_portable
-from OurMatplotlib import NavigationToolbar
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.TkUtils import split_geometry
+from molass_legacy.KekLib.TkSupplements import tk_set_icon_portable
+from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar
 from OurPlotUtils import draw_as_image
 from DataUtils import cut_upper_folders
 from SvdDenoise import get_denoised_data
@@ -42,7 +42,7 @@ class CdInspectionDailog(Dialog):
         self.q_limit = bisect_right(q, 0.2)
 
         if False:
-            import DebugPlot as plt
+            import molass_legacy.KekLib.DebugPlot as plt
             from MatrixData import simple_plot_3d
             print('M.shape=', M.shape, 'xray_scale=', xray_scale, 'q_limit=', self.q_limit, 'sigmas=', self.svd[1][0:2])
             c = C[0,:]

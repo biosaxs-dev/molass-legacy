@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 from matplotlib import rcParams
 from matplotlib import animation
 from matplotlib.patches import Polygon, Circle
-from OurMatplotlib import mpl_1_5_backward_compatible_init
+from molass_legacy.KekLib.OurMatplotlib import mpl_1_5_backward_compatible_init
 
 def latex_init():
     rcParams['text.usetex'] = True

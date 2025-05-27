@@ -9,7 +9,7 @@ import os
 import sys
 
 def open_dialog(callback, *args, **kwargs):
-    from OurTkinter import Tk, Dialog
+    from molass_legacy.KekLib.OurTkinter import Tk, Dialog
 
     begin_main_loop = False
     parent = kwargs.pop('parent', None)

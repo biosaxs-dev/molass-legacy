@@ -20,9 +20,9 @@ from .PeakCurve import PeakCurve, get_peak_curve_info
 from molass_legacy.SerialAnalyzer.ElutionCurve       import ElutionCurve
 from molass_legacy.Elution.CurveUtils  import simple_plot, find_rotated_extreme_arg
 from molass_legacy.KekLib.SciPyCookbook      import smooth
-from BasicUtils         import Struct
+from molass_legacy.KekLib.BasicUtils         import Struct
 from molass_legacy.KekLib.ExceptionTracebacker import log_exception, warnlog_exception
-import DebugPlot        as plt
+import molass_legacy.KekLib.DebugPlot        as plt
 from molass_legacy._MOLASS.SerialSettings     import get_setting
 
 COMPARE_ADDING_PEAKS_2WAYS  = True

@@ -9,7 +9,7 @@ import numpy as np
 import scipy.stats as stats
 from scipy.optimize import minimize
 from sklearn.cluster import KMeans
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from .EghMixture import egh_pdf, e1, e2, e3, EghMixture
 
 USE_MODE_AS_TR_INIT = True

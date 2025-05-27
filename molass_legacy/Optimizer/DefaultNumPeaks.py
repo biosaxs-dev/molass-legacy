@@ -4,7 +4,7 @@
     Copyright (c) 2022-2023, SAXS Team, KEK-PF
 """
 import numpy as np
-from Optimizer.OptConstants import MAX_NUM_PEAKS
+from molass_legacy.Optimizer.OptConstants import MAX_NUM_PEAKS
 
 def get_default_num_peaks(sd):
     try:

@@ -13,12 +13,12 @@ from matplotlib import colors
 import matplotlib
 import seaborn as sns
 from matplotlib.backends.backend_tkagg  import FigureCanvasTkAgg
-from OurTkinter             import Tk
-from TkUtils                import split_geometry
-from OurMatplotlib          import NavigationToolbar, get_color, get_hex_color
+from molass_legacy.KekLib.OurTkinter             import Tk
+from molass_legacy.KekLib.TkUtils                import split_geometry
+from molass_legacy.KekLib.OurMatplotlib          import NavigationToolbar, get_color, get_hex_color
 from molass_legacy._MOLASS.SerialSettings         import get_setting, set_setting
 from DevSettings            import get_dev_setting
-from AnalysisRangeInfo      import AnalysisRangeInfo, convert_to_paired_ranges
+from molass_legacy.DataStructure.AnalysisRangeInfo      import AnalysisRangeInfo, convert_to_paired_ranges
 from .DecompSpecPanel import RANGE_FRAME_HEIGHT
 from molass_legacy._MOLASS.Version import get_version_string
 
@@ -153,7 +153,7 @@ class SuperEditorFrame(Tk.Frame):
     def debug_plot(self):
         # overrided in DecompEditorFrame or RangeEditorFrame
         from importlib import reload
-        from AnalysisRangeInfo import AnalysisRangeInfo
+        from molass_legacy.DataStructure.AnalysisRangeInfo import AnalysisRangeInfo
         import DecompEditorDebug
         reload(DecompEditorDebug)
         from DecompEditorDebug import debug_plot_impl

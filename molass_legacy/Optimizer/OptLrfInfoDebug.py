@@ -5,7 +5,7 @@
 """
 import numpy as np
 import molass_legacy.KekLib.DebugPlot as plt
-from Optimizer.OptLrfInfo import OptLrfInfo
+from molass_legacy.Optimizer.OptLrfInfo import OptLrfInfo
 
 class OptLrfInfoProxy(OptLrfInfo):
     def __init__(self,

@@ -13,7 +13,7 @@
 import numpy            as np
 from scipy.stats        import norm
 from bisect             import bisect_right
-from NumpyUtils         import np_savetxt
+from molass_legacy.KekLib.NumpyUtils         import np_savetxt
 
 #   feigin-svergun-1987 (1.27)
 def f( sR ):

@@ -8,10 +8,10 @@ import os
 import numpy as np
 import difflib
 from SerialDataUtils import load_xray_files
-from NumpyUtils import np_savetxt
+from molass_legacy.KekLib.NumpyUtils import np_savetxt
 from InputSmootherAveraging import IntensitySmootherAveraging
 from molass_legacy._MOLASS.SerialSettings import set_setting, get_setting
-import CustomMessageBox as MessageBox
+import molass_legacy.KekLib.CustomMessageBox as MessageBox
 
 def average_impl(num_average, in_files1, out_folder, name_pattern, dialog=None, debug=False):
     num_progress = 0
@@ -46,7 +46,7 @@ def average_impl(num_average, in_files1, out_folder, name_pattern, dialog=None, 
         dialog.update()
 
     if debug:
-        import DebugPlot as plt
+        import molass_legacy.KekLib.DebugPlot as plt
         from MatrixData import simple_plot_3d
         plt.push()
         fig = plt.figure(figsize=(14, 7))

@@ -8,9 +8,9 @@ import os
 import numpy as np
 import difflib
 from SerialDataUtils import load_xray_files
-from NumpyUtils import np_savetxt_with_comments
+from molass_legacy.KekLib.NumpyUtils import np_savetxt_with_comments
 from molass_legacy._MOLASS.SerialSettings import set_setting, get_setting
-import CustomMessageBox as MessageBox
+import molass_legacy.KekLib.CustomMessageBox as MessageBox
 
 def subtract_impl(in_files1, in_files2, process_option, out_folder, name_pattern, dialog=None):
 

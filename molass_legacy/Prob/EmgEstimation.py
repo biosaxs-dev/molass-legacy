@@ -6,7 +6,7 @@
 """
 import numpy as np
 # import matplotlib.pyplot as plt
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 def spike():
     N = 1000000

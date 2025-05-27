@@ -1,19 +1,13 @@
-# coding: utf-8
+
 """
-
     CommandMainUtils.py
-
 """
 import sys
-import os
-import time
-import numpy        as np
-# from nose.tools     import eq_
-from subprocess     import call
-from AtsasTools     import autorg       as autorg_atsas
-from CommandMain    import CommandMain
-import SerialAnalyzer
-from Reports.ReportUtils import make_record
+from subprocess import call
+from .AtsasTools import autorg       as autorg_atsas
+from .CommandMain import CommandMain
+# import SerialAnalyzer
+from molass_legacy.Reports.ReportUtils import make_record
 
 sys_argv_init = sys.argv
 

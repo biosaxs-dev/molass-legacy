@@ -10,7 +10,7 @@ from matplotlib.gridspec import GridSpec
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from mpl_toolkits.mplot3d import Axes3D
 from bisect import bisect_right
-from OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
 from MatrixData import simple_plot_3d
 from SvdDenoise import get_denoised_data
 from .Qmm3dFigure import find_where_to_zoom_impl

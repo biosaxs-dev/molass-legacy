@@ -9,15 +9,15 @@ import numpy as np
 import molass_legacy.KekLib.DebugPlot as plt
 from molass_legacy.KekLib.ExceptionTracebacker import log_exception
 from molass_legacy.GuinierAnalyzer.SimpleGuinier import SimpleGuinier
-from ATSAS.AutorgRunner import AutorgRunner
+from molass_legacy.ATSAS.AutorgRunner import AutorgRunner
 
 VERY_SMALL_VALUE = 1e-10
 
 def compare_bridge_impl(caller, corrected_sd=None):
     from importlib import reload
-    import Alsaker.Bridge
-    reload(Alsaker.Bridge)
-    from Alsaker.Bridge import RgcodeBrige, do_it_in_the_context
+    import molass_legacy.Alsaker.Bridge
+    reload(molass_legacy.Alsaker.Bridge)
+    from molass_legacy.Alsaker.Bridge import RgcodeBrige, do_it_in_the_context
 
     logger = logging.getLogger(__name__)
     print("compare_bridge_impl")

@@ -7,7 +7,7 @@
 
 """
 
-from OurTkinter             import Tk, Dialog, is_empty_val
+from molass_legacy.KekLib.OurTkinter             import Tk, Dialog, is_empty_val
 from molass_legacy._MOLASS.SerialSettings         import get_setting
 
 class InputOutputDisplay( Tk.Frame ):

@@ -5,8 +5,8 @@
 """
 import numpy as np
 from matplotlib.patches import Rectangle
-import DebugPlot as plt
-from DENSS.DenssUtils import fit_data
+import molass_legacy.KekLib.DebugPlot as plt
+from molass_legacy.DENSS.DenssUtils import fit_data
 from DataUtils import get_in_folder
 
 def demo(root, sd, pno=None, debug=True, crysol_int_files=None, use_bounded_lrf=True, use_almerge=False, rank=2):

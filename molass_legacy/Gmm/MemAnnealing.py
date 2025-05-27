@@ -10,7 +10,7 @@ import numpy as np
 from scipy.optimize import minimize
 from scipy.interpolate import UnivariateSpline
 from matplotlib.patches import Polygon
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 USE_NUMBA = False
 if USE_NUMBA:
@@ -151,7 +151,7 @@ class MemAnnealing:
         p_init = np.average(x_range, axis=1)
 
         if True:
-            from BasicUtils import Struct
+            from molass_legacy.KekLib.BasicUtils import Struct
             from SimulatedAnnealing import SimulatedAnnealing
             anneal = SimulatedAnnealing()
             x_min = x_range[:,0]

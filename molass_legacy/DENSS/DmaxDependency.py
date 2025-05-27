@@ -6,7 +6,7 @@
 """
 from molass_legacy._MOLASS.SerialSettings import set_setting
 from DataUtils import serial_folder_walk
-from Batch.StandardProcedure import StandardProcedure
+from molass_legacy.Batch.StandardProcedure import StandardProcedure
 
 sp = StandardProcedure()
 

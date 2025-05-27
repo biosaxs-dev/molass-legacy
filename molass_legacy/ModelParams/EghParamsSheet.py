@@ -4,7 +4,7 @@
     Copyright (c) 2021-2023, SAXS Team, KEK-PF
 """
 import numpy as np
-from OurTkinter import Tk
+from molass_legacy.KekLib.OurTkinter import Tk
 from tksheet import Sheet
 from molass_legacy._MOLASS.SerialSettings import get_setting
 from .ParamsSheetBase import ParamsSheetBase

@@ -12,7 +12,7 @@
 """
 import matplotlib.pyplot                as plt
 from matplotlib.backends.backend_tkagg  import FigureCanvasTkAgg
-from OurTkinter             import Tk
+from molass_legacy.KekLib.OurTkinter             import Tk
 import matplotlib
 
 class CanvasFrame(Tk.Frame):

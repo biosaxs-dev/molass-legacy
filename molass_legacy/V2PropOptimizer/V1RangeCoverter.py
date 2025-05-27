@@ -5,14 +5,14 @@
 """
 import numpy as np
 from matplotlib.patches import Rectangle
-import DebugPlot as plt
-from BasicUtils import Struct       # as ControlInfoProxy
+import molass_legacy.KekLib.DebugPlot as plt
+from molass_legacy.KekLib.BasicUtils import Struct       # as ControlInfoProxy
 from molass_legacy.Decomposer.DecompUtils import make_range_info_impl
 from molass_legacy.Decomposer.FitRecord import FitRecord
 from molass_legacy.Decomposer.ModelEvaluator import ModelEvaluator
 from molass_legacy.Decomposer.UnifiedDecompResult import UnifiedDecompResult
 from RangeInfo import shift_editor_ranges
-from AnalysisRangeInfo import AnalysisRangeInfo, convert_to_paired_ranges
+from molass_legacy.DataStructure.AnalysisRangeInfo import AnalysisRangeInfo, convert_to_paired_ranges
 
 def convert_to_v1_model_ranges(prop_optimizer, peaks, paired_ranges, debug=False):
     x = prop_optimizer.x

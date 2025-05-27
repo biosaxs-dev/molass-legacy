@@ -13,10 +13,10 @@ import queue
 import threading
 import numpy        as np
 from time           import sleep
-from OurTkinter     import Tk, is_empty_val
+from molass_legacy.KekLib.OurTkinter     import Tk, is_empty_val
 from DataUtils      import serial_folder_walk
 from TkTester       import TestClient, reply_ok, reply_yes, reply_no, messagebox_shown
-from BasicUtils     import clear_dirs_with_retry, mkdirs_with_retry, open_w_safely
+from molass_legacy.KekLib.BasicUtils     import clear_dirs_with_retry, mkdirs_with_retry, open_w_safely
 from molass_legacy._MOLASS.SerialSettings import clear_settings, get_setting, set_setting
 from molass_legacy.KekLib.ExceptionTracebacker       import ExceptionTracebacker
 from LightObjects   import AnyObject

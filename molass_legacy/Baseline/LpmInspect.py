@@ -16,18 +16,18 @@ from matplotlib.patches import Rectangle
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.widgets import SpanSelector
 from molass_legacy.KekLib.ExceptionTracebacker import log_exception
-from OurMatplotlib import NavigationToolbar
-from DENSS.DenssUtils import fit_data
-import DebugPlot as dplt
+from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar
+from molass_legacy.DENSS.DenssUtils import fit_data
+import molass_legacy.KekLib.DebugPlot as dplt
 from molass_legacy._MOLASS.SerialSettings import get_setting, set_setting
 from MatrixData import simple_plot_3d
 from .Baseline import compute_baseline, better_integrative_curve, END_WIDTH
 from molass_legacy.SerialAnalyzer.ElutionCurve import ElutionCurve
 from DataUtils import cut_upper_folders
-from OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
 import tkinter.ttk as ttk
-from TkSupplements import BlinkingFrame
-import CustomMessageBox as MessageBox
+from molass_legacy.KekLib.TkSupplements import BlinkingFrame
+import molass_legacy.KekLib.CustomMessageBox as MessageBox
 from .BaselineGuinier import BaselineGuinier, get_peaktop_slice
 
 TITLE_FONTSIZE = 18

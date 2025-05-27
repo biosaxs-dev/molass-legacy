@@ -1,15 +1,14 @@
-# coding: utf-8
 """
     MeasuredData.py
 
     Copyright (c) 2019-2021, SAXS Team, KEK-PF
 """
 import numpy as np
-import DebugPlot as plt
-from DataUtils import get_in_folder
+import molass_legacy.KekLib.DebugPlot as plt
+from molass_legacy.SerialAnalyzer.DataUtils import get_in_folder
 from mpl_toolkits.mplot3d import Axes3D
-from XrayData import XrayData
-from molass_legacy.UVData import UvData
+from molass_legacy.DataStructure.XrayData import XrayData
+from molass_legacy.DataStructure.UvData import UvData
 from molass_legacy.Mapping.CurveSimilarity import CurveSimilarity
 
 class MeasuredData:

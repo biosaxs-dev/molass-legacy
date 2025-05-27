@@ -6,7 +6,7 @@
 """
 import os
 import numpy as np
-from OurTkinter import Tk
+from molass_legacy.KekLib.OurTkinter import Tk
 
 class MethodAdjusterFrame(Tk.Frame):
     def __init__(self, parent):

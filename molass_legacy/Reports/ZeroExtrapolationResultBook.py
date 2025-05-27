@@ -19,7 +19,7 @@ from molass_legacy.KekLib.ExceptionTracebacker   import ExceptionTracebacker
 from HtmlColorNames         import *
 from molass_legacy.Test.TesterLogger      import write_to_tester_log
 from molass_legacy._MOLASS.SerialSettings         import get_setting
-from Reports.DefaultFont import set_default_font
+from molass_legacy.Reports.DefaultFont import set_default_font
 set_default_font()
 
 CHART_WIDTH_ZX_P    = 21
@@ -212,7 +212,7 @@ class ZeroExtrapolationResultBook:
         indeces = j0 + np.array(indeces_)
 
         if DUMP_INPUT and m == 0 and j == 0:
-            from Reports.ReportUtils import dump_zx_report_args
+            from molass_legacy.Reports.ReportUtils import dump_zx_report_args
             dump_zx_report_args( m, j, indeces, c_rg_iz, qvector, data_matrix, ze_array, param_array, orig_param_array, exz_array )
 
         self.m  = m

@@ -10,7 +10,7 @@ from scipy.integrate import quad
 from scipy.interpolate import UnivariateSpline
 from scipy.optimize import minimize
 from matplotlib.patches import Rectangle
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from PlotUtils import align_yaxis_np
 from MatrixData import simple_plot_3d
 from SvdDenoise import get_denoised_data

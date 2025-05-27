@@ -10,7 +10,7 @@ from mpl_toolkits.mplot3d import Axes3D
 from matplotlib import animation
 from matplotlib.patches import Polygon
 from MeasuredData import MeasuredData
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from MatrixData import simple_plot_3d
 from molass_legacy.SerialAnalyzer.ElutionCurve import ElutionCurve
 from CurveDecomposer import decompose
@@ -18,7 +18,7 @@ from LPM import LPM_3d
 # from molass_legacy.Baseline.LpmProxy import LpmProxy as LPM_3d
 USING_LPM_PROXY = False
 from Extrapolation.ExSolver import ExSolver
-from NumpyUtils import np_savetxt
+from molass_legacy.KekLib.NumpyUtils import np_savetxt
 from molass_legacy.SerialAnalyzer.ElutionCurve import ElutionCurve
 
 BUG_FIX_WITH_REDRAW = False

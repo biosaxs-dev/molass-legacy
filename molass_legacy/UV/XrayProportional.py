@@ -9,10 +9,10 @@ from scipy.interpolate import UnivariateSpline
 from molass_legacy._MOLASS.SerialSettings import get_setting
 from molass_legacy.Elution.CurveUtils  import get_xray_elution_vector
 from molass_legacy.SerialAnalyzer.ElutionCurve import ElutionCurve
-from NumpyUtils import np_loadtxt
+from molass_legacy.KekLib.NumpyUtils import np_loadtxt
 from ScatteringBaseCorrector import compute_baseline_using_LPM_impl
 from molass_legacy.Mapping.SingleComponent import SingleComponent
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 def make_xray_proportinal_uv_data_impl(xray_array, ivector=None):
     this_dir = os.path.dirname( os.path.abspath( __file__ ) )

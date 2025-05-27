@@ -7,11 +7,11 @@
 import os
 import re
 from difflib import SequenceMatcher
-from OurTkinter import Tk, Dialog, ttk, is_empty_val
-from TkSupplements import tk_set_icon_portable
-from TkCustomWidgets import FolderEntry
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog, ttk, is_empty_val
+from molass_legacy.KekLib.TkSupplements import tk_set_icon_portable
+from molass_legacy.KekLib.TkCustomWidgets import FolderEntry
 try:
-    import CustomMessageBox         as MessageBox
+    import molass_legacy.KekLib.CustomMessageBox         as MessageBox
 except:
     import OurMessageBox            as MessageBox
 from SerialDataUtils import get_xray_files

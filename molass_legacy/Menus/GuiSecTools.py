@@ -11,7 +11,7 @@ class GuiSecToolsMenu(Tk.Menu):
         self.parent = parent
 
         Tk.Menu.__init__(self, menubar, tearoff=0 )
-        from Env.EnvInfo import get_global_env_info
+        from molass_legacy.Env.EnvInfo import get_global_env_info
         self.env_info = get_global_env_info()
         atsas_state = Tk.NORMAL if self.env_info.atsas_is_available else Tk.DISABLED
 
@@ -43,8 +43,7 @@ class GuiSecToolsMenu(Tk.Menu):
 
     def show_average_subtractor_dialog(self):
         print('show_average_subtractor_dialog')
-        import Microfluidics
-        from AverageSubtractorDialog import AverageSubtractorDialog
+        from molass_legacy.Microfluidics.AverageSubtractorDialog import AverageSubtractorDialog
         dialog = AverageSubtractorDialog(self.parent, use_mtd=False)
         dialog.show()
 
@@ -59,13 +58,13 @@ class GuiSecToolsMenu(Tk.Menu):
 
     def show_scattering_curve_plotter(self):
         print('show_scattering_curve_plotter')
-        from ScatteringCurvePlotter import ScatteringCurvePlotter
+        from molass_legacy.DataStructure.ScatteringCurvePlotter import ScatteringCurvePlotter
         dialog = ScatteringCurvePlotter(self.parent)
         dialog.show()
 
     def show_svd_viewer(self):
         import Decomposer
-        from SvdViewer import SvdViewer
+        from molass_legacy.DataStructure.SvdViewer import SvdViewer
         from molass_legacy.Mapping.MapperConstructor import create_mapper
         from molass_legacy._MOLASS.SerialSettings import set_setting
 

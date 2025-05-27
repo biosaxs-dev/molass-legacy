@@ -9,7 +9,7 @@ from Intensity              import Intensity
 sys.path.append( os.path.dirname( os.path.abspath( __file__ ) ) + '/../../lib' )
 import molass_legacy.KekLib
 import OurStatsModels       as sm
-from NumpyUtils             import np_savetxt
+from molass_legacy.KekLib.NumpyUtils             import np_savetxt
 
 x = np.linspace( 0, 0.8, 800 )
 C = 1e-3

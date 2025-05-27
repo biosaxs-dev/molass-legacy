@@ -300,7 +300,7 @@ def find_rotated_extreme_arg(curve, start, stop, extremun_flag):
     ret_n = start + n
 
     if False:
-        import DebugPlot as plt
+        import molass_legacy.KekLib.DebugPlot as plt
 
         plt.push()
         fig, axes = plt.subplots(nrows=1, ncols=2, figsize=(14, 7))

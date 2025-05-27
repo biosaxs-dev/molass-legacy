@@ -18,7 +18,7 @@ class FullBatch:
         self.ecurve_info = None
 
     def load_data(self, in_folder):
-        from Batch.StandardProcedure import StandardProcedure
+        from molass_legacy.Batch.StandardProcedure import StandardProcedure
         self.logger.info("loading data from %s", in_folder)
         sp = StandardProcedure()
         sd = sp.load_old_way(in_folder)
@@ -26,7 +26,7 @@ class FullBatch:
 
     def prepare(self, sd, num_peaks=None, min_num_peaks=None, debug=False):
         from molass_legacy.Trimming.PreliminaryRecognition import PreliminaryRecognition
-        from Optimizer.DefaultNumPeaks import get_default_num_peaks
+        from molass_legacy.Optimizer.DefaultNumPeaks import get_default_num_peaks
         from SecSaxs.DataTreatment import DataTreatment
         self.pre_recog = PreliminaryRecognition(sd)
         if num_peaks is None:
@@ -162,7 +162,7 @@ class FullBatch:
         return fullopt_class, class_code
 
     def get_model_name(self):
-        from Optimizer.OptimizerUtils import get_model_name
+        from molass_legacy.Optimizer.OptimizerUtils import get_model_name
         fullopt_class, class_code = self.get_function_class()
         return get_model_name(class_code)
 

@@ -7,7 +7,7 @@
 import copy
 import numpy as np
 from mpl_toolkits.mplot3d   import Axes3D
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 def extrapolate(M, c, rank=2):
     U, s, VT = np.linalg.svd(M)

@@ -12,7 +12,7 @@ from mpl_toolkits.mplot3d import Axes3D
 from ThreeDimUtils import compute_plane
 from LmfitThreadSafe import minimize, Parameters
 from ModeledData import ModeledData, simple_plot_3d
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 class ExistingNmf:
     def __init__(self, M, module='nimfa'):

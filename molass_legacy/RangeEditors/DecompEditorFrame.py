@@ -641,7 +641,7 @@ class DecompEditorFrame(SuperEditorFrame):
         return self.ex_solver
 
     def compute_global_fitting(self):
-        from Optimizer.OptimalElution import OptimalEmg, OptimalEgh, get_h_vector, select_resc
+        from molass_legacy.Optimizer.OptimalElution import OptimalEmg, OptimalEgh, get_h_vector, select_resc
         from molass_legacy.DataStructure.SvdDenoise import get_denoised_data
 
         self.logger.info('computing %s global fit', self.model_name)

@@ -10,7 +10,7 @@ from matplotlib.gridspec import GridSpec
 from mpl_toolkits.mplot3d import Axes3D
 from molass_legacy._MOLASS.SerialSettings import set_setting
 from CorrectedData import CorrectedXray
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from .OptimalElution import compute_optimal_elution
 from MatrixData import simple_plot_3d
 from ModeledData import ModeledData

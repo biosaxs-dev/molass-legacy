@@ -10,8 +10,8 @@ import sys
 import os
 from time               import strftime
 import pyautogui
-from BasicUtils         import mkdirs_with_retry, auto_numbered_file, get_home_folder, get_caller_module
-from TkUtils            import split_geometry
+from molass_legacy.KekLib.BasicUtils         import mkdirs_with_retry, auto_numbered_file, get_home_folder, get_caller_module
+from molass_legacy.KekLib.TkUtils            import split_geometry
 from DevSettings        import get_dev_setting
 
 def screenshot( file=None, widget=None, log=False ):

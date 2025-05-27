@@ -11,7 +11,7 @@ def code_patch(optimizer, work_params, current_folder):
     from importlib import reload
     import Optimizer.FuncReloadUtils
     reload(Optimizer.FuncReloadUtils)
-    from Optimizer.FuncReloadUtils import reload_optimizer
+    from molass_legacy.Optimizer.FuncReloadUtils import reload_optimizer
 
     temp_optimizer = reload_optimizer(optimizer, init_params=work_params)
 

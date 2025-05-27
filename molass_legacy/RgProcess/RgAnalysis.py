@@ -6,9 +6,9 @@
 """
 import numpy as np
 import matplotlib.pyplot as plt
-from OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
 try:
-    import CustomMessageBox as MessageBox
+    import molass_legacy.KekLib.CustomMessageBox as MessageBox
 except:
     import OurMessageBox as MessageBox
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg

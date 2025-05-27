@@ -13,7 +13,7 @@ from matplotlib.gridspec import GridSpec
 import matplotlib.patches as patches
 import matplotlib.path as path
 import matplotlib.animation as animation
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 class DiscretePdf:
     def __init__(self, data, num_bins, num_frames=None, update_data=False, patch_options=None, scale=None):

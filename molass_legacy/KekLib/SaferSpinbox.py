@@ -71,7 +71,7 @@ class SaferSpinbox(Tk.Spinbox):
                 return True
 
             if not self.error_notified:
-                import CustomMessageBox as MessageBox
+                import molass_legacy.KekLib.CustomMessageBox as MessageBox
                 MessageBox.showerror( "Value Error",
                     "Values for this spinbox must be within %d and %d." % (self.from_, self.to),
                     parent=self)

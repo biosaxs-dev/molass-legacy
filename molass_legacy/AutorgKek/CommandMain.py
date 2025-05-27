@@ -49,7 +49,7 @@ class CommandMain:
             self.opts, self.args = parser.parse_args()
 
         if self.opts.version:
-            from AppVersion import get_com_version_string
+            from molass_legacy.AutorgKek.AppVersion import get_com_version_string
             print( get_com_version_string() )
             sys.exit()
 

@@ -55,7 +55,7 @@ def bo_baseline_trial_impl(caller):
     if USE_BAYESIAN_OPTIMIZION:
         import logging
         from ultranest import ReactiveNestedSampler
-        from Optimizer.OptimizerUtils import OptimizerResult
+        from molass_legacy.Optimizer.OptimizerUtils import OptimizerResult
         allow = 10
         upper = base_params - allow
         lower = base_params + allow

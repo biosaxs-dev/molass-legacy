@@ -4,7 +4,7 @@
     Copyright (c) 2022, SAXS Team, KEK-PF
 """
 from scipy.optimize import minimize
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 class StcAdjuster:
     def __init__(self):

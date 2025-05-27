@@ -3,7 +3,7 @@
 
     Copyright (c) 2021-2024, SAXS Team, KEK-PF
 """
-from OurTkinter import Tk
+from molass_legacy.KekLib.OurTkinter import Tk
 from V2PropOptimizer.PropOptMenu import PropOptMenu
 
 class NaviFrame(Tk.Frame):

@@ -8,7 +8,7 @@
 import re
 import tkinterDnD
 from TkDebugDnd import TkDebugDnd
-import CustomMessageBox as MessageBox
+import molass_legacy.KekLib.CustomMessageBox as MessageBox
 from .TrimmingInfo import TrimmingInfo
 
 class TrimmingDebugDnd(TkDebugDnd):

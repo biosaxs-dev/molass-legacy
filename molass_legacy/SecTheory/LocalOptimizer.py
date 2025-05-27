@@ -6,7 +6,7 @@
 import numpy as np
 from scipy.optimize import minimize, basinhopping
 import molass_legacy.KekLib.DebugPlot as plt
-from Optimizer.NumericalUtils import safe_ratios
+from molass_legacy.Optimizer.NumericalUtils import safe_ratios
 from molass_legacy.SerialAnalyzer.DataUtils import get_in_folder
 from molass_legacy._MOLASS.SerialSettings import get_setting
 

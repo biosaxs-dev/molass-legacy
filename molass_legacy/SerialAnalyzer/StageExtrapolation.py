@@ -16,19 +16,19 @@ from molass_legacy.KekLib.ExceptionTracebacker import ExceptionTracebacker, log_
 from molass_legacy.AutorgKek.KekToolsGP import AutorgKek, ErrorResult
 from molass_legacy._MOLASS.SerialSettings import get_setting
 from molass_legacy.AutorgKek.AtsasTools import autorg as autorg_atsas
-from ATSAS.Almerge import AlmergeExecutor
-from ATSAS.DatGnom import DatgnomExecutor
+from molass_legacy.ATSAS.Almerge import AlmergeExecutor
+from molass_legacy.ATSAS.DatGnom import DatgnomExecutor
 from ZeroExtrapolator import ZeroExtrapolator, GuinierPorodAnalyzer, NUM_EXTRAPOLATION_POINTS
-from Reports.ZeroExtrapolationResultBook import divide
-from Reports.DatgnomResultBook import make_datgnom_result_book
+from molass_legacy.Reports.ZeroExtrapolationResultBook import divide
+from molass_legacy.Reports.DatgnomResultBook import make_datgnom_result_book
 from molass_legacy.KekLib.ProgressInfo import put_info, put_max_info, put_error
 from molass_legacy.SerialAnalyzer.ProgressInfoUtil import extimate_zero_extrapolation, STREAM_ZERO_EX, NUM_SHEET_TYPES
 from molass_legacy.SerialAnalyzer.LinearityScore import LinearityScore
 from molass_legacy.SerialAnalyzer.DevSettings import get_dev_setting
-from Reports.ReportUtils import make_zero_extrapolation_book, make_zero_extrapolation_overlay_book
+from molass_legacy.Reports.ReportUtils import make_zero_extrapolation_book, make_zero_extrapolation_overlay_book
 from molass_legacy.Test.TesterLogger import write_to_tester_log
 from molass_legacy.GuinierAnalyzer.AutorgKekAdapter import AutorgKekAdapter
-from Reports.DefaultFont import set_default_font
+from molass_legacy.Reports.DefaultFont import set_default_font
 set_default_font()
 
 USE_SIMPLIFIED_GUINIER_POROD    = False

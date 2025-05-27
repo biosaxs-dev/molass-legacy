@@ -7,9 +7,9 @@ import time
 import numpy as np
 from scipy.optimize import minimize
 import logging
-import DebugPlot as plt
-from BasicUtils import clear_dirs_with_retry, Struct
-from NumpyUtils import np_savetxt
+import molass_legacy.KekLib.DebugPlot as plt
+from molass_legacy.KekLib.BasicUtils import clear_dirs_with_retry, Struct
+from molass_legacy.KekLib.NumpyUtils import np_savetxt
 from molass_legacy.SerialAnalyzer.ElutionCurve import ElutionCurve
 from molass_legacy.Models.ElutionCurveModels import (EGHA, EMG, EMGA, model_debug_plot)
 from CanvasDialog import CanvasDialog

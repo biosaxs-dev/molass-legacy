@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from mpl_toolkits.mplot3d import Axes3D
 from bisect import bisect_right
-from OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
 from MatrixData import simple_plot_3d
 
 COLOR_ZOOMED = 'yellow'

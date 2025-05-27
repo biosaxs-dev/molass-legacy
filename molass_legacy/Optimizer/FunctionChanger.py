@@ -5,7 +5,7 @@
 """
 import re
 import logging
-from OurTkinter import Tk, Dialog, ttk
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog, ttk
 from .FuncImporter import get_objective_function_info
 
 func_code_re = re.compile(r"(F\d{4})")

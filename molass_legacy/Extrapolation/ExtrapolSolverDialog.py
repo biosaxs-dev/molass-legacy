@@ -21,14 +21,14 @@ from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar, get_color
 from molass_legacy.KekLib.DebugPlot import set_plot_env
 from molass_legacy.KekLib.ExceptionTracebacker import log_exception
 from molass_legacy._MOLASS.SerialSettings import get_setting, set_setting
-from ExtrapolationControlPanel import ControlPanel, ENABLE_KNOWN_INPUT
-from ExtrapolationAnimation import TOO_SMALL_TO_PLOT
-from ExtrapolationDenssMenu import ExtrapolationDenssMenu
+from .ExtrapolationControlPanel import ControlPanel, ENABLE_KNOWN_INPUT
+from .ExtrapolationAnimation import TOO_SMALL_TO_PLOT
+from .ExtrapolationDenssMenu import ExtrapolationDenssMenu
 from molass_legacy.Test.TesterLogger import write_to_tester_log
 from molass_legacy.SerialAnalyzer.DevSettings import set_dev_setting
 from molass_legacy.SerialAnalyzer.DataUtils import compact_path_name
-from PreviewButtonFrame import ELUTION_DATATYPE_NAMES
-from Selective.AdvancedFrame import get_change_name
+from .PreviewButtonFrame import ELUTION_DATATYPE_NAMES
+from molass_legacy.Selective.AdvancedFrame import get_change_name
 from molass_legacy._MOLASS.Version import is_developing_version
 
 SMALL_ANGLE_LIMIT_Q = 0.1
@@ -491,9 +491,9 @@ class ExtrapolSolverDialog( Dialog ):
     def plot_guinier_kratky(self, row, devel=False):
         if devel:
             from importlib import reload
-            import Kratky.GuinierKratkyPlots
-            reload(Kratky.GuinierKratkyPlots)
-        from Kratky.GuinierKratkyPlots import guinier_kratky_plots_impl
+            import molass_legacy.Kratky.GuinierKratkyPlots
+            reload(molass_legacy.Kratky.GuinierKratkyPlots)
+        from molass_legacy.Kratky.GuinierKratkyPlots import guinier_kratky_plots_impl
         ax3, ax4 = self.axis_array[row][3:]
         ay = self.solver_results[row][0]     # A
         sg = self.sg_list[row]
@@ -593,7 +593,7 @@ class ExtrapolSolverDialog( Dialog ):
         return self.panel_list[row].ignore_bq.get()
 
     def save_results( self ):
-        from PreviewResultSaver import PreviewResultSaverDialog
+        from .PreviewResultSaver import PreviewResultSaverDialog
         self.saver = PreviewResultSaverDialog(self, self)
         self.saver.show()
 
@@ -649,7 +649,7 @@ class ExtrapolSolverDialog( Dialog ):
         self.canvas_draw()
 
     def solve_unknowns(self):
-        from PreviewController import PreviewController
+        from .PreviewController import PreviewController
 
         self.su_btn_blink.stop()
 
@@ -670,7 +670,7 @@ class ExtrapolSolverDialog( Dialog ):
             pass
 
     def get_known_info_list(self):
-        from ExtrapolationSolver import KnownInfo
+        from .ExtrapolationSolver import KnownInfo
         known_info_list = []
         num_knowns = 0
         for k, panel in enumerate(self.super_panel_list):
@@ -694,7 +694,7 @@ class ExtrapolSolverDialog( Dialog ):
         to_solve_row[2] = t
 
     def auto_cdi_for_all(self, out_folder=None):
-        from Conc.CdInspection import CdInspectionDailog
+        from molass_legacy.Conc.CdInspection import CdInspectionDailog
         print('auto_cdi_for_all')
         if out_folder is None:
             out_folder = get_setting('analysis_folder') + '/cdi-images'
@@ -740,10 +740,10 @@ class ExtrapolSolverDialog( Dialog ):
     def on_drop(self, event, debug=True):
         from molass_legacy.SerialAnalyzer.SerialDataUtils import serial_np_loadtxt
         if debug:
-            import SecTools.LogGuinierKratkyPlotter
+            import molass_legacy.SecTools.LogGuinierKratkyPlotter
             from importlib import reload
-            reload(SecTools.LogGuinierKratkyPlotter)
-        from SecTools.LogGuinierKratkyPlotter import LogGuinierKratkyPlotter
+            reload(molass_legacy.SecTools.LogGuinierKratkyPlotter)
+        from molass_legacy.SecTools.LogGuinierKratkyPlotter import LogGuinierKratkyPlotter
 
         files = event.data.split(' ')
         print('on_drop:', files)

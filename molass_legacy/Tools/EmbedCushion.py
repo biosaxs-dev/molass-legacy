@@ -197,7 +197,7 @@ def embed_cushion_impl_ParamsIterator(caller):
     from importlib import reload
     import Optimizer.ParamsIterator
     reload(Optimizer.ParamsIterator)
-    from Optimizer.ParamsIterator import iterator_test_from_dialog
+    from molass_legacy.Optimizer.ParamsIterator import iterator_test_from_dialog
 
     try:
         iterator_test_from_dialog(caller)
@@ -221,7 +221,7 @@ def embed_cushion_impl_RatioInterpretIllust(caller):
     from importlib import reload
     import Optimizer.RatioInterpretIllust
     reload(Optimizer.RatioInterpretIllust)
-    from Optimizer.RatioInterpretIllust import ratio_interpret_illust
+    from molass_legacy.Optimizer.RatioInterpretIllust import ratio_interpret_illust
 
     try:
         ratio_interpret_illust(caller.canvas)
@@ -233,7 +233,7 @@ def ScaleAdjustInspect_impl(caller):
     from importlib import reload
     import Optimizer.ScaleAdjustInspect
     reload(Optimizer.ScaleAdjustInspect)
-    from Optimizer.ScaleAdjustInspect import scale_adjust_inspect
+    from molass_legacy.Optimizer.ScaleAdjustInspect import scale_adjust_inspect
 
     try:
         scale_adjust_inspect(caller)
@@ -245,7 +245,7 @@ def RgCurveInspect_impl(caller):
     from importlib import reload
     import Optimizer.RgCurveInspect
     reload(Optimizer.RgCurveInspect)
-    from Optimizer.RgCurveInspect import rg_curve_inspect
+    from molass_legacy.Optimizer.RgCurveInspect import rg_curve_inspect
 
     try:
         rg_curve_inspect(caller)
@@ -257,7 +257,7 @@ def RestartPatcher_impl(caller):
     from importlib import reload
     import Optimizer.RestartPatcher
     reload(Optimizer.RestartPatcher)
-    from Optimizer.RestartPatcher import patch_and_restart
+    from molass_legacy.Optimizer.RestartPatcher import patch_and_restart
 
     try:
         patch_and_restart(caller)
@@ -269,7 +269,7 @@ def BoundsInspect_impl(caller):
     from importlib import reload
     import Optimizer.Devel.BoundsInspect
     reload(Optimizer.Devel.BoundsInspect)
-    from Optimizer.Devel.BoundsInspect import bounds_inspect_impl
+    from molass_legacy.Optimizer.Devel.BoundsInspect import bounds_inspect_impl
 
     try:
         bounds_inspect_impl(caller)
@@ -341,7 +341,7 @@ def debug_objective_function(caller):
     from importlib import reload
     import Optimizer.SimpleDebugUtils
     reload(Optimizer.SimpleDebugUtils)
-    from Optimizer.SimpleDebugUtils import debug_optimizer
+    from molass_legacy.Optimizer.SimpleDebugUtils import debug_optimizer
     debug_optimizer(caller.fullopt)
 
 def embed_cushion_impl(caller):

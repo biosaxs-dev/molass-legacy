@@ -9,8 +9,8 @@ from time import time, sleep
 from multiprocessing import current_process
 import logging
 import numpy as np
-from BasicUtils import mkdirs_with_retry
-from NumpyUtils import np_savetxt
+from molass_legacy.KekLib.BasicUtils import mkdirs_with_retry
+from molass_legacy.KekLib.NumpyUtils import np_savetxt
 
 class UserCancel(Exception): pass
 

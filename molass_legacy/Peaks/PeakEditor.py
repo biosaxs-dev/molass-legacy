@@ -13,19 +13,19 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar
 from molass_legacy.KekLib.KillableThread import Thread
 import molass_legacy.KekLib.DebugPlot as dplt
-from Batch.FullBatch import FullBatch
+from molass_legacy.Batch.FullBatch import FullBatch
 from molass_legacy.KekLib.OurTkinter import Tk, Dialog, ttk
 from molass_legacy.KekLib.TkSupplements import BlinkingFrame
 from molass_legacy._MOLASS.SerialSettings import get_setting, set_setting
 from molass_legacy.SerialAnalyzer.DataUtils import get_in_folder
 from molass_legacy.QuickAnalysis.PeakUtils import guess_peak_params
 from .ElutionModels import egh
-from Optimizer.FullOptInput import FullOptInput
-from Optimizer.FuncImporter import get_objective_function_info
-from Optimizer.OptConstants import MIN_NUM_PEAKS, MAX_NUM_PEAKS
+from molass_legacy.Optimizer.FullOptInput import FullOptInput
+from molass_legacy.Optimizer.FuncImporter import get_objective_function_info
+from molass_legacy.Optimizer.OptConstants import MIN_NUM_PEAKS, MAX_NUM_PEAKS
 from molass_legacy.Baseline.Constants import SLOPE_SCALE
-from Optimizer.FvScoreConverter import convert_score
-from Optimizer.OptimizerSettings import get_advanced_settings_text
+from molass_legacy.Optimizer.FvScoreConverter import convert_score
+from molass_legacy.Optimizer.OptimizerSettings import get_advanced_settings_text
 from RgProcess.RgCurve import ProgressCallback, draw_rg_bufer
 from .PeProgressConstants import MAXNUM_STEPS, STOCH_INIT_STEPS, STARTED, RG_CURVE_OK, PREPARED
 from molass_legacy._MOLASS.Version import is_developing_version
@@ -238,7 +238,7 @@ class PeakEditor(FullBatch, Dialog):
         self.applied = True
 
     def draw_title(self):
-        from Optimizer.OptimizerUtils import get_model_name, get_method_name
+        from molass_legacy.Optimizer.OptimizerUtils import get_model_name, get_method_name
         fullopt_class, class_code = self.get_function_class()
         text = "Elution Decomposition of %s with model=%s method=%s" % (get_in_folder(), get_model_name(class_code), get_method_name())
         if self.title_text is None:
@@ -604,7 +604,7 @@ class PeakEditor(FullBatch, Dialog):
             from importlib import reload
             import Optimizer.BoundsInspection
             reload(Optimizer.BoundsInspection)
-        from Optimizer.BoundsInspection import BoundsInspection
+        from molass_legacy.Optimizer.BoundsInspection import BoundsInspection
         dialog = BoundsInspection(self.parent, self.fullopt)
         dialog.show()
 
@@ -613,7 +613,7 @@ class PeakEditor(FullBatch, Dialog):
             from importlib import reload
             import Optimizer.ParamsInspection
             reload(Optimizer.ParamsInspection)
-        from Optimizer.ParamsInspection import ParamsInspection
+        from molass_legacy.Optimizer.ParamsInspection import ParamsInspection
         if debug and is_developing_version():
             self.re_construct_optimizer()
 
@@ -630,7 +630,7 @@ class PeakEditor(FullBatch, Dialog):
             from importlib import reload
             import Optimizer.ComplementaryView
             reload(Optimizer.ComplementaryView)
-        from Optimizer.ComplementaryView import ComplementaryView
+        from molass_legacy.Optimizer.ComplementaryView import ComplementaryView
         from molass_legacy.DataStructure.SvdDenoise import get_denoised_data
 
         dsets = self.get_dsets()
@@ -684,7 +684,7 @@ class PeakEditor(FullBatch, Dialog):
             import Optimizer.FvScoreDetails as details_module
             from importlib import reload
             reload(details_module)
-        from Optimizer.FvScoreDetails import FvScoreDetails
+        from molass_legacy.Optimizer.FvScoreDetails import FvScoreDetails
         if debug and is_developing_version():
             self.re_construct_optimizer()
 

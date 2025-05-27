@@ -9,7 +9,7 @@ from molass_legacy._MOLASS.SerialSettings import get_setting
 from SecTheory.SecEstimator import guess_initial_secparams, NUM_SEC_PARAMS
 from .SimpleSecParams import SimpleSecParams, sec_comformance
 from .BaselineParams import get_num_baseparams
-from Optimizer.BasicOptimizer import AVOID_VANISHING_RATIO
+from molass_legacy.Optimizer.BasicOptimizer import AVOID_VANISHING_RATIO
 
 def get_common_parameter_names(n, nc_rg=None, seccol=True):
     if nc_rg is None:

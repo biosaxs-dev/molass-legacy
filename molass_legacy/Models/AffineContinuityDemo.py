@@ -5,8 +5,8 @@
 """
 
 import numpy as np
-import DebugPlot as plt
-from Affine import Affine
+import molass_legacy.KekLib.DebugPlot as plt
+from molass_legacy.KekLib.Affine import Affine
 from .ElutionCurveModels import egha, emga
 
 def demo():

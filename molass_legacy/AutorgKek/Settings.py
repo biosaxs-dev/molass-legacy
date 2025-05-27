@@ -10,7 +10,7 @@ from molass_legacy.KekLib.PersistentInfo import PersistentInfo
 try:
     from molass_legacy._MOLASS.Version        import get_version_string
 except:
-    from AppVersion     import get_com_version_string as get_version_string
+    from molass_legacy.AutorgKek.AppVersion     import get_com_version_string as get_version_string
 
 # from MachineTypes       import get_display_resolution, get_chassistype_name, get_monitors
 

@@ -1,13 +1,13 @@
 """
     ErrorCorrection.py
 
-    Copyright (c) 2023, SAXS Team, KEK-PF
+    Copyright (c) 2023-2025, SAXS Team, KEK-PF
 """
 import numpy as np
 from scipy.optimize import minimize
 from scipy.interpolate import UnivariateSpline
 from molass_legacy.Trimming.Sigmoid import sigmoid
-from DENSS.DenssUtils import fit_data
+from molass_legacy.DENSS.DenssUtils import fit_data
 
 def compute_corrected_error(qv, i, P, c1, c2, P_, Pe, bq_bounds_, coerced_bq_, debug=False):
 
@@ -53,7 +53,7 @@ def compute_corrected_error(qv, i, P, c1, c2, P_, Pe, bq_bounds_, coerced_bq_, d
     adjust_scale = np.std(delta) / np.std(delta_)
 
     if debug:
-        import DebugPlot as plt
+        import molass_legacy.KekLib.DebugPlot as plt
         print("adjust_scale=", adjust_scale)
         with plt.Dp():
             fig, ax = plt.subplots()

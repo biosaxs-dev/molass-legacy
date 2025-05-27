@@ -11,16 +11,16 @@ import glob
 import re
 import time
 from datetime               import datetime as dt
-from OurTkinter             import Tk, ToolTip, ttk
+from molass_legacy.KekLib.OurTkinter             import Tk, ToolTip, ttk
 try:
-    import CustomMessageBox as MessageBox
+    import molass_legacy.KekLib.CustomMessageBox as MessageBox
 except:
     import OurMessageBox as MessageBox
 from TkMiniTable            import TkMiniTable
 from molass_legacy._MOLASS.SerialSettings         import get_setting
 from ResultGui              import ResultGui
 from KekToolsGP             import autorg   as autorg_kekpf
-from NumpyUtils             import np_loadtxt
+from molass_legacy.KekLib.NumpyUtils             import np_loadtxt
 from SerialDataUtils        import get_xray_files
 
 NUM_ROWS_LIMIT = 1500
@@ -73,7 +73,7 @@ class FileInfoTable( Tk.Frame ):
         self.menu.add_command( label='Run AutoGuinier Animation',  command=lambda: self.run_simple_guinier_animation() )
 
     def get_atsas_versions( self, atsas_exe_paths ):
-        from ATSAS.AtsasUtils import get_versions
+        from molass_legacy.ATSAS.AtsasUtils import get_versions
         return ['ATSAS ' + v for v in get_versions()]
 
     def _on_right_click( self, event ):

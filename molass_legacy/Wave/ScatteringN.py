@@ -8,8 +8,8 @@ import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import matplotlib.animation as animation
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from OurTkinter import Tk, Dialog
-from OurMatplotlib import NavigationToolbar
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar
 
 class BeamAnimDialog(Dialog):
     def __init__(self, parent):
@@ -98,7 +98,7 @@ class BeamAnimDialog(Dialog):
         # self.ani.save('scattering.mp4', writer="ffmpeg")
 
 def demoN():
-    from TkUtils import get_tk_root
+    from molass_legacy.KekLib.TkUtils import get_tk_root
 
     root = get_tk_root()
 

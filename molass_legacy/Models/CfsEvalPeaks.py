@@ -11,7 +11,7 @@ CFSE_WEIGHT = 5
 
 def get_cfs_evaluated_peaks(x, y, num_peaks, using_hybrid=False, using_cfs=True, debug=False):
     if debug:
-        import DebugPlot as plt
+        import molass_legacy.KekLib.DebugPlot as plt
     from molass_legacy.QuickAnalysis.ModeledPeaks import recognize_peaks
     from molass_legacy.Models.Characteristic import CfSpace
     from molass_legacy.Models.ElutionCurveModels import egha, emga

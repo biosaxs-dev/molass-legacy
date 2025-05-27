@@ -7,7 +7,7 @@ import numpy as np
 from sklearn.cluster import KMeans
 from molass_legacy.KekLib.SciPyCookbook import smooth
 from molass_legacy.KekLib.ExceptionTracebacker import log_exception
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from molass_legacy.Elution.CurveUtils import simple_plot
 
 END_FLATTEN_WIDTH = 5

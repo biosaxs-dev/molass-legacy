@@ -5,7 +5,7 @@
     Copyright (c) 2021, SAXS Team, KEK-PF
 """
 import os
-from OurTkinter import Tk
+from molass_legacy.KekLib.OurTkinter import Tk
 
 class Manipulator:
     def __init__(self, restart_str=None):
@@ -17,7 +17,7 @@ class Manipulator:
     def prepare_out_folder(self):
         self.out_folder = "temp/figs"
         if not os.path.exists(self.out_folder):
-            from BasicUtils import mkdirs_with_retry
+            from molass_legacy.KekLib.BasicUtils import mkdirs_with_retry
             mkdirs_with_retry(self.out_folder)
 
     def do_for_a_file(self, in_folder, uv_folder, plot):

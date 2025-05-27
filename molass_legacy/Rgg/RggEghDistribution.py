@@ -12,7 +12,7 @@ from .RggUtils import normal_pdf
 from .KernelDensityFix import UniformKernelDensity
 from molass_legacy.Peaks.ElutionModels import egh_pdf, compute_egh_params
 
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 USE_KERNEL_DENSITY = True
 TRIM_IMPOSSILE = False

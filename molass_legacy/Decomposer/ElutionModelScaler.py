@@ -6,8 +6,8 @@
 import copy
 import numpy as np
 from scipy.optimize import minimize
-from BasicUtils import Struct, ordinal_str
-import DebugPlot as plt
+from molass_legacy.KekLib.BasicUtils import Struct, ordinal_str
+import molass_legacy.KekLib.DebugPlot as plt
 
 REMOVE_H_RATIO_LIMIT = 0.01     # < 0.0199 for HasA(EGH)
 

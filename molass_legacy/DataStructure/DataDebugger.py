@@ -7,7 +7,7 @@
 import os
 import re
 from molass_legacy._MOLASS.SerialSettings import get_setting
-from BasicUtils import mkdirs_with_retry
+from molass_legacy.KekLib.BasicUtils import mkdirs_with_retry
 
 foler_re = re.compile(r'(\d+)$')
 

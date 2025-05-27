@@ -9,8 +9,8 @@ from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.collections import PolyCollection
 # from matplotlib.patches import Polygon
 from matplotlib import colors as mcolors
-import DebugPlot as plt
-from OurMatplotlib import get_facecolors
+import molass_legacy.KekLib.DebugPlot as plt
+from molass_legacy.KekLib.OurMatplotlib import get_facecolors
 
 class GammaVisualizer:
     def __init__(self):

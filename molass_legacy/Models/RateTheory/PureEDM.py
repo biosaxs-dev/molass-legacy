@@ -6,13 +6,13 @@
 import numpy as np
 from scipy.optimize import minimize, basinhopping
 from matplotlib.widgets import Slider
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from SecTheory.Edm import edm_func
 from molass_legacy.QuickAnalysis.ModeledPeaks import recognize_peaks
 from molass_legacy.Models.ElutionCurveModels import egha
 from molass_legacy.Models.Tentative import Model
 from molass_legacy.Models.ElutionModelUtils import x_from_height_ratio_impl
-from BasicUtils import Struct
+from molass_legacy.KekLib.BasicUtils import Struct
 from molass_legacy.Peaks.ElutionModels import compute_moments
 
 VERY_SMALL_VALUE = 1e-8

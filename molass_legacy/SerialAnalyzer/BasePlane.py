@@ -9,7 +9,7 @@ import statsmodels.api as sm
 from LmfitThreadSafe import minimize, Parameters
 from ThreeDimUtils import compute_plane
 from molass_legacy.SerialAnalyzer.ElutionCurve import ElutionCurve
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 # import matplotlib.pyplot as plt
 
 LOW_PERCENTILE_BASE_1ST = 30

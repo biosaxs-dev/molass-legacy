@@ -8,7 +8,7 @@ import logging
 import numpy as np
 from bisect import bisect_right
 from idlelib.tooltip import Hovertip
-from OurTkinter import Tk, Dialog, ttk
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog, ttk
 from .OutlineViewer import (format_coord, using_normal_conc,
                 OutlineViewerDialog,
                 OutlineViewerFrame, OutlineViewer3dFrame, OutlineViewer2dFrame)

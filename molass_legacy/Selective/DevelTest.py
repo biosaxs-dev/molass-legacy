@@ -9,7 +9,7 @@ def devel_test_impl(editor):
     from importlib import reload
     import Batch.DataBridgeUtils
     reload(Batch.DataBridgeUtils)
-    from Batch.DataBridgeUtils import get_lrf_source_impl
+    from molass_legacy.Batch.DataBridgeUtils import get_lrf_source_impl
 
     lrf_src = get_lrf_source_impl(editor)
 

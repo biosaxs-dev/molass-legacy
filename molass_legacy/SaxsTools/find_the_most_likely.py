@@ -19,7 +19,7 @@ seaborn.set()
 from glob import glob
 import subprocess
 from CrysolUtils import np_loadtxt_crysol
-from DENSS.DenssUtils import fit_data
+from molass_legacy.DENSS.DenssUtils import fit_data
 
 debug = False
 

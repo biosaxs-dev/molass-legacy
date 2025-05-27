@@ -6,7 +6,7 @@
 """
 import numpy as np
 from sklearn.mixture import GaussianMixture
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from molass_legacy.KekLib.SciPyCookbook import smooth
 from .GaussianMixture import get_sorted_params, get_curves
 

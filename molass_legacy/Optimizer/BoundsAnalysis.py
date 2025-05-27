@@ -6,16 +6,16 @@
 """
 import numpy as np
 import glob
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 def demo(parent, analysis_folder, trimming=True, correction=True):
     from molass_legacy._MOLASS.SerialSettings import set_setting
-    from Optimizer.TheUtils import get_work_info
-    from Batch.StandardProcedure import StandardProcedure
+    from molass_legacy.Optimizer.TheUtils import get_work_info
+    from molass_legacy.Batch.StandardProcedure import StandardProcedure
     from molass_legacy.Trimming.PreliminaryRecognition import PreliminaryRecognition
     from molass_legacy.Baseline.BaselineUtils import get_corrected_sd_impl
     from DataUtils import get_in_folder
-    from Optimizer.StateSequence import read_callback_txt_impl
+    from molass_legacy.Optimizer.StateSequence import read_callback_txt_impl
 
     set_setting("analysis_folder", analysis_folder)
     work_folder = analysis_folder + "/optimized/jobs/000"

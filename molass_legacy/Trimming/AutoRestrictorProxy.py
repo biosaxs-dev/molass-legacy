@@ -1,9 +1,9 @@
 """
     Trimming.AutoRestrictorProxy.py
 
-    Copyright (c) 2024, SAXS Team, KEK-PF
+    Copyright (c) 2024-2025, SAXS Team, KEK-PF
 """
-from  Trimming.AutoRestrictor import get_exact_emg_peaks_list, SIGMA_POINT_RATIO
+from  molass_legacy.Trimming.AutoRestrictor import get_exact_emg_peaks_list, SIGMA_POINT_RATIO
 
 class AutoRestrictorProxy:
     def __init__(self, sd, uv_restrict_list, xr_restrict_list):

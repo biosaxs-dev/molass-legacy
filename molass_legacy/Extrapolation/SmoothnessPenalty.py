@@ -15,7 +15,7 @@ except:
 
 assert NUMBA_IS_AVAILABLE
 
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 """
     [NumPy k-th diagonal indices]

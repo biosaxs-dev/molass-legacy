@@ -7,7 +7,7 @@
 
 """
 import numpy as np
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 PEAK_EVAL_RANGE_RATIO   = 0.05
 DIFF_ALLOW_LIMIT_RATIO  = 0.02

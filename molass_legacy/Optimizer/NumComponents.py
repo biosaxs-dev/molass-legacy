@@ -4,7 +4,7 @@
     Copyright (c) 2021, SAXS Team, KEK-PF
 """
 import logging
-from Optimizer.TheUtils import guess_n_compnents_trial
+from molass_legacy.Optimizer.TheUtils import guess_n_compnents_trial
 from molass_legacy.Models.ElutionCurveModels import EGHA
 
 MAXNUM_COMPONENTS = 5

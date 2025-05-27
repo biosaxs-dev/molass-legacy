@@ -10,7 +10,7 @@ from matplotlib.gridspec import GridSpec
 from scipy.interpolate import UnivariateSpline
 
 def demo():
-    import DebugPlot as plt
+    import molass_legacy.KekLib.DebugPlot as plt
     from SecTheory.SecCF import gec_dipore_phi
     from SecTheory.SecPDF import FftInvPdf
     from SecTheory.ColumnIllust import plot_column_illust, plot_column_legend

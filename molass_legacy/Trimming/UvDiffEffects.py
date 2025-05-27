@@ -8,9 +8,9 @@ import numpy as np
 from bisect import bisect_right
 from scipy.optimize import minimize, basinhopping
 from molass_legacy.KekLib.SciPyCookbook import smooth
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from molass_legacy._MOLASS.SerialSettings import get_setting, get_beamline_name
-from Batch.StandardProcedure import StandardProcedure
+from molass_legacy.Batch.StandardProcedure import StandardProcedure
 from molass_legacy.Trimming.PreliminaryRecognition import PreliminaryRecognition
 from molass_legacy.Peaks.EghSupples import egh, compute_AB, d_egh
 from MatrixData import simple_plot_3d

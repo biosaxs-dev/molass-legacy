@@ -7,12 +7,12 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from OurTkinter import Tk, Dialog
-from TkSupplements import tk_set_icon_portable
-from TkCustomWidgets import FolderEntry
-from OurMatplotlib import NavigationToolbar
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.TkSupplements import tk_set_icon_portable
+from molass_legacy.KekLib.TkCustomWidgets import FolderEntry
+from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar
 try:
-    import CustomMessageBox as MessageBox
+    import molass_legacy.KekLib.CustomMessageBox as MessageBox
 except:
     import OurMessageBox as MessageBox
 from molass_legacy.Elution.CurveUtils import simple_plot

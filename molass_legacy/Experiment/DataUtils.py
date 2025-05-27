@@ -1,13 +1,13 @@
 """
     Experiment.DataUtils.py
 
-    Copyright (c) 2024, SAXS Team, KEK-PF
+    Copyright (c) 2024-2025, SAXS Team, KEK-PF
 """
 import logging
 import numpy as np
 from molass_legacy._MOLASS.SerialSettings import get_setting, set_setting
-from Experiment.ColumnTypes import get_columntype_from_id, get_columntype_from_name, PORESIZE_ALLOWANCE
-from SecTheory.MwRgFigure import get_mwrg_info
+from molass_legacy.Experiment.ColumnTypes import get_columntype_from_id, get_columntype_from_name, PORESIZE_ALLOWANCE
+from molass_legacy.SecTheory.MwRgFigure import get_mwrg_info
 
 DEFAULT_NUM_PLATES = 48000
 

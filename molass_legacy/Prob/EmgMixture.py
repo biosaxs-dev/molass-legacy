@@ -10,7 +10,7 @@ import numpy as np
 import scipy.stats as stats
 from scipy.optimize import fsolve
 from sklearn.cluster import KMeans
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from lmfit import minimize, Parameters
 from molass_legacy.Models.ElutionCurveModels import emg
 

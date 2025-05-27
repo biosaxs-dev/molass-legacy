@@ -8,7 +8,7 @@ import numpy as np
 from bisect import bisect_right
 from scipy.optimize import minimize
 from SvdDenoise import get_denoised_data
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 class EoiiCorrector:
     def __init__(self, sd, paired_ranges, debug=False):

@@ -59,7 +59,7 @@ from scipy import ndimage, interpolate, spatial, special, optimize, signal, stat
 from functools import reduce
 
 #load some dictionaries
-from DENSS.resources import resources
+from molass_legacy.DENSS.resources import resources
 electrons = resources.electrons
 atomic_volumes = resources.atomic_volumes
 numH = resources.numH
@@ -753,7 +753,7 @@ def loadFitFile(filename):
     #grab some header info if available
     header = []
     for j in range(len(lines)):
-        #If this is a _fit.dat or .fit file from DENSS, grab the header values beginning with hashtag #.
+        #If this is a _fit.dat or .fit file from molass_legacy.DENSS, grab the header values beginning with hashtag #.
         if '# Parameter Values:' in lines[j]:
             header = lines[j+1:j+9]
 
@@ -821,7 +821,7 @@ def loadOldFitFile(filename):
     q = np.array(q)
     err = np.array(err)
 
-    #If this is a _fit.dat file from DENSS, grab the header values.
+    #If this is a _fit.dat file from molass_legacy.DENSS, grab the header values.
     header = []
     for j in range(len(lines)):
         if '# Parameter Values:' in lines[j]:

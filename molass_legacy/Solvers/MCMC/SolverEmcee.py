@@ -7,8 +7,8 @@ import logging
 import numpy as np
 import emcee
 import molass_legacy.KekLib.DebugPlot as plt
-from Optimizer.StateSequence import save_opt_params
-from Optimizer.OptimizerUtils import OptimizerResult
+from molass_legacy.Optimizer.StateSequence import save_opt_params
+from molass_legacy.Optimizer.OptimizerUtils import OptimizerResult
 
 def walkers_independent(coords):
     if not np.all(np.isfinite(coords)):

@@ -6,7 +6,7 @@
 import numpy as np
 from scipy.stats import linregress
 from ScipyUtils import get_spline
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 NUM_KNOTS = 8
 FIT_TAIL_RATIO = 0.005

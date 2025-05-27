@@ -8,12 +8,12 @@ import os
 import re
 import numpy as np
 import glob
-from NumpyUtils                 import np_loadtxt
-from OurTkinter                 import Tk, Font, is_empty_val
-from TkUtils                    import adjusted_geometry, split_geometry
-from TkCustomWidgets            import FileEntry, FolderEntry
+from molass_legacy.KekLib.NumpyUtils                 import np_loadtxt
+from molass_legacy.KekLib.OurTkinter                 import Tk, Font, is_empty_val
+from molass_legacy.KekLib.TkUtils                    import adjusted_geometry, split_geometry
+from molass_legacy.KekLib.TkCustomWidgets            import FileEntry, FolderEntry
 from CanvasFrame                import CanvasFrame
-from OurMatplotlib              import NavigationToolbar
+from molass_legacy.KekLib.OurMatplotlib              import NavigationToolbar
 from CanvasDialog               import CanvasDialog
 from DataUtils                  import get_pytools_folder
 from SerialData                 import SerialData, find_conc_files
@@ -229,7 +229,7 @@ class SimpleGuinierFolderAnalyzer( Tk.Toplevel ):
         print( 'do_animation', i )
         self.update_cursor( 'wait' )
 
-        from NumpyUtils             import np_loadtxt
+        from molass_legacy.KekLib.NumpyUtils             import np_loadtxt
         from SimpleGuinier          import SimpleGuinier
         from molass_legacy.AutorgKekAdapter       import AutorgKekAdapter
         from SimpleGuinierAnimation import SimpleGuinierAnimation

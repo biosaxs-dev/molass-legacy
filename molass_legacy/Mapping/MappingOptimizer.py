@@ -7,7 +7,7 @@ import numpy as np
 from bisect import bisect_right
 from scipy import optimize
 from scipy.interpolate import UnivariateSpline
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 
 MAJOR_PEAK_THRESHOLD_RATIO  = 0.3
 USE_MODEL_PEAKS = True

@@ -8,7 +8,7 @@
 """
 import numpy as np
 from bisect import bisect_right
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from .Hyperbola import RotatedHyperbola
 
 def demo():
@@ -40,7 +40,7 @@ def demo():
 
 def demo_real(in_folder, pno=0):
     from matplotlib.patches import Rectangle
-    from Batch.StandardProcedure import StandardProcedure
+    from molass_legacy.Batch.StandardProcedure import StandardProcedure
     from molass_legacy.Peaks.RobustPeaks import RobustPeaks
     sp = StandardProcedure()
     sp.load(in_folder, debug=False)

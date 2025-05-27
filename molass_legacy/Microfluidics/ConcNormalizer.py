@@ -7,7 +7,7 @@
 import os
 import glob
 from SerialDataUtils import load_xray_files
-from NumpyUtils import np_savetxt_with_comments
+from molass_legacy.KekLib.NumpyUtils import np_savetxt_with_comments
 
 def find_conc_file(in_folder):
     files = glob.glob(in_folder + "/Conc*.txt")

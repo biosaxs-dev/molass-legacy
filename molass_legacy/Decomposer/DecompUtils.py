@@ -1,17 +1,17 @@
 """
     DecompUtils.py
 
-    Copyright (c) 2018-2024, SAXS Team, KEK-PF
+    Copyright (c) 2018-2025, SAXS Team, KEK-PF
 """
 import numpy as np
-from PeakInfo import PeakInfo
-from molass_legacy.SerialAnalyzer.ElutionCurve           import ElutionCurve
-from molass_legacy.Models.ElutionCurveModels     import EGH, EGHA, EMG, EMGA
-from molass_legacy.ElutionDecomposer      import ElutionDecomposer
-from molass_legacy.ElutionModelScaler     import scale_decomposed_elutions
-from AnalysisRangeInfo      import AnalysisRangeInfo
-from UnifiedDecompResult    import UnifiedDecompResult
-import DebugPlot            as plt
+from molass_legacy.DataStructure.PeakInfo import PeakInfo
+from molass_legacy.SerialAnalyzer.ElutionCurve import ElutionCurve
+from molass_legacy.Models.ElutionCurveModels import EGH, EGHA, EMG, EMGA
+from molass_legacy.Decomposer.ElutionDecomposer import ElutionDecomposer
+from molass_legacy.Decomposer.ElutionModelScaler import scale_decomposed_elutions
+from molass_legacy.DataStructure.AnalysisRangeInfo import AnalysisRangeInfo
+from UnifiedDecompResult import UnifiedDecompResult
+import molass_legacy.KekLib.DebugPlot as plt
 
 NORMALIZED_RESID_LIMIT  = 0.02      # < 0.0476 for Kosugi3a
 ALLOW_ONE_SIDE_RESULT   = False     # not allowing seems safe judging from 20230303/HasA

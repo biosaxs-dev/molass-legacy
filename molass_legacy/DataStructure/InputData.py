@@ -72,7 +72,7 @@ class InputData:
         self.logger.info('preparing input for size-exclusive analysis.')
 
         if False:
-            import DebugPlot as plt
+            import molass_legacy.KekLib.DebugPlot as plt
             self.xr_data.plot()
             plt.show()
 

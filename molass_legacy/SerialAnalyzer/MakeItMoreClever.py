@@ -4,7 +4,7 @@
 
     Copyright (c) 2019-2021, SAXS Team, KEK-PF
 """
-from OurTkinter import is_empty_val
+from molass_legacy.KekLib.OurTkinter import is_empty_val
 from molass_legacy._MOLASS.SerialSettings import get_setting
 
 def increase_menu_availability(parent):

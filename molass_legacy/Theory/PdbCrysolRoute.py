@@ -8,17 +8,17 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.interpolate import UnivariateSpline
 from glob import glob
-from BasicUtils import Struct
+from molass_legacy.KekLib.BasicUtils import Struct
 from DataUtils import get_in_folder
 from CrysolUtils import np_loadtxt_crysol
-from ATSAS.Crysol import get_info_from_crysol_log, get_info_from_crysol_fit_log
-from OurTkinter import Tk, Dialog
-from TkCustomWidgets import FileEntry, FolderEntry
+from molass_legacy.ATSAS.Crysol import get_info_from_crysol_log, get_info_from_crysol_fit_log
+from molass_legacy.KekLib.OurTkinter import Tk, Dialog
+from molass_legacy.KekLib.TkCustomWidgets import FileEntry, FolderEntry
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from OurMatplotlib import NavigationToolbar
-from DENSS.DenssUtils import fit_data
+from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar
+from molass_legacy.DENSS.DenssUtils import fit_data
 from molass_legacy._MOLASS.Version import is_developing_version
-from Saxs.SaxsCurveUtils import percentile_normalize
+from molass_legacy.Saxs.SaxsCurveUtils import percentile_normalize
 
 drive = __file__[0:2]
 crysol_folder = drive + r"\PyTools\Data\CRYSOL"
@@ -78,7 +78,7 @@ class CrysolResultsEntry(Dialog):
             else:
                 num_paths += 1
         if num_paths == 0:
-            import CustomMessageBox as MessageBox
+            import molass_legacy.KekLib.CustomMessageBox as MessageBox
             MessageBox.showerror('No entry',
                             "You should specify a file for at least one component.\n",
                             parent=self)

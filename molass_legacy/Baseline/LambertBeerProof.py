@@ -9,7 +9,7 @@
 import numpy as np
 from matplotlib.collections import PolyCollection
 from bisect import bisect_right
-import DebugPlot as plt
+import molass_legacy.KekLib.DebugPlot as plt
 from ThreeDimUtils import compute_plane
 from ModeledData import ModeledData, simple_plot_3d
 from .LambertBeer import BasePlane, get_base_plane, get_args
