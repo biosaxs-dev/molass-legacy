@@ -9,7 +9,6 @@ from bisect import bisect_right
 import numpy as np
 # from scipy.interpolate import UnivariateSpline
 from .InvertibleSpline import InvertibleSpline as UnivariateSpline
-import molass_legacy.KekLib.DebugPlot as plt
 
 def compute_4moments(x, y):
     """
@@ -32,6 +31,7 @@ def get_xies_from_height_ratio(alpha, x, y, max_y=None, debug=False):
     y_ = y[safe_range]
 
     if debug and len(y_) == 0:
+        import molass_legacy.KekLib.DebugPlot as plt
         with plt.Dp():
             fig, ax = plt.subplots()
             ax.plot(x, y)
@@ -41,6 +41,7 @@ def get_xies_from_height_ratio(alpha, x, y, max_y=None, debug=False):
     j = np.argmax(y_)       # ValueError: attempt to get argmax of an empty sequence
 
     if debug:
+        import molass_legacy.KekLib.DebugPlot as plt
         # to plot UnivariateSpline below failure with pH6
         with plt.Dp():
             fig, ax = plt.subplots()

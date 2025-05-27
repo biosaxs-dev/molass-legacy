@@ -6,7 +6,6 @@
 import numpy as np
 from scipy.stats import linregress
 from molass_legacy.UV.PlainCurve import check_diehardness, flattenable
-import molass_legacy.KekLib.DebugPlot as plt
 
 REMAINING_FLATTEN_MARGIN = 50   # required in 20211021 to modify the positions from integral
 REMAINING_FLATTEN_PROPORTIONS = [0.05, 0.95]    # check at least for 20180617 to narrow, 20211021 to widen
@@ -23,6 +22,8 @@ def flatten_remaining_peak(peak_region, y, debug=False):
     w = np.arange(n)/(n-1)
     ret_y[j1:j2] = y[j1]*(1-w) + y[j2]*w
     if debug:
+        import molass_legacy.KekLib.DebugPlot as plt
+
         with plt.Dp():
             x = np.arange(len(y))
             fig, ax = plt.subplots()
@@ -44,6 +45,8 @@ def get_easier_curve_y(a_curve, a_curve2, peak_region, logger, debug=False):
     y = a_curve2.y
 
     if debug:
+        import molass_legacy.KekLib.DebugPlot as plt
+
         with plt.Dp():
             fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(12,5))
             fig.suptitle("get_easier_curve_y entry")

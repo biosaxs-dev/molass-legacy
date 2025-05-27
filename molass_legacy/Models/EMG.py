@@ -11,7 +11,6 @@ from matplotlib.patches     import Polygon
 from bisect                 import bisect_right
 from scipy.interpolate      import UnivariateSpline
 from scipy.optimize import minimize
-import molass_legacy.KekLib.DebugPlot as dplt
 from molass_legacy.KekLib.Affine import Affine
 from molass_legacy.Peaks.ElutionModels import emg, VERY_SMALL_VALUE, LARGE_VALUE
 from molass_legacy._MOLASS.SerialSettings import get_setting
@@ -39,6 +38,7 @@ def emg_x_from_height_ratio(alpha, mu, sigma, tau):
     j = bisect_right(-y[hn:], -alpha)
 
     if False:
+        import molass_legacy.KekLib.DebugPlot as dplt
         print('i, hn, jn+j=', i, hn, hn+j)
         fig, ax = dplt.subplots()
         ax.plot(x, y)
@@ -181,6 +181,7 @@ class EMG(Model):
             sigma_, tau_  = p
             cy = emg(x, h, mu, sigma_, tau_)
             if debug:
+                import molass_legacy.KekLib.DebugPlot as dplt
                 with dplt.Dp():
                     fig, ax = dplt.subplots()
                     ax.set_title('sigma=%g, tau=%g' % (sigma_, tau_))
@@ -289,6 +290,7 @@ class EMGA(EMG):
             px_ = x[k]
             py_ = cy[k]
             if debug:
+                import molass_legacy.KekLib.DebugPlot as dplt
                 with dplt.Dp():
                     fig, ax = dplt.subplots()
                     ax.set_title('sigma=%g, tau=%g, a=%g' % (sigma_, tau_, a_))

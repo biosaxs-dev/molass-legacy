@@ -1,4 +1,3 @@
-# coding: utf-8
 """
     AveragingDiscussion.py
 
@@ -6,8 +5,6 @@
 """
 import copy
 import numpy as np
-from mpl_toolkits.mplot3d   import Axes3D
-import molass_legacy.KekLib.DebugPlot as plt
 
 def extrapolate(M, c, rank=2):
     U, s, VT = np.linalg.svd(M)
@@ -24,6 +21,7 @@ def extrapolate(M, c, rank=2):
 
 class AveragingDiscussion:
     def __init__(self, sd):
+        import molass_legacy.KekLib.DebugPlot as plt
         self.mouse_axis = None
 
         self.q = sd.intensity_array[0,:,0]
@@ -119,6 +117,7 @@ class AveragingDiscussion:
         if self.mouse_axis is None:
             return
 
+        import molass_legacy.KekLib.DebugPlot as plt
         ax1, ax2, ax3 = self.axes
         if self.mouse_axis == ax1:
             this_ax, oppo_axes = ax1, [ax2, ax3]

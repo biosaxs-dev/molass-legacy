@@ -16,7 +16,6 @@ from molass_legacy.Models.ElutionCurveModels import EGH
 from molass_legacy.QuickAnalysis.ParammedModel import ParammedModel
 from .MatchingPeaks import MatchingPeaks
 from .TrimmingInfo import TrimmingInfo
-import molass_legacy.KekLib.DebugPlot as plt
 
 SIGMA_POINT_RATIO = 10
 MINOR_SIGMA_RATIO = 5
@@ -34,6 +33,7 @@ def get_exact_emg_peaks_list(uv_curve, xr_curve, debug=False):
     ret_xr_peaks = xr_curve.get_emg_peaks(debug=debug)
 
     if debug:
+        import molass_legacy.KekLib.DebugPlot as plt
         with plt.Dp():
             fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(12,5))
             fig.suptitle("get_exact_emg_peaks_list")
@@ -133,6 +133,7 @@ class AutoRestrictor:
             new_xr_restrict = self.map_back_to_xray(maping_info, new_uv_restrict, new_xr_restrict)
 
             if debug:
+                import molass_legacy.KekLib.DebugPlot as plt
                 def plot_range(ax, restrict, color):
                     ymin, ymax = ax.get_ylim()
                     ax.set_ylim(ymin, ymax)
@@ -201,6 +202,7 @@ class AutoRestrictor:
         self.logger.info("elution trimming infos have been determined roughly due to a peak matching trouble.")
 
         if debug:
+            import molass_legacy.KekLib.DebugPlot as plt
             with plt.Dp():
                 fig, axes = plt.subplots(ncols=2, figsize=(12,5))
                 fig.suptitle("get_them_roughly debug")
@@ -307,6 +309,7 @@ class AutoRestrictor:
             final_max = min(xmax, max(sigma_max, recon_info.jmax))
 
         if debug:
+            import molass_legacy.KekLib.DebugPlot as plt
             from molass_legacy.Elution.CurveUtils import simple_plot
             with plt.Dp():
                 fig, ax = plt.subplots()
@@ -367,6 +370,7 @@ class AutoRestrictor:
 
         ret_points = [int(round(v)) for v in (f, t)]
         if debug:
+            import molass_legacy.KekLib.DebugPlot as plt
             from molass_legacy.Peaks.ElutionModels import egh
             print("sigma=", sigma, "tau=", tau, "ratio=", ratio)
             print("width=", width)
@@ -389,6 +393,7 @@ class AutoRestrictor:
         return ret_points
 
     def proof_plot(self, better_ret, pause=True, savefig=False, figfile=None):
+        import molass_legacy.KekLib.DebugPlot as plt
         from molass_legacy.SerialAnalyzer.DataUtils import get_in_folder
         plt.push()
         # uv_curve = self.sd.get_uv_curve()
@@ -547,6 +552,7 @@ class AutoRestrictor:
         recon_info = self.try_adding_minor_peak(curve, main_emg_peak, recon_info)
 
         if debug:
+            import molass_legacy.KekLib.DebugPlot as plt
             plt.push()
             fig, ax = plt.subplots()
             ax.set_title("reconsider_using_lower_peak_model debug")
@@ -585,6 +591,7 @@ class AutoRestrictor:
             jmin = max(0, int(round(candidate[1] - abs(out.params["tau"]) * RECON_MINOR_SIGMA_RATIO)))
 
             if False:
+                import molass_legacy.KekLib.DebugPlot as plt
                 from molass_legacy.Elution.CurveUtils import simple_plot
                 plt.push()
                 fig, ax = plt.subplots()

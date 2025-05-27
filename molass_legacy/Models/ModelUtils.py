@@ -2,12 +2,11 @@
 
     Models.ModelUtils.py
 
-    Copyright (c) 2017-2024, SAXS Team, KEK-PF
+    Copyright (c) 2017-2025, SAXS Team, KEK-PF
 
 """
 import re
 import numpy as np
-import molass_legacy.KekLib.DebugPlot as plt
 from molass_legacy.Decomposer.FitRecord import MIN_SEPARATE_AREA_RATIO, IGNORABLE_AREA_RATIO
 
 model_name_re   = re.compile( r'Model\((\w+)\)' )
@@ -26,6 +25,7 @@ def model_debug_plot(model, params, x_, y_, x, y, tau_hint, where_text, residual
     """
     remember to make friendly this kind of debugging tools
     """
+    import molass_legacy.KekLib.DebugPlot as plt
     global plot_continue
     if not plot_continue:
         return
@@ -166,6 +166,7 @@ def get_paired_ranges_from_params_array(model, x, params_array,
             logger = logging.getLogger(__name__)
             log_exception(logger, "get_paired_ranges_from_params_array")
             if debug:
+                import molass_legacy.KekLib.DebugPlot as plt
                 def get_range_except():
                     from importlib import reload
                     import Models.ModelUtilsException

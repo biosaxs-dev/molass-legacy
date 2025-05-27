@@ -2,7 +2,7 @@
 
     LambertBeer.py
 
-    Copyright (c) 2019-2024, SAXS Team, KEK-PF
+    Copyright (c) 2019-2025, SAXS Team, KEK-PF
 
 """
 import logging
@@ -13,7 +13,6 @@ from molass_legacy.KekLib.SciPyCookbook import smooth
 from molass_legacy.DataStructure.SvdDenoise import get_denoised_data
 from molass_legacy.KekLib.ThreeDimUtils import compute_plane
 from molass_legacy._MOLASS.SerialSettings import get_setting
-import molass_legacy.KekLib.DebugPlot as plt
 USE_PEAK_TOP_RIDGE = True
 NEGATIVE_PENALTY = 1
 POSITIVE_AREA_RATIO = 0.1
@@ -39,6 +38,7 @@ class BasePlane:
         self.consider_cd = self.cd == 2
 
         if debug:
+            import molass_legacy.KekLib.DebugPlot as plt
             from molass_legacy.DataStructure.MatrixData import simple_plot_3d, contour_plot
 
             print('data.shape=', data.shape, 'index=', index)
@@ -139,6 +139,7 @@ class BasePlane:
         ret_val = np.linalg.norm((PC - M_)) + np.linalg.norm((self.NW*N_))*NEGATIVE_PENALTY
 
         if False:
+            import molass_legacy.KekLib.DebugPlot as plt
             from molass_legacy.DataStructure.ModeledData import simple_plot_3d
             print('params=', (a, b, c))
             print('ret_val=', ret_val)
@@ -199,6 +200,7 @@ class BasePlane:
         self.params = (a, b, c)
 
         if debug:
+            import molass_legacy.KekLib.DebugPlot as plt
             print('self.params=', self.params)
             with plt.Dp():
                 fig = plt.figure(figsize=(10,8))

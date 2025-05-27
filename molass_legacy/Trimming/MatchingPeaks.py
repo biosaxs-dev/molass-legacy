@@ -7,7 +7,6 @@ import logging
 import numpy as np
 from bisect import bisect_right
 from itertools import combinations
-import molass_legacy.KekLib.DebugPlot as plt
 
 ALLOWANCE_RATIO = 0.05
 
@@ -107,6 +106,7 @@ class MatchingPeaks:
         self.xr_peaks = ret_xr_peaks
 
     def debug_plot_emg_peaks(self, title, xr_emg_peaks, ret_xr_peaks, uv_emg_peaks, ret_uv_peaks):
+        import molass_legacy.KekLib.DebugPlot as plt
         from molass_legacy.Elution.CurveUtils import simple_plot
 
         plt.push()

@@ -7,7 +7,6 @@ import numpy as np
 from sklearn.cluster import KMeans
 from molass_legacy.KekLib.SciPyCookbook import smooth
 from molass_legacy.KekLib.ExceptionTracebacker import log_exception
-import molass_legacy.KekLib.DebugPlot as plt
 from molass_legacy.Elution.CurveUtils import simple_plot
 
 END_FLATTEN_WIDTH = 5
@@ -49,6 +48,7 @@ def get_largest_gradients(y, k, peak_region, return_full_info=False, uv_correcto
     jj, pp, ppN, pp3 = get_ppk(N, k, gy)
 
     if debug:
+        import molass_legacy.KekLib.DebugPlot as plt
         def debug_plot(title_tail=""):
             from DataUtils import get_in_folder
             in_folder = get_in_folder()

@@ -2,7 +2,7 @@
 
     Models.EGH.py
 
-    Copyright (c) 2017-2024, SAXS Team, KEK-PF
+    Copyright (c) 2017-2025, SAXS Team, KEK-PF
 
 """
 import numpy as np
@@ -10,7 +10,6 @@ from bisect import bisect_right
 from scipy.interpolate import UnivariateSpline
 from scipy.optimize import minimize
 from molass_legacy.KekLib.Affine import Affine
-import molass_legacy.KekLib.DebugPlot as plt
 from molass_legacy.Peaks.ElutionModels import egh, VERY_SMALL_VALUE, compute_moments, compute_egh_params
 from molass_legacy._MOLASS.SerialSettings import get_setting
 from .ElutionModelUtils import x_from_height_ratio_impl
@@ -219,6 +218,7 @@ class EGHA(EGH):
         params_array = np.array(params_list)
 
         if debug:
+            import molass_legacy.KekLib.DebugPlot as plt
             with plt.Dp():
                 fig, ax = plt.subplots()
                 ax.set_title('EGHA guess_binary_peaks: p1=%g, p2=%g' % (p1, p2), fontsize=16)

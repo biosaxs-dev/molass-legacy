@@ -7,7 +7,6 @@
 """
 import numpy as np
 import logging
-import molass_legacy.KekLib.DebugPlot as plt
 from molass_legacy._MOLASS.SerialSettings import get_setting
 from molass_legacy.Baseline.ScatteringBaseline import ScatteringBaseline
 from scipy.interpolate import LSQUnivariateSpline
@@ -31,6 +30,7 @@ def compute_base_surface(shape, line0, line1):
     return (1-w)*line0[:,np.newaxis] + w*line1[:,np.newaxis]
 
 def debug_plot(data, base_surface=None):
+    import molass_legacy.KekLib.DebugPlot as plt
     plt.push()
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
@@ -147,6 +147,7 @@ class LPM_3d:
             BP = get_baseplane(baseline, end_slices, dy)
 
             if debug:
+                import molass_legacy.KekLib.DebugPlot as plt
                 plt.push()
                 fig = plt.figure()
                 ax = fig.add_subplot(projection='3d')

@@ -4,13 +4,12 @@
 
     scattering baseline solver
 
-    Copyright (c) 2017-2024, SAXS Team, KEK-PF
+    Copyright (c) 2017-2025, SAXS Team, KEK-PF
 
 """
 import numpy as np
 from scipy import stats
 from molass_legacy._MOLASS.SerialSettings import get_setting
-import molass_legacy.KekLib.DebugPlot as plt
 
 PERCENTILE_FIRST        = 25
 PERCENTILE_SECOND       = 25
@@ -66,6 +65,7 @@ class ScatteringBaseline:
         self.params = ( A, B )
 
         if debug:
+            import molass_legacy.KekLib.DebugPlot as plt
             x = self.x
             y = self.y
             with plt.Dp():
@@ -93,6 +93,7 @@ class ScatteringBaseline:
         return alternating, average_slope
 
     def debug_plot(self, x, y, y_, pc, title, ab=None):
+        import molass_legacy.KekLib.DebugPlot as plt
         pp = y_ <= pc
         with plt.Dp():
             fig, ax = plt.subplots()
@@ -186,6 +187,7 @@ class ScatteringBaseline:
         return ret
 
     def demo_plot( self, title="Demo", parent=None, ecurve=None, p_final=None, hires=False ):
+        import molass_legacy.KekLib.DebugPlot as plt
         A, B = self.params
         if p_final is None:
             p_final = PERCENTILE_FINAL

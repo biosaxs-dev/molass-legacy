@@ -9,7 +9,6 @@ from bisect import bisect_right
 from molass_legacy.KekLib.SciPyCookbook import smooth
 from molass_legacy.DataStructure.LPM import get_corrected
 from molass_legacy.Mapping.CurveSimilarity import CurveSimilarity
-import molass_legacy.KekLib.DebugPlot as plt
 
 USE_ROTATION = True
 if USE_ROTATION:
@@ -65,6 +64,7 @@ class PeakRegion:
         xr_y = get_corrected(smooth(curve.y))    # smoothing is required in low quality data as in pH7
         xr_cy = np.cumsum(xr_y)
         if debug:
+            import molass_legacy.KekLib.DebugPlot as plt
             with plt.Dp():
                 x = curve.x
                 y = curve.y
@@ -87,6 +87,7 @@ class PeakRegion:
         uv_x = x_curve.x * self.similarity.slope + self.similarity.intercept
         xr_cy = uv_cy_spline(uv_x)
         if debug:
+            import molass_legacy.KekLib.DebugPlot as plt
             from molass_legacy.Elution.CurveUtils import simple_plot
             with plt.Dp():
                 fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(12,5))
@@ -164,6 +165,7 @@ class PeakRegion:
         ret = (peak_ends[0] - allow < ecurve.peak_info[0][1] and ecurve.peak_info[-1][1] < peak_ends[1] + allow)
                         # True for test_20191006_proteins5 and 20191118_3
         if debug:
+            import molass_legacy.KekLib.DebugPlot as plt
             from molass_legacy.Elution.CurveUtils import simple_plot
             with plt.Dp():
                 fig, ax = plt.subplots()
@@ -186,6 +188,7 @@ class PeakRegion:
         xr_peak_ends_old = self._get_traditional_peak_ends(x_curve)[2]
 
         if debug:
+            import molass_legacy.KekLib.DebugPlot as plt
             from molass_legacy.Elution.CurveUtils import simple_plot
             from molass_legacy.SerialAnalyzer.DataUtils import get_in_folder
 

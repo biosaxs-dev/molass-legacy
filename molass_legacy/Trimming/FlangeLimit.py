@@ -6,7 +6,6 @@
 import numpy as np
 import logging
 from bisect import bisect_right
-import molass_legacy.KekLib.DebugPlot as plt
 from molass_legacy.KekLib.GeometryUtils import rotated_argmin
 
 MIN_Q_LIMIT             = 0.2       #
@@ -43,6 +42,9 @@ class FlangeLimit:
         return self.limit
 
     def get_limit_impl(self, e_curve, data, error, logger, debug=False):
+        if debug:
+            import molass_legacy.KekLib.DebugPlot as plt
+            
         # self.q_vector[-1] == 0.194 in 20171203
         i = min(int(len(self.q_vector)*MIN_Q_LIMIT_RATIO), bisect_right(self.q_vector, MIN_Q_LIMIT))
         j = e_curve.get_primarypeak_i()

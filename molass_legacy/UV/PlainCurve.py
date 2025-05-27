@@ -1,14 +1,13 @@
 """
     UV.PlainCurve.py
 
-    Copyright (c) 2022-2024, SAXS Team, KEK-PF
+    Copyright (c) 2022-2025, SAXS Team, KEK-PF
 """
 import numpy as np
 from bisect import bisect_right
 from sklearn.cluster import KMeans
 from molass_legacy.KekLib.ExceptionTracebacker import ExceptionTracebacker
 from molass_legacy._MOLASS.SerialSettings import get_setting, set_setting
-import molass_legacy.KekLib.DebugPlot as plt
 from molass_legacy.SerialAnalyzer.ElutionCurve import ElutionCurve
 
 DIEHARD_LIMIT = 0.05        # 
@@ -63,6 +62,7 @@ def check_diehardness(a_curve, a_curve2, debug=False):
         judge, max_k, max_ratio = False, None, None
 
     if debug:
+        import molass_legacy.KekLib.DebugPlot as plt
         with plt.Dp():
             fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(12,5))
             fig.suptitle("check_diehardness debug")
@@ -108,6 +108,7 @@ def find_an_alternative_curve(D, wv, a_curve, index, logger, debug=False):
         extinguished = np.where(np.logical_and(required_cond, y/max_y < EXTINGUISHED_RATIO))[0]
 
         if debug:
+            import molass_legacy.KekLib.DebugPlot as plt
             from molass_legacy.SerialAnalyzer.DataUtils import get_in_folder
             with plt.Dp():
                 fig, ax = plt.subplots()
@@ -203,6 +204,7 @@ def find_an_alternative_curve(D, wv, a_curve, index, logger, debug=False):
             ridge_curves.append((j, y, i))
 
     if debug:
+        import molass_legacy.KekLib.DebugPlot as plt
         with plt.Dp():
             fig, ax = plt.subplots()
             for j, y, i in ridge_curves:
@@ -260,6 +262,7 @@ def make_secondary_e_curve_at(D, wv, e_curve, logger, wavelen=None, debug=False,
                     logger.warning("flat_y for uv baseline guess has been set to all zeros due to ratio=%.3g", ratio)
 
                 if debug:
+                    import molass_legacy.KekLib.DebugPlot as plt
                     from molass_legacy.Elution.CurveUtils import simple_plot
                     with plt.Dp():
                         fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(12,5))

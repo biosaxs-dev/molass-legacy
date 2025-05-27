@@ -7,7 +7,6 @@ import numpy as np
 from scipy.stats import linregress
 from scipy.optimize import curve_fit, minimize
 from bisect import bisect_right
-import molass_legacy.KekLib.DebugPlot as plt
 
 FC_CERTAINTY_SCALE = 7      # np.exp(-0.1 * 7) == 0.5
 
@@ -44,6 +43,7 @@ def bent_sigmoid_inv(y, L ,x0, k, b, s1, s2, debug=False):
     ret_x = x0 + x_[i]
 
     if debug:
+        import molass_legacy.KekLib.DebugPlot as plt
         with plt.Dp():
             fig, ax = plt.subplots()
             ax.set_title("bent_sigmoid_inv debug")
@@ -58,6 +58,7 @@ def guess_x0(x, y, debug=False):
     if debug:
         from importlib import reload
         import Trimming.SigmoidGuessX0 as target_module
+        import molass_legacy.KekLib.DebugPlot as plt
 
         def test_guess_x0_impl():
             reload(target_module)
@@ -105,6 +106,7 @@ def guess_bent_sigmoid(x, y, x0=None, return_certainty=False, debug=False, save_
         fc_certainty = np.exp(-rmsd/height*FC_CERTAINTY_SCALE)
 
     if debug or save_fig:
+        import molass_legacy.KekLib.DebugPlot as plt
         from molass_legacy._MOLASS.SerialSettings import get_setting
         from molass_legacy.SerialAnalyzer.DataUtils import get_in_folder
         from time import sleep
@@ -168,6 +170,7 @@ def adjust_ex_sigmoid(x, y, params, debug=False):
     def objective(p, title=None):
         sy = ex_sigmoid(x, L ,x0, k, *p)
         if title is not None:
+            import molass_legacy.KekLib.DebugPlot as plt
             with plt.Dp():
                 fig, ax = plt.subplots()
                 ax.set_title(title)

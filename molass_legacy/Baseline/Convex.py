@@ -2,13 +2,12 @@
 """
     Baseline.Convex.py
 
-    Copyright (c) 2020-2024, SAXS Team, KEK-PF
+    Copyright (c) 2020-2025, SAXS Team, KEK-PF
 """
 import numpy as np
 from scipy.spatial import ConvexHull
 from scipy.optimize import minimize
 from matplotlib.gridspec import GridSpec
-import molass_legacy.KekLib.DebugPlot as plt
 from molass_legacy.DataStructure.MatrixData import simple_plot_3d
 
 TITLE_FONTSIZE = 16
@@ -63,6 +62,7 @@ def get_best_adjust_params(y, ys, end_limits=(10, -10)):
     return res.x
 
 def demo(root, in_folder, xray=True, show_preview=False, debug=False):
+    import molass_legacy.KekLib.DebugPlot as plt
     from MeasuredData import MeasuredData
 
     print(in_folder)
@@ -196,6 +196,8 @@ def integrative_curve_convex(y, baseline=None, epsilon=1e-4, return_hull=False):
         return new_baseline
 
 def proof_plot(in_folder, xray=True):
+    import molass_legacy.KekLib.DebugPlot as plt
+    from MeasuredData import MeasuredData
     from DataUtils import get_in_folder
 
     md = MeasuredData(in_folder)

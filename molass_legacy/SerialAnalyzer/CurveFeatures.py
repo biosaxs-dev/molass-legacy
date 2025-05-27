@@ -1,17 +1,13 @@
-# coding: utf-8
 """
-
     CurveFeatures.py
 
         Optimization of mapping between UV-absorbance and Xray-scattering
 
-    Copyright (c) 2019-2021, SAXS Team, KEK-PF
-
+    Copyright (c) 2019-2025, SAXS Team, KEK-PF
 """
 import numpy as np
 import logging
 from scipy.interpolate import UnivariateSpline, LSQUnivariateSpline
-import molass_legacy.KekLib.DebugPlot as plt
 
 PEAK_TOP_WEIGHT     = 1.0
 MAJOR_POINT_WEIGHT  = 0.5      # MAJOR_POINT_WEIGHT==OTHER_POINT_WEIGHT for 20190305_2
@@ -72,6 +68,7 @@ class CurveFeatures:
                         roots.append(f)
 
         if False:
+            import molass_legacy.KekLib.DebugPlot as plt
             from molass_legacy._MOLASS.SerialSettings import get_setting
             in_folder = get_setting('in_folder')
             fig = plt.figure(figsize=(8,6))
@@ -203,6 +200,7 @@ class CurveFeatures:
         n = int(np.average(pnn[0:5]) + 0.5)
 
         if False:
+            import molass_legacy.KekLib.DebugPlot as plt
             from molass_legacy.Elution.CurveUtils import simple_plot
             plt.push()
             fig, axes = plt.subplots(nrows=1, ncols=2, figsize=(14, 7))
