@@ -1,7 +1,7 @@
 """
     G1100.py
 
-    Copyright (c) 2024, SAXS Team, KEK-PF
+    Copyright (c) 2024-2025, SAXS Team, KEK-PF
 """
 import numpy as np
 from molass_legacy.KekLib.ExceptionTracebacker import ExceptionTracebacker
@@ -9,7 +9,7 @@ from molass_legacy.Models.Stochastic.DispersivePdf import dispersive_monopore_pd
 from molass_legacy.Optimizer.BasicOptimizer import BasicOptimizer, PENALTY_SCALE, UV_XR_RATIO_ALLOW, UV_XR_RATIO_SCALE
 from molass_legacy.Optimizer.NumericalUtils import safe_ratios
 from molass_legacy._MOLASS.SerialSettings import get_setting
-from ModelParams.SeccolFunctions import rgfit_secconf_eval
+from molass_legacy.ModelParams.SeccolFunctions import rgfit_secconf_eval
 from molass_legacy.Optimizer.TheDebugUtils import convert_score_list
 from molass_legacy.Optimizer.PenaltyUtils import compute_mapping_penalty
 
@@ -27,9 +27,9 @@ class G1100(BasicOptimizer):
         self.elutionmodel_func = elutionmodel_func
         if True:
             from importlib import reload
-            import ModelParams.SdmParams
-            reload(ModelParams.SdmParams)
-        from ModelParams.SdmParams import SdmParams
+            import molass_legacy.ModelParams.SdmParams
+            reload(molass_legacy.ModelParams.SdmParams)
+        from molass_legacy.ModelParams.SdmParams import SdmParams
 
         params_type = SdmParams(n_components)
         BasicOptimizer.__init__(self, dsets, n_components, params_type, kwargs)
@@ -135,9 +135,9 @@ class G1100(BasicOptimizer):
 
         if plot:
             from importlib import reload
-            import ModelParams.SdmPlotUtils
-            reload(ModelParams.SdmPlotUtils)
-            from ModelParams.SdmPlotUtils import plot_objective_state
+            import molass_legacy.ModelParams.SdmPlotUtils
+            reload(molass_legacy.ModelParams.SdmPlotUtils)
+            from molass_legacy.ModelParams.SdmPlotUtils import plot_objective_state
 
             print("fv=", fv)
 

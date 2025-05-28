@@ -1,7 +1,7 @@
 """
     G0665.py
 
-    Copyright (c) 2022-2023, SAXS Team, KEK-PF
+    Copyright (c) 2022-2025, SAXS Team, KEK-PF
 """
 import numpy as np
 from molass_legacy.KekLib.ExceptionTracebacker import log_exception
@@ -9,9 +9,9 @@ from molass_legacy.Peaks.ElutionModels import emg
 from molass_legacy.Optimizer.BasicOptimizer import BasicOptimizer, PENALTY_SCALE
 from molass_legacy.Optimizer.NumericalUtils import safe_ratios
 from molass_legacy._MOLASS.SerialSettings import get_setting, set_setting
-from ModelParams.SeccolFunctions import rgfit_secconf_eval
-from SecTheory.ColumnConstants import Ti_LOWER, Ti_UPPER, Np_LOWER, Np_UPPER
-from SecTheory.BoundControl import Penalties
+from molass_legacy.ModelParams.SeccolFunctions import rgfit_secconf_eval
+from molass_legacy.SecTheory.ColumnConstants import Ti_LOWER, Ti_UPPER, Np_LOWER, Np_UPPER
+from molass_legacy.SecTheory.BoundControl import Penalties
 from molass_legacy.Optimizer.TheDebugUtils import convert_score_list
 
 UV_B_ALLOW_RATIO = 0.1
@@ -34,9 +34,9 @@ class G0665(BasicOptimizer):
 
         if True:
             from importlib import reload
-            import ModelParams.FdEmgParams
-            reload(ModelParams.FdEmgParams)
-        from ModelParams.FdEmgParams import FdEmgParams
+            import molass_legacy.ModelParams.FdEmgParams
+            reload(molass_legacy.ModelParams.FdEmgParams)
+        from molass_legacy.ModelParams.FdEmgParams import FdEmgParams
 
         params_type = FdEmgParams(n_components)
         BasicOptimizer.__init__(self, dsets, n_components, params_type, kwargs)
@@ -164,7 +164,7 @@ class G0665(BasicOptimizer):
                 overlap = np.zeros(len(x))
 
         if plot:
-            from ModelParams.EmgPlotUtils import plot_objective_state
+            from molass_legacy.ModelParams.EmgPlotUtils import plot_objective_state
             debug_fv = plot_objective_state((score_list, penalties), fv, self.xm,
                 lrf_info,
                 overlap, self.rg_curve, rg_params,

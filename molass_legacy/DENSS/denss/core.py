@@ -60,7 +60,7 @@ from scipy import ndimage, interpolate, spatial, special, optimize, signal, stat
 from functools import reduce
 
 # load some dictionaries
-from denss.resources import resources
+from molass_legacy.DENSS.denss.resources import resources
 
 electrons = resources.electrons
 atomic_volumes = resources.atomic_volumes

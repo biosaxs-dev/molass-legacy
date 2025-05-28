@@ -51,6 +51,15 @@ def devel_test_impl(self):
         from molass_legacy.Optimizer.UvBaselineEstimator import test_estimate_uvbaseline_impl
         test_estimate_uvbaseline_impl(self.fullopt, self.init_params)
 
+    def test_func_loader():
+        import logging
+        import molass_legacy.Optimizer.FuncImporter
+        reload(molass_legacy.Optimizer.FuncImporter)
+        from molass_legacy.Optimizer.FuncImporter import get_objective_function_info
+        logger = logging.getLogger(__name__)
+        func_info = get_objective_function_info(logger, default_func_code='G0346')
+        print("Objective Functions:", func_info.func_dict)
+
     extra_button_specs = [
         ("Embed Cushion", exec_embed_cushion),
         ("CPD Spike", cpd_spike),
@@ -59,6 +68,7 @@ def devel_test_impl(self):
         ("Fixed Baseline Optimizer Test", test_fixedbaseline_optimizer),
         ("Objective Function Debug", debug_objective_function),
         ("Estimate UV Baseline", test_estimate_uvbaseline),
+        ("Function Loader Test", test_func_loader),
     ]
 
     with plt.Dp(button_spec=["OK", "Cancel"], extra_button_specs=extra_button_specs):

@@ -8,11 +8,11 @@ from scipy.optimize import minimize, basinhopping
 import molass_legacy.KekLib.DebugPlot as plt
 from molass_legacy._MOLASS.SerialSettings import get_setting
 from .BasicModels import robust_single_pore_pdf_scaled
-import SecTheory.CumsumInverse
+import molass_legacy.SecTheory.CumsumInverse
 from importlib import reload
-reload(SecTheory.CumsumInverse)
-import SecTheory.LocalOptimizer
-reload(SecTheory.LocalOptimizer)
+reload(molass_legacy.SecTheory.CumsumInverse)
+import molass_legacy.SecTheory.LocalOptimizer
+reload(molass_legacy.SecTheory.LocalOptimizer)
 from .LocalOptimizer import PENALTY_SCALE, MEMP_LIMIT, N_LIMIT, RgInfo, SecInfo, LocalOptimizer, split_params
 # MEMP_LIMIT and N_LIMIT are imported using this module although they are not used here.
 
@@ -37,8 +37,8 @@ def estimate_monopore_params(ecurve, rg_curve, nc, optimizer=None,
 
     """
     if debug:
-        import SecTheory.InitialGuess
-        reload(SecTheory.InitialGuess)
+        import molass_legacy.SecTheory.InitialGuess
+        reload(molass_legacy.SecTheory.InitialGuess)
     from .InitialGuess import InitialGuess
 
     rg_info = RgInfo(rg_curve, nc)

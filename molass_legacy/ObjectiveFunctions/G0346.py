@@ -1,15 +1,15 @@
 """
     G0346.py
 
-    Copyright (c) 2021-2024, SAXS Team, KEK-PF
+    Copyright (c) 2021-2025, SAXS Team, KEK-PF
 """
 import numpy as np
 from molass_legacy.KekLib.ExceptionTracebacker import log_exception
 from molass_legacy.Peaks.ElutionModels import egh
 from molass_legacy.Peaks.EghSupples import compute_AB
 from molass_legacy.Optimizer.BasicOptimizer import BasicOptimizer, BAD_PARAMS_RETURN, WEAK_PENALTY_SCALE, UV_XR_RATIO_ALLOW, UV_XR_RATIO_SCALE
-from ModelParams.BoundedSecParams import BoundedSecParams
-from ModelParams.EghParams import construct_egh_params_type
+from molass_legacy.ModelParams.BoundedSecParams import BoundedSecParams
+from molass_legacy.ModelParams.EghParams import construct_egh_params_type
 from molass_legacy.Optimizer.NumericalUtils import safe_ratios
 from molass_legacy._MOLASS.SerialSettings import get_setting, set_setting
 from molass_legacy.Optimizer.TheDebugUtils import convert_score_list
@@ -27,7 +27,7 @@ class G0346(BasicOptimizer):
 
         t0_upper_bound = get_setting("t0_upper_bound")
         if t0_upper_bound is None:
-            from SecTheory.T0UpperBound import estimate_t0upper_bound
+            from molass_legacy.SecTheory.T0UpperBound import estimate_t0upper_bound
             ecurve = dsets[0][0]
             t0_upper_bound = estimate_t0upper_bound(ecurve)
             set_setting("t0_upper_bound", t0_upper_bound)
@@ -37,8 +37,8 @@ class G0346(BasicOptimizer):
         if debug:
             global BasicOptimizer   # this is required for the use where debug=False
             from importlib import reload
-            import Optimizer.BasicOptimizer
-            reload(Optimizer.BasicOptimizer)
+            import molass_legacy.Optimizer.BasicOptimizer
+            reload(molass_legacy.Optimizer.BasicOptimizer)
             from molass_legacy.Optimizer.BasicOptimizer import BasicOptimizer
         BasicOptimizer.__init__(self, dsets, n_components, params_type, kwargs)
 
@@ -147,7 +147,7 @@ class G0346(BasicOptimizer):
                 overlap = np.zeros(len(x))
 
         if plot:
-            from ModelParams.EghPlotUtils import plot_objective_state
+            from molass_legacy.ModelParams.EghPlotUtils import plot_objective_state
             debug_fv = plot_objective_state((score_list, penalties), fv,
                 lrf_info,
                 overlap, self.rg_curve, rg_params,

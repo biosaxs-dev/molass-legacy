@@ -1,7 +1,7 @@
 """
     G0525.py
 
-    Copyright (c) 2022-2024, SAXS Team, KEK-PF
+    Copyright (c) 2022-2025, SAXS Team, KEK-PF
 """
 import numpy as np
 from molass_legacy.KekLib.ExceptionTracebacker import log_exception
@@ -9,8 +9,8 @@ from molass_legacy.Peaks.ElutionModels import egh
 from molass_legacy.Optimizer.BasicOptimizer import BasicOptimizer, PENALTY_SCALE
 from molass_legacy.Optimizer.NumericalUtils import safe_ratios
 from molass_legacy._MOLASS.SerialSettings import get_setting, set_setting
-from ModelParams.SeccolFunctions import rgfit_secconf_eval
-from SecTheory.BoundControl import Penalties
+from molass_legacy.ModelParams.SeccolFunctions import rgfit_secconf_eval
+from molass_legacy.SecTheory.BoundControl import Penalties
 from molass_legacy.Optimizer.TheDebugUtils import convert_score_list
 
 UV_B_ALLOW_RATIO = 0.1
@@ -26,16 +26,16 @@ class G0525(BasicOptimizer):
 
         t0_upper_bound = get_setting("t0_upper_bound")
         if t0_upper_bound is None:
-            from SecTheory.T0UpperBound import estimate_t0upper_bound
+            from molass_legacy.SecTheory.T0UpperBound import estimate_t0upper_bound
             ecurve = dsets[0][0]
             t0_upper_bound = estimate_t0upper_bound(ecurve)
             set_setting("t0_upper_bound", t0_upper_bound)
 
         if True:
             from importlib import reload
-            import ModelParams.LjEghParams
-            reload(ModelParams.LjEghParams)
-        from ModelParams.LjEghParams import LjEghParams
+            import molass_legacy.ModelParams.LjEghParams
+            reload(molass_legacy.ModelParams.LjEghParams)
+        from molass_legacy.ModelParams.LjEghParams import LjEghParams
 
         params_type = LjEghParams(n_components)
 
@@ -160,7 +160,7 @@ class G0525(BasicOptimizer):
                 overlap = np.zeros(len(x))
 
         if plot:
-            from ModelParams.EghPlotUtils import plot_objective_state
+            from molass_legacy.ModelParams.EghPlotUtils import plot_objective_state
             debug_fv = plot_objective_state((score_list, penalties), fv,
                 lrf_info,
                 overlap, self.rg_curve, rg_params,

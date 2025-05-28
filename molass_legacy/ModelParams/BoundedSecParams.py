@@ -1,13 +1,13 @@
 """
     BoundedSecParams.py
 
-    Copyright (c) 2022, SAXS Team, KEK-PF
+    Copyright (c) 2022-2025, SAXS Team, KEK-PF
 """
 import numpy as np
 from .SimpleSecParams import initial_guess, sec_comformance
-from SecTheory.RetensionTime import estimate_conformance_params
+from molass_legacy.SecTheory.RetensionTime import estimate_conformance_params
 from molass_legacy._MOLASS.SerialSettings import get_setting
-from SecTheory.MonoPore import MEMP_LIMIT
+from molass_legacy.SecTheory.MonoPore import MEMP_LIMIT
 
 class BoundedSecParams:
     def __init__(self, *args):      # *args are not used

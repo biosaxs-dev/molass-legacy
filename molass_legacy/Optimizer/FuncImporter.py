@@ -15,7 +15,7 @@ def import_objective_function(class_code, logger=None):
         import molass_legacy.Optimizer.BasicOptimizer
         reload(molass_legacy.Optimizer.BasicOptimizer)
 
-        module = import_module("%s.%s" % (OBJFUNC_DIRNAME, class_code))
+        module = import_module("molass_legacy.%s.%s" % (OBJFUNC_DIRNAME, class_code))
         module = reload(module)
         class_ = getattr(module, class_code)
         docstr = class_.__doc__
@@ -26,7 +26,7 @@ def import_objective_function(class_code, logger=None):
         docstr = "import error"
     return class_, docstr
 
-def get_objective_function_info(logger=None, default_func_code=None, debug=True):
+def get_objective_function_info(logger=None, default_func_code=None, debug=False):
     # note that default_objective_func can be changed depending on elution model
     # so, making this to a singleton needs careful streatment of such changes
 
@@ -46,10 +46,16 @@ def get_objective_function_info(logger=None, default_func_code=None, debug=True)
     default_index = None
     file_re = re.compile(r'\W(\w\d+)\.py')
     upper_dir = os.path.dirname(os.path.dirname(__file__))
+    if debug:
+        print("upper_dir:", upper_dir)
     for k, file in enumerate(sorted(glob.glob(upper_dir + r"\%s\*.py" % OBJFUNC_DIRNAME))):
+        if debug:
+            print("importing objective function %d: %s" % (k, file))
         m = file_re.search(file)
         if m:
             class_code = m.group(1)
+            if debug:
+                print("class_code:", class_code)
             if elution_model == 0:
                 if class_code >= "G0500":
                     continue

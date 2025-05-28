@@ -1,11 +1,11 @@
 """
     Estimators.BaseEstimator.py
 
-    Copyright (c) 2022-2024, SAXS Team, KEK-PF
+    Copyright (c) 2022-2025, SAXS Team, KEK-PF
 """
 import logging
 from molass_legacy._MOLASS.SerialSettings import set_setting
-from SecTheory.T0UpperBound import estimate_t0upper_bound
+from molass_legacy.SecTheory.T0UpperBound import estimate_t0upper_bound
 
 class BaseEstimator:
     def __init__(self, editor):

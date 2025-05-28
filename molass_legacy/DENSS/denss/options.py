@@ -2,7 +2,7 @@
 
 import os, argparse
 import numpy as np
-import denss
+import molass_legacy.DENSS.denss as denss
 
 
 def store_parameters_as_string(sasrec):

@@ -1,16 +1,16 @@
 """
     Estimators.EghEstimator.py
 
-    Copyright (c) 2022-2024, SAXS Team, KEK-PF
+    Copyright (c) 2022-2025, SAXS Team, KEK-PF
 """
 import numpy as np
-from SecTheory.SecEstimator import guess_initial_secparams
+from molass_legacy.SecTheory.SecEstimator import guess_initial_secparams
 from molass_legacy.Baseline.Constants import SLOPE_SCALE
 
 if True:
     from importlib import reload
-    import Estimators.BaseEstimator
-    reload(Estimators.BaseEstimator)
+    import molass_legacy.Estimators.BaseEstimator
+    reload(molass_legacy.Estimators.BaseEstimator)
 from .BaseEstimator import BaseEstimator
 
 class EghEstimator(BaseEstimator):

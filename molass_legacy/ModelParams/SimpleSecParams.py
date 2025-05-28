@@ -1,15 +1,15 @@
 """
     SimpleSecParams.py
 
-    Copyright (c) 2022-2023, SAXS Team, KEK-PF
+    Copyright (c) 2022-2025, SAXS Team, KEK-PF
 """
 import numpy as np
 from molass_legacy.KekLib.BasicUtils import Struct
-from SecTheory.RetensionTime import (make_initial_guess, compute_retention_time,
+from molass_legacy.SecTheory.RetensionTime import (make_initial_guess, compute_retention_time,
                                      estimate_conformance_params,
                                      estimate_conformance_params_fixed_poreexponent,
                                     )
-from SecTheory.ColumnConstants import SECCONF_LOWER_BOUND, BAD_CONFORMANCE_REDUCE
+from molass_legacy.SecTheory.ColumnConstants import SECCONF_LOWER_BOUND, BAD_CONFORMANCE_REDUCE
 
 SEC_PENALTY_SCALE = 1e8
 MIN_RETENTION_TIME_RATIO = 0.2

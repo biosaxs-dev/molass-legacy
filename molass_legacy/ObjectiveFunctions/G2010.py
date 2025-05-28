@@ -9,8 +9,8 @@ from molass_legacy.Models.RateTheory.EDM import edm_impl
 from molass_legacy.Optimizer.BasicOptimizer import BasicOptimizer, PENALTY_SCALE, UV_XR_RATIO_ALLOW, UV_XR_RATIO_SCALE
 from molass_legacy.Optimizer.NumericalUtils import safe_ratios
 from molass_legacy._MOLASS.SerialSettings import get_setting, set_setting
-from ModelParams.SeccolFunctions import rgfit_secconf_eval
-from SecTheory.BoundControl import Penalties
+from molass_legacy.ModelParams.SeccolFunctions import rgfit_secconf_eval
+from molass_legacy.SecTheory.BoundControl import Penalties
 from molass_legacy.Optimizer.TheDebugUtils import convert_score_list
 from molass_legacy.Optimizer.PenaltyUtils import compute_mapping_penalty
 
@@ -26,9 +26,9 @@ class G2010(BasicOptimizer):
 
         if True:
             from importlib import reload
-            import ModelParams.EdmParams
-            reload(ModelParams.EdmParams)
-        from ModelParams.EdmParams import EdmParams
+            import molass_legacy.ModelParams.EdmParams
+            reload(molass_legacy.ModelParams.EdmParams)
+        from molass_legacy.ModelParams.EdmParams import EdmParams
 
         params_type = EdmParams(n_components)
         BasicOptimizer.__init__(self, dsets, n_components, params_type, kwargs)
@@ -123,7 +123,7 @@ class G2010(BasicOptimizer):
             xr_ty = np.zeros(len(y))
 
         if plot:
-            from ModelParams.EdmPlotUtils import plot_objective_state
+            from molass_legacy.ModelParams.EdmPlotUtils import plot_objective_state
             debug_fv = plot_objective_state((score_list, penalties), fv, self.xm,
                 lrf_info,
                 overlap, self.rg_curve, rg_params,

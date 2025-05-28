@@ -6,7 +6,7 @@
 import numpy as np
 from molass_legacy._MOLASS.SerialSettings import get_setting
 # from SecTheory.RetensionTime import make_initial_guess
-from SecTheory.SecEstimator import guess_initial_secparams, NUM_SEC_PARAMS
+from molass_legacy.SecTheory.SecEstimator import guess_initial_secparams, NUM_SEC_PARAMS
 from .SimpleSecParams import SimpleSecParams, sec_comformance
 from .BaselineParams import get_num_baseparams
 from molass_legacy.Optimizer.BasicOptimizer import AVOID_VANISHING_RATIO
@@ -190,16 +190,16 @@ class EghParamsBase:
     def get_params_sheet(self, parent, params, dsets, optimizer, debug=True):
         if debug:
             from importlib import reload
-            import ModelParams.EghParamsSheet
-            reload(ModelParams.EghParamsSheet)
+            import molass_legacy.ModelParams.EghParamsSheet
+            reload(molass_legacy.ModelParams.EghParamsSheet)
         from .EghParamsSheet import EghParamsSheet
         return EghParamsSheet(parent, params, dsets, optimizer)
 
     def get_adjuster(self, debug=True):
         if debug:
-            import ModelParams.EghAdjuster
+            import molass_legacy.ModelParams.EghAdjuster
             from importlib import reload
-            reload(ModelParams.EghAdjuster)
+            reload(molass_legacy.ModelParams.EghAdjuster)
         from .EghAdjuster import EghAdjuster
         return EghAdjuster()
 
@@ -300,9 +300,9 @@ class EghAdvansedParams(EghParamsBase):
     def get_estimator(self, editor, debug=True):
         if debug:
             from importlib import reload
-            import Estimators.EghEstimator
-            reload(Estimators.EghEstimator)
-        from Estimators.EghEstimator import EghEstimator
+            import molass_legacy.Estimators.EghEstimator
+            reload(molass_legacy.Estimators.EghEstimator)
+        from molass_legacy.Estimators.EghEstimator import EghEstimator
         return EghEstimator(editor)
 
     def split_params(self, n, params):

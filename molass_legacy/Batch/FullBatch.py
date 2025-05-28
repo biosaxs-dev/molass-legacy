@@ -91,9 +91,9 @@ class FullBatch:
 
     def get_modeled_peaks(self, uv_x, uv_y, xr_x, xr_y, num_peaks=None, affine=True, min_area_prop=None, debug=False):
         if debug:
-            import QuickAnalysis.ModeledPeaks
+            import molass_legacy.QuickAnalysis.ModeledPeaks
             from importlib import reload
-            reload(QuickAnalysis.ModeledPeaks)
+            reload(molass_legacy.QuickAnalysis.ModeledPeaks)
         from molass_legacy.QuickAnalysis.ModeledPeaks import get_modeled_peaks_impl
         if num_peaks is None:
             num_peaks = self.exact_num_peaks
@@ -137,9 +137,9 @@ class FullBatch:
 
         if devel:
             from importlib import reload
-            import Selective.LrfSource
-            reload(Selective.LrfSource)
-        from Selective.LrfSource import LrfSource
+            import molass_legacy.Selective.LrfSource
+            reload(molass_legacy.Selective.LrfSource)
+        from molass_legacy.Selective.LrfSource import LrfSource
         return LrfSource(self.sd, self.corrected_sd, self.lrf_src_args1, self.peak_params_set, pre_recog=self.pre_recog)
 
     def get_n_components(self):

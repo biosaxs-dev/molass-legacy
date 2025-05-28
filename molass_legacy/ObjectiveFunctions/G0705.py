@@ -1,7 +1,7 @@
 """
     G0705.py
 
-    Copyright (c) 2022-2023, SAXS Team, KEK-PF
+    Copyright (c) 2022-2025, SAXS Team, KEK-PF
 """
 import os
 import numpy as np
@@ -10,8 +10,8 @@ from molass_legacy.Peaks.ElutionModels import emg
 from molass_legacy.Optimizer.BasicOptimizer import BasicOptimizer, PENALTY_SCALE
 from molass_legacy.Optimizer.NumericalUtils import safe_ratios
 from molass_legacy._MOLASS.SerialSettings import get_setting, set_setting
-from ModelParams.SeccolFunctions import rgfit_secconf_eval
-from SecTheory.ColumnConstants import Ti_LOWER, Ti_UPPER, Np_LOWER, Np_UPPER
+from molass_legacy.ModelParams.SeccolFunctions import rgfit_secconf_eval
+from molass_legacy.SecTheory.ColumnConstants import Ti_LOWER, Ti_UPPER, Np_LOWER, Np_UPPER
 from molass_legacy.Optimizer.TheDebugUtils import convert_score_list
 
 UV_B_ALLOW_RATIO = 0.1
@@ -35,9 +35,9 @@ class G0705(BasicOptimizer):
 
         if True:
             from importlib import reload
-            import ModelParams.RtEmgParams
-            reload(ModelParams.RtEmgParams)
-        from ModelParams.RtEmgParams import RtEmgParams
+            import molass_legacy.ModelParams.RtEmgParams
+            reload(molass_legacy.ModelParams.RtEmgParams)
+        from molass_legacy.ModelParams.RtEmgParams import RtEmgParams
 
         params_type = RtEmgParams(n_components)
         BasicOptimizer.__init__(self, dsets, n_components, params_type, kwargs)
@@ -163,7 +163,7 @@ class G0705(BasicOptimizer):
                 overlap = np.zeros(len(x))
 
         if plot:
-            from ModelParams.EmgPlotUtils import plot_objective_state       # EghPlotUtils can be used here because it does not use egh nor emg
+            from molass_legacy.ModelParams.EmgPlotUtils import plot_objective_state       # EghPlotUtils can be used here because it does not use egh nor emg
             debug_fv = plot_objective_state((score_list, penalties), fv, self.xm,
                 lrf_info,
                 overlap, self.rg_curve, rg_params,
