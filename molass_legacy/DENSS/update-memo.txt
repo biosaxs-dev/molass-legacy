@@ -1,5 +1,5 @@
 
-1. pull origin in GitHub Desktop
+1. pull origin in GitHub/denss
 
 2. python update-denss.py
 

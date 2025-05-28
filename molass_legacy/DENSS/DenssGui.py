@@ -88,7 +88,7 @@ class DenssGuiDialog(Dialog):
             self.prepare_from_args(q, a, e, infile_name)
         self.cwd_init = os.getcwd()
         self.thread = None
-        from .saxstats._version import __version__ as denss_version
+        from .denss._version import __version__ as denss_version
         Dialog.__init__( self, parent, "Gui for DENSS-%s" % denss_version, visible=False )
 
     def show(self):
@@ -442,7 +442,7 @@ class DenssGuiDialog(Dialog):
         os.chdir(self.out_folder.get())
         redirector = StdoutRedirector(self.queue)
 
-        from Env.EnvInfo import get_global_env_info
+        from molass_legacy.Env.EnvInfo import get_global_env_info
         from .DenssUtils import run_denss_impl
 
         env_info = get_global_env_info(gpu_info=True)
@@ -465,7 +465,11 @@ class DenssGuiDialog(Dialog):
         os.chdir(self.cwd_init)
         self.cancel()
 
-    def denss_fit_data(self):
+    def denss_fit_data(self, debug=False):
+        if debug:
+            from importlib import reload
+            import molass_legacy.DENSS.DenssFitData as DenssFitData
+            reload(DenssFitData)
         from .DenssFitData import DenssFitDataDialog
         dialog = DenssFitDataDialog(self, self.sasrec, self.work_info, self.infile_name, self.out_folder.get())
         dialog.show()
@@ -502,7 +506,11 @@ class DenssGuiDialog(Dialog):
         viewer.show()
         reset_to_default_style()
 
-    def illustrate_dmax(self):
+    def illustrate_dmax(self, debug=False):
+        if debug:
+            from importlib import reload
+            import molass_legacy.DENSS.DmaxEstimation as DmaxEstimation
+            reload(DmaxEstimation)
         from .DmaxEstimation import illustrate_dmax
         from molass_legacy.KekLib.DebugPlot import DialogWrapper
 

@@ -15,22 +15,21 @@ except:
     GIT_REPOSITORY = r"E:\Github\denss"
     assert os.path.exists(GIT_REPOSITORY)
 
-git_bin = os.path.join(GIT_REPOSITORY, "bin")
-git_lib = os.path.join(GIT_REPOSITORY, "saxstats")
+denss_scripts = os.path.join(GIT_REPOSITORY, r"denss\scripts")
+denss_lib = os.path.join(GIT_REPOSITORY, "denss")
 
+temp_scripts = "scripts-temp"
+temp_lib = "core-temp"
 
-tmp_bin = "bin-temp"
-tmp_lib = "saxstats-temp"
-
-for path in [tmp_bin, tmp_lib]:
+for path in [temp_scripts, temp_lib]:
     if not os.path.exists(path):
         os.makedirs(path)
 
 this_dir = os.path.dirname(os.path.abspath( __file__ ))
-sys.path.append( this_dir + '/../../lib' )
+root_dir = os.path.dirname(os.path.dirname(this_dir))
+sys.path.insert(0, root_dir)
 
-import molass_legacy.KekLib
-from DiffUtils import file2string, string2file
+from molass_legacy.KekLib.DiffUtils import file2string, string2file
 
 dmp = dmp_module.diff_match_patch()
 dmp.Match_Distance = 5000
@@ -38,7 +37,7 @@ dmp.Match_Distance = 5000
 # bin
 old_bin = "bin"
 
-for file in ["denss.fit_data.py", "denss.pdb2mrc.py"]:
+for file in ["denss_fit_data.py", "denss_pdb2mrc.py"]:
     orig_file = file.replace(".py", "-orig.py")
 
     old_src = file2string(os.path.join(old_bin, orig_file))
@@ -47,7 +46,7 @@ for file in ["denss.fit_data.py", "denss.pdb2mrc.py"]:
     patches = dmp.patch_make(old_src, mod_src)
     print(dmp.patch_toText(patches))
 
-    git_src_path = os.path.join(git_bin, file)
+    git_src_path = os.path.join(denss_scripts, file)
     git_src = file2string(git_src_path)
     results = dmp.patch_apply(patches, git_src)
 
@@ -55,8 +54,10 @@ for file in ["denss.fit_data.py", "denss.pdb2mrc.py"]:
     print("=====================", results[1])
     assert results[1] == [True] * len(results[1])
 
-    string2file(new_src, os.path.join(tmp_bin, file))
-    copy(git_src_path, os.path.join(tmp_bin, orig_file))
+    string2file(new_src, os.path.join(temp_scripts, file))
+    copy(git_src_path, os.path.join(temp_scripts, orig_file))
+
+exit()
 
 # saxstats
 old_lib = "saxstats"

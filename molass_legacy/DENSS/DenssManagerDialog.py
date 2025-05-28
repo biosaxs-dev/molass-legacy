@@ -1,7 +1,7 @@
 """
     DenssManagerDialog.py
 
-    Copyright (c) 2019-2023, SAXS Team, KEK-PF
+    Copyright (c) 2019-2025, SAXS Team, KEK-PF
 """
 import numpy as np
 from time import strftime, localtime
@@ -10,7 +10,7 @@ import queue
 from molass_legacy.KekLib.OurTkinter import Tk, Dialog, ttk
 from molass_legacy.KekLib.TkUtils import get_widget_geometry
 from molass_legacy.KekLib.TkSupplements import set_icon
-from ScrolledFrame import ScrolledFrame
+from molass_legacy.KekLib.ScrolledFrame import ScrolledFrame
 from .DenssUtils import MAXNUM_STEPS
 
 dialogs = []
@@ -60,7 +60,7 @@ def show_manager_dialog(parent, jobs=None):
 
     from .DenssManager import activate_manager, get_list
     from molass_legacy.KekLib.BasicUtils import get_home_folder
-    from Env.EnvInfo import get_global_env_info
+    from molass_legacy.Env.EnvInfo import get_global_env_info
 
     log_folder = get_home_folder() + '/log'
     env_info = get_global_env_info(gpu_info=True)

@@ -1,7 +1,7 @@
 """
     Optimizer.GuinierDeviation.py
 
-    Copyright (c) 2023-2024, SAXS Team, KEK-PF
+    Copyright (c) 2023-2025, SAXS Team, KEK-PF
 """
 import logging
 from bisect import bisect_right
@@ -10,9 +10,9 @@ from scipy.stats import linregress
 import molass_legacy.KekLib.DebugPlot as plt
 from molass_legacy.GuinierAnalyzer.SimpleGuinier import SimpleGuinier
 from importlib import reload
-import GuinierTools.RgCurveUtils
-reload(GuinierTools.RgCurveUtils)
-from GuinierTools.RgCurveUtils import get_connected_curve_info, convert_to_milder_qualities, VALID_BASE_QUALITY
+import molass_legacy.GuinierTools.RgCurveUtils
+reload(molass_legacy.GuinierTools.RgCurveUtils)
+from molass_legacy.GuinierTools.RgCurveUtils import get_connected_curve_info, convert_to_milder_qualities, VALID_BASE_QUALITY
 
 USE_NORMALIZED_RMSD_FOR_RGCURVES = True
 
@@ -185,15 +185,15 @@ class GuinierDeviation:
         if debug:
             from importlib import reload
             def rg_deviation_inspect():
-                import GuinierTools.RgCurveUtils
-                reload(GuinierTools.RgCurveUtils)
-                from GuinierTools.RgCurveUtils import rg_deviation_inspect_impl
+                import molass_legacy.GuinierTools.RgCurveUtils
+                reload(molass_legacy.GuinierTools.RgCurveUtils)
+                from .RgCurveUtils import rg_deviation_inspect_impl
                 rg_deviation_inspect_impl(self, valid_components, rg_params, lrf_rgs)
 
             def compare_dist_measures():
-                import GuinierTools.CompareGdevMeasures
-                reload(GuinierTools.CompareGdevMeasures)
-                from GuinierTools.CompareGdevMeasures import compare_gdev_measures_impl
+                import molass_legacy.GuinierTools.CompareGdevMeasures
+                reload(molass_legacy.GuinierTools.CompareGdevMeasures)
+                from .CompareGdevMeasures import compare_gdev_measures_impl
                 print("ret_val=", ret_val)
                 compare_gdev_measures_impl(self, Cxr, rg_params, valid_components)
 
@@ -220,9 +220,9 @@ class GuinierDeviation:
     def compute_rgcurve_deviation(self, Cxr, rg_params, adjust=0, debug=False):
         if debug:
             from importlib import reload
-            import GuinierTools.RgCurveUtils
-            reload(GuinierTools.RgCurveUtils)
-        from GuinierTools.RgCurveUtils import get_reconstructed_curve
+            import molass_legacy.GuinierTools.RgCurveUtils
+            reload(molass_legacy.GuinierTools.RgCurveUtils)
+        from .RgCurveUtils import get_reconstructed_curve
         
         rrgv = get_reconstructed_curve(self.valid_size, self.valid_bools, Cxr, rg_params)
         if debug:
@@ -237,10 +237,10 @@ class GuinierDeviation:
 
         if USE_NORMALIZED_RMSD_FOR_RGCURVES:
             if debug:
-                import Distance.NormalizedRmsd
-                reload(Distance.NormalizedRmsd)
-            from Distance.NormalizedRmsd import normalized_rmsd
+                import molass_legacy.Distance.NormalizedRmsd
+                reload(molass_legacy.Distance.NormalizedRmsd)
+            from molass_legacy.Distance.NormalizedRmsd import normalized_rmsd
             return normalized_rmsd(self.rgv, rrgv, weights=self.weights, adjust=adjust)
         else:
-            from Distance.FrobeniusXdiffmax import frobenius_xdiffmax
+            from molass_legacy.Distance.FrobeniusXdiffmax import frobenius_xdiffmax
             return frobenius_xdiffmax(self.rgv, rrgv, adjust=adjust, max_mask=self.max_mask)

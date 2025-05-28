@@ -1,7 +1,7 @@
 """
     Peaks.PeakDevel.py
 
-    Copyright (c) 2024, SAXS Team, KEK-PF
+    Copyright (c) 2024-2025, SAXS Team, KEK-PF
 """
 from importlib import reload
 import molass_legacy.KekLib.DebugPlot as plt
@@ -10,44 +10,44 @@ def devel_test_impl(self):
     print("devel_test_impl")
 
     def exec_embed_cushion():
-        import Tools.EmbedCushion
-        reload(Tools.EmbedCushion)
+        import molass_legacy.Tools.EmbedCushion
+        reload(molass_legacy.Tools.EmbedCushion)
         from molass_legacy.Tools.EmbedCushion import embed_cushion
         embed_cushion(self)
 
     def cpd_spike():
-        import GuinierTools.CpdDecompIndirect
-        reload(GuinierTools.CpdDecompIndirect)
-        from GuinierTools.CpdDecompIndirect import cpd_spike_impl
+        import molass_legacy.GuinierTools.CpdDecompIndirect
+        reload(molass_legacy.GuinierTools.CpdDecompIndirect)
+        from molass_legacy.GuinierTools.CpdDecompIndirect import cpd_spike_impl
         cpd_spike_impl(self)
 
     def estimator_test():
-        import Estimators.TestTools
-        reload(Estimators.TestTools)
-        from Estimators.TestTools import estimator_test_impl
+        import molass_legacy.Estimators.TestTools
+        reload(molass_legacy.Estimators.TestTools)
+        from molass_legacy.Estimators.TestTools import estimator_test_impl
         estimator_test_impl(self)
 
     def show_restart_patcher():
-        import Optimizer.RestartPatcher
-        reload(Optimizer.RestartPatcher)
+        import molass_legacy.Optimizer.RestartPatcher
+        reload(molass_legacy.Optimizer.RestartPatcher)
         from molass_legacy.Optimizer.RestartPatcher import patch_and_restart_from_editor
         patch_and_restart_from_editor(self)
 
     def test_fixedbaseline_optimizer():
-        import Optimizer.FixedBaselineOptimizer
-        reload(Optimizer.FixedBaselineOptimizer)
+        import molass_legacy.Optimizer.FixedBaselineOptimizer
+        reload(molass_legacy.Optimizer.FixedBaselineOptimizer)
         from molass_legacy.Optimizer.FixedBaselineOptimizer import test_optimizer
         test_optimizer(self)
 
     def debug_objective_function():
-        import Optimizer.SimpleDebugUtils
-        reload(Optimizer.SimpleDebugUtils)
+        import molass_legacy.Optimizer.SimpleDebugUtils
+        reload(molass_legacy.Optimizer.SimpleDebugUtils)
         from molass_legacy.Optimizer.SimpleDebugUtils import debug_optimizer
         debug_optimizer(self.fullopt, self.init_params)
 
     def test_estimate_uvbaseline():
-        import Optimizer.UvBaselineEstimator
-        reload(Optimizer.UvBaselineEstimator)
+        import molass_legacy.Optimizer.UvBaselineEstimator
+        reload(molass_legacy.Optimizer.UvBaselineEstimator)
         from molass_legacy.Optimizer.UvBaselineEstimator import test_estimate_uvbaseline_impl
         test_estimate_uvbaseline_impl(self.fullopt, self.init_params)
 

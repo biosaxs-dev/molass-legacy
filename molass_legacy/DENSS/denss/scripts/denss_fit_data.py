@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-#    denss.fit_data.py
+#    denss_fit_data.py
 #    A tool for fitting solution scattering data with smooth function
 #    based on Moore's algorithm for fitting a trigonometric series.
 #
@@ -32,41 +32,43 @@
 #
 
 from __future__ import print_function
-import datetime, time
+import time
 import os, argparse, sys
-sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-import logging
 import numpy as np
-from saxstats._version import __version__
-import saxstats.saxstats as saxs
 
-parser = argparse.ArgumentParser(description="A tool for fitting solution scattering data with smooth function based on Moore's algorithm for fitting a trigonometric series.", formatter_class=argparse.RawTextHelpFormatter)
-parser.add_argument("--version", action="version",version="%(prog)s v{version}".format(version=__version__))
-parser.add_argument("-f", "--file", type=str, help="SAXS data file for input (either .dat or .out)")
-parser.add_argument("-d", "--dmax", default=None, type=float, help="Estimated maximum dimension in angstroms (if q values are in 1/nm, use the -u option to convert).")
-parser.add_argument("-a", "--alpha", default=None, type=float, help="Set alpha smoothing factor")
-parser.add_argument("-u", "--units", default="a", type=str, help="Angular units (\"a\" [1/angstrom] or \"nm\" [1/nanometer]; default=\"a\"). If nm, will convert output to angstroms.")
-parser.add_argument("-n1", "--n1", default=None, type=int, help="First data point to use")
-parser.add_argument("-n2", "--n2", default=None, type=int, help="Last data point to use")
-parser.add_argument("-q", "--qfile", default=None, type=str, help="ASCII text filename to use for setting the calculated q values (like a SAXS .dat file, but just uses first column, optional)")
-parser.add_argument("-qmax", "--qmax", default=None, type=float, help="Maximum q value for calculated intensities (optional)")
-parser.add_argument("-nq", "--nq", default=None, type=int, help="Number of data points in calculated intensity profile (optional)")
-parser.add_argument("-r", "--rfile", default=None, type=str, help=argparse.SUPPRESS)
-parser.add_argument("-nr", "--nr", default=None, type=int, help="Number of points in P(r) curve (default = number of points in I(q) profile).")
-parser.add_argument("--nes", default=2, type=int, help=argparse.SUPPRESS)
-parser.add_argument("--max_dmax", default=None, type=float, help="Maximum limit for allowed Dmax values (for plotting slider)")
-parser.add_argument("--max_alpha", default=None, type=float, help="Maximum limit for allowed alpha values (for plotting slider)")
-parser.add_argument("--max_nes", default=10, type=int, help=argparse.SUPPRESS)
-parser.add_argument("--no_gui", dest="plot", action="store_false", help="Do not run the interactive GUI mode.")
-parser.add_argument("--no_log", dest="log", action="store_false", help="Do not plot on log y axis.")
-parser.add_argument("--no_extrapolation", dest="extrapolate", action="store_false", help="Do not extrapolate high q data.")
-parser.add_argument("--write_shannon", dest="write_shannon", action="store_true", help="Write a file containing only the Shannon intensities.")
-parser.add_argument("-o", "--output", default=None, help="Output filename prefix")
-parser.set_defaults(plot=True)
-parser.set_defaults(write_shannon=False)
-args = parser.parse_args()
+import denss
 
-if __name__ == "__main__":
+sasrec = None
+
+def main():
+    global sasrec
+    parser = argparse.ArgumentParser(description="A tool for fitting solution scattering data with smooth function based on Moore's algorithm for fitting a trigonometric series.", formatter_class=argparse.RawTextHelpFormatter)
+    parser.add_argument("--version", action="version",version="%(prog)s v{version}".format(version=denss.__version__))
+    parser.add_argument("-f", "--file", type=str, help="SAXS data file for input (either .dat or .out)")
+    parser.add_argument("-d", "--dmax", default=None, type=float, help="Estimated maximum dimension in angstroms (if q values are in 1/nm, use the -u option to convert).")
+    parser.add_argument("-a", "--alpha", default=None, type=float, help="Set alpha smoothing factor")
+    parser.add_argument("-u", "--units", default="a", type=str, help="Angular units (\"a\" [1/angstrom] or \"nm\" [1/nanometer]; default=\"a\"). If nm, will convert output to angstroms.")
+    parser.add_argument("-n1", "--n1", default=None, type=int, help="First data point to use")
+    parser.add_argument("-n2", "--n2", default=None, type=int, help="Last data point to use")
+    parser.add_argument("--ignore_errors", dest="ignore_errors", action="store_true", help="Ignore error bars (i.e., set all error bars to 1.0).")
+    parser.add_argument("-q", "--qfile", default=None, type=str, help="ASCII text filename to use for setting the calculated q values (like a SAXS .dat file, but just uses first column, optional)")
+    parser.add_argument("-qmax", "--qmax", default=None, type=float, help="Maximum q value for calculated intensities (optional)")
+    parser.add_argument("-nq", "--nq", default=None, type=int, help="Number of data points in calculated intensity profile (optional)")
+    parser.add_argument("-r", "--rfile", default=None, type=str, help=argparse.SUPPRESS)
+    parser.add_argument("-nr", "--nr", default=None, type=int, help="Number of points in P(r) curve (default = number of points in I(q) profile).")
+    parser.add_argument("--nes", default=2, type=int, help=argparse.SUPPRESS)
+    parser.add_argument("--max_dmax", default=None, type=float, help="Maximum limit for allowed Dmax values (for plotting slider)")
+    parser.add_argument("--max_alpha", default=None, type=float, help="Maximum limit for allowed alpha values (for plotting slider)")
+    parser.add_argument("--max_nes", default=10, type=int, help=argparse.SUPPRESS)
+    parser.add_argument("--no_gui", dest="plot", action="store_false", help="Do not run the interactive GUI mode.")
+    parser.add_argument("--no_log", dest="log", action="store_false", help="Do not plot on log y axis.")
+    parser.add_argument("--no_extrapolation", dest="extrapolate", action="store_false", help="Do not extrapolate high q data.")
+    parser.add_argument("--write_shannon", dest="write_shannon", action="store_true", help="Write a file containing only the Shannon intensities.")
+    parser.add_argument("-o", "--output", default=None, help="Output filename prefix")
+    parser.set_defaults(plot=True)
+    parser.set_defaults(write_shannon=False)
+    parser.set_defaults(ignore_errors=False)
+    args = parser.parse_args()
 
     alpha = args.alpha
 
@@ -77,24 +79,25 @@ if __name__ == "__main__":
     else:
         output = args.output
 
-
-    Iq = np.genfromtxt(args.file, invalid_raise = False, usecols=(0,1,2))
-    Iq = Iq[~np.isnan(Iq).any(axis = 1)]
+    if args.ignore_errors:
+        Iq = np.genfromtxt(args.file, invalid_raise=False, usecols=(0, 1))
+    else:
+        Iq = np.genfromtxt(args.file, invalid_raise=False, usecols=(0, 1, 2))
     if len(Iq.shape) < 2:
-        print("Invalid data format. Data file must have 3 columns: q, I, errors.")
+        print("Invalid data format. Data file must have 3 columns: q, I, errors. Alternatively, disable errors with --ignore_errors option (sets errors to 1.0).")
         exit()
-    if Iq.shape[1] < 3:
-        print("Not enough columns (data must have 3 columns: q, I, errors).")
-        #attempt to make a simulated errors column
-        Iq2 = np.zeros((Iq.shape[0],3))
-        Iq2[:,:2] = Iq
-        err = Iq[:,1]*.003 #percentage of intensity for each point
-        err += np.mean(Iq[:10,1])*.01 #minimum error for all points
-        Iq2[:,2] = err
+    if Iq.shape[1] < 3 or args.ignore_errors:
+        print("WARNING: Only 2 columns given. Data should have 3 columns: q, I, errors.")
+        print("WARNING: Setting error bars to 1.0 (i.e., ignoring error bars)")
+        Iq2 = np.zeros((Iq.shape[0], 3))
+        Iq2[:,:2] = Iq[:,:2]
+        Iq2[:,2] += 1.0 #set error bars to 1.0
         Iq = Iq2
+    Iq = Iq[~np.isnan(Iq).any(axis = 1)]
     #get rid of any data points equal to zero in the intensities or errors columns
     idx = np.where((Iq[:,1]!=0)&(Iq[:,2]!=0))
     Iq = Iq[idx]
+
     nes = args.nes
 
     if args.units == "nm":
@@ -113,10 +116,10 @@ if __name__ == "__main__":
 
     if args.dmax is None:
         #estimate dmax directly from data
-        #note that saxs.estimate_dmax does NOT extrapolate
+        #note that denss.estimate_dmax does NOT extrapolate
         #the high q data, even though by default
-        #saxs.Sasrec does extrapolate.
-        D, sasrec = saxs.estimate_dmax(Iq, clean_up=True)
+        #denss.Sasrec does extrapolate.
+        D, sasrec = denss.estimate_dmax(Iq, clean_up=True)
     else:
         D = args.dmax
 
@@ -166,7 +169,6 @@ if __name__ == "__main__":
         print("WARNING: Nsh > 500. Calculation may take a while. Please double check Dmax is accurate.")
         #give the user a few seconds to cancel with CTRL-C
         waittime = 10
-        import time
         try:
             for i in range(waittime+1):
                 sys.stdout.write("\rTo cancel, press CTRL-C in the next %d seconds. "%(waittime-i))
@@ -177,16 +179,16 @@ if __name__ == "__main__":
             print("Canceling...")
             exit()
 
+
     #calculate chi2 when alpha=0, to get the best possible chi2 for reference
-    print("args.extrapolate=", args.extrapolate)
-    sasrec = saxs.Sasrec(Iq[n1:n2], D, qc=qc, r=r, nr=args.nr, alpha=0.0, extrapolate=args.extrapolate)
+    sasrec = denss.Sasrec(Iq[n1:n2], D, qc=qc, r=r, nr=args.nr, ne=nes, alpha=0.0, extrapolate=args.extrapolate)
     ideal_chi2 = sasrec.calc_chi2()
 
     if args.alpha is None:
         alpha = sasrec.optimize_alpha()
     else:
         alpha = args.alpha
-    sasrec = saxs.Sasrec(Iq[n1:n2], D, qc=qc, r=r, nr=args.nr, alpha=alpha, ne=nes, extrapolate=args.extrapolate)
+    sasrec = denss.Sasrec(Iq[n1:n2], D, qc=qc, r=r, nr=args.nr, alpha=alpha, ne=nes, extrapolate=args.extrapolate)
 
     #implement method of estimating Vp, Vc, etc using oversmoothing
     sasrec.estimate_Vp_etal()
@@ -202,6 +204,7 @@ if __name__ == "__main__":
 
     def store_parameters_as_string(event=None):
         param_str = ("Parameter Values:\n"
+        "Chi2  = {chi2:.5e}\n"
         "Dmax  = {dmax:.5e}\n"
         "alpha = {alpha:.5e}\n"
         "I(0)  = {I0:.5e} +- {I0err:.5e}\n"
@@ -212,7 +215,8 @@ if __name__ == "__main__":
         "Vc    = {Vc:.5e} +- {Vcerr:.5e}\n"
         "MW_Vc = {mwVc:.5e} +- {mwVcerr:.5e}\n"
         "Lc    = {lc:.5e} +- {lcerr:.5e}\n"
-        ).format(dmax=sasrec.D,alpha=sasrec.alpha,
+        ).format(chi2=sasrec.chi2,
+            dmax=sasrec.D,alpha=sasrec.alpha,
             I0=sasrec.I0,I0err=sasrec.I0err,
             rg=sasrec.rg,rgerr=sasrec.rgerr,
             r=sasrec.avgr,rerr=sasrec.avgrerr,
@@ -229,13 +233,10 @@ if __name__ == "__main__":
         print(param_str)
 
     def save_file(event=None):
-        #sascif = saxs.Sascif(sasrec)
-        #sascif.write(output+".sascif")
-        #print "%s file saved" % (output+".sascif")
         param_str = store_parameters_as_string()
         #add column headers to param_str for output
-        param_str += 'q, I, error, fit'
-        #quick, interpolate the raw data, sasrec.I, to the new qc values, but be sure to 
+        param_str += 'q, I, error, fit ; chi2 = %.3f'%sasrec.chi2
+        #quick, interpolate the raw data, sasrec.I, to the new qc values, but be sure to
         #put zeros in for the q values not measured
         Iinterp = np.interp(sasrec.qc, sasrec.q_data, sasrec.I_data, left=0.0, right=0.0)
         Ierrinterp = np.interp(sasrec.qc, sasrec.q_data, sasrec.Ierr_data)
@@ -258,7 +259,6 @@ if __name__ == "__main__":
             qtsuccess = True
         except ImportError:
             qtsuccess = False
-        print(qtsuccess)
         if not qtsuccess:
             print("Using TkAgg")
             try:
@@ -294,9 +294,17 @@ if __name__ == "__main__":
         I_l1, = axI.plot(sasrec.q_data, sasrec.I_data, 'k.', ms=3, label='test')
         I_l2, = axI.plot(sasrec.qc, sasrec.Ic, 'r-', lw=2)
         I_l3, = axI.plot(sasrec.qn, sasrec.In, 'bo', mec='b', mfc='none', mew=2)
+        chi2_text = axI.text(0.7,0.9,r"$\chi^2$ = %.3e"%sasrec.chi2,transform=axI.transAxes,fontsize='large')
         if args.log: axI.semilogy()
         axI.set_ylabel('I(q)')
         axI.set_xlabel('q')
+
+        #make plots for each Bn (should we also do each Sn for P(r) plot?)
+        # I_Bn = []
+        # nn = range(5,20) #range(20) #idx Bns to show
+        # for i in nn:
+        #     I_Bn.append(axI.plot(sasrec.q, 2*sasrec.In[i]*sasrec.B[i], label='B_%d'%i))
+
 
         #residuals
         #first, just ensure that we're comparing similar q ranges, so
@@ -318,6 +326,13 @@ if __name__ == "__main__":
         axP.set_ylabel('P(r)')
         axP.set_xlabel('r')
 
+        #plot Sns on P(r)
+        # P_Sn = []
+        # for i in nn:
+        #     P_Sn.append(axP.plot(sasrec.r, sasrec.In[i]*sasrec.S[i], label='S_%d'%i))
+        # mm = nn #range(0,20)
+        # P_Sn[-1] = axP.plot(sasrec.r, np.sum(sasrec.In[mm,None]*sasrec.S[mm],axis=0),'k-',lw=4)
+
         #axI.set_xlim([0,1.1*np.max(sasrec.q)])
         #axR.set_xlim([0,1.1*np.max(sasrec.q)])
         axI.set_xlim([0,Iq_orig[-1,0]])
@@ -335,12 +350,12 @@ if __name__ == "__main__":
         axalpha = plt.axes([0.05, 0.075, 0.4, 0.03], facecolor=axcolor)
         #axnes = plt.axes([0.05, 0.025, 0.4, 0.03], facecolor=axcolor)
 
-        axI0 = plt.figtext(.57, .125,   "$I(0)$  = %.2e $\pm$ %.2e"%(sasrec.I0,sasrec.I0err),family='monospace')
-        axrg = plt.figtext(.57, .075,   "$R_g$   = %.2e $\pm$ %.2e"%(sasrec.rg,sasrec.rgerr),family='monospace')
-        axrav = plt.figtext(.57, .025,  "$\overline{r}$    = %.2e $\pm$ %.2e"%(sasrec.avgr,sasrec.avgrerr),family='monospace')
-        axVp = plt.figtext(.77, .125,   "$V_p$ = %.2e $\pm$ %.2e"%(sasrec.Vp,sasrec.Vperr),family='monospace')
-        axVc = plt.figtext(.77, .075,   "$V_c$ = %.2e $\pm$ %.2e"%(sasrec.Vc,sasrec.Vcerr),family='monospace')
-        axlc = plt.figtext(.77, .025,   "$\ell_c$ = %.2e $\pm$ %.2e"%(sasrec.lc,sasrec.lcerr),family='monospace')
+        axI0 = plt.figtext(.57, .125,   r"$I(0)$  = %.2e $\pm$ %.2e"%(sasrec.I0,sasrec.I0err),family='monospace')
+        axrg = plt.figtext(.57, .075,   r"$R_g$   = %.2e $\pm$ %.2e"%(sasrec.rg,sasrec.rgerr),family='monospace')
+        axrav = plt.figtext(.57, .025,  r"$\overline{r}$    = %.2e $\pm$ %.2e"%(sasrec.avgr,sasrec.avgrerr),family='monospace')
+        axVp = plt.figtext(.77, .125,   r"$V_p$ = %.2e $\pm$ %.2e"%(sasrec.Vp,sasrec.Vperr),family='monospace')
+        axVc = plt.figtext(.77, .075,   r"$V_c$ = %.2e $\pm$ %.2e"%(sasrec.Vc,sasrec.Vcerr),family='monospace')
+        axlc = plt.figtext(.77, .025,   r"$\ell_c$ = %.2e $\pm$ %.2e"%(sasrec.lc,sasrec.lcerr),family='monospace')
         #axVpmw = plt.figtext(.55, .075, "Vp MW = %.2e $\pm$ %.2e"%(sasrec.mwVp,sasrec.mwVperr),family='monospace')
         #axVcmw = plt.figtext(.55, .025, "Vc MW = %.2e $\pm$ %.2e"%(sasrec.mwVc,sasrec.mwVcerr),family='monospace')
 
@@ -351,7 +366,7 @@ if __name__ == "__main__":
         sdmax = Slider(axdmax, 'Dmax', 0.0, args.max_dmax, valinit=D)
         sdmax.valtext.set_visible(False)
         # set up ticks marks on the slider to denote the change in interaction
-        axdmax.set_xticks([0.9 * sdmax.valmax, 0.1 * sdmax.valmax]) 
+        axdmax.set_xticks([0.9 * sdmax.valmax, 0.1 * sdmax.valmax])
         #axdmax.xaxis.tick_top()
         axdmax.tick_params(labelbottom=False)
 
@@ -361,35 +376,65 @@ if __name__ == "__main__":
         dmax = D
         n1 = str(n1)
         n2 = str(n2)
+        nRemove = ""
 
-        def analyze(dmax,alpha,n1,n2,extrapolate):
+        def analyze(dmax,alpha,n1,n2,nRemove,extrapolate):
             global sasrec
-            sasrec = saxs.Sasrec(Iq_orig[n1:n2], dmax, qc=qc, r=r, nr=args.nr, alpha=alpha, ne=nes, extrapolate=extrapolate)
+            points = np.arange(Iq_orig.shape[0])
+            mask = np.ones(len(points),dtype=bool)
+            mask[points<=n1] = False
+            mask[points>=n2] = False
+            #parse nRemove string, allow n point or n-m ranges
+            ranges = nRemove.split(",")
+            for rangei in ranges:
+                if "-" in rangei:
+                    rangei_a, rangei_b = [int(j) for j in rangei.split("-")]
+                    mask[(points>=rangei_a)&(points<=rangei_b)] = False
+                elif rangei == "":
+                    pass
+                else:
+                    try:
+                        mask[int(rangei)] = False
+                    except:
+                        print("Invalid Remove Range")
+            qc = denss.create_lowq(q=Iq_orig[:,0])
+            sasrec = denss.Sasrec(Iq_orig[mask], dmax, qc=qc, r=r, nr=args.nr, alpha=alpha, ne=nes, extrapolate=extrapolate)
             sasrec.estimate_Vp_etal()
-            Icinterp = np.interp(sasrec.q_data, sasrec.qc, sasrec.Ic)
-            res = (sasrec.I_data - Icinterp)/sasrec.Ierr_data
+            res = (sasrec.I_data - sasrec.Ic_qe)/sasrec.Ierr_data
             ridx = np.where((sasrec.q_data<sasrec.qc.max()))
             I_l1.set_data(sasrec.q_data, sasrec.I_data)
             I_l2.set_data(sasrec.qc, sasrec.Ic)
             I_l3.set_data(sasrec.qn, sasrec.In)
-            Ires_l1.set_data(sasrec.q_data[ridx], res[ridx])
+            chi2_text.set_text(r"$\chi^2$ = %.3e"%sasrec.chi2)
+            Ires_l1.set_data(sasrec.q_data, res)
             P_l2.set_data(sasrec.r, sasrec.P)
-            axI0.set_text("$I(0)$  = %.2e $\pm$ %.2e"%(sasrec.I0,sasrec.I0err))
-            axrg.set_text("$R_g$   = %.2e $\pm$ %.2e"%(sasrec.rg,sasrec.rgerr))
-            axrav.set_text("$\overline{r}$    = %.2e $\pm$ %.2e"%(sasrec.avgr,sasrec.avgrerr))
-            axVp.set_text("$V_p$ = %.2e $\pm$ %.2e"%(sasrec.Vp,sasrec.Vperr))
-            axVc.set_text("$V_c$ = %.2e $\pm$ %.2e"%(sasrec.Vc,sasrec.Vcerr))
-            axlc.set_text("$\ell_c$ = %.2e $\pm$ %.2e"%(sasrec.lc,sasrec.lcerr))
+            axI0.set_text(r"$I(0)$  = %.2e $\pm$ %.2e"%(sasrec.I0,sasrec.I0err))
+            axrg.set_text(r"$R_g$   = %.2e $\pm$ %.2e"%(sasrec.rg,sasrec.rgerr))
+            axrav.set_text(r"$\overline{r}$    = %.2e $\pm$ %.2e"%(sasrec.avgr,sasrec.avgrerr))
+            axVp.set_text(r"$V_p$ = %.2e $\pm$ %.2e"%(sasrec.Vp,sasrec.Vperr))
+            axVc.set_text(r"$V_c$ = %.2e $\pm$ %.2e"%(sasrec.Vc,sasrec.Vcerr))
+            axlc.set_text(r"$\ell_c$ = %.2e $\pm$ %.2e"%(sasrec.lc,sasrec.lcerr))
             #axVpmw.set_text("Vp MW = %.2e $\pm$ %.2e"%(sasrec.mwVp,sasrec.mwVperr))
             #axVcmw.set_text("Vc MW = %.2e $\pm$ %.2e"%(sasrec.mwVc,sasrec.mwVcerr))
+            # j = 0
+            # for i in nn:
+            #     I_Bn[j][0].set_data(sasrec.q, 2*sasrec.In[i]*sasrec.B[i])
+            #     j+=1
+            # j = 0
+            # for i in nn:
+            #     P_Sn[j][0].set_data(sasrec.r, sasrec.In[i]*sasrec.S[i])
+            #     j+=1
+            # P_Sn[-1][0].set_data(sasrec.r, np.sum(sasrec.In[mm,None]*sasrec.S[mm],axis=0))
+
 
         def n1_submit(text):
             dmax = sdmax.val
             alpha = salpha.val
             n1 = int(text)
             n2 = int(n2_box.text)
+            nRemove = str(nRemove_box.text)
             extrapolate = extrapolate_check.get_status()[0]
-            analyze(dmax,alpha,n1,n2,extrapolate)
+            analyze(dmax,alpha,n1,n2,nRemove,extrapolate)
             fig.canvas.draw_idle()
 
         def n2_submit(text):
@@ -397,8 +442,19 @@ if __name__ == "__main__":
             alpha = salpha.val
             n1 = int(n1_box.text)
             n2 = int(text)
+            nRemove = str(nRemove_box.text)
             extrapolate = extrapolate_check.get_status()[0]
-            analyze(dmax,alpha,n1,n2,extrapolate)
+            analyze(dmax,alpha,n1,n2,nRemove,extrapolate)
+            fig.canvas.draw_idle()
+
+        def nRemove_submit(text):
+            dmax = sdmax.val
+            alpha = salpha.val
+            n1 = int(n1_box.text)
+            n2 = int(n2_box.text)
+            nRemove = str(text)
+            extrapolate = extrapolate_check.get_status()[0]
+            analyze(dmax,alpha,n1,n2,nRemove,extrapolate)
             fig.canvas.draw_idle()
 
         def extrapolate_submit(text):
@@ -406,8 +462,9 @@ if __name__ == "__main__":
             alpha = salpha.val
             n1 = int(n1_box.text)
             n2 = int(n2_box.text)
+            nRemove = str(nRemove_box.text)
             extrapolate = extrapolate_check.get_status()[0]
-            analyze(dmax,alpha,n1,n2,extrapolate)
+            analyze(dmax,alpha,n1,n2,nRemove,extrapolate)
             fig.canvas.draw_idle()
 
         def D_submit(text):
@@ -415,8 +472,9 @@ if __name__ == "__main__":
             alpha = salpha.val
             n1 = int(n1_box.text)
             n2 = int(n2_box.text)
+            nRemove = str(nRemove_box.text)
             extrapolate = extrapolate_check.get_status()[0]
-            analyze(dmax,alpha,n1,n2,extrapolate)
+            analyze(dmax,alpha,n1,n2,nRemove,extrapolate)
             # this updates the slider value based on text box value
             sdmax.set_val(dmax)
             if (dmax > 0.9 * sdmax.valmax) or (dmax < 0.1 * sdmax.valmax):
@@ -430,8 +488,9 @@ if __name__ == "__main__":
             alpha = float(text)
             n1 = int(n1_box.text)
             n2 = int(n2_box.text)
+            nRemove = str(nRemove_box.text)
             extrapolate = extrapolate_check.get_status()[0]
-            analyze(dmax,alpha,n1,n2,extrapolate)
+            analyze(dmax,alpha,n1,n2,nRemove,extrapolate)
             # this updates the slider value based on text box value
             salpha.set_val(alpha)
             # partions alpha slider
@@ -451,15 +510,16 @@ if __name__ == "__main__":
             alpha = salpha.val
             n1 = int(n1_box.text)
             n2 = int(n2_box.text)
+            nRemove = str(nRemove_box.text)
             extrapolate = extrapolate_check.get_status()[0]
             #print(extrapolate)
-            analyze(dmax,alpha,n1,n2,extrapolate)
+            analyze(dmax,alpha,n1,n2,nRemove,extrapolate)
             # partitions the slider, so clicking in the upper and lower range scale valmax
             if (dmax > 0.9 * sdmax.valmax) or (dmax < 0.1 * sdmax.valmax):
                 sdmax.valmax = 2 * dmax
                 sdmax.ax.set_xlim(sdmax.valmin, sdmax.valmax)
                 axdmax.set_xticks([0.9 * sdmax.valmax, 0.1 * sdmax.valmax])
-            # partions slider as well
+            # partitions slider as well
             if (alpha > 0.9 * salpha.valmax) or (alpha < 0.1 * salpha.valmax):
                 salpha.valmax = 2 * alpha
                 # alpha starting at zero makes initial adjustment additive not multiplicative
@@ -489,52 +549,69 @@ if __name__ == "__main__":
 
         # making a text entry for n1 that allows for user input
         n1value = "{}".format(n1)
-        plt.figtext(0.0085, 0.178, "First point")
-        axIntn1 = plt.axes([0.075, 0.170, 0.08, 0.03])
+        # plt.figtext(0.0085, 0.178, "First:")
+        # axIntn1 = plt.axes([0.075, 0.170, 0.08, 0.03])
+        plt.figtext(0.02, 0.178, "First:")
+        axIntn1 = plt.axes([0.05, 0.170, 0.05, 0.03])
         n1_box = TextBox(axIntn1, '', initial=n1)
         n1_box.on_submit(n1_submit)
 
         # making a text entry for n2 that allows for user input
         n2value = "{}".format(n2)
-        plt.figtext(0.17, 0.178, "Last point")
-        axIntn2 = plt.axes([0.235, 0.170, 0.08, 0.03])
+        # plt.figtext(0.17, 0.178, "Last:")
+        # axIntn2 = plt.axes([0.235, 0.170, 0.08, 0.03])
+        plt.figtext(0.12, 0.178, "Last:")
+        axIntn2 = plt.axes([0.15, 0.170, 0.05, 0.03])
         n2_box = TextBox(axIntn2, '', initial=n2)
         n2_box.on_submit(n2_submit)
 
+        # making a text entry for removing points that allows for user input
+        nRemovevalue = "{}".format(nRemove)
+        plt.figtext(0.21, 0.178, "Remove:")
+        axnRemove = plt.axes([0.27, 0.170, 0.08, 0.03])
+        nRemove_box = TextBox(axnRemove, '', initial=nRemove)
+        nRemove_box.on_submit(nRemove_submit)
+
         # create a checkbox for extrapolation
-        axExtrap = plt.axes([0.35, 0.170, 0.015, 0.03], frameon=True)
+        axExtrap = plt.axes([0.37, 0.170, 0.015, 0.03], frameon=True)
         axExtrap.margins(0.0)
+
         extrapolate_check = CheckButtons(axExtrap, ["Extrapolate"], [args.extrapolate])
-        #the axes object for the checkbutton is crazy large, and actually
-        #blocks the sliders underneath even when frameon=False
-        #so we have to manually set the size and location of each of the
-        #elements of the checkbox after setting the axes margins to zero above
-        #including the rectangle checkbox, the lines for the X, and the label
         check = extrapolate_check
-        size =  1.0 #size relative to axes axExtrap
-        for rect in extrapolate_check.rectangles:
-            rect.set_x(0.)
-            rect.set_y(0.)
-            rect.set_width(size)
-            rect.set_height(size)
-        first = True
-        for l in check.lines:
-            for ll in l:
-                llx = ll.get_xdata()
-                lly = ll.get_ydata()
-                #print(llx)
-                #print(lly)
-                ll.set_xdata([0.0,size])
-                if first:
-                    #there's two lines making
-                    #up the checkbox, so need
-                    #to set the y values separately
-                    #one going from bottom left to 
-                    #upper right, the other opposite
-                    ll.set_ydata([size,0.0])
-                    first = False
-                else:
-                    ll.set_ydata([0.0, size])
+        try:
+            #the axes object for the checkbutton is crazy large, and actually
+            #blocks the sliders underneath even when frameon=False
+            #so we have to manually set the size and location of each of the
+            #elements of the checkbox after setting the axes margins to zero above
+            #including the rectangle checkbox, the lines for the X, and the label
+            size =  1.0 #size relative to axes axExtrap
+            for rect in extrapolate_check.rectangles:
+                rect.set_x(0.)
+                rect.set_y(0.)
+                rect.set_width(size)
+                rect.set_height(size)
+            first = True
+            for l in check.lines:
+                for ll in l:
+                    llx = ll.get_xdata()
+                    lly = ll.get_ydata()
+                    #print(llx)
+                    #print(lly)
+                    ll.set_xdata([0.0,size])
+                    if first:
+                        #there's two lines making
+                        #up the checkbox, so need
+                        #to set the y values separately
+                        #one going from bottom left to
+                        #upper right, the other opposite
+                        ll.set_ydata([size,0.0])
+                        first = False
+                    else:
+                        ll.set_ydata([0.0, size])
+        except:
+            #newer versions of matplotlib don't have the check.rectangles attribute. so for now they get a small box.
+            pass
+
         check.labels[0].set_position((1.5,.5))
 
         #here is the slider updating
@@ -565,3 +642,7 @@ if __name__ == "__main__":
 
     print_values()
     save_file()
+
+
+if __name__ == "__main__":
+    main()

@@ -1,4 +1,3 @@
-# coding: utf-8
 """
 
     UpdateDailog.py
@@ -10,7 +9,7 @@ from time import sleep
 from molass_legacy.KekLib.KillableThread import Thread
 from molass_legacy.KekLib.OurTkinter import Tk, Dialog, ScrolledText
 from molass_legacy.KekLib.TkSupplements import set_icon, BlinkingFrame
-from StdoutRedirector import StdoutRedirector
+from molass_legacy.KekLib.StdoutRedirector import StdoutRedirector
 
 class UpdateDailog(Dialog):
     def __init__(self, parent, modules):

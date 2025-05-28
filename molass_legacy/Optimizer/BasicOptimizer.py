@@ -1,7 +1,7 @@
 """
     BasicOptimizer.py
 
-    Copyright (c) 2021-2024, SAXS Team, KEK-PF
+    Copyright (c) 2021-2025, SAXS Team, KEK-PF
 """
 import logging
 import numpy as np
@@ -24,20 +24,20 @@ from .ValidComponents import ValidComponents
 
 USE_COLUMN_INTERP = True
 
-from GuinierTools.GuinierDeviation import USE_NORMALIZED_RMSD_FOR_RGCURVES
+from molass_legacy.GuinierTools.GuinierDeviation import USE_NORMALIZED_RMSD_FOR_RGCURVES
 
 USE_NORMALIZED_RMSD = True
 USE_FROBENIUS_XDIFFMAX = False
 USE_FEATURE_DEVIATION = False
 USE_JSD = False
 if USE_NORMALIZED_RMSD:
-    from Distance.NormalizedRmsd import normalized_rmsd
+    from molass_legacy.Distance.NormalizedRmsd import normalized_rmsd
 elif USE_FROBENIUS_XDIFFMAX:
-    from Distance.FrobeniusXdiffmax import frobenius_xdiffmax
+    from molass_legacy.Distance.FrobeniusXdiffmax import frobenius_xdiffmax
 elif USE_FEATURE_DEVIATION:
-    from Distance.DeviationMeasure import feature_deviation
+    from molass_legacy.Distance.DeviationMeasure import feature_deviation
 elif USE_JSD:
-    from Distance.JensenShannon import deformed_jsd
+    from molass_legacy.Distance.JensenShannon import deformed_jsd
 
 USE_BOUNDS = True
 AVOID_VANISHING_RATIO = 0.02    # minimum scale ratio against the max scale
@@ -267,41 +267,41 @@ class BasicOptimizer:
 
         if method == "bh":
             from importlib import reload
-            import Solvers.BH.SolverBH
-            reload(Solvers.BH.SolverBH)
-            from Solvers.BH.SolverBH import SolverBH
+            import molass_legacy.Solvers.BH.SolverBH
+            reload(molass_legacy.Solvers.BH.SolverBH)
+            from molass_legacy.Solvers.BH.SolverBH import SolverBH
             bh = SolverBH(self)
             result = bh.minimize(self.objective_func_wrapper, norm_params, niter=niter, seed=seed, bounds=bounds, show_history=show_history)
 
         elif method == "ultranest":
             from importlib import reload
-            import Solvers.UltraNest.SolverUltraNest
-            reload(Solvers.UltraNest.SolverUltraNest)
-            from Solvers.UltraNest.SolverUltraNest import SolverUltraNest
+            import molass_legacy.Solvers.UltraNest.SolverUltraNest
+            reload(molass_legacy.Solvers.UltraNest.SolverUltraNest)
+            from molass_legacy.Solvers.UltraNest.SolverUltraNest import SolverUltraNest
             ultranest = SolverUltraNest(self)
             result = ultranest.minimize(self.objective_func_wrapper, norm_params, niter=niter, seed=seed, bounds=bounds)
  
         elif method == "emcee":
             from importlib import reload
-            import Solvers.MCMC.SolverEmcee
-            reload(Solvers.MCMC.SolverEmcee)
-            from Solvers.MCMC.SolverEmcee import SolverEmcee
+            import molass_legacy.Solvers.MCMC.SolverEmcee
+            reload(molass_legacy.Solvers.MCMC.SolverEmcee)
+            from molass_legacy.Solvers.MCMC.SolverEmcee import SolverEmcee
             mcmc = SolverEmcee(self)
             result = mcmc.minimize(self.objective_func_wrapper, norm_params, niter=niter, seed=seed, bounds=bounds)
  
         elif method == "pyabc":
             from importlib import reload
-            import Solvers.ABC.SolverPyABC
-            reload(Solvers.ABC.SolverPyABC)
-            from Solvers.ABC.SolverPyABC import SolverPyABC
+            import molass_legacy.Solvers.ABC.SolverPyABC
+            reload(molass_legacy.Solvers.ABC.SolverPyABC)
+            from molass_legacy.Solvers.ABC.SolverPyABC import SolverPyABC
             abc = SolverPyABC(self)
             result = abc.minimize(self.objective_func_wrapper, norm_params, niter=niter, seed=seed, bounds=bounds)
 
         elif method == "pymc":
             from importlib import reload
-            import Solvers.SMC.SolverPyMC
-            reload(Solvers.SMC.SolverPyMC)
-            from Solvers.SMC.SolverPyMC import SolverPyMC, get_picklable_func
+            import molass_legacy.Solvers.SMC.SolverPyMC
+            reload(molass_legacy.Solvers.SMC.SolverPyMC)
+            from molass_legacy.Solvers.SMC.SolverPyMC import SolverPyMC, get_picklable_func
             smc = SolverPyMC(self)
             func = get_picklable_func(self)
             result = smc.minimize(func, norm_params, niter=niter, seed=seed, bounds=bounds)
@@ -378,10 +378,10 @@ class BasicOptimizer:
         if self.separate_eoii_type > 0 and self.apply_sf_bounds:
             if True:
                 from importlib import reload
-                import Optimizer.StructureFactorBounds
-                reload(Optimizer.StructureFactorBounds)
+                import molass_legacy.Optimizer.StructureFactorBounds
+                reload(molass_legacy.Optimizer.StructureFactorBounds)
             from .StructureFactorBounds import StructureFactorBounds
-            from Kratky.GuinierKratkyInfo import GuinierKratkyInfo
+            from molass_legacy.Kratky.GuinierKratkyInfo import GuinierKratkyInfo
             # consier using GuinierDeviation as an aternative
             gk_info = GuinierKratkyInfo(self, init_params, lrf_info)
             self.sf_bounds = StructureFactorBounds(self.qvector, lrf_info, gk_info)
@@ -486,8 +486,8 @@ class BasicOptimizer:
 
     def create_lrf_info_for_debug(self, x, y, xr_ty, xr_cy_list, uv_x, uv_y, uv_ty, uv_cy_list):
         from importlib import reload
-        import Optimizer.OptLrfInfoDebug
-        reload(Optimizer.OptLrfInfoDebug)
+        import molass_legacy.Optimizer.OptLrfInfoDebug
+        reload(molass_legacy.Optimizer.OptLrfInfoDebug)
         from molass_legacy.Optimizer.OptLrfInfoDebug import OptLrfInfoProxy
         return OptLrfInfoProxy(self.qvector, self.xrD, self.xrE, x, y, xr_ty, xr_cy_list, uv_x, uv_y, uv_ty, uv_cy_list, self.composite)
 
@@ -847,9 +847,9 @@ class BasicOptimizer:
     def update_guinier_region(self, params=None, debug=False):
         if debug:
             from importlib import reload
-            import GuinierTools.GuinierDeviation
-            reload(GuinierTools.GuinierDeviation)
-        from GuinierTools.GuinierDeviation import GuinierDeviation
+            import molass_legacy.GuinierTools.GuinierDeviation
+            reload(molass_legacy.GuinierTools.GuinierDeviation)
+        from molass_legacy.GuinierTools.GuinierDeviation import GuinierDeviation
 
         if params is None:
             params = self.init_params

@@ -30,11 +30,11 @@ def show_peak_editor_impl(strategy_dialog, dialog, pe_proxy=None, pe_ready_cb=No
     from molass_legacy._MOLASS.SerialSettings import get_setting
     if debug:
         from importlib import reload
-        import SecSaxs.DataTreatment
-        reload(SecSaxs.DataTreatment)
-        import Peaks.PeakEditor
-        reload(Peaks.PeakEditor)
-    from SecSaxs.DataTreatment import DataTreatment
+        import molass_legacy.SecSaxs.DataTreatment
+        reload(molass_legacy.SecSaxs.DataTreatment)
+        import molass_legacy.Peaks.PeakEditor
+        reload(molass_legacy.Peaks.PeakEditor)
+    from molass_legacy.SecSaxs.DataTreatment import DataTreatment
     from molass_legacy.Peaks.PeakEditor import PeakEditor
 
     parent = dialog.parent
@@ -69,8 +69,8 @@ def show_peak_editor_impl(strategy_dialog, dialog, pe_proxy=None, pe_ready_cb=No
     from molass_legacy.Optimizer.InitialInfo import InitialInfo
     if debug:
         from importlib import reload
-        import Optimizer.FullOptDialog
-        reload(Optimizer.FullOptDialog)
+        import molass_legacy.Optimizer.FullOptDialog
+        reload(molass_legacy.Optimizer.FullOptDialog)
     from molass_legacy.Optimizer.FullOptDialog import FullOptDialog
 
     optinit_info = InitialInfo(trimmed_sd, treat=treat, pe=pe)

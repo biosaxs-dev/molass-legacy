@@ -767,7 +767,7 @@ class OptStrategyDialog(Dialog):
 
     def apply(self):
         from molass_legacy._MOLASS.SerialSettings import set_setting
-        from Global.V2Init import update_sec_settings
+        from molass_legacy.Global.V2Init import update_sec_settings
 
         self.applied = True
 

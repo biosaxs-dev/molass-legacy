@@ -1,7 +1,7 @@
 """
     Peaks.PeakEditor.py
 
-    Copyright (c) 2021-2024, SAXS Team, KEK-PF
+    Copyright (c) 2021-2025, SAXS Team, KEK-PF
 """
 import copy
 import logging
@@ -26,7 +26,7 @@ from molass_legacy.Optimizer.OptConstants import MIN_NUM_PEAKS, MAX_NUM_PEAKS
 from molass_legacy.Baseline.Constants import SLOPE_SCALE
 from molass_legacy.Optimizer.FvScoreConverter import convert_score
 from molass_legacy.Optimizer.OptimizerSettings import get_advanced_settings_text
-from RgProcess.RgCurve import ProgressCallback, draw_rg_bufer
+from molass_legacy.RgProcess.RgCurve import ProgressCallback, draw_rg_bufer
 from .PeProgressConstants import MAXNUM_STEPS, STOCH_INIT_STEPS, STARTED, RG_CURVE_OK, PREPARED
 from molass_legacy._MOLASS.Version import is_developing_version
 
@@ -602,8 +602,8 @@ class PeakEditor(FullBatch, Dialog):
     def show_bounds(self, debug=True):
         if debug:
             from importlib import reload
-            import Optimizer.BoundsInspection
-            reload(Optimizer.BoundsInspection)
+            import molass_legacy.Optimizer.BoundsInspection
+            reload(molass_legacy.Optimizer.BoundsInspection)
         from molass_legacy.Optimizer.BoundsInspection import BoundsInspection
         dialog = BoundsInspection(self.parent, self.fullopt)
         dialog.show()
@@ -611,8 +611,8 @@ class PeakEditor(FullBatch, Dialog):
     def show_params(self, debug=True):
         if debug:
             from importlib import reload
-            import Optimizer.ParamsInspection
-            reload(Optimizer.ParamsInspection)
+            import molass_legacy.Optimizer.ParamsInspection
+            reload(molass_legacy.Optimizer.ParamsInspection)
         from molass_legacy.Optimizer.ParamsInspection import ParamsInspection
         if debug and is_developing_version():
             self.re_construct_optimizer()
@@ -628,8 +628,8 @@ class PeakEditor(FullBatch, Dialog):
     def show_complementary_view(self, debug=False):
         if debug:
             from importlib import reload
-            import Optimizer.ComplementaryView
-            reload(Optimizer.ComplementaryView)
+            import molass_legacy.Optimizer.ComplementaryView
+            reload(molass_legacy.Optimizer.ComplementaryView)
         from molass_legacy.Optimizer.ComplementaryView import ComplementaryView
         from molass_legacy.DataStructure.SvdDenoise import get_denoised_data
 
@@ -642,8 +642,8 @@ class PeakEditor(FullBatch, Dialog):
     def show_editcanvas(self, debug=True):
         if debug:
             from importlib import reload
-            import Peaks.EditCanvas
-            reload(Peaks.EditCanvas)
+            import molass_legacy.Peaks.EditCanvas
+            reload(molass_legacy.Peaks.EditCanvas)
         from .EditCanvas import EditCanvas
         xr_x, xr_y, xr_peaks, xr_baseline = self.xr_draw_info
         original_info = [xr_x, xr_y, self.xr_peaks_orig, xr_baseline]
@@ -656,9 +656,9 @@ class PeakEditor(FullBatch, Dialog):
     def show_cpd_decompose(self, debug=True):
         if debug:
             from importlib import reload
-            import GuinierTools.CpdDecompDirect
-            reload(GuinierTools.CpdDecompDirect)
-        from GuinierTools.CpdDecompDirect import cpd_direct_impl
+            import molass_legacy.GuinierTools.CpdDecompDirect
+            reload(molass_legacy.GuinierTools.CpdDecompDirect)
+        from molass_legacy.GuinierTools.CpdDecompDirect import cpd_direct_impl
         cpd_direct_impl(self)
 
     def redraw_with_new_params(self, new_pps):        
@@ -681,7 +681,7 @@ class PeakEditor(FullBatch, Dialog):
 
     def show_score_details(self, debug=True):
         if debug:
-            import Optimizer.FvScoreDetails as details_module
+            import molass_legacy.Optimizer.FvScoreDetails as details_module
             from importlib import reload
             reload(details_module)
         from molass_legacy.Optimizer.FvScoreDetails import FvScoreDetails
@@ -693,8 +693,8 @@ class PeakEditor(FullBatch, Dialog):
 
     def devel_test(self):
         from importlib import reload
-        import Peaks.PeakDevel
-        reload(Peaks.PeakDevel)
+        import molass_legacy.Peaks.PeakDevel
+        reload(molass_legacy.Peaks.PeakDevel)
         from molass_legacy.Peaks.PeakDevel import devel_test_impl
 
         devel_test_impl(self)

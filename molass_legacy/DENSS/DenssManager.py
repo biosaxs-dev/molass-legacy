@@ -1,8 +1,7 @@
-# coding: utf-8
 """
     DenssManager.py
 
-    Copyright (c) 2019, SAXS Team, KEK-PF
+    Copyright (c) 2019-2025, SAXS Team, KEK-PF
 """
 from time import time, sleep
 from .DenssUtils import get_outfolder
@@ -52,7 +51,7 @@ class DenssManager:
     def __init__(self, log_folder, use_gpu):
         from multiprocessing import Pool, Manager
         from molass_legacy.KekLib.BasicUtils import rename_existing_file
-        from ChangeableLogger import Logger
+        from molass_legacy.KekLib.ChangeableLogger import Logger
         log_path = log_folder+'/denss_manager.log'
         rename_existing_file(log_path, ext=".log")
         self.logger = Logger(log_path)

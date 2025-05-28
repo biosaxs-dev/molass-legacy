@@ -1,7 +1,7 @@
 """
     Optimizer.FuncImporter.py
 
-    Copyright (c) 2021-2024, SAXS Team, KEK-PF
+    Copyright (c) 2021-2025, SAXS Team, KEK-PF
 """
 import os
 import glob
@@ -12,8 +12,8 @@ OBJFUNC_DIRNAME = "ObjectiveFunctions"
 
 def import_objective_function(class_code, logger=None):
     try:
-        import Optimizer.BasicOptimizer
-        reload(Optimizer.BasicOptimizer)
+        import molass_legacy.Optimizer.BasicOptimizer
+        reload(molass_legacy.Optimizer.BasicOptimizer)
 
         module = import_module("%s.%s" % (OBJFUNC_DIRNAME, class_code))
         module = reload(module)
@@ -31,7 +31,7 @@ def get_objective_function_info(logger=None, default_func_code=None, debug=True)
     # so, making this to a singleton needs careful streatment of such changes
 
     if debug:
-        import Optimizer.BasicOptimizer as base_opt
+        import molass_legacy.Optimizer.BasicOptimizer as base_opt
         reload(base_opt)
 
     from molass_legacy._MOLASS.SerialSettings import get_setting

@@ -1,7 +1,7 @@
 """
     DenssUtils.py
 
-    Copyright (c) 2019-2024, SAXS Team, KEK-PF
+    Copyright (c) 2019-2025, SAXS Team, KEK-PF
 
     Note that the original DENSS by T. Grant is licensed under GPL3.
 
@@ -10,13 +10,13 @@
     provided that any derivative code developed based on DENSS
     or its underlying algorithm is also distributed under the GPL 3.0 license
     and retains the original copyright.
-
 """
 import numpy as np
 import sys, argparse, os
 import logging
-from .saxstats import saxstats as saxs
-from .saxstats import denssopts as dopts
+import time
+import molass_legacy.DENSS.denss as denss
+import molass_legacy.DENSS.denss.options as dopts
 from molass_legacy.KekLib.BasicUtils import Struct
 
 MAXNUM_STEPS = 20000
@@ -35,9 +35,11 @@ def fit_data_impl(q, a, e, file, D=None, alpha=None, max_alpha=None, nes=2, extr
         nes = nes,
         n1 = None,
         n2 = None,
+        ignore_errors = True,
         q = None,
         qmax = None,
         nq = None,
+        r = None,
         max_dmax = None,
         qfile = None,
         rfile = None,
@@ -45,6 +47,7 @@ def fit_data_impl(q, a, e, file, D=None, alpha=None, max_alpha=None, nes=2, extr
         nr = None,
         plot = True,
         log = True,
+        write_shannon = True,
         )
 
     """
@@ -53,7 +56,7 @@ def fit_data_impl(q, a, e, file, D=None, alpha=None, max_alpha=None, nes=2, extr
     to modify the input data
 
     below is the extracted default processing from denss.fit_data.py
-    lines[80:175] as of ver. 1.6.6
+    lines[73:194] as of ver. 1.8.6
     """
 ### DENSS.bin.denss.fit_data.py copy & modify BEIGN ###
     alpha = args.alpha
@@ -65,24 +68,25 @@ def fit_data_impl(q, a, e, file, D=None, alpha=None, max_alpha=None, nes=2, extr
     else:
         output = args.output
 
-
-    # Iq = np.genfromtxt(args.file, invalid_raise = False, usecols=(0,1,2))
-    Iq = Iq[~np.isnan(Iq).any(axis = 1)]
+    if args.ignore_errors:
+        Iq = np.genfromtxt(args.file, invalid_raise=False, usecols=(0, 1))
+    else:
+        Iq = np.genfromtxt(args.file, invalid_raise=False, usecols=(0, 1, 2))
     if len(Iq.shape) < 2:
-        print("Invalid data format. Data file must have 3 columns: q, I, errors.")
+        print("Invalid data format. Data file must have 3 columns: q, I, errors. Alternatively, disable errors with --ignore_errors option (sets errors to 1.0).")
         exit()
-    if Iq.shape[1] < 3:
-        print("Not enough columns (data must have 3 columns: q, I, errors).")
-        #attempt to make a simulated errors column
-        Iq2 = np.zeros((Iq.shape[0],3))
-        Iq2[:,:2] = Iq
-        err = Iq[:,1]*.003 #percentage of intensity for each point
-        err += np.mean(Iq[:10,1])*.01 #minimum error for all points
-        Iq2[:,2] = err
+    if Iq.shape[1] < 3 or args.ignore_errors:
+        print("WARNING: Only 2 columns given. Data should have 3 columns: q, I, errors.")
+        print("WARNING: Setting error bars to 1.0 (i.e., ignoring error bars)")
+        Iq2 = np.zeros((Iq.shape[0], 3))
+        Iq2[:,:2] = Iq[:,:2]
+        Iq2[:,2] += 1.0 #set error bars to 1.0
         Iq = Iq2
+    Iq = Iq[~np.isnan(Iq).any(axis = 1)]
     #get rid of any data points equal to zero in the intensities or errors columns
     idx = np.where((Iq[:,1]!=0)&(Iq[:,2]!=0))
     Iq = Iq[idx]
+
     nes = args.nes
 
     if args.units == "nm":
@@ -101,10 +105,10 @@ def fit_data_impl(q, a, e, file, D=None, alpha=None, max_alpha=None, nes=2, extr
 
     if args.dmax is None:
         #estimate dmax directly from data
-        #note that saxs.estimate_dmax does NOT extrapolate
+        #note that denss.estimate_dmax does NOT extrapolate
         #the high q data, even though by default
-        #saxs.Sasrec does extrapolate.
-        D, sasrec = saxs.estimate_dmax(Iq, clean_up=True)
+        #denss.Sasrec does extrapolate.
+        D, sasrec = denss.estimate_dmax(Iq, clean_up=True)
     else:
         D = args.dmax
 
@@ -154,7 +158,6 @@ def fit_data_impl(q, a, e, file, D=None, alpha=None, max_alpha=None, nes=2, extr
         print("WARNING: Nsh > 500. Calculation may take a while. Please double check Dmax is accurate.")
         #give the user a few seconds to cancel with CTRL-C
         waittime = 10
-        import time
         try:
             for i in range(waittime+1):
                 sys.stdout.write("\rTo cancel, press CTRL-C in the next %d seconds. "%(waittime-i))
@@ -165,16 +168,16 @@ def fit_data_impl(q, a, e, file, D=None, alpha=None, max_alpha=None, nes=2, extr
             print("Canceling...")
             exit()
 
+
     #calculate chi2 when alpha=0, to get the best possible chi2 for reference
-    print("args.extrapolate=", args.extrapolate)
-    sasrec = saxs.Sasrec(Iq[n1:n2], D, qc=qc, r=r, nr=args.nr, alpha=0.0, extrapolate=args.extrapolate)
+    sasrec = denss.Sasrec(Iq[n1:n2], D, qc=qc, r=r, nr=args.nr, ne=nes, alpha=0.0, extrapolate=args.extrapolate)
     ideal_chi2 = sasrec.calc_chi2()
 
     if args.alpha is None:
         alpha = sasrec.optimize_alpha(gui=gui)
     else:
         alpha = args.alpha
-    sasrec = saxs.Sasrec(Iq[n1:n2], D, qc=qc, r=r, nr=args.nr, alpha=alpha, ne=nes, extrapolate=args.extrapolate)
+    sasrec = denss.Sasrec(Iq[n1:n2], D, qc=qc, r=r, nr=args.nr, alpha=alpha, ne=nes, extrapolate=args.extrapolate)
 
     #implement method of estimating Vp, Vc, etc using oversmoothing
     sasrec.estimate_Vp_etal()
@@ -233,11 +236,11 @@ def run_denss_impl(qc, ac, ec, dmax, infile_name, steps=MAXNUM_STEPS, progress_c
     
     task: add a coverup measure 
     """
-    qdata, Idata, sigqdata, qbinsc, Imean, chis, rg, supportV, rho, side, fit, final_chi2 = saxs.denss(
-        q=args.q,
-        I=args.I,
-        sigq=args.sigq,
-        dmax=args.dmax,
+    qdata, Idata, sigqdata, qbinsc, Imean, chis, rg, supportV, rho, side, fit, final_chi2 = denss.reconstruct_abinitio_from_scattering_profile(
+        args.q,
+        args.I,
+        args.sigq,
+        args.dmax,
         ne=args.ne,
         voxel=args.voxel,
         oversampling=args.oversampling,
@@ -334,10 +337,10 @@ def get_denss_log_items(path):
 
 def run_pdb2mrc(in_file, queue=None):
     import time
-    from SubProcess import Popen    # suppresses the child process window.
+    from molass_legacy.KekLib.SubProcess import Popen   # suppresses the child process window.
     from molass_legacy.KekLib.BasicUtils import get_home_folder
     print("Generating an mrc file.")
-    script_path = os.path.join(get_home_folder(), r'lib\DENSS\bin\denss.pdb2mrc.py')
+    script_path = os.path.join(get_home_folder(), r'molass_legacy\DENSS\denss\scripts\denss_pdb2mrc.py')
     python  = sys.executable.replace('pythonw.exe', 'python.exe')       # running with pythonw.exe seems inappropriate
     out_file = in_file.replace('.pdb', '')
     cmd = [python, script_path, '-f', in_file, '-o', out_file]

@@ -4,17 +4,16 @@
     1) successor to SerialData
     2) used only in v2 for the time being
 
-    Copyright (c) 2022-2024, SAXS Team, KEK-PF
+    Copyright (c) 2022-2025, SAXS Team, KEK-PF
 """
 import logging
 import inspect
 import numpy as np
 from bisect import bisect_right
 from molass_legacy._MOLASS.SerialSettings import get_setting
-from SecSaxs.ElCurve import ElCurve
 from molass_legacy.SerialAnalyzer.ScatteringBaseUtil import apply_baseline_correction_impl
 from molass_legacy.Elution.CurveUtils import get_xray_elution_vector
-
+from .ElCurve import ElCurve
 class DataSet:
     def __init__(self, xr_array, xr_ex, xr_qv, uv_array, uv_ex, uv_wv, xr_ey=None, uv_ey=None, sd=None, pre_recog=None):
         self.logger = logging.getLogger(__name__)

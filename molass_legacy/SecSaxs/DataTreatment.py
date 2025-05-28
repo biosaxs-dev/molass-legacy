@@ -1,16 +1,15 @@
 """
     SecSaxs.DataTreatment.py
 
-    Copyright (c) 2022-2024, SAXS Team, KEK-PF
+    Copyright (c) 2022-2025, SAXS Team, KEK-PF
 """
 import os
 import logging
 from collections import OrderedDict
 import molass_legacy.KekLib.DebugPlot as plt
-from SecSaxs.DataSet import copy_create_dataset_from_sd
 from molass_legacy._MOLASS.SerialSettings import set_setting
 from molass_legacy.Mapping.MappingV2Utils import make_mapped_info_for_v2
-
+from .DataSet import copy_create_dataset_from_sd
 class DataTreatment:
     def __init__(self, **kwargs):
         self.logger = logging.getLogger(__name__)
