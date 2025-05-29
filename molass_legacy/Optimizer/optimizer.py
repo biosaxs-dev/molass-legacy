@@ -1,7 +1,7 @@
 """
     optimizer.py
 
-    Copyright (c) 2021-2024, SAXS Team, KEK-PF
+    Copyright (c) 2021-2025, SAXS Team, KEK-PF
 """
 
 def main():
@@ -9,8 +9,8 @@ def main():
     import sys
     import getopt
     this_dir = os.path.dirname( os.path.abspath( __file__ ) )
-    sys.path.append( this_dir + '/../../lib' )
-    import molass_legacy.KekLib, DataStructure, SerialAnalyzer, Decomposer, AutorgKek, GuinierAnalyzer, Extrapolation
+    root_dir = os.path.dirname(os.path.dirname( this_dir ))
+    sys.path.insert(0, root_dir)
 
     optlist, args = getopt.getopt(sys.argv[1:], 'c:w:f:n:i:b:d:m:s:r:t:p:T:M:S:')
     print(optlist, args)

@@ -11,7 +11,8 @@ from molass_legacy.GuiParts.ColumnTypeSelector import ColumnTypeSelector
 
 enable_edm_model = get_setting('enable_edm_model')
 if enable_edm_model:
-    MODEL_NAMES = ['EMG', 'EGH', 'EDM', 'STC', 'SDM']
+    # MODEL_NAMES = ['EMG', 'EGH', 'EDM', 'STC', 'SDM'] # SDM is not used in the current version
+    MODEL_NAMES = ['EMG', 'EGH', 'EDM', 'STC']
 else:
     MODEL_NAMES = ['EMG', 'EGH']
 

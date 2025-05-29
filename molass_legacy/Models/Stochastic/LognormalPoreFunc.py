@@ -1,12 +1,12 @@
 """
     Models.Stochastic.LognormalPoreFunc.py
 
-    Copyright (c) 2024, SAXS Team, KEK-PF
+    Copyright (c) 2024-2025, SAXS Team, KEK-PF
 """
 import numpy as np
 from scipy.stats import lognorm
 from scipy.integrate import quad_vec
-from SecTheory.SecPDF import FftInvPdf
+from molass_legacy.SecTheory.SecPDF import FftInvPdf
 from molass_legacy.KekLib.IntegrateUtils import complex_quadrature_vec
 from molass_legacy.Models.Stochastic.LognormalUtils import compute_mode, compute_stdev
 from molass_legacy.Models.Stochastic.ParamLimits import PORESIZE_INTEG_LIMIT

@@ -3,11 +3,11 @@
 
     temporary fix to make the get_colparam_bounds available
 
-    Copyright (c) 2024, SAXS Team, KEK-PF
+    Copyright (c) 2024-2025, SAXS Team, KEK-PF
 """
 import os
 import numpy as np
-from Estimators.SdmEstimator import SdmEstimator
+from .SdmEstimator import SdmEstimator
 from molass_legacy.Optimizer.TheUtils import FILES
 
 class SdmEstimatorProxy(SdmEstimator):

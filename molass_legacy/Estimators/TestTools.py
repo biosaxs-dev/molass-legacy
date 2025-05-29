@@ -35,7 +35,7 @@ def SDM_estimator_test_impl(editor):
     if edm_available:
         # create SDM optimizer
         from molass_legacy.Optimizer.FuncImporter import import_objective_function
-        optimizer_class, docstr = import_objective_function(class_code)
+        optimizer_class = import_objective_function(class_code)
         optimizer = optimizer_class(
             editor.dsets,
             editor.get_n_components(),

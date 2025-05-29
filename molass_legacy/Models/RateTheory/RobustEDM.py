@@ -1,13 +1,13 @@
 """
     Models/RateTheory/RobustEDM.py
 
-    Copyright (c) 2023-2024, SAXS Team, KEK-PF
+    Copyright (c) 2023-2025, SAXS Team, KEK-PF
 """
 import numpy as np
 from scipy.optimize import minimize
 from matplotlib.widgets import Slider
 import molass_legacy.KekLib.DebugPlot as plt
-from SecTheory.Edm import edm_func
+from molass_legacy.SecTheory.Edm import edm_func
 from molass_legacy.Models.Tentative import Model
 from molass_legacy.Models.ElutionModelUtils import compute_4moments, get_xies_from_height_ratio, x_from_height_ratio_impl
 

@@ -3,10 +3,10 @@
 
     Test.TestUtils.py
 
-    Copyright (c) 2021-2022, SAXS Team, KEK-PF
+    Copyright (c) 2021-2025, SAXS Team, KEK-PF
 
 """
-from DataUtils import serial_folder_walk
+from molass_legacy.SerialAnalyzer.DataUtils import serial_folder_walk
 
 def execute_for_all_data(root_folder, func):
     serial_folder_walk(root_folder, func)
@@ -21,8 +21,6 @@ def show_test_dialog(root, in_folder, prepare_func, tester_func, frame_func=None
     from molass_legacy.Optimizer.InitialInfo import InitialInfo
     from molass_legacy.Optimizer.OptDataSets import OptDataSets
     from molass_legacy.Optimizer.OptJobInfo import OptJobInfo
-    from molass_legacy.Optimizer.FuncImporter import import_objective_function
-    from DataUtils import get_in_folder
     from molass_legacy.KekLib.BasicUtils import Struct
 
     if root is None:

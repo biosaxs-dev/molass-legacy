@@ -1,10 +1,10 @@
 """
     ModelParams.SdmSliderInfo.py
 
-    Copyright (c) 2024, SAXS Team, KEK-PF
+    Copyright (c) 2024-2025, SAXS Team, KEK-PF
 """
 import numpy as np
-from ModelParams.BaseSliderInfo import BaseSliderInfo
+from molass_legacy.ModelParams.BaseSliderInfo import BaseSliderInfo
 
 class SdmSliderInfo(BaseSliderInfo):
     def __init__(self, nc): 

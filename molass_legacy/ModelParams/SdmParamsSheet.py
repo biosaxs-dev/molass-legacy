@@ -1,14 +1,14 @@
 """
     ModelParams.SdmParamsSheet.py
 
-    Copyright (c) 2024, SAXS Team, KEK-PF
+    Copyright (c) 2024-2025, SAXS Team, KEK-PF
 """
 import numpy as np
 from molass_legacy.KekLib.OurTkinter import Tk
 from tksheet import Sheet
 from importlib import reload
-import ModelParams.ParamsSheetBase
-reload(ModelParams.ParamsSheetBase)
+import molass_legacy.ModelParams.ParamsSheetBase
+reload(molass_legacy.ModelParams.ParamsSheetBase)
 from .ParamsSheetBase import ParamsSheetBase
 
 class SdmParamsSheet(ParamsSheetBase):

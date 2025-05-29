@@ -1,13 +1,13 @@
 """
     Optimizer.FuncReloadUtils.py
 
-    Copyright (c) 2024, SAXS Team, KEK-PF
+    Copyright (c) 2024-2025, SAXS Team, KEK-PF
 """
 from .FuncImporter import import_objective_function
 
 def reload_optimizer(old_optimizer, prepare=True, init_params=None):
     func_code = old_optimizer.get_name()
-    func_class, _ = import_objective_function(func_code)
+    func_class = import_objective_function(func_code)
 
     optimizer = func_class(
                 old_optimizer.dsets,

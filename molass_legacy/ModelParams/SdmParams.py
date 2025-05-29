@@ -62,9 +62,9 @@ class SdmParams:
     def get_estimator(self, editor, debug=True):
         if debug:
             from importlib import reload
-            import Estimators.SdmEstimator
-            reload(Estimators.SdmEstimator)
-        from Estimators.SdmEstimator import SdmEstimator
+            import molass_legacy.Estimators.SdmEstimator
+            reload(molass_legacy.Estimators.SdmEstimator)
+        from molass_legacy.Estimators.SdmEstimator import SdmEstimator
 
         estimator = SdmEstimator(editor)
         self.t0_upper_bound = estimator.get_t0_upper_bound()
@@ -225,16 +225,16 @@ class SdmParams:
     def get_params_sheet(self, parent, params, dsets, optimizer, debug=True):
         if debug:
             from importlib import reload
-            import ModelParams.SdmParamsSheet
-            reload(ModelParams.SdmParamsSheet)
+            import molass_legacy.ModelParams.SdmParamsSheet
+            reload(molass_legacy.ModelParams.SdmParamsSheet)
         from .SdmParamsSheet import SdmParamsSheet
         return SdmParamsSheet(parent, params, dsets, optimizer)
     
     def get_paramslider_info(self, devel=True):
         if devel:
             from importlib import reload
-            import ModelParams.SdmSliderInfo
-            reload(ModelParams.SdmSliderInfo)
-        from ModelParams.SdmSliderInfo import SdmSliderInfo
+            import molass_legacy.ModelParams.SdmSliderInfo
+            reload(molass_legacy.ModelParams.SdmSliderInfo)
+        from .SdmSliderInfo import SdmSliderInfo
         nc = self.n_components - 1
         return SdmSliderInfo(nc=nc)

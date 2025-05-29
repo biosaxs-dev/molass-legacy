@@ -1,12 +1,12 @@
 """
     Models.Stochastic.MonoporeUvScaler.py
 
-    Copyright (c) 2024, SAXS Team, KEK-PF
+    Copyright (c) 2024-2025, SAXS Team, KEK-PF
 """
 import numpy as np
 from scipy.optimize import minimize
 import molass_legacy.KekLib.DebugPlot as plt
-from SecTheory.BasicModels import robust_single_pore_pdf
+from molass_legacy.SecTheory.BasicModels import robust_single_pore_pdf
 
 def adjust_to_uv_scales(x, y, uv_x, uv_y_, xr_init_params, rgs, debug=False):
     print("adjust_to_uv_scales: xr_init_params=", xr_init_params, "rgs=", rgs)

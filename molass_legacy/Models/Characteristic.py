@@ -1,10 +1,10 @@
 """
     Characteristic.py
 
-    Copyright (c) 2023, SAXS Team, KEK-PF
+    Copyright (c) 2023-2025, SAXS Team, KEK-PF
 """
 import numpy as np
-from SecTheory.SecPDF import compute_standard_wCD
+from molass_legacy.SecTheory.SecPDF import compute_standard_wCD
 
 class CfSpace:
     def __init__(self, N=1024, use_np_fft=True):

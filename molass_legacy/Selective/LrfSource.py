@@ -1,7 +1,7 @@
 """
     Selective.LrfSource.py
 
-    Copyright (c) 2024, SAXS Team, KEK-PF
+    Copyright (c) 2024-2025, SAXS Team, KEK-PF
 """
 import os
 import logging
@@ -41,9 +41,9 @@ class LrfSource:
                      want_num_components=False,
                      select=None, debug=False):
         if debug:
-            import Selective.LrfRgComputer
-            reload(Selective.LrfRgComputer)
-        from Selective.LrfRgComputer import compute_rgs_from_lrf_source
+            import molass_legacy.Selective.LrfRgComputer
+            reload(molass_legacy.Selective.LrfRgComputer)
+        from .LrfRgComputer import compute_rgs_from_lrf_source
         if debug:
             print("Computing Rgs...")
         rgs, trs, orig_props, peak_rgs, peak_trs, props, indeces, qualities = compute_rgs_from_lrf_source(self,
@@ -156,7 +156,7 @@ class LrfSource:
         return ret_params
 
     def guess_monopore_params(self, old_style_return=False, debug=False):
-        import Models.Stochastic.MonoporeMoments as module
+        import molass_legacy.Models.Stochastic.MonoporeMoments as module
         reload(module)
         from molass_legacy.Models.Stochastic.MonoporeMoments import study_monopore_moments_impl
         ret = study_monopore_moments_impl(self,
@@ -182,14 +182,14 @@ class LrfSource:
 
     def guess_lnpore_params(self, return_rgs=False, use_study=True, use_moments=True, progress_cb=None, debug=False):
         if use_study:
-            import Models.Stochastic.MomentsStudy
-            reload(Models.Stochastic.MomentsStudy)
+            import molass_legacy.Models.Stochastic.MomentsStudy
+            reload(molass_legacy.Models.Stochastic.MomentsStudy)
             from molass_legacy.Models.Stochastic.MomentsStudy import moments_study_impl
             return moments_study_impl(self, return_rgs=True, debug=debug)
         else:
             if debug:
-                import Models.Stochastic.MomentUtils
-                reload(Models.Stochastic.MomentUtils)
+                import molass_legacy.Models.Stochastic.MomentUtils
+                reload(molass_legacy.Models.Stochastic.MomentUtils)
             from molass_legacy.Models.Stochastic.MomentUtils import compute_egh_moments
             from molass_legacy.Models.Stochastic.MonoporeGuess import guess_monopore_params_using_moments
             from molass_legacy.Models.Stochastic.LognormalGuess import guess_lognormalpore_params_using_moments
@@ -227,8 +227,8 @@ class LrfSource:
     
     def moments_demo(self, adapt_backward=True, debug=True):
         if debug:
-             import Models.Stochastic.MomentUtils
-             reload(Models.Stochastic.MomentUtils)
+             import molass_legacy.Models.Stochastic.MomentUtils
+             reload(molass_legacy.Models.Stochastic.MomentUtils)
         from molass_legacy.Models.Stochastic.MomentUtils import moments_demo_from_rgdist
         rgs, trs, orig_props, peak_rgs, peak_trs, props, indeces, qualities = self.compute_rgs(debug=False)
         # monopore_params = guess_monopore_params_from_rgdist(self.xr_x, self.xr_y, peak_rgs, peak_trs, props, debug=True)
@@ -243,16 +243,16 @@ class LrfSource:
 
     def monopore_study(self, debug=True):
         if debug:
-             import Models.Stochastic.MonoporeStudy
-             reload(Models.Stochastic.MonoporeStudy)
+             import molass_legacy.Models.Stochastic.MonoporeStudy
+             reload(molass_legacy.Models.Stochastic.MonoporeStudy)
         from molass_legacy.Models.Stochastic.MonoporeStudy import study
         rgs, trs, orig_props, peak_rgs, peak_trs, props, indeces, qualities = self.compute_rgs(debug=False)
         study(self.xr_x, self.xr_y, self.baselines[1], self.model, self.xr_peaks[indeces,:], peak_rgs, props)
 
     def lnpore_study(self, debug=True):
         if debug:
-             import Models.Stochastic.LnporeStudy
-             reload(Models.Stochastic.LnporeStudy)
+             import molass_legacy.Models.Stochastic.LnporeStudy
+             reload(molass_legacy.Models.Stochastic.LnporeStudy)
         from molass_legacy.Models.Stochastic.LnporeStudy import study
         rgs, trs, orig_props, peak_rgs, peak_trs, props, indeces, qualities = self.compute_rgs(debug=False)
         study(self.xr_x, self.xr_y, self.baselines[1], self.model, self.xr_peaks[indeces,:], peak_rgs, props)
@@ -261,9 +261,9 @@ class LrfSource:
         import multiprocessing as mp
         from molass_legacy._MOLASS.Processes import register_process
         if debug:
-             import Simulative.SimulationBridge
-             reload(Simulative.SimulationBridge)
-        from Simulative.SimulationBridge import simulation_bridge
+             import molass_legacy.Simulative.SimulationBridge
+             reload(molass_legacy.Simulative.SimulationBridge)
+        from molass_legacy.Simulative.SimulationBridge import simulation_bridge
         print("run_simulation_process")
 
         # setting info to pass to the simulation process

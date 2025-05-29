@@ -19,7 +19,7 @@ OPT_DEFAULT_SETTINGS = None
 
 # task: unify these values with those in SerialSettings
 def delayed_settings_init():
-    from Experiment.DataUtils import get_columntype, get_default_num_plates
+    from molass_legacy.Experiment.DataUtils import get_columntype, get_default_num_plates
     global OPT_DEFAULT_SETTINGS, OPT_DEFAULT_DICT
 
     default_columntype = get_columntype()

@@ -83,8 +83,10 @@ class DenssGuiDialog(Dialog):
         self.dmax = Tk.DoubleVar()
         self.dmax.set(100)
         if q is None:
+            # as invoked from the DENSS tools menu
             pass
         else:
+            # as invoked from the LRF preview
             self.prepare_from_args(q, a, e, infile_name)
         self.cwd_init = os.getcwd()
         self.thread = None
@@ -310,12 +312,16 @@ class DenssGuiDialog(Dialog):
 
     def prepare_from_args(self, q, a, e, infile_name):
         self.data = np.array([q, a, e]).T
-        self.apply_fit_data(q, a, e, infile_name)
+        self.apply_fit_data(q, a, e, infile_name, use_memory_data=True)
         self.dmax.set(round(self.sasrec.D,2))
 
-    def apply_fit_data(self, q, a, e, infile_name):
+    def apply_fit_data(self, q, a, e, infile_name, use_memory_data=False, debug=False):
+        if debug:
+            from importlib import reload
+            import molass_legacy.DENSS.DenssUtils as DenssUtils
+            reload(DenssUtils)
         from .DenssUtils import fit_data_impl
-        sasrec, work_info = fit_data_impl(q, a, e, infile_name, gui=True)
+        sasrec, work_info = fit_data_impl(q, a, e, infile_name, gui=True, use_memory_data=use_memory_data)
         self.sasrec = sasrec
         self.work_info = work_info
         self.qc = sasrec.qc

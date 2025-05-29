@@ -45,10 +45,10 @@ class DecompEditorDialog(Dialog):
             from importlib import reload
             import molass_legacy.Models.ElutionCurveModels
             import molass_legacy.Models.RateTheory.EDM
-            import molass_legacy.Models.Stochastic.Tripore
+            # import molass_legacy.Models.Stochastic.Tripore
             reload(molass_legacy.Models.ElutionCurveModels)
             reload(molass_legacy.Models.RateTheory.EDM)
-            reload(molass_legacy.Models.Stochastic.Tripore)
+            # reload(molass_legacy.Models.Stochastic.Tripore)
         from molass_legacy.Models.ElutionCurveModels import EGHA, EMGA
         if enable_edm_model:
             from molass_legacy.Models.RateTheory.EDM import EDM

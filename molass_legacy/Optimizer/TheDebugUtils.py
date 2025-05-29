@@ -76,8 +76,8 @@ def convert_score_list(score_list_pair):
 def plot_scores(ax, score_list, score_names, alpha=1, label=None, invert=True, add_patch=True, debug=True):
     if debug:
         from importlib import reload
-        import Optimizer.FvScoreConverter
-        reload(Optimizer.FvScoreConverter)
+        import molass_legacy.Optimizer.FvScoreConverter
+        reload(molass_legacy.Optimizer.FvScoreConverter)
     from .FvScoreConverter import convert_score
 
     converted_list = [convert_score(v) for v in score_list]

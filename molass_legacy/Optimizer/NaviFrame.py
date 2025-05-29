@@ -1,10 +1,10 @@
 """
     Optimizer.NaviFrame.py
 
-    Copyright (c) 2021-2024, SAXS Team, KEK-PF
+    Copyright (c) 2021-2025, SAXS Team, KEK-PF
 """
 from molass_legacy.KekLib.OurTkinter import Tk
-from V2PropOptimizer.PropOptMenu import PropOptMenu
+from molass_legacy.V2PropOptimizer.PropOptMenu import PropOptMenu
 
 class NaviFrame(Tk.Frame):
     def __init__(self, parent, canvas, arrows_only=False):

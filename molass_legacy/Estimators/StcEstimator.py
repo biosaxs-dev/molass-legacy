@@ -1,11 +1,11 @@
 """
     Estimators.StcEstimator.py
 
-    Copyright (c) 2022-2024, SAXS Team, KEK-PF
+    Copyright (c) 2022-2025, SAXS Team, KEK-PF
 """
 import numpy as np
 import molass_legacy.KekLib.DebugPlot as plt
-from SecTheory.RetensionTime import estimate_init_rgs
+from molass_legacy.SecTheory.RetensionTime import estimate_init_rgs
 from molass_legacy.Peaks.PeProgressConstants import MAXNUM_STEPS, STOCH_INIT_STEPS
 from .BaseEstimator import BaseEstimator
 
@@ -19,11 +19,11 @@ class StcEstimator(BaseEstimator):
     def compute_stochastic_init_params(self, nc_b, t0_upper_bound, debug=False):
         if debug:
             from importlib import reload
-            import SecTheory.MonoPore
-            reload(SecTheory.MonoPore)
-            import Models.Stochastic.MonoporeUvScaler
-            reload(Models.Stochastic.MonoporeUvScaler)
-        from SecTheory.MonoPore import estimate_monopore_params, get_modified_params, split_params, estimate_uv_scale_params
+            import molass_legacy.SecTheory.MonoPore
+            reload(molass_legacy.SecTheory.MonoPore)
+            import molass_legacy.Models.Stochastic.MonoporeUvScaler
+            reload(molass_legacy.Models.Stochastic.MonoporeUvScaler)
+        from molass_legacy.SecTheory.MonoPore import estimate_monopore_params, get_modified_params, split_params, estimate_uv_scale_params
         from molass_legacy.Models.Stochastic.MonoporeUvScaler import adjust_to_uv_scales
 
         editor = self.editor

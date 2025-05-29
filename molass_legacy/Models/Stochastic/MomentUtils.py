@@ -1,15 +1,15 @@
 """
     Models.Stochastic.MomentUtils.py
 
-    Copyright (c) 2024, SAXS Team, KEK-PF
+    Copyright (c) 2024-2025, SAXS Team, KEK-PF
 """
 import numpy as np
 from scipy.optimize import minimize
 from scipy.integrate import quad
 import molass_legacy.KekLib.DebugPlot as plt
-from SecTheory.BasicModels import robust_single_pore_pdf
+from molass_legacy.SecTheory.BasicModels import robust_single_pore_pdf
 from molass_legacy.Peaks.ElutionModels import compute_moments_from_egh_params
-from molass_legacy.Models.Stochastic.LognormalPoreFunc import lognormal_pore_func
+from .LognormalPoreFunc import lognormal_pore_func
 
 def compute_egh_moments(peaks):
     moments_list = []
@@ -25,19 +25,19 @@ def to_moderate_props(props):
 def moments_demo_from_rgdist(x, y, model, peaks, peak_rgs, props, monopore_params, logger=None, debug=False):
     if debug:
         from importlib import reload
-        import Models.Stochastic.MonoporeGuess
-        reload(Models.Stochastic.MonoporeGuess)
-        import Models.Stochastic.LognormalGuess
-        reload(Models.Stochastic.LognormalGuess)
-    from molass_legacy.Models.Stochastic.MonoporeGuess import guess_monopore_params_using_moments
-    from molass_legacy.Models.Stochastic.LognormalGuess import guess_lognormalpore_params_using_moments
+        import molass_legacy.Models.Stochastic.MonoporeGuess
+        reload(molass_legacy.Models.Stochastic.MonoporeGuess)
+        import molass_legacy.Models.Stochastic.LognormalGuess
+        reload(molass_legacy.Models.Stochastic.LognormalGuess)
+    from .MonoporeGuess import guess_monopore_params_using_moments
+    from .LognormalGuess import guess_lognormalpore_params_using_moments
 
     egh_moments_list = compute_egh_moments(peaks)
     if monopore_params is None:
         from importlib import reload
-        import Models.Stochastic.RoughGuess
-        reload(Models.Stochastic.RoughGuess)
-        from molass_legacy.Models.Stochastic.RoughGuess import guess_monopore_params_roughtly
+        import molass_legacy.Models.Stochastic.RoughGuess
+        reload(molass_legacy.Models.Stochastic.RoughGuess)
+        from .RoughGuess import guess_monopore_params_roughtly
         monopore_params = guess_monopore_params_roughtly(x, y, model, peaks, peak_rgs, props, egh_moments_list)
         if logger is not None:
             logger.info("monopore_params in moments_demo_from_rgdist: %s", monopore_params)

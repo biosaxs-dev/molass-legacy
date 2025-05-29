@@ -1,7 +1,7 @@
 """
     Peaks/LrfRgComputer.py
 
-    Copyright (c) 2024, SAXS Team, KEK-PF
+    Copyright (c) 2024-2025, SAXS Team, KEK-PF
 """
 import numpy as np
 from scipy.optimize import minimize
@@ -14,9 +14,9 @@ def compute_rgs_from_lrf_source(lrf_src, keep_num_components=False, want_num_com
     # task: change get_paired_ranges_from_params_array into a class
     if debug:
         from importlib import reload
-        import GuinierTools.RgComputer
-        reload(GuinierTools.RgComputer)
-    from GuinierTools.RgComputer import compute_rgs
+        import molass_legacy.GuinierTools.RgComputer
+        reload(molass_legacy.GuinierTools.RgComputer)
+    from molass_legacy.GuinierTools.RgComputer import compute_rgs
 
     print("compute_rgs_from_lrf_source")
 

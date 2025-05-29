@@ -18,13 +18,11 @@ def import_objective_function(class_code, logger=None):
         module = import_module("molass_legacy.%s.%s" % (OBJFUNC_DIRNAME, class_code))
         module = reload(module)
         class_ = getattr(module, class_code)
-        docstr = class_.__doc__
     except:
         from molass_legacy.KekLib.ExceptionTracebacker import log_exception
         log_exception(logger, "importing ObjectiveFunctions: ", n=5)
         class_ = None
-        docstr = "import error"
-    return class_, docstr
+    return class_
 
 def get_objective_function_info(logger=None, default_func_code=None, debug=False):
     # note that default_objective_func can be changed depending on elution model
@@ -79,7 +77,8 @@ def get_objective_function_info(logger=None, default_func_code=None, debug=False
 
             if class_code == default_func_code:
                 default_index = len(key_list)
-            class_, docstr = import_objective_function(class_code, logger)
+            class_ = import_objective_function(class_code, logger)
+            docstr = class_.__doc__
             key_str = ' : '.join([class_code, docstr])
             func_dict[key_str] = class_
             key_list.append(key_str)

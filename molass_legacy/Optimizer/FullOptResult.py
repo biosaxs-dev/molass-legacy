@@ -1,7 +1,7 @@
 """
     Optimizer.FullOptResult.py
 
-    Copyright (c) 2021-2024, SAXS Team, KEK-PF
+    Copyright (c) 2021-2025, SAXS Team, KEK-PF
 """
 import os
 import re
@@ -11,7 +11,7 @@ from molass_legacy.Trimming import restore_trimming_info_impl
 from molass_legacy.Baseline.BaselineUtils import create_xr_baseline_object
 from .StateSequence import read_callback_txt_impl, read_seed_txt
 from .FuncImporter import import_objective_function
-from SecSaxs.DataTreatment import DataTreatment
+from molass_legacy.SecSaxs.DataTreatment import DataTreatment
 from .OptJobInfo import OptJobInfo
 from .OptDataSets import OptDataSets
 from .OptLogFile import OptLogFile
@@ -87,7 +87,7 @@ class FullOptResult:
         composite = self.load_composite()
         log_file = self.get_log_file()
         class_code = self.get_class_code(log_file)
-        self.fullopt_class = import_objective_function(class_code, self.logger)[0]
+        self.fullopt_class = import_objective_function(class_code, self.logger)
         self.drift_type = "linear"
 
         info = OptJobInfo()
@@ -104,7 +104,7 @@ class FullOptResult:
                             )
 
         if self.fullopt.is_stochastic():
-            from Estimators.SdmEstimatorProxy import SdmEstimatorProxy
+            from molass_legacy.Estimators.SdmEstimatorProxy import SdmEstimatorProxy
             estimator = SdmEstimatorProxy(self.folder)
             self.fullopt.params_type.set_estimator(estimator)      # reconsider the neccesity of this line
 

@@ -1,9 +1,9 @@
 """
     ModelParams.EdmSliderInfo.py
 
-    Copyright (c) 2024, SAXS Team, KEK-PF
+    Copyright (c) 2024-2025, SAXS Team, KEK-PF
 """
-from ModelParams.BaseSliderInfo import BaseSliderInfo
+from .BaseSliderInfo import BaseSliderInfo
 
 class EdmSliderInfo(BaseSliderInfo):
     def __init__(self, nc): 

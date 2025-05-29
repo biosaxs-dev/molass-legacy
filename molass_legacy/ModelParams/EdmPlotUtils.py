@@ -1,12 +1,12 @@
 """
     ModelParams.EdmPlotUtils.py
 
-    Copyright (c) 2023-2024, SAXS Team, KEK-PF
+    Copyright (c) 2023-2025, SAXS Team, KEK-PF
 """
 import numpy as np
 import molass_legacy.KekLib.DebugPlot as plt
 from molass_legacy.Optimizer.TheDebugUtils import convert_score_list, plot_scores
-from GuinierTools.RgCurveUtils import plot_rg_curves
+from molass_legacy.GuinierTools.RgCurveUtils import plot_rg_curves
 from molass_legacy.Optimizer.FvScoreConverter import convert_score
 
 def plot_objective_state(score_list_pair, fv, xm,

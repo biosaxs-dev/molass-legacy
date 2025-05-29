@@ -79,6 +79,13 @@ class FullBatch:
         else:
             return self.ecurve_info[0:4]
 
+    def get_uv_baseline(self, xy=None):
+        # task: verify that this is correct
+        if xy is None:
+            return self.baselines[0]
+        else:
+            raise NotImplementedError("get_uv_baseline with xy argument is not implemented yet. Use get_uv_baseline_deprecated instead.")
+
     def get_uv_baseline_deprecated(self, xy=None):
         if xy is None:
             uv_x, uv_y = self.ecurve_info[0:2]

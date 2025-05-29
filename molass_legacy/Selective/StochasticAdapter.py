@@ -1,7 +1,7 @@
 """
     Selective.StochasticAdapter.py
 
-    Copyright (c) 2024, SAXS Team, KEK-PF
+    Copyright (c) 2024-2025, SAXS Team, KEK-PF
 """
 import numpy as np
 import molass_legacy.KekLib.DebugPlot as plt
@@ -9,15 +9,15 @@ from molass_legacy.Batch.DataBridgeUtils import get_databridge
 from molass_legacy.Decomposer.FitRecord import FitRecord
 from molass_legacy.Decomposer.ModelEvaluator import ModelEvaluator
 from molass_legacy.Models.Stochastic.MonoporeUvScaler import adjust_to_uv_scales
-from Selective.PeakProxy import PeakProxy
+from molass_legacy.Selective.PeakProxy import PeakProxy
 
 def convert_to_stochastic_decomposition(decomp_editor, debug=False):
     from importlib import reload
-    import Models.Stochastic.Monopore
-    reload(Models.Stochastic.Monopore)
+    import molass_legacy.Models.Stochastic.Monopore
+    reload(molass_legacy.Models.Stochastic.Monopore)
     from molass_legacy.Models.Stochastic.Monopore import Monopore
-    import Decomposer.UnifiedDecompResult
-    reload(Decomposer.UnifiedDecompResult)
+    import molass_legacy.Decomposer.UnifiedDecompResult
+    reload(molass_legacy.Decomposer.UnifiedDecompResult)
     from molass_legacy.Decomposer.UnifiedDecompResult import UnifiedDecompResult
 
     print("convert_to_stochastic_decomposition")

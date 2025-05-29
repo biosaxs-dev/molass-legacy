@@ -5,7 +5,7 @@
 """
 import numpy as np
 from molass_legacy.Baseline.BaselineUtils import create_xr_baseline_object
-from .TheUtils import load_class
+from .FuncImporter import import_objective_function
 
 def optimizer_main(in_folder, trimming_txt=None, n_components=3,
                    solver=None,
@@ -21,7 +21,7 @@ def optimizer_main(in_folder, trimming_txt=None, n_components=3,
     if seed is None:
         seed = np.random.randint(100000, 999999)
 
-    fullopt_class = load_class(class_code)
+    fullopt_class = import_objective_function(class_code)
     uv_base_curve = fullopt_input.get_base_curve()      # uv_base_curve comes from FullOptInput.get_sd_from_folder()
     xr_base_curve = create_xr_baseline_object()
     optimizer = fullopt_class(dsets, n_components,

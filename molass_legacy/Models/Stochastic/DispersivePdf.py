@@ -1,11 +1,11 @@
 """
     Models.Stochastic.DispersivePdf.py
 
-    Copyright (c) 2024, SAXS Team, KEK-PF
+    Copyright (c) 2024-2025, SAXS Team, KEK-PF
 """
 import numpy as np
-from SecTheory.SecCF import dispersive_monopore
-from SecTheory.SecPDF import FftInvPdf
+from molass_legacy.SecTheory.SecCF import dispersive_monopore
+from molass_legacy.SecTheory.SecPDF import FftInvPdf
 dispersive_monopore_pdf_impl = FftInvPdf(dispersive_monopore)
 
 DEFUALT_TIMESCALE = 0.25    # 0.1 for FER_OA

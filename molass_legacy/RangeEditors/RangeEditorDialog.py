@@ -79,9 +79,9 @@ class RangeEditorDialog(Dialog):
     def buttonbox(self, devel=False):
         if devel:
             from importlib import reload
-            import Extrapolation.PreviewButtonFrame
-            reload(Extrapolation.PreviewButtonFrame)
-        from Extrapolation.PreviewButtonFrame import PreviewButtonFrame
+            import molass_legacy.Extrapolation.PreviewButtonFrame
+            reload(molass_legacy.Extrapolation.PreviewButtonFrame)
+        from molass_legacy.Extrapolation.PreviewButtonFrame import PreviewButtonFrame
 
         box = Tk.Frame(self)
         box.pack(fill=Tk.X)

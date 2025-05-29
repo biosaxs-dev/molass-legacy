@@ -26,10 +26,10 @@ from molass_legacy.Peaks.PeakEditor import DRIFT_TYPES
 from .OptimizerSettings import get_advanced_settings_text
 from .ElutionComposer import COMPOSER_CB_TEXT
 
-CANVAS_DEBUG = True
+CANVAS_DEBUG = False
 POLL_INTERVAL = 1000
 # DEVELOP_MODE = sys.executable.find("pythonw") < 0
-DEVELOP_MODE = True
+DEVELOP_MODE = is_developing_version()
 
 class FullOptDialog(Dialog):
     def __init__(self, parent, parent_dialog, optinit_info, **kwargs):
@@ -84,8 +84,8 @@ class FullOptDialog(Dialog):
 
     def body(self, body_frame):
         if CANVAS_DEBUG:
-            import Optimizer.JobStateCanvas
-            reload(Optimizer.JobStateCanvas)
+            import molass_legacy.Optimizer.JobStateCanvas
+            reload(molass_legacy.Optimizer.JobStateCanvas)
         from .JobStateCanvas import JobStateCanvas
         self.canvas = JobStateCanvas(body_frame, self)
         self.canvas.pack()

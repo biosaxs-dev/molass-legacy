@@ -21,7 +21,7 @@ from molass_legacy.KekLib.BasicUtils import Struct
 
 MAXNUM_STEPS = 20000
 
-def fit_data_impl(q, a, e, file, D=None, alpha=None, max_alpha=None, nes=2, extrapolate=True, gui=False):
+def fit_data_impl(q, a, e, file, D=None, alpha=None, max_alpha=None, nes=2, extrapolate=True, gui=False, use_memory_data=False):
     Iq = np.vstack( [q, a, e] ).T
 
     # task: update this construction automatically from bin\denss.fit_data.py
@@ -68,10 +68,14 @@ def fit_data_impl(q, a, e, file, D=None, alpha=None, max_alpha=None, nes=2, extr
     else:
         output = args.output
 
-    if args.ignore_errors:
-        Iq = np.genfromtxt(args.file, invalid_raise=False, usecols=(0, 1))
+    if use_memory_data:
+        # as invoked from LRF preview 
+        Iq = np.array([q, a, e]).T
     else:
-        Iq = np.genfromtxt(args.file, invalid_raise=False, usecols=(0, 1, 2))
+        if args.ignore_errors:
+            Iq = np.genfromtxt(args.file, invalid_raise=False, usecols=(0, 1))
+        else:
+            Iq = np.genfromtxt(args.file, invalid_raise=False, usecols=(0, 1, 2))
     if len(Iq.shape) < 2:
         print("Invalid data format. Data file must have 3 columns: q, I, errors. Alternatively, disable errors with --ignore_errors option (sets errors to 1.0).")
         exit()

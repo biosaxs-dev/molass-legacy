@@ -1,7 +1,7 @@
 """
     EdmParams.py
 
-    Copyright (c) 2023-2024, SAXS Team, KEK-PF
+    Copyright (c) 2023-2025, SAXS Team, KEK-PF
 """
 import logging
 import numpy as np
@@ -70,9 +70,9 @@ class EdmParams:
     def get_estimator(self, editor, debug=True):
         if debug:
             from importlib import reload
-            import Estimators.EdmEstimator
-            reload(Estimators.EdmEstimator)
-        from Estimators.EdmEstimator import EdmEstimator
+            import molass_legacy.Estimators.EdmEstimator
+            reload(molass_legacy.Estimators.EdmEstimator)
+        from molass_legacy.Estimators.EdmEstimator import EdmEstimator
 
         estimator = EdmEstimator(editor, self.n_components)
         self.t0_upper_bound = estimator.get_t0_upper_bound()
@@ -184,16 +184,16 @@ class EdmParams:
     def get_params_sheet(self, parent, params, dsets, optimizer, debug=True):
         if debug:
             from importlib import reload
-            import ModelParams.EdmParamsSheet
-            reload(ModelParams.EdmParamsSheet)
+            import molass_legacy.ModelParams.EdmParamsSheet
+            reload(molass_legacy.ModelParams.EdmParamsSheet)
         from .EdmParamsSheet import EdmParamsSheet
         return EdmParamsSheet(parent, params, dsets, optimizer)
 
     def get_adjuster(self, debug=True):
         if debug:
-            import ModelParams.StcAdjuster
             from importlib import reload
-            reload(ModelParams.StcAdjuster)
+            import molass_legacy.ModelParams.StcAdjuster
+            reload(molass_legacy.ModelParams.StcAdjuster)
         from .StcAdjuster import StcAdjuster
         return StcAdjuster()
 
@@ -266,7 +266,7 @@ class EdmParams:
     def compute_comformance(self, xr_params, rg_params, edm_colparams, **kwargs):
         # this is made in accordance to .SimpleSecParams.sec_comformance
 
-        from SecTheory.ColumnConstants import SECCONF_LOWER_BOUND, BAD_CONFORMANCE_REDUCE
+        from molass_legacy.SecTheory.ColumnConstants import SECCONF_LOWER_BOUND, BAD_CONFORMANCE_REDUCE
 
         stdev = np.std(np.concatenate([xr_params[:,0], edm_colparams]))     # edm_colparams == [Tz]
         log_conformance = np.log10(stdev)
@@ -279,8 +279,8 @@ class EdmParams:
     def get_paramslider_info(self, devel=True):
         if devel:
             from importlib import reload
-            import ModelParams.EdmSliderInfo
-            reload(ModelParams.EdmSliderInfo)
-        from ModelParams.EdmSliderInfo import EdmSliderInfo
+            import molass_legacy.ModelParams.EdmSliderInfo
+            reload(molass_legacy.ModelParams.EdmSliderInfo)
+        from .EdmSliderInfo import EdmSliderInfo
         nc = self.n_components - 1
         return EdmSliderInfo(nc=nc)

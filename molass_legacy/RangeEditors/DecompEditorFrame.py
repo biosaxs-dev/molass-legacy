@@ -1,7 +1,7 @@
 """
     DecompEditorFrame.py
 
-    Copyright (c) 2018-2024, SAXS Team, KEK-PF
+    Copyright (c) 2018-2025, SAXS Team, KEK-PF
 """
 import copy
 import numpy                as np
@@ -88,8 +88,8 @@ class DecompEditorFrame(SuperEditorFrame):
     def debug_plot(self):
         from importlib import reload
         from molass_legacy.DataStructure.AnalysisRangeInfo import AnalysisRangeInfo
-        import Decomposer.DecompEditorDebug
-        reload(Decomposer.DecompEditorDebug)
+        import molass_legacy.Decomposer.DecompEditorDebug
+        reload(molass_legacy.Decomposer.DecompEditorDebug)
         from molass_legacy.Decomposer.DecompEditorDebug import debug_plot_impl
         ranges = AnalysisRangeInfo(self.make_range_info()).get_ranges()
         debug_plot_impl(self, self.dialog)
@@ -107,8 +107,8 @@ class DecompEditorFrame(SuperEditorFrame):
     def draw1(self, debug=False):
         if debug:
             from importlib import reload
-            import RangeEditors.DecompPlotUtils
-            reload(RangeEditors.DecompPlotUtils)
+            import molass_legacy.RangeEditors.DecompPlotUtils
+            reload(molass_legacy.RangeEditors.DecompPlotUtils)
 
         from .DecompPlotUtils import draw1_impl
         draw1_impl(self)
@@ -204,7 +204,7 @@ class DecompEditorFrame(SuperEditorFrame):
         if devel:
             from importlib import reload
             import molass_legacy.KekLib.TkMplUtils
-            reload(KekLib.TkMplUtils)
+            reload(molass_legacy.KekLib.TkMplUtils)
         from molass_legacy.KekLib.TkMplUtils import adjust_the_tkframe_size
         self.draw1()
         self.draw2()
@@ -320,8 +320,8 @@ class DecompEditorFrame(SuperEditorFrame):
 
         if concentration_datatype == 0:       # Xray elution model
             from importlib import reload
-            import Decomposer.OptRecsUtils
-            reload(Decomposer.OptRecsUtils)
+            import molass_legacy.Decomposer.OptRecsUtils
+            reload(molass_legacy.Decomposer.OptRecsUtils)
             from molass_legacy.Decomposer.OptRecsUtils import eoii_correct_opt_recs
             opt_recs_ = copy.deepcopy(self.opt_recs)
             eoii_correct_opt_recs(self, opt_recs_)
@@ -433,16 +433,16 @@ class DecompEditorFrame(SuperEditorFrame):
             else:
                 if self.model_name == 'STC':
                     from importlib import reload
-                    import Selective.StochasticAdapter
-                    reload(Selective.StochasticAdapter)
-                    from Selective.StochasticAdapter import convert_to_stochastic_decomposition
+                    import molass_legacy.Selective.StochasticAdapter
+                    reload(molass_legacy.Selective.StochasticAdapter)
+                    from molass_legacy.Selective.StochasticAdapter import convert_to_stochastic_decomposition
                     decomp_result = convert_to_stochastic_decomposition(self.dialog)
                 else:
                     # i.e., EDM 
                     from importlib import reload
-                    import Selective.AdvancedAdapter
-                    reload(Selective.AdvancedAdapter)
-                    from Selective.AdvancedAdapter import adapted_decompose_elution_simply
+                    import molass_legacy.Selective.AdvancedAdapter
+                    reload(molass_legacy.Selective.AdvancedAdapter)
+                    from molass_legacy.Selective.AdvancedAdapter import adapted_decompose_elution_simply
                     decomp_result = adapted_decompose_elution_simply(self)
 
         self.decomp_result = decomp_result
@@ -635,7 +635,7 @@ class DecompEditorFrame(SuperEditorFrame):
         """
         always construct a new solver to initialize simply
         """
-        from Extrapolation.ExtrapolationSolver import ExtrapolationSolver
+        from molass_legacy.Extrapolation.ExtrapolationSolver import ExtrapolationSolver
         pdata, popts = self.dialog.preview_frame.get_preview_data()
         self.ex_solver = ExtrapolationSolver(pdata, popts)
         return self.ex_solver

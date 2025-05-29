@@ -1,15 +1,15 @@
 """
     ExtrapolationControlPanel.py
 
-    Copyright (c) 2018-2023, SAXS Team, KEK-PF
+    Copyright (c) 2018-2025, SAXS Team, KEK-PF
 """
 from molass_legacy.KekLib.OurTkinter import Tk
-from OurTtk import ttk, TtkScale
+from molass_legacy.KekLib.OurTtk import ttk, TtkScale
 from molass_legacy.KekLib.TkSupplements import BlinkingFrame
 from ExtrapolationAnimation import ExtrapolationAnimationDialog, TOO_SMALL_TO_PLOT
-from DevSettings import get_dev_setting
+from molass_legacy.SerialAnalyzer.DevSettings import get_dev_setting
 from molass_legacy.KekLib.TkCustomWidgets import FileEntry
-from SerialDataUtils import serial_np_loadtxt
+from molass_legacy.SerialAnalyzer.SerialDataUtils import serial_np_loadtxt
 
 SCALE_MAX       = 0.2
 SCALE_DIGITS    = 2
@@ -232,7 +232,7 @@ class UnknownControlPanel( Tk.Frame ):
         dialog.show()
 
     def show_range_inspector( self ):
-        from RangeInspector import RangeInspectorDialog
+        from .RangeInspector import RangeInspectorDialog
         dialog = self.dialog
         try:
             solver = dialog.solver.impl
@@ -252,7 +252,7 @@ class UnknownControlPanel( Tk.Frame ):
             self.solve_plot()
 
     def show_cdi_dialog(self):
-        from Conc.CdInspection import CdInspectionDailog
+        from molass_legacy.Conc.CdInspection import CdInspectionDailog
         print( self.pno, self.ad, self.paired_range )
         print( self.dialog.q.shape, self.dialog.data.shape )
 
@@ -289,8 +289,8 @@ class UnknownControlPanel( Tk.Frame ):
         from molass_legacy._MOLASS.Version import is_developing_version
         if is_developing_version():
             from importlib import reload
-            import DENSS.DenssGui
-            reload(DENSS.DenssGui)
+            import molass_legacy.DENSS.DenssGui
+            reload(molass_legacy.DENSS.DenssGui)
         from molass_legacy.DENSS.DenssGui import DenssGuiDialog
         A, B, Z, E, _, C = self.dialog.solver_results[self.row]
         dialog = DenssGuiDialog( self.dialog.parent, self.dialog.q, A, E[0], self.get_file_name() )

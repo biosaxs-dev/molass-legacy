@@ -1,11 +1,11 @@
 """
     Estimators.SdmEstimator.py
 
-    Copyright (c) 2024, SAXS Team, KEK-PF
+    Copyright (c) 2024-2025, SAXS Team, KEK-PF
 """
 import numpy as np
 import molass_legacy.KekLib.DebugPlot as plt
-from SecTheory.RetensionTime import estimate_init_rgs
+from molass_legacy.SecTheory.RetensionTime import estimate_init_rgs
 from molass_legacy.Peaks.PeProgressConstants import MAXNUM_STEPS, STOCH_INIT_STEPS
 from .BaseEstimator import BaseEstimator
 
@@ -19,18 +19,18 @@ class SdmEstimator(BaseEstimator):
     def compute_sdm_init_params(self, nc_b, lrf_src=None, edm_available=False, debug=False):
         if debug:
             from importlib import reload
-            import Models.Stochastic.DispersiveMonopore
-            reload(Models.Stochastic.DispersiveMonopore)
-            import Models.Stochastic.MonoporeUvScaler
-            reload(Models.Stochastic.MonoporeUvScaler)
-            import Estimators.SdmEstimatorImpl
-            reload(Estimators.SdmEstimatorImpl)
-            import Peaks.PeakFronting
-            reload(Peaks.PeakFronting) 
+            import molass_legacy.Models.Stochastic.DispersiveMonopore
+            reload(molass_legacy.Models.Stochastic.DispersiveMonopore)
+            import molass_legacy.Models.Stochastic.MonoporeUvScaler
+            reload(molass_legacy.Models.Stochastic.MonoporeUvScaler)
+            import molass_legacy.Estimators.SdmEstimatorImpl
+            reload(molass_legacy.Estimators.SdmEstimatorImpl)
+            import molass_legacy.Peaks.PeakFronting
+            reload(molass_legacy.Peaks.PeakFronting)
         from molass_legacy.Models.Stochastic.DispersiveMonopore import guess_params_using_moments
         from molass_legacy.Models.Stochastic.MomentUtils import compute_egh_moments
         
-        from Estimators.SdmEstimatorImpl import guess_exec_spec, edit_to_full_sdmparams
+        from .SdmEstimatorImpl import guess_exec_spec, edit_to_full_sdmparams
         from molass_legacy.Peaks.PeakFronting import has_fronting_peak
  
         editor = self.editor
@@ -133,9 +133,9 @@ def onthefly_test(editor):
         editor.fullopt.params_type.set_estimator(estimator)
         def components_plot_debug():
             from importlib import reload
-            import Estimators.SdmEstimatorDebug
-            reload(Estimators.SdmEstimatorDebug)
-            from Estimators.SdmEstimatorDebug import components_plot_debug_impl
+            import molass_legacy.Estimators.SdmEstimatorDebug
+            reload(molass_legacy.Estimators.SdmEstimatorDebug)
+            from .SdmEstimatorDebug import components_plot_debug_impl
             components_plot_debug_impl(editor.fullopt, init_params)
 
         with plt.Dp(extra_button_specs=[("Components Plot Debug", components_plot_debug)]):

@@ -1,13 +1,13 @@
 """
     Optimizer.SimpleDebugUtils.py
 
-    Copyright (c) 2024, SAXS Team, KEK-PF
+    Copyright (c) 2024-2025, SAXS Team, KEK-PF
 """
 from .FuncImporter import import_objective_function
 
 def copycreate_optimizer(optimizer):
     class_code = optimizer.__class__.__name__
-    optimizer_class, doc_str = import_objective_function(class_code)
+    optimizer_class = import_objective_function(class_code)
     new_optimizer = optimizer_class(
         optimizer.dsets,
         optimizer.n_components,

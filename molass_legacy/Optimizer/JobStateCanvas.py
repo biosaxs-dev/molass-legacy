@@ -306,7 +306,7 @@ class JobStateCanvas(Tk.Frame):
             fv = self.demo_info[0]
             solver_name, niter = self.get_running_solver_info()
             if solver_name == "ultranest":
-                from Solvers.UltraNest.SolverUltraNest import get_max_ncalls
+                from molass_legacy.Solvers.UltraNest.SolverUltraNest import get_max_ncalls
                 # task: unify this estimation
                 xmax = get_max_ncalls(niter)
             else:

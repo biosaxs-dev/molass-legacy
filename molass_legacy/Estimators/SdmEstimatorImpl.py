@@ -1,7 +1,7 @@
 """
     Estimators.SdmEstimatorImpl.py
 
-    Copyright (c) 2024, SAXS Team, KEK-PF
+    Copyright (c) 2024-2025, SAXS Team, KEK-PF
 """
 import numpy as np
 import molass_legacy.KekLib.DebugPlot as plt
@@ -20,9 +20,9 @@ def guess_exec_spec(peak_rgs, props, qualities):
 def edit_to_full_sdmparams(editor, sdm_params, corrected_rgs, uv_curve, debug=False):
     if debug:
         from importlib import reload
-        import Models.Stochastic.MonoporeUvScaler
-        reload(Models.Stochastic.MonoporeUvScaler)
-
+        import molass_legacy.Models.Stochastic.MonoporeUvScaler
+        reload(molass_legacy.Models.Stochastic.MonoporeUvScaler)
+        
     from molass_legacy.Models.Stochastic.DispersiveUtils import NUM_SDMCUV_PARAMS
     from molass_legacy.Models.Stochastic.DispersiveUvScaler import adjust_to_uv_scales
 
@@ -41,7 +41,7 @@ def edit_to_full_sdmparams(editor, sdm_params, corrected_rgs, uv_curve, debug=Fa
     uv_x = xr_x*a + b
     uv_y = uv_curve.spline(uv_x)
 
-    uv_baseline = editor.get_uv_baseline(xy=(uv_x, uv_y))
+    uv_baseline = editor.get_uv_baseline_deprecated(xy=(uv_x, uv_y))    # 
 
     uv_y_ = uv_y - uv_baseline
     xr_y_ = xr_y - baselines[1]
