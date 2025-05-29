@@ -216,6 +216,15 @@ def get_dmax_with_datgnom(file_path):
     dmax = ddf.guess_best_dmax()
     return dmax
 
+def get_argparser(return_args=False):
+    parser = argparse.ArgumentParser(description="DENSS: DENsity from Solution Scattering.\n A tool for calculating an electron density map from solution scattering data",
+                                     formatter_class=argparse.RawTextHelpFormatter)
+    if return_args:
+        args = dopts.parse_arguments(parser, return_args=True)
+        return args
+    else:
+        return parser
+
 def run_denss_impl(qc, ac, ec, dmax, infile_name, steps=MAXNUM_STEPS, progress_cb=None, use_gpu=False, gui=False):
 
     q = qc
@@ -226,7 +235,7 @@ def run_denss_impl(qc, ac, ec, dmax, infile_name, steps=MAXNUM_STEPS, progress_c
     sys.argv = ['dummy-script', '-f', infile_name]
     if use_gpu:
         sys.argv += ['-gpu']
-    parser = argparse.ArgumentParser(description="DENSS: DENsity from Solution Scattering.\n A tool for calculating an electron density map from solution scattering data", formatter_class=argparse.RawTextHelpFormatter)
+    parser = get_argparser()
     # data_proxy should contain: q, I, sigq, file_dmax, isout
     # data_proxy should contain: q, I, sigq, Ifit, file_dmax, isfit
     data_proxy = [q, I, sigq, I, dmax, True]

@@ -444,11 +444,15 @@ class DenssGuiDialog(Dialog):
             pass
         self.after(100, self.update_progress_text)
 
-    def denss_thread(self):
+    def denss_thread(self, debug=True):
         os.chdir(self.out_folder.get())
         redirector = StdoutRedirector(self.queue)
 
         from molass_legacy.Env.EnvInfo import get_global_env_info
+        if debug:
+            from importlib import reload
+            import molass_legacy.DENSS.DenssUtils as DenssUtils
+            reload(DenssUtils)
         from .DenssUtils import run_denss_impl
 
         env_info = get_global_env_info(gpu_info=True)

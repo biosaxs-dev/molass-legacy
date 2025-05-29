@@ -21,7 +21,7 @@ def store_parameters_as_string(sasrec):
         lc=sasrec.lc,lcerr=sasrec.lcerr)
     return param_str
 
-def parse_arguments(parser, data_proxy=None):
+def parse_arguments(parser, data_proxy=None, return_args=False):
 
     parser.add_argument("--version", action="version",version="%(prog)s v{version}".format(version=denss.__version__))
     parser.add_argument("-f", "--file", type=str, help="SAXS data file for input (either .dat, .fit, or .out)")
@@ -113,6 +113,9 @@ def parse_arguments(parser, data_proxy=None):
                "extrapolation (the -e_off option). \n For now, extrapolation "
                "has been re-enabled until a bug fix is released. ")
         args.extrapolate = True
+
+    if return_args:
+        return args
 
     if data_proxy is None:
         q, I, sigq, Ifit, file_dmax, isfit = denss.loadProfile(args.file, units=args.units)
