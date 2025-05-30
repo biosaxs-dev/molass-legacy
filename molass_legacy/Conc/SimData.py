@@ -1,8 +1,7 @@
-# coding: utf-8
 """
     SimData.py
 
-    Copyright (c) 2020-2021, SAXS Team, KEK-PF
+    Copyright (c) 2020-2025, SAXS Team, KEK-PF
 """
 from bisect import bisect_right
 import numpy as np
@@ -17,7 +16,7 @@ class SimData:
         q = A[:,0]
         a = A[:,1]
         e = A[:,2]
-        sasrec, work_info = fit_data_impl(q, a, e, a_file, D=76)
+        sasrec, work_info = fit_data_impl(q, a, e, file=a_file, D=76)
         qc = sasrec.qc
         ac = sasrec.Ic
         ec = work_info.Icerr

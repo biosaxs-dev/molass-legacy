@@ -21,7 +21,7 @@ from molass_legacy.KekLib.BasicUtils import Struct
 
 MAXNUM_STEPS = 20000
 
-def fit_data_impl(q, a, e, file, D=None, alpha=None, max_alpha=None, nes=2, extrapolate=True, gui=False, use_memory_data=False):
+def fit_data_impl(q, a, e, file=None, D=None, alpha=None, max_alpha=None, nes=2, extrapolate=True, gui=False, use_memory_data=False):
     Iq = np.vstack( [q, a, e] ).T
 
     # task: update this construction automatically from bin\denss.fit_data.py
@@ -29,7 +29,7 @@ def fit_data_impl(q, a, e, file, D=None, alpha=None, max_alpha=None, nes=2, extr
         alpha = alpha,
         units = "a",
         max_alpha = max_alpha,
-        output = None,
+        output = "data_name",
         file = file,    # 
         dmax = D,
         nes = nes,
@@ -192,7 +192,7 @@ def fit_data_impl(q, a, e, file, D=None, alpha=None, max_alpha=None, nes=2, extr
     return sasrec, work_info
 
 def fit_data(q, a, e, D=None, extrapolate=False, return_sasrec=False):
-    sasrec, work_info = fit_data_impl(q, a, e, "dummy.dat",     # "dummy.dat" is for "fname_nopath = os.path.basename(args.file)" above
+    sasrec, work_info = fit_data_impl(q, a, e,
                                         D=D,
                                         alpha=0,        # backward compatibility
                                         max_alpha=None,
@@ -203,7 +203,7 @@ def fit_data(q, a, e, D=None, extrapolate=False, return_sasrec=False):
         return sasrec.qc, sasrec.Ic, sasrec.Icerr, sasrec.D
 
 def fit_data_bc(q, a, e, extrapolate=False):    # backward compatible
-    sasrec, work_info = fit_data_impl(q, a, e, "dummy.dat",     # "dummy.dat" is for "fname_nopath = os.path.basename(args.file)" above
+    sasrec, work_info = fit_data_impl(q, a, e,
                                         D=100,
                                         alpha=0,
                                         max_alpha=10,
@@ -225,35 +225,29 @@ def get_argparser(return_args=False):
     else:
         return parser
 
-def run_denss_impl(qc, ac, ec, dmax, infile_name, steps=MAXNUM_STEPS, progress_cb=None, use_gpu=False, gui=False):
+def run_denss_impl(qc, ac, ec, dmax, data_name, steps=MAXNUM_STEPS, progress_cb=None, use_gpu=False, gui=False):
 
     q = qc
     I = ac
     sigq = ec
-    isout = False   # we are using .dat type file
+    isfit = True    # it is assumed that the data is already fitted with fit_data_impl()
 
-    sys.argv = ['dummy-script', '-f', infile_name]
+    sys.argv = ['dummy-script', '-f', data_name]
     if use_gpu:
         sys.argv += ['-gpu']
     parser = get_argparser()
-    # data_proxy should contain: q, I, sigq, file_dmax, isout
-    # data_proxy should contain: q, I, sigq, Ifit, file_dmax, isfit
-    data_proxy = [q, I, sigq, I, dmax, True]
+    data_proxy = [q, I, sigq, I, dmax, isfit]
     args = dopts.parse_arguments(parser, data_proxy=data_proxy)
 
-    """
-    caused an error with DENSS_GPU=True in KEK2 devel env (i.e., while not using embeddables)
-    File "C:\Program Files\Python311\Lib\site-packages\cupy\cuda\compiler.py", line 233, in _jitify_prep
-    ...
-    RuntimeError: Runtime compilation failed
-    
-    task: add a coverup measure 
-    """
     qdata, Idata, sigqdata, qbinsc, Imean, chis, rg, supportV, rho, side, fit, final_chi2 = denss.reconstruct_abinitio_from_scattering_profile(
-        args.q,
-        args.I,
-        args.sigq,
-        args.dmax,
+        # copied from denss/scripts/denss_abintio.py BEGIN
+        q=args.q,
+        I=args.I,
+        sigq=args.sigq,
+        dmax=args.dmax,
+        qraw=args.qraw,
+        Iraw=args.Iraw,
+        sigqraw=args.sigqraw,
         ne=args.ne,
         voxel=args.voxel,
         oversampling=args.oversampling,
@@ -261,13 +255,16 @@ def run_denss_impl(qc, ac, ec, dmax, infile_name, steps=MAXNUM_STEPS, progress_c
         recenter_steps=args.recenter_steps,
         recenter_mode=args.recenter_mode,
         positivity=args.positivity,
+        positivity_steps=args.positivity_steps,
         extrapolate=args.extrapolate,
         output=args.output,
         steps=args.steps,
         ncs=args.ncs,
         ncs_steps=args.ncs_steps,
         ncs_axis=args.ncs_axis,
+        ncs_type=args.ncs_type,
         seed=args.seed,
+        support_start=args.support_start,
         shrinkwrap=args.shrinkwrap,
         shrinkwrap_old_method=args.shrinkwrap_old_method,
         shrinkwrap_sigma_start=args.shrinkwrap_sigma_start,
@@ -281,8 +278,10 @@ def run_denss_impl(qc, ac, ec, dmax, infile_name, steps=MAXNUM_STEPS, progress_c
         write_freq=args.write_freq,
         enforce_connectivity=args.enforce_connectivity,
         enforce_connectivity_steps=args.enforce_connectivity_steps,
+        enforce_connectivity_max_features=args.enforce_connectivity_max_features,
         cutout=args.cutout,
         quiet=args.quiet,
+        # copied from denss/scripts/denss_abintio.py END
         gui=gui,
         DENSS_GPU=args.DENSS_GPU,
         progress_cb=progress_cb)

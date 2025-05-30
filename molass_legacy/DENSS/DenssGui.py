@@ -321,7 +321,7 @@ class DenssGuiDialog(Dialog):
             import molass_legacy.DENSS.DenssUtils as DenssUtils
             reload(DenssUtils)
         from .DenssUtils import fit_data_impl
-        sasrec, work_info = fit_data_impl(q, a, e, infile_name, gui=True, use_memory_data=use_memory_data)
+        sasrec, work_info = fit_data_impl(q, a, e, file=infile_name, gui=True, use_memory_data=use_memory_data)
         self.sasrec = sasrec
         self.work_info = work_info
         self.qc = sasrec.qc
