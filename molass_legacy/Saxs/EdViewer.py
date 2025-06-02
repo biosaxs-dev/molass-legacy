@@ -1,8 +1,7 @@
-# coding: utf-8
 """
     EdViewer.py
 
-    Copyright (c) 2019-2021, SAXS Team, KEK-PF
+    Copyright (c) 2019-2025, SAXS Team, KEK-PF
 """
 import os
 import numpy as np
@@ -11,10 +10,9 @@ import mpl_toolkits.mplot3d
 from matplotlib.gridspec import GridSpec
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from molass_legacy.KekLib.OurTkinter import Tk
-from OurToplevel import OurToplevel
+from molass_legacy.KekLib.OurToplevel import OurToplevel
 from molass_legacy.KekLib.TkSupplements import tk_set_icon_portable
 from molass_legacy.KekLib.OurMatplotlib import get_color, MplBackGround, reset_to_default_style
-from OurManim import manim_init, use_default_style, Animation, Collection, TextGroup, Parallelogram, rotation, angle
 from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar
 from .EdPlotter import ed_scatter
 
