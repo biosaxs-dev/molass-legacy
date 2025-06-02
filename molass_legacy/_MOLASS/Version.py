@@ -6,6 +6,7 @@
 
 """
 import platform
+from molass_legacy import get_version
 
 def get_version_string(cpuid=False):
     if cpuid:
@@ -14,8 +15,9 @@ def get_version_string(cpuid=False):
     else:
         cpuid = ''
 
-    return 'MOLASS 3.4.0 (2025-05-27 11:23:11 python %s %s%s)' % (
-                platform.python_version(), platform.architecture()[0], cpuid )
+    version = get_version()
+    return 'MOLASS %s (python %s %s%s)' % (
+                version, platform.python_version(), platform.architecture()[0], cpuid )
 
 def molass_version_for_publication():
     import re
