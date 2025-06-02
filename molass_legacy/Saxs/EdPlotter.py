@@ -1,7 +1,7 @@
 """
     EdPlotter.py
 
-    Copyright (c) 2019-2023, SAXS Team, KEK-PF
+    Copyright (c) 2019-2025, SAXS Team, KEK-PF
 """
 import os
 import numpy as np
@@ -10,7 +10,7 @@ from matplotlib import animation
 from .EdBoundary import guess_boundary_value
 
 class EdPlotter:
-    def __init__(self, fig, ax, data, cmap, file, denss_results=True):
+    def __init__(self, fig, ax, data, cmap, file, denss_results=True, log_folder=None):
         self.pause = False
         self.fig = fig
         self.ax = ax
@@ -19,12 +19,12 @@ class EdPlotter:
 
         n = data.shape[0]
         boundary = guess_boundary_value(data, debug=False)
-        print('boundary=', boundary)
+        # print('boundary=', boundary)
         w = np.where(data > boundary)
         wi = np.array(w, dtype=int).T
 
         xyz = wi - n/2
-        print(xyz.shape)
+        # print(xyz.shape)
         # print(xyz)
 
         cx, cy, cz = np.average(xyz, axis=0)
@@ -75,17 +75,18 @@ class EdPlotter:
             tx2 = x0*0.77 + x1*0.23
             tx3 = x0*0.6  + x1*0.4
 
-            try:
-                ret = get_log_items(folder + '/denss.log')
-                for xy, text in [ ((tx1, y0), r'$\chi^2$=%.3g' % ret.get('Chi2')),
-                                  ((tx2, y0), r'$R_g$=%.3g' % ret.get('Rg')),
-                                  ((tx3, y0), r'Support Volume=%.3g' % ret.get('Support Volume'))
-                                ]:
-                    fig.text(*xy, text, fontsize=16)
-            except:
-                from molass_legacy.KekLib.ExceptionTracebacker import ExceptionTracebacker
-                etb = ExceptionTracebacker()
-                print(etb)
+            if log_folder is not None:
+                try:
+                    ret = get_log_items(log_folder + '/denss.log')
+                    for xy, text in [ ((tx1, y0), r'$\chi^2$=%.3g' % ret.get('Chi2')),
+                                    ((tx2, y0), r'$R_g$=%.3g' % ret.get('Rg')),
+                                    ((tx3, y0), r'Support Volume=%.3g' % ret.get('Support Volume'))
+                                    ]:
+                        fig.text(*xy, text, fontsize=16)
+                except:
+                    from molass_legacy.KekLib.ExceptionTracebacker import ExceptionTracebacker
+                    etb = ExceptionTracebacker()
+                    print(etb)
 
         fig.colorbar(sc, ax=ax)
         self.set_cubic_limits(n//4, ax)
