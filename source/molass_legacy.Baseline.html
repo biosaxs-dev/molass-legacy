@@ -30,6 +30,7 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -39,6 +40,8 @@
     <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
     <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'source/molass_legacy.Baseline';</script>
     <link rel="icon" href="../_static/molamola.png"/>
@@ -155,7 +158,10 @@
  </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        <ul class="current nav bd-sidenav">
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.main.html">main</a></li>
+</ul>
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Alsaker.html">Alsaker</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.Alsaker.Bridge.html">Alsaker.Bridge</a></li>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.Alsaker.Compare.html">Alsaker.Compare</a></li>
@@ -1808,7 +1814,23 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.Baseline.BoBaseline.html#molass_legacy.Baseline.BoBaseline.bo_baseline_trial_impl"><code class="docutils literal notranslate"><span class="pre">bo_baseline_trial_impl()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="molass_legacy.Baseline.BpaInspect.html">Baseline.BpaInspect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.Baseline.BpaInspect.html">Baseline.BpaInspect</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Baseline.BpaInspect.html#molass_legacy.Baseline.BpaInspect.BpaInspector"><code class="docutils literal notranslate"><span class="pre">BpaInspector</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.Baseline.BpaInspect.html#molass_legacy.Baseline.BpaInspect.BpaInspector.body"><code class="docutils literal notranslate"><span class="pre">BpaInspector.body()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.Baseline.BpaInspect.html#molass_legacy.Baseline.BpaInspect.BpaInspector.buttonbox"><code class="docutils literal notranslate"><span class="pre">BpaInspector.buttonbox()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.Baseline.BpaInspect.html#molass_legacy.Baseline.BpaInspect.BpaInspector.draw_3d"><code class="docutils literal notranslate"><span class="pre">BpaInspector.draw_3d()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.Baseline.BpaInspect.html#molass_legacy.Baseline.BpaInspect.BpaInspector.draw_ecurve_at"><code class="docutils literal notranslate"><span class="pre">BpaInspector.draw_ecurve_at()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.Baseline.BpaInspect.html#molass_legacy.Baseline.BpaInspect.BpaInspector.same_scale_tracer"><code class="docutils literal notranslate"><span class="pre">BpaInspector.same_scale_tracer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.Baseline.BpaInspect.html#molass_legacy.Baseline.BpaInspect.BpaInspector.show"><code class="docutils literal notranslate"><span class="pre">BpaInspector.show()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Baseline.BpaInspect.html#molass_legacy.Baseline.BpaInspect.DebugPlotter"><code class="docutils literal notranslate"><span class="pre">DebugPlotter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.Baseline.BpaInspect.html#molass_legacy.Baseline.BpaInspect.DebugPlotter.plot"><code class="docutils literal notranslate"><span class="pre">DebugPlotter.plot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.Baseline.BpaInspect.html#molass_legacy.Baseline.BpaInspect.DebugPlotter.show"><code class="docutils literal notranslate"><span class="pre">DebugPlotter.show()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="molass_legacy.Baseline.Constants.html">Baseline.Constants</a></li>
 <li class="toctree-l1"><a class="reference internal" href="molass_legacy.Baseline.Convex.html">Baseline.Convex</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.Baseline.Convex.html#molass_legacy.Baseline.Convex.compute_baseline"><code class="docutils literal notranslate"><span class="pre">compute_baseline()</span></code></a></li>
@@ -1828,7 +1850,10 @@ document.write(`
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="molass_legacy.Baseline.Inspect.html">Baseline.Inspect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.Baseline.Inspect.html">Baseline.Inspect</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Baseline.Inspect.html#molass_legacy.Baseline.Inspect.baseline_inspect_impl"><code class="docutils literal notranslate"><span class="pre">baseline_inspect_impl()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="molass_legacy.Baseline.IntegralBaseline.html">Baseline.IntegralBaseline</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.Baseline.IntegralBaseline.html#molass_legacy.Baseline.IntegralBaseline.IntegralBaseline"><code class="docutils literal notranslate"><span class="pre">IntegralBaseline</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="molass_legacy.Baseline.IntegralBaseline.html#molass_legacy.Baseline.IntegralBaseline.IntegralBaseline.get_baseplane"><code class="docutils literal notranslate"><span class="pre">IntegralBaseline.get_baseplane()</span></code></a></li>
@@ -1882,8 +1907,55 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.Baseline.LinearBaseline.html#molass_legacy.Baseline.LinearBaseline.LinearBaseline"><code class="docutils literal notranslate"><span class="pre">LinearBaseline</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="molass_legacy.Baseline.LpmInspect.html">Baseline.LpmInspect</a></li>
-<li class="toctree-l1"><a class="reference internal" href="molass_legacy.Baseline.LpmInspect_for_paper.html">Baseline.LpmInspect_for_paper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.Baseline.LpmInspect.html">Baseline.LpmInspect</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Baseline.LpmInspect.html#molass_legacy.Baseline.LpmInspect.EcurveProxyCds"><code class="docutils literal notranslate"><span class="pre">EcurveProxyCds</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.Baseline.LpmInspect.html#molass_legacy.Baseline.LpmInspect.EcurveProxyCds.get_major_peak_info"><code class="docutils literal notranslate"><span class="pre">EcurveProxyCds.get_major_peak_info()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Baseline.LpmInspect.html#molass_legacy.Baseline.LpmInspect.FromToSpinBoxPair"><code class="docutils literal notranslate"><span class="pre">FromToSpinBoxPair</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.Baseline.LpmInspect.html#molass_legacy.Baseline.LpmInspect.FromToSpinBoxPair.config"><code class="docutils literal notranslate"><span class="pre">FromToSpinBoxPair.config()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.Baseline.LpmInspect.html#molass_legacy.Baseline.LpmInspect.FromToSpinBoxPair.get_vars"><code class="docutils literal notranslate"><span class="pre">FromToSpinBoxPair.get_vars()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Baseline.LpmInspect.html#molass_legacy.Baseline.LpmInspect.LpmInspector"><code class="docutils literal notranslate"><span class="pre">LpmInspector</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.Baseline.LpmInspect.html#molass_legacy.Baseline.LpmInspect.LpmInspector.apply"><code class="docutils literal notranslate"><span class="pre">LpmInspector.apply()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.Baseline.LpmInspect.html#molass_legacy.Baseline.LpmInspect.LpmInspector.baseline_manually_tracer"><code class="docutils literal notranslate"><span class="pre">LpmInspector.baseline_manually_tracer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.Baseline.LpmInspect.html#molass_legacy.Baseline.LpmInspect.LpmInspector.blink_start"><code class="docutils literal notranslate"><span class="pre">LpmInspector.blink_start()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.Baseline.LpmInspect.html#molass_legacy.Baseline.LpmInspect.LpmInspector.body"><code class="docutils literal notranslate"><span class="pre">LpmInspector.body()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.Baseline.LpmInspect.html#molass_legacy.Baseline.LpmInspect.LpmInspector.buid_baseline_type_buttons"><code class="docutils literal notranslate"><span class="pre">LpmInspector.buid_baseline_type_buttons()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.Baseline.LpmInspect.html#molass_legacy.Baseline.LpmInspect.LpmInspector.build_control_widgets"><code class="docutils literal notranslate"><span class="pre">LpmInspector.build_control_widgets()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.Baseline.LpmInspect.html#molass_legacy.Baseline.LpmInspect.LpmInspector.cancel"><code class="docutils literal notranslate"><span class="pre">LpmInspector.cancel()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.Baseline.LpmInspect.html#molass_legacy.Baseline.LpmInspect.LpmInspector.get_end_slices"><code class="docutils literal notranslate"><span class="pre">LpmInspector.get_end_slices()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.Baseline.LpmInspect.html#molass_legacy.Baseline.LpmInspect.LpmInspector.get_init_end_ranges"><code class="docutils literal notranslate"><span class="pre">LpmInspector.get_init_end_ranges()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.Baseline.LpmInspect.html#molass_legacy.Baseline.LpmInspect.LpmInspector.onselect"><code class="docutils literal notranslate"><span class="pre">LpmInspector.onselect()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.Baseline.LpmInspect.html#molass_legacy.Baseline.LpmInspect.LpmInspector.redraw"><code class="docutils literal notranslate"><span class="pre">LpmInspector.redraw()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.Baseline.LpmInspect.html#molass_legacy.Baseline.LpmInspect.LpmInspector.save_the_figure"><code class="docutils literal notranslate"><span class="pre">LpmInspector.save_the_figure()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.Baseline.LpmInspect.html#molass_legacy.Baseline.LpmInspect.LpmInspector.show"><code class="docutils literal notranslate"><span class="pre">LpmInspector.show()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.Baseline.LpmInspect.html#molass_legacy.Baseline.LpmInspect.LpmInspector.update_selector"><code class="docutils literal notranslate"><span class="pre">LpmInspector.update_selector()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.Baseline.LpmInspect.html#molass_legacy.Baseline.LpmInspect.LpmInspector.xray_baseline_type_tracer"><code class="docutils literal notranslate"><span class="pre">LpmInspector.xray_baseline_type_tracer()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Baseline.LpmInspect.html#molass_legacy.Baseline.LpmInspect.demo"><code class="docutils literal notranslate"><span class="pre">demo()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Baseline.LpmInspect.html#molass_legacy.Baseline.LpmInspect.demo_impl"><code class="docutils literal notranslate"><span class="pre">demo_impl()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.Baseline.LpmInspect_for_paper.html">Baseline.LpmInspect_for_paper</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Baseline.LpmInspect_for_paper.html#molass_legacy.Baseline.LpmInspect_for_paper.EcurveProxyCds"><code class="docutils literal notranslate"><span class="pre">EcurveProxyCds</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.Baseline.LpmInspect_for_paper.html#molass_legacy.Baseline.LpmInspect_for_paper.EcurveProxyCds.get_major_peak_info"><code class="docutils literal notranslate"><span class="pre">EcurveProxyCds.get_major_peak_info()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Baseline.LpmInspect_for_paper.html#molass_legacy.Baseline.LpmInspect_for_paper.LpmInspector"><code class="docutils literal notranslate"><span class="pre">LpmInspector</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.Baseline.LpmInspect_for_paper.html#molass_legacy.Baseline.LpmInspect_for_paper.LpmInspector.blink_start"><code class="docutils literal notranslate"><span class="pre">LpmInspector.blink_start()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.Baseline.LpmInspect_for_paper.html#molass_legacy.Baseline.LpmInspect_for_paper.LpmInspector.body"><code class="docutils literal notranslate"><span class="pre">LpmInspector.body()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.Baseline.LpmInspect_for_paper.html#molass_legacy.Baseline.LpmInspect_for_paper.LpmInspector.build_control_widgets"><code class="docutils literal notranslate"><span class="pre">LpmInspector.build_control_widgets()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.Baseline.LpmInspect_for_paper.html#molass_legacy.Baseline.LpmInspect_for_paper.LpmInspector.redraw"><code class="docutils literal notranslate"><span class="pre">LpmInspector.redraw()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.Baseline.LpmInspect_for_paper.html#molass_legacy.Baseline.LpmInspect_for_paper.LpmInspector.show"><code class="docutils literal notranslate"><span class="pre">LpmInspector.show()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Baseline.LpmInspect_for_paper.html#molass_legacy.Baseline.LpmInspect_for_paper.demo"><code class="docutils literal notranslate"><span class="pre">demo()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Baseline.LpmInspect_for_paper.html#molass_legacy.Baseline.LpmInspect_for_paper.demo_impl"><code class="docutils literal notranslate"><span class="pre">demo_impl()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="molass_legacy.Baseline.LpmProxy.html">Baseline.LpmProxy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="molass_legacy.Baseline.MpiAlgebra.html">Baseline.MpiAlgebra</a></li>
 <li class="toctree-l1"><a class="reference internal" href="molass_legacy.Baseline.PatchUtils.html">Baseline.PatchUtils</a><ul>

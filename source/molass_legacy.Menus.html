@@ -30,6 +30,7 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -39,6 +40,8 @@
     <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
     <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'source/molass_legacy.Menus';</script>
     <link rel="icon" href="../_static/molamola.png"/>
@@ -155,7 +158,10 @@
  </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        <ul class="current nav bd-sidenav">
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.main.html">main</a></li>
+</ul>
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Alsaker.html">Alsaker</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.Alsaker.Bridge.html">Alsaker.Bridge</a></li>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.Alsaker.Compare.html">Alsaker.Compare</a></li>
@@ -1850,7 +1856,28 @@ document.write(`
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="molass_legacy.Menus.V2Menu.html">Menus.V2Menu</a></li>
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.Menus.V2Menu.html">Menus.V2Menu</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.Menus.V2Menu.html#molass_legacy.Menus.V2Menu.V2Menu"><code class="docutils literal notranslate"><span class="pre">V2Menu</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.Menus.V2Menu.html#molass_legacy.Menus.V2Menu.V2Menu.config"><code class="docutils literal notranslate"><span class="pre">V2Menu.config()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.Menus.V2Menu.html#molass_legacy.Menus.V2Menu.V2Menu.get_fullopt_dialog"><code class="docutils literal notranslate"><span class="pre">V2Menu.get_fullopt_dialog()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.Menus.V2Menu.html#molass_legacy.Menus.V2Menu.V2Menu.get_peak_editor"><code class="docutils literal notranslate"><span class="pre">V2Menu.get_peak_editor()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.Menus.V2Menu.html#molass_legacy.Menus.V2Menu.V2Menu.get_ready_for_peak_editor"><code class="docutils literal notranslate"><span class="pre">V2Menu.get_ready_for_peak_editor()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.Menus.V2Menu.html#molass_legacy.Menus.V2Menu.V2Menu.get_strategy_dialog"><code class="docutils literal notranslate"><span class="pre">V2Menu.get_strategy_dialog()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.Menus.V2Menu.html#molass_legacy.Menus.V2Menu.V2Menu.get_trace_dialog"><code class="docutils literal notranslate"><span class="pre">V2Menu.get_trace_dialog()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.Menus.V2Menu.html#molass_legacy.Menus.V2Menu.V2Menu.pe_apply_cb"><code class="docutils literal notranslate"><span class="pre">V2Menu.pe_apply_cb()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.Menus.V2Menu.html#molass_legacy.Menus.V2Menu.V2Menu.pe_ready_cb"><code class="docutils literal notranslate"><span class="pre">V2Menu.pe_ready_cb()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.Menus.V2Menu.html#molass_legacy.Menus.V2Menu.V2Menu.show_automated_execution"><code class="docutils literal notranslate"><span class="pre">V2Menu.show_automated_execution()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.Menus.V2Menu.html#molass_legacy.Menus.V2Menu.V2Menu.show_parameter_transition"><code class="docutils literal notranslate"><span class="pre">V2Menu.show_parameter_transition()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.Menus.V2Menu.html#molass_legacy.Menus.V2Menu.V2Menu.show_peak_editor"><code class="docutils literal notranslate"><span class="pre">V2Menu.show_peak_editor()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.Menus.V2Menu.html#molass_legacy.Menus.V2Menu.V2Menu.show_result_animation"><code class="docutils literal notranslate"><span class="pre">V2Menu.show_result_animation()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.Menus.V2Menu.html#molass_legacy.Menus.V2Menu.V2Menu.show_result_folder_selector"><code class="docutils literal notranslate"><span class="pre">V2Menu.show_result_folder_selector()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.Menus.V2Menu.html#molass_legacy.Menus.V2Menu.V2Menu.show_result_viewer"><code class="docutils literal notranslate"><span class="pre">V2Menu.show_result_viewer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.Menus.V2Menu.html#molass_legacy.Menus.V2Menu.V2Menu.td_ready_cb"><code class="docutils literal notranslate"><span class="pre">V2Menu.td_ready_cb()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.Menus.V2Menu.html#molass_legacy.Menus.V2Menu.V2Menu.v2_exec_wrapper"><code class="docutils literal notranslate"><span class="pre">V2Menu.v2_exec_wrapper()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </div>
 </section>

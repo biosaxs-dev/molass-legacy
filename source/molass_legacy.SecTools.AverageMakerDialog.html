@@ -30,6 +30,7 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -39,6 +40,8 @@
     <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
     <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'source/molass_legacy.SecTools.AverageMakerDialog';</script>
     <link rel="icon" href="../_static/molamola.png"/>
@@ -155,7 +158,10 @@
  </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        <ul class="current nav bd-sidenav">
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.main.html">main</a></li>
+</ul>
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Alsaker.html">Alsaker</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.Alsaker.Bridge.html">Alsaker.Bridge</a></li>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.Alsaker.Compare.html">Alsaker.Compare</a></li>
@@ -1717,7 +1723,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -1733,6 +1741,26 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.SecTools.AverageMakerDialog.AverageMakerDialog"><code class="docutils literal notranslate"><span class="pre">AverageMakerDialog</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.SecTools.AverageMakerDialog.AverageMakerDialog.body"><code class="docutils literal notranslate"><span class="pre">AverageMakerDialog.body()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.SecTools.AverageMakerDialog.AverageMakerDialog.buttonbox"><code class="docutils literal notranslate"><span class="pre">AverageMakerDialog.buttonbox()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.SecTools.AverageMakerDialog.AverageMakerDialog.generate_pattern"><code class="docutils literal notranslate"><span class="pre">AverageMakerDialog.generate_pattern()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.SecTools.AverageMakerDialog.AverageMakerDialog.is_busy"><code class="docutils literal notranslate"><span class="pre">AverageMakerDialog.is_busy()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.SecTools.AverageMakerDialog.AverageMakerDialog.make_average"><code class="docutils literal notranslate"><span class="pre">AverageMakerDialog.make_average()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.SecTools.AverageMakerDialog.AverageMakerDialog.name_pattern3_tracer"><code class="docutils literal notranslate"><span class="pre">AverageMakerDialog.name_pattern3_tracer()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.SecTools.AverageMakerDialog.AverageMakerDialog.need_out_pattern_update"><code class="docutils literal notranslate"><span class="pre">AverageMakerDialog.need_out_pattern_update()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.SecTools.AverageMakerDialog.AverageMakerDialog.on_entry_in_folder"><code class="docutils literal notranslate"><span class="pre">AverageMakerDialog.on_entry_in_folder()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.SecTools.AverageMakerDialog.AverageMakerDialog.on_entry_out_folder"><code class="docutils literal notranslate"><span class="pre">AverageMakerDialog.on_entry_out_folder()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.SecTools.AverageMakerDialog.AverageMakerDialog.show"><code class="docutils literal notranslate"><span class="pre">AverageMakerDialog.show()</span></code></a></li>
+</ul>
+</li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -1742,8 +1770,81 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="sectools-averagemakerdialog">
-<h1>SecTools.AverageMakerDialog<a class="headerlink" href="#sectools-averagemakerdialog" title="Link to this heading">#</a></h1>
+  <section id="module-molass_legacy.SecTools.AverageMakerDialog">
+<span id="sectools-averagemakerdialog"></span><h1>SecTools.AverageMakerDialog<a class="headerlink" href="#module-molass_legacy.SecTools.AverageMakerDialog" title="Link to this heading">#</a></h1>
+<p>SecTools.AverageMakerDialog.py</p>
+<p>Copyright (c) 2021, SAXS Team, KEK-PF</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="molass_legacy.SecTools.AverageMakerDialog.AverageMakerDialog">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AverageMakerDialog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.SecTools.AverageMakerDialog.AverageMakerDialog" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="molass_legacy.KekLib.OurTkinter.html#molass_legacy.KekLib.OurTkinter.Dialog" title="molass_legacy.KekLib.OurTkinter.Dialog"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dialog</span></code></a></p>
+<p>Initialize a dialog.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>window</strong> (<em>parent -- a parent</em>)</p></li>
+<li><p><strong>title</strong> (<em>title -- the dialog</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.SecTools.AverageMakerDialog.AverageMakerDialog.body">
+<span class="sig-name descname"><span class="pre">body</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">body_frame</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.SecTools.AverageMakerDialog.AverageMakerDialog.body" title="Link to this definition">#</a></dt>
+<dd><p>create dialog body.</p>
+<p>return widget that should have initial focus.
+This method should be overridden, and is called
+by the __init__ method.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.SecTools.AverageMakerDialog.AverageMakerDialog.buttonbox">
+<span class="sig-name descname"><span class="pre">buttonbox</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.SecTools.AverageMakerDialog.AverageMakerDialog.buttonbox" title="Link to this definition">#</a></dt>
+<dd><p>add standard button box.</p>
+<p>override if you do not want the standard buttons</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.SecTools.AverageMakerDialog.AverageMakerDialog.generate_pattern">
+<span class="sig-name descname"><span class="pre">generate_pattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_folder1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name_pattern1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_folder</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.SecTools.AverageMakerDialog.AverageMakerDialog.generate_pattern" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.SecTools.AverageMakerDialog.AverageMakerDialog.is_busy">
+<span class="sig-name descname"><span class="pre">is_busy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.SecTools.AverageMakerDialog.AverageMakerDialog.is_busy" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.SecTools.AverageMakerDialog.AverageMakerDialog.make_average">
+<span class="sig-name descname"><span class="pre">make_average</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.SecTools.AverageMakerDialog.AverageMakerDialog.make_average" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.SecTools.AverageMakerDialog.AverageMakerDialog.name_pattern3_tracer">
+<span class="sig-name descname"><span class="pre">name_pattern3_tracer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.SecTools.AverageMakerDialog.AverageMakerDialog.name_pattern3_tracer" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.SecTools.AverageMakerDialog.AverageMakerDialog.need_out_pattern_update">
+<span class="sig-name descname"><span class="pre">need_out_pattern_update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.SecTools.AverageMakerDialog.AverageMakerDialog.need_out_pattern_update" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.SecTools.AverageMakerDialog.AverageMakerDialog.on_entry_in_folder">
+<span class="sig-name descname"><span class="pre">on_entry_in_folder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_files</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name_pattern</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_files</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.SecTools.AverageMakerDialog.AverageMakerDialog.on_entry_in_folder" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.SecTools.AverageMakerDialog.AverageMakerDialog.on_entry_out_folder">
+<span class="sig-name descname"><span class="pre">on_entry_out_folder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">on_leave</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.SecTools.AverageMakerDialog.AverageMakerDialog.on_entry_out_folder" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.SecTools.AverageMakerDialog.AverageMakerDialog.show">
+<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.SecTools.AverageMakerDialog.AverageMakerDialog.show" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </section>
 
 
@@ -1781,6 +1882,33 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.SecTools.AverageMakerDialog.AverageMakerDialog"><code class="docutils literal notranslate"><span class="pre">AverageMakerDialog</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.SecTools.AverageMakerDialog.AverageMakerDialog.body"><code class="docutils literal notranslate"><span class="pre">AverageMakerDialog.body()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.SecTools.AverageMakerDialog.AverageMakerDialog.buttonbox"><code class="docutils literal notranslate"><span class="pre">AverageMakerDialog.buttonbox()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.SecTools.AverageMakerDialog.AverageMakerDialog.generate_pattern"><code class="docutils literal notranslate"><span class="pre">AverageMakerDialog.generate_pattern()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.SecTools.AverageMakerDialog.AverageMakerDialog.is_busy"><code class="docutils literal notranslate"><span class="pre">AverageMakerDialog.is_busy()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.SecTools.AverageMakerDialog.AverageMakerDialog.make_average"><code class="docutils literal notranslate"><span class="pre">AverageMakerDialog.make_average()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.SecTools.AverageMakerDialog.AverageMakerDialog.name_pattern3_tracer"><code class="docutils literal notranslate"><span class="pre">AverageMakerDialog.name_pattern3_tracer()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.SecTools.AverageMakerDialog.AverageMakerDialog.need_out_pattern_update"><code class="docutils literal notranslate"><span class="pre">AverageMakerDialog.need_out_pattern_update()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.SecTools.AverageMakerDialog.AverageMakerDialog.on_entry_in_folder"><code class="docutils literal notranslate"><span class="pre">AverageMakerDialog.on_entry_in_folder()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.SecTools.AverageMakerDialog.AverageMakerDialog.on_entry_out_folder"><code class="docutils literal notranslate"><span class="pre">AverageMakerDialog.on_entry_out_folder()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.SecTools.AverageMakerDialog.AverageMakerDialog.show"><code class="docutils literal notranslate"><span class="pre">AverageMakerDialog.show()</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>

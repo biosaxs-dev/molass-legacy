@@ -30,6 +30,7 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -39,6 +40,8 @@
     <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
     <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'source/molass_legacy.DENSS';</script>
     <link rel="icon" href="../_static/molamola.png"/>
@@ -155,7 +158,10 @@
  </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        <ul class="current nav bd-sidenav">
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.main.html">main</a></li>
+</ul>
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Alsaker.html">Alsaker</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.Alsaker.Bridge.html">Alsaker.Bridge</a></li>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.Alsaker.Compare.html">Alsaker.Compare</a></li>
@@ -1753,8 +1759,9 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="denss">
-<h1>DENSS<a class="headerlink" href="#denss" title="Link to this heading">#</a></h1>
+  <section id="module-molass_legacy.DENSS">
+<span id="denss"></span><h1>DENSS<a class="headerlink" href="#module-molass_legacy.DENSS" title="Link to this heading">#</a></h1>
+<p>DENSS.__init__</p>
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">#</a></h2>
 <div class="toctree-wrapper compound">
@@ -1783,14 +1790,137 @@ document.write(`
 <h2>Submodules<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="molass_legacy.DENSS.DenssDriver.html">DENSS.DenssDriver</a></li>
-<li class="toctree-l1"><a class="reference internal" href="molass_legacy.DENSS.DenssFitData.html">DENSS.DenssFitData</a></li>
-<li class="toctree-l1"><a class="reference internal" href="molass_legacy.DENSS.DenssGui.html">DENSS.DenssGui</a></li>
-<li class="toctree-l1"><a class="reference internal" href="molass_legacy.DENSS.DenssManager.html">DENSS.DenssManager</a></li>
-<li class="toctree-l1"><a class="reference internal" href="molass_legacy.DENSS.DenssManagerDialog.html">DENSS.DenssManagerDialog</a></li>
-<li class="toctree-l1"><a class="reference internal" href="molass_legacy.DENSS.DenssUtils.html">DENSS.DenssUtils</a></li>
-<li class="toctree-l1"><a class="reference internal" href="molass_legacy.DENSS.DmaxDependency.html">DENSS.DmaxDependency</a></li>
-<li class="toctree-l1"><a class="reference internal" href="molass_legacy.DENSS.DmaxEstimation.html">DENSS.DmaxEstimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.DENSS.DenssDriver.html">DENSS.DenssDriver</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.DenssDriver.html#molass_legacy.DENSS.DenssDriver.DenssLoghandler"><code class="docutils literal notranslate"><span class="pre">DenssLoghandler</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.DenssDriver.html#molass_legacy.DENSS.DenssDriver.DenssLoghandler.emit"><code class="docutils literal notranslate"><span class="pre">DenssLoghandler.emit()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.DenssDriver.html#molass_legacy.DENSS.DenssDriver.UserCancel"><code class="docutils literal notranslate"><span class="pre">UserCancel</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.DenssDriver.html#molass_legacy.DENSS.DenssDriver.run_denss"><code class="docutils literal notranslate"><span class="pre">run_denss()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.DENSS.DenssFitData.html">DENSS.DenssFitData</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.DenssFitData.html#molass_legacy.DENSS.DenssFitData.DenssFitDataDialog"><code class="docutils literal notranslate"><span class="pre">DenssFitDataDialog</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.DenssFitData.html#molass_legacy.DENSS.DenssFitData.DenssFitDataDialog.apply"><code class="docutils literal notranslate"><span class="pre">DenssFitDataDialog.apply()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.DenssFitData.html#molass_legacy.DENSS.DenssFitData.DenssFitDataDialog.body"><code class="docutils literal notranslate"><span class="pre">DenssFitDataDialog.body()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.DenssFitData.html#molass_legacy.DENSS.DenssFitData.DenssFitDataDialog.create_figure"><code class="docutils literal notranslate"><span class="pre">DenssFitDataDialog.create_figure()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.DenssFitData.html#molass_legacy.DENSS.DenssFitData.DenssFitDataDialog.get_sasrec"><code class="docutils literal notranslate"><span class="pre">DenssFitDataDialog.get_sasrec()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.DenssFitData.html#molass_legacy.DENSS.DenssFitData.DenssFitDataDialog.show"><code class="docutils literal notranslate"><span class="pre">DenssFitDataDialog.show()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.DenssFitData.html#molass_legacy.DENSS.DenssFitData.fit_data_plot"><code class="docutils literal notranslate"><span class="pre">fit_data_plot()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.DENSS.DenssGui.html">DENSS.DenssGui</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.DenssGui.html#molass_legacy.DENSS.DenssGui.DenssGuiDialog"><code class="docutils literal notranslate"><span class="pre">DenssGuiDialog</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.DenssGui.html#molass_legacy.DENSS.DenssGui.DenssGuiDialog.add_dnd_bind"><code class="docutils literal notranslate"><span class="pre">DenssGuiDialog.add_dnd_bind()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.DenssGui.html#molass_legacy.DENSS.DenssGui.DenssGuiDialog.apply_fit_data"><code class="docutils literal notranslate"><span class="pre">DenssGuiDialog.apply_fit_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.DenssGui.html#molass_legacy.DENSS.DenssGui.DenssGuiDialog.ask_cancel"><code class="docutils literal notranslate"><span class="pre">DenssGuiDialog.ask_cancel()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.DenssGui.html#molass_legacy.DENSS.DenssGui.DenssGuiDialog.body"><code class="docutils literal notranslate"><span class="pre">DenssGuiDialog.body()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.DenssGui.html#molass_legacy.DENSS.DenssGui.DenssGuiDialog.buttonbox"><code class="docutils literal notranslate"><span class="pre">DenssGuiDialog.buttonbox()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.DenssGui.html#molass_legacy.DENSS.DenssGui.DenssGuiDialog.create_figure"><code class="docutils literal notranslate"><span class="pre">DenssGuiDialog.create_figure()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.DenssGui.html#molass_legacy.DENSS.DenssGui.DenssGuiDialog.denss_fit_data"><code class="docutils literal notranslate"><span class="pre">DenssGuiDialog.denss_fit_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.DenssGui.html#molass_legacy.DENSS.DenssGui.DenssGuiDialog.denss_thread"><code class="docutils literal notranslate"><span class="pre">DenssGuiDialog.denss_thread()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.DenssGui.html#molass_legacy.DENSS.DenssGui.DenssGuiDialog.draw_curve"><code class="docutils literal notranslate"><span class="pre">DenssGuiDialog.draw_curve()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.DenssGui.html#molass_legacy.DENSS.DenssGui.DenssGuiDialog.illustrate_dmax"><code class="docutils literal notranslate"><span class="pre">DenssGuiDialog.illustrate_dmax()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.DenssGui.html#molass_legacy.DENSS.DenssGui.DenssGuiDialog.is_ready"><code class="docutils literal notranslate"><span class="pre">DenssGuiDialog.is_ready()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.DenssGui.html#molass_legacy.DENSS.DenssGui.DenssGuiDialog.ok"><code class="docutils literal notranslate"><span class="pre">DenssGuiDialog.ok()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.DenssGui.html#molass_legacy.DENSS.DenssGui.DenssGuiDialog.on_fig_dnd"><code class="docutils literal notranslate"><span class="pre">DenssGuiDialog.on_fig_dnd()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.DenssGui.html#molass_legacy.DENSS.DenssGui.DenssGuiDialog.on_file_entry"><code class="docutils literal notranslate"><span class="pre">DenssGuiDialog.on_file_entry()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.DenssGui.html#molass_legacy.DENSS.DenssGui.DenssGuiDialog.on_folder_entry"><code class="docutils literal notranslate"><span class="pre">DenssGuiDialog.on_folder_entry()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.DenssGui.html#molass_legacy.DENSS.DenssGui.DenssGuiDialog.on_input"><code class="docutils literal notranslate"><span class="pre">DenssGuiDialog.on_input()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.DenssGui.html#molass_legacy.DENSS.DenssGui.DenssGuiDialog.prepare_from_args"><code class="docutils literal notranslate"><span class="pre">DenssGuiDialog.prepare_from_args()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.DenssGui.html#molass_legacy.DENSS.DenssGui.DenssGuiDialog.run_denss_thread"><code class="docutils literal notranslate"><span class="pre">DenssGuiDialog.run_denss_thread()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.DenssGui.html#molass_legacy.DENSS.DenssGui.DenssGuiDialog.show"><code class="docutils literal notranslate"><span class="pre">DenssGuiDialog.show()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.DenssGui.html#molass_legacy.DENSS.DenssGui.DenssGuiDialog.show_denss_manager"><code class="docutils literal notranslate"><span class="pre">DenssGuiDialog.show_denss_manager()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.DenssGui.html#molass_legacy.DENSS.DenssGui.DenssGuiDialog.show_ed_viewer"><code class="docutils literal notranslate"><span class="pre">DenssGuiDialog.show_ed_viewer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.DenssGui.html#molass_legacy.DENSS.DenssGui.DenssGuiDialog.submit_to_denss_manager"><code class="docutils literal notranslate"><span class="pre">DenssGuiDialog.submit_to_denss_manager()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.DenssGui.html#molass_legacy.DENSS.DenssGui.DenssGuiDialog.update_button_states"><code class="docutils literal notranslate"><span class="pre">DenssGuiDialog.update_button_states()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.DenssGui.html#molass_legacy.DENSS.DenssGui.DenssGuiDialog.update_guide_message"><code class="docutils literal notranslate"><span class="pre">DenssGuiDialog.update_guide_message()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.DenssGui.html#molass_legacy.DENSS.DenssGui.DenssGuiDialog.update_progress_text"><code class="docutils literal notranslate"><span class="pre">DenssGuiDialog.update_progress_text()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.DenssGui.html#molass_legacy.DENSS.DenssGui.ProgressLoghandler"><code class="docutils literal notranslate"><span class="pre">ProgressLoghandler</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.DenssGui.html#molass_legacy.DENSS.DenssGui.ProgressLoghandler.emit"><code class="docutils literal notranslate"><span class="pre">ProgressLoghandler.emit()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.DenssGui.html#molass_legacy.DENSS.DenssGui.StdoutRedirector"><code class="docutils literal notranslate"><span class="pre">StdoutRedirector</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.DenssGui.html#molass_legacy.DENSS.DenssGui.StdoutRedirector.flush"><code class="docutils literal notranslate"><span class="pre">StdoutRedirector.flush()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.DenssGui.html#molass_legacy.DENSS.DenssGui.StdoutRedirector.write"><code class="docutils literal notranslate"><span class="pre">StdoutRedirector.write()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.DENSS.DenssManager.html">DENSS.DenssManager</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.DenssManager.html#molass_legacy.DENSS.DenssManager.DenssManager"><code class="docutils literal notranslate"><span class="pre">DenssManager</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.DenssManager.html#molass_legacy.DENSS.DenssManager.DenssManager.accept_job"><code class="docutils literal notranslate"><span class="pre">DenssManager.accept_job()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.DenssManager.html#molass_legacy.DENSS.DenssManager.DenssManager.decide_num_workers"><code class="docutils literal notranslate"><span class="pre">DenssManager.decide_num_workers()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.DenssManager.html#molass_legacy.DENSS.DenssManager.DenssManager.error_callback"><code class="docutils literal notranslate"><span class="pre">DenssManager.error_callback()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.DenssManager.html#molass_legacy.DENSS.DenssManager.DenssManager.success_callback"><code class="docutils literal notranslate"><span class="pre">DenssManager.success_callback()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.DenssManager.html#molass_legacy.DENSS.DenssManager.DenssManager.terminate"><code class="docutils literal notranslate"><span class="pre">DenssManager.terminate()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.DenssManager.html#molass_legacy.DENSS.DenssManager.JobInfo"><code class="docutils literal notranslate"><span class="pre">JobInfo</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.DenssManager.html#molass_legacy.DENSS.DenssManager.activate_manager"><code class="docutils literal notranslate"><span class="pre">activate_manager()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.DenssManager.html#molass_legacy.DENSS.DenssManager.get_list"><code class="docutils literal notranslate"><span class="pre">get_list()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.DenssManager.html#molass_legacy.DENSS.DenssManager.get_table"><code class="docutils literal notranslate"><span class="pre">get_table()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.DenssManager.html#molass_legacy.DENSS.DenssManager.print_table"><code class="docutils literal notranslate"><span class="pre">print_table()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.DenssManager.html#molass_legacy.DENSS.DenssManager.submit"><code class="docutils literal notranslate"><span class="pre">submit()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.DenssManager.html#molass_legacy.DENSS.DenssManager.terminate_manager_impl"><code class="docutils literal notranslate"><span class="pre">terminate_manager_impl()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.DENSS.DenssManagerDialog.html">DENSS.DenssManagerDialog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.DenssManagerDialog.html#molass_legacy.DENSS.DenssManagerDialog.DenssManagerDialog"><code class="docutils literal notranslate"><span class="pre">DenssManagerDialog</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.DenssManagerDialog.html#molass_legacy.DENSS.DenssManagerDialog.DenssManagerDialog.apply"><code class="docutils literal notranslate"><span class="pre">DenssManagerDialog.apply()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.DenssManagerDialog.html#molass_legacy.DENSS.DenssManagerDialog.DenssManagerDialog.body"><code class="docutils literal notranslate"><span class="pre">DenssManagerDialog.body()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.DenssManagerDialog.html#molass_legacy.DENSS.DenssManagerDialog.DenssManagerDialog.buttonbox"><code class="docutils literal notranslate"><span class="pre">DenssManagerDialog.buttonbox()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.DenssManagerDialog.html#molass_legacy.DENSS.DenssManagerDialog.DenssManagerDialog.cancel_all_jobs"><code class="docutils literal notranslate"><span class="pre">DenssManagerDialog.cancel_all_jobs()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.DenssManagerDialog.html#molass_legacy.DENSS.DenssManagerDialog.DenssManagerDialog.cancel_job"><code class="docutils literal notranslate"><span class="pre">DenssManagerDialog.cancel_job()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.DenssManagerDialog.html#molass_legacy.DENSS.DenssManagerDialog.DenssManagerDialog.cancel_job_impl"><code class="docutils literal notranslate"><span class="pre">DenssManagerDialog.cancel_job_impl()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.DenssManagerDialog.html#molass_legacy.DENSS.DenssManagerDialog.DenssManagerDialog.refresh"><code class="docutils literal notranslate"><span class="pre">DenssManagerDialog.refresh()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.DenssManagerDialog.html#molass_legacy.DENSS.DenssManagerDialog.DenssManagerDialog.show"><code class="docutils literal notranslate"><span class="pre">DenssManagerDialog.show()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.DenssManagerDialog.html#molass_legacy.DENSS.DenssManagerDialog.DenssManagerDialog.submit_jobs"><code class="docutils literal notranslate"><span class="pre">DenssManagerDialog.submit_jobs()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.DenssManagerDialog.html#molass_legacy.DENSS.DenssManagerDialog.DenssManagerDialog.update_geometry"><code class="docutils literal notranslate"><span class="pre">DenssManagerDialog.update_geometry()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.DenssManagerDialog.html#molass_legacy.DENSS.DenssManagerDialog.DenssManagerDialog.update_table"><code class="docutils literal notranslate"><span class="pre">DenssManagerDialog.update_table()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.DenssManagerDialog.html#molass_legacy.DENSS.DenssManagerDialog.format_duration"><code class="docutils literal notranslate"><span class="pre">format_duration()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.DenssManagerDialog.html#molass_legacy.DENSS.DenssManagerDialog.format_time"><code class="docutils literal notranslate"><span class="pre">format_time()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.DenssManagerDialog.html#molass_legacy.DENSS.DenssManagerDialog.get_ch2_fg_color"><code class="docutils literal notranslate"><span class="pre">get_ch2_fg_color()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.DenssManagerDialog.html#molass_legacy.DENSS.DenssManagerDialog.get_state_color"><code class="docutils literal notranslate"><span class="pre">get_state_color()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.DenssManagerDialog.html#molass_legacy.DENSS.DenssManagerDialog.get_state_text"><code class="docutils literal notranslate"><span class="pre">get_state_text()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.DenssManagerDialog.html#molass_legacy.DENSS.DenssManagerDialog.show_manager_dialog"><code class="docutils literal notranslate"><span class="pre">show_manager_dialog()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.DenssManagerDialog.html#molass_legacy.DENSS.DenssManagerDialog.terminate_manager"><code class="docutils literal notranslate"><span class="pre">terminate_manager()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.DENSS.DenssUtils.html">DENSS.DenssUtils</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.DenssUtils.html#molass_legacy.DENSS.DenssUtils.fit_data"><code class="docutils literal notranslate"><span class="pre">fit_data()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.DenssUtils.html#molass_legacy.DENSS.DenssUtils.fit_data_bc"><code class="docutils literal notranslate"><span class="pre">fit_data_bc()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.DenssUtils.html#molass_legacy.DENSS.DenssUtils.fit_data_impl"><code class="docutils literal notranslate"><span class="pre">fit_data_impl()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.DenssUtils.html#molass_legacy.DENSS.DenssUtils.get_argparser"><code class="docutils literal notranslate"><span class="pre">get_argparser()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.DenssUtils.html#molass_legacy.DENSS.DenssUtils.get_denss_log_items"><code class="docutils literal notranslate"><span class="pre">get_denss_log_items()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.DenssUtils.html#molass_legacy.DENSS.DenssUtils.get_denssfolder"><code class="docutils literal notranslate"><span class="pre">get_denssfolder()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.DenssUtils.html#molass_legacy.DENSS.DenssUtils.get_dmax_with_datgnom"><code class="docutils literal notranslate"><span class="pre">get_dmax_with_datgnom()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.DenssUtils.html#molass_legacy.DENSS.DenssUtils.get_outfolder"><code class="docutils literal notranslate"><span class="pre">get_outfolder()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.DenssUtils.html#molass_legacy.DENSS.DenssUtils.run_denss_impl"><code class="docutils literal notranslate"><span class="pre">run_denss_impl()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.DenssUtils.html#molass_legacy.DENSS.DenssUtils.run_denss_impl_dummy"><code class="docutils literal notranslate"><span class="pre">run_denss_impl_dummy()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.DenssUtils.html#molass_legacy.DENSS.DenssUtils.run_pdb2mrc"><code class="docutils literal notranslate"><span class="pre">run_pdb2mrc()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.DENSS.DmaxDependency.html">DENSS.DmaxDependency</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.DmaxDependency.html#molass_legacy.DENSS.DmaxDependency.collect_dependecy_data"><code class="docutils literal notranslate"><span class="pre">collect_dependecy_data()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.DmaxDependency.html#molass_legacy.DENSS.DmaxDependency.run_datgnom"><code class="docutils literal notranslate"><span class="pre">run_datgnom()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.DmaxDependency.html#molass_legacy.DENSS.DmaxDependency.run_denss_for_survey"><code class="docutils literal notranslate"><span class="pre">run_denss_for_survey()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.DmaxDependency.html#molass_legacy.DENSS.DmaxDependency.run_denss_varying_dmax"><code class="docutils literal notranslate"><span class="pre">run_denss_varying_dmax()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.DENSS.DmaxEstimation.html">DENSS.DmaxEstimation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.DmaxEstimation.html#molass_legacy.DENSS.DmaxEstimation.demo"><code class="docutils literal notranslate"><span class="pre">demo()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.DmaxEstimation.html#molass_legacy.DENSS.DmaxEstimation.estimate_dmax"><code class="docutils literal notranslate"><span class="pre">estimate_dmax()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.DmaxEstimation.html#molass_legacy.DENSS.DmaxEstimation.illustrate_dmax"><code class="docutils literal notranslate"><span class="pre">illustrate_dmax()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.DmaxEstimation.html#molass_legacy.DENSS.DmaxEstimation.plot_input"><code class="docutils literal notranslate"><span class="pre">plot_input()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="molass_legacy.DENSS.update-custom-codes.html">DENSS.update-custom-codes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="molass_legacy.DENSS.update-denss.html">DENSS.update-denss</a></li>
 </ul>

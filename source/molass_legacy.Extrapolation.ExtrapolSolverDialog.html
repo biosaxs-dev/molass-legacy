@@ -30,6 +30,7 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -39,6 +40,8 @@
     <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
     <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'source/molass_legacy.Extrapolation.ExtrapolSolverDialog';</script>
     <link rel="icon" href="../_static/molamola.png"/>
@@ -155,7 +158,10 @@
  </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        <ul class="current nav bd-sidenav">
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.main.html">main</a></li>
+</ul>
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Alsaker.html">Alsaker</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.Alsaker.Bridge.html">Alsaker.Bridge</a></li>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.Alsaker.Compare.html">Alsaker.Compare</a></li>
@@ -1717,7 +1723,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -1733,6 +1741,41 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog"><code class="docutils literal notranslate"><span class="pre">ExtrapolSolverDialog</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.add_dnd_bind"><code class="docutils literal notranslate"><span class="pre">ExtrapolSolverDialog.add_dnd_bind()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.apply"><code class="docutils literal notranslate"><span class="pre">ExtrapolSolverDialog.apply()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.auto_cdi_for_all"><code class="docutils literal notranslate"><span class="pre">ExtrapolSolverDialog.auto_cdi_for_all()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.body"><code class="docutils literal notranslate"><span class="pre">ExtrapolSolverDialog.body()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.buttonbox"><code class="docutils literal notranslate"><span class="pre">ExtrapolSolverDialog.buttonbox()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.cancel"><code class="docutils literal notranslate"><span class="pre">ExtrapolSolverDialog.cancel()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.canvas_draw"><code class="docutils literal notranslate"><span class="pre">ExtrapolSolverDialog.canvas_draw()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.get_ignore_bq"><code class="docutils literal notranslate"><span class="pre">ExtrapolSolverDialog.get_ignore_bq()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.get_known_info_list"><code class="docutils literal notranslate"><span class="pre">ExtrapolSolverDialog.get_known_info_list()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.log_rg_info"><code class="docutils literal notranslate"><span class="pre">ExtrapolSolverDialog.log_rg_info()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.on_drop"><code class="docutils literal notranslate"><span class="pre">ExtrapolSolverDialog.on_drop()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.on_the_fly"><code class="docutils literal notranslate"><span class="pre">ExtrapolSolverDialog.on_the_fly()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.plot_guinier_kratky"><code class="docutils literal notranslate"><span class="pre">ExtrapolSolverDialog.plot_guinier_kratky()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.plot_known"><code class="docutils literal notranslate"><span class="pre">ExtrapolSolverDialog.plot_known()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.save_results"><code class="docutils literal notranslate"><span class="pre">ExtrapolSolverDialog.save_results()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.save_the_figure"><code class="docutils literal notranslate"><span class="pre">ExtrapolSolverDialog.save_the_figure()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.set_geometry"><code class="docutils literal notranslate"><span class="pre">ExtrapolSolverDialog.set_geometry()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.show"><code class="docutils literal notranslate"><span class="pre">ExtrapolSolverDialog.show()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.show_quality_warning"><code class="docutils literal notranslate"><span class="pre">ExtrapolSolverDialog.show_quality_warning()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.solve_plot"><code class="docutils literal notranslate"><span class="pre">ExtrapolSolverDialog.solve_plot()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.solve_unknowns"><code class="docutils literal notranslate"><span class="pre">ExtrapolSolverDialog.solve_unknowns()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.try_image_save"><code class="docutils literal notranslate"><span class="pre">ExtrapolSolverDialog.try_image_save()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.update_to_solve_range"><code class="docutils literal notranslate"><span class="pre">ExtrapolSolverDialog.update_to_solve_range()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.validate"><code class="docutils literal notranslate"><span class="pre">ExtrapolSolverDialog.validate()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.format_func"><code class="docutils literal notranslate"><span class="pre">format_func()</span></code></a></li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -1742,8 +1785,162 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="extrapolation-extrapolsolverdialog">
-<h1>Extrapolation.ExtrapolSolverDialog<a class="headerlink" href="#extrapolation-extrapolsolverdialog" title="Link to this heading">#</a></h1>
+  <section id="module-molass_legacy.Extrapolation.ExtrapolSolverDialog">
+<span id="extrapolation-extrapolsolverdialog"></span><h1>Extrapolation.ExtrapolSolverDialog<a class="headerlink" href="#module-molass_legacy.Extrapolation.ExtrapolSolverDialog" title="Link to this heading">#</a></h1>
+<p>ExtrapolSolverDialog.py</p>
+<p>Copyright (c) 2018-2024, SAXS Team, KEK-PF</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ExtrapolSolverDialog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">editor_frame</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_change_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scrollable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="molass_legacy.KekLib.OurTkinter.html#molass_legacy.KekLib.OurTkinter.Dialog" title="molass_legacy.KekLib.OurTkinter.Dialog"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dialog</span></code></a></p>
+<p>Initialize a dialog.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>window</strong> (<em>parent -- a parent</em>)</p></li>
+<li><p><strong>title</strong> (<em>title -- the dialog</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.add_dnd_bind">
+<span class="sig-name descname"><span class="pre">add_dnd_bind</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.add_dnd_bind" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.apply">
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.apply" title="Link to this definition">#</a></dt>
+<dd><p>process the data</p>
+<p>This method is called automatically to process the data, <em>after</em>
+the dialog is destroyed. By default, it does nothing.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.auto_cdi_for_all">
+<span class="sig-name descname"><span class="pre">auto_cdi_for_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">out_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.auto_cdi_for_all" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.body">
+<span class="sig-name descname"><span class="pre">body</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">body_frame</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.body" title="Link to this definition">#</a></dt>
+<dd><p>create dialog body.</p>
+<p>return widget that should have initial focus.
+This method should be overridden, and is called
+by the __init__ method.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.buttonbox">
+<span class="sig-name descname"><span class="pre">buttonbox</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.buttonbox" title="Link to this definition">#</a></dt>
+<dd><p>add standard button box.</p>
+<p>override if you do not want the standard buttons</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.cancel">
+<span class="sig-name descname"><span class="pre">cancel</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.cancel" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.canvas_draw">
+<span class="sig-name descname"><span class="pre">canvas_draw</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.canvas_draw" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.get_ignore_bq">
+<span class="sig-name descname"><span class="pre">get_ignore_bq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.get_ignore_bq" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.get_known_info_list">
+<span class="sig-name descname"><span class="pre">get_known_info_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.get_known_info_list" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.log_rg_info">
+<span class="sig-name descname"><span class="pre">log_rg_info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.log_rg_info" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.on_drop">
+<span class="sig-name descname"><span class="pre">on_drop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.on_drop" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.on_the_fly">
+<span class="sig-name descname"><span class="pre">on_the_fly</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.on_the_fly" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.plot_guinier_kratky">
+<span class="sig-name descname"><span class="pre">plot_guinier_kratky</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">devel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.plot_guinier_kratky" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.plot_known">
+<span class="sig-name descname"><span class="pre">plot_known</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.plot_known" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.save_results">
+<span class="sig-name descname"><span class="pre">save_results</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.save_results" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.save_the_figure">
+<span class="sig-name descname"><span class="pre">save_the_figure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">analysis_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.save_the_figure" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.set_geometry">
+<span class="sig-name descname"><span class="pre">set_geometry</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.set_geometry" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.show">
+<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.show" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.show_quality_warning">
+<span class="sig-name descname"><span class="pre">show_quality_warning</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.show_quality_warning" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.solve_plot">
+<span class="sig-name descname"><span class="pre">solve_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">peakset_info</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">penalty_weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">animation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_bq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.solve_plot" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.solve_unknowns">
+<span class="sig-name descname"><span class="pre">solve_unknowns</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.solve_unknowns" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.try_image_save">
+<span class="sig-name descname"><span class="pre">try_image_save</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.try_image_save" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.update_to_solve_range">
+<span class="sig-name descname"><span class="pre">update_to_solve_range</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.update_to_solve_range" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.validate">
+<span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.validate" title="Link to this definition">#</a></dt>
+<dd><p>validate the data</p>
+<p>This method is called automatically to validate the data before the
+dialog is destroyed. By default, it always validates OK.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolSolverDialog.format_func">
+<span class="sig-name descname"><span class="pre">format_func</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tick_number</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.format_func" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
 </section>
 
 
@@ -1781,6 +1978,48 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog"><code class="docutils literal notranslate"><span class="pre">ExtrapolSolverDialog</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.add_dnd_bind"><code class="docutils literal notranslate"><span class="pre">ExtrapolSolverDialog.add_dnd_bind()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.apply"><code class="docutils literal notranslate"><span class="pre">ExtrapolSolverDialog.apply()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.auto_cdi_for_all"><code class="docutils literal notranslate"><span class="pre">ExtrapolSolverDialog.auto_cdi_for_all()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.body"><code class="docutils literal notranslate"><span class="pre">ExtrapolSolverDialog.body()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.buttonbox"><code class="docutils literal notranslate"><span class="pre">ExtrapolSolverDialog.buttonbox()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.cancel"><code class="docutils literal notranslate"><span class="pre">ExtrapolSolverDialog.cancel()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.canvas_draw"><code class="docutils literal notranslate"><span class="pre">ExtrapolSolverDialog.canvas_draw()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.get_ignore_bq"><code class="docutils literal notranslate"><span class="pre">ExtrapolSolverDialog.get_ignore_bq()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.get_known_info_list"><code class="docutils literal notranslate"><span class="pre">ExtrapolSolverDialog.get_known_info_list()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.log_rg_info"><code class="docutils literal notranslate"><span class="pre">ExtrapolSolverDialog.log_rg_info()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.on_drop"><code class="docutils literal notranslate"><span class="pre">ExtrapolSolverDialog.on_drop()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.on_the_fly"><code class="docutils literal notranslate"><span class="pre">ExtrapolSolverDialog.on_the_fly()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.plot_guinier_kratky"><code class="docutils literal notranslate"><span class="pre">ExtrapolSolverDialog.plot_guinier_kratky()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.plot_known"><code class="docutils literal notranslate"><span class="pre">ExtrapolSolverDialog.plot_known()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.save_results"><code class="docutils literal notranslate"><span class="pre">ExtrapolSolverDialog.save_results()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.save_the_figure"><code class="docutils literal notranslate"><span class="pre">ExtrapolSolverDialog.save_the_figure()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.set_geometry"><code class="docutils literal notranslate"><span class="pre">ExtrapolSolverDialog.set_geometry()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.show"><code class="docutils literal notranslate"><span class="pre">ExtrapolSolverDialog.show()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.show_quality_warning"><code class="docutils literal notranslate"><span class="pre">ExtrapolSolverDialog.show_quality_warning()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.solve_plot"><code class="docutils literal notranslate"><span class="pre">ExtrapolSolverDialog.solve_plot()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.solve_unknowns"><code class="docutils literal notranslate"><span class="pre">ExtrapolSolverDialog.solve_unknowns()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.try_image_save"><code class="docutils literal notranslate"><span class="pre">ExtrapolSolverDialog.try_image_save()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.update_to_solve_range"><code class="docutils literal notranslate"><span class="pre">ExtrapolSolverDialog.update_to_solve_range()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.validate"><code class="docutils literal notranslate"><span class="pre">ExtrapolSolverDialog.validate()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolSolverDialog.format_func"><code class="docutils literal notranslate"><span class="pre">format_func()</span></code></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>

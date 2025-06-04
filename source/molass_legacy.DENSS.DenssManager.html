@@ -30,6 +30,7 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -39,6 +40,8 @@
     <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
     <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'source/molass_legacy.DENSS.DenssManager';</script>
     <link rel="icon" href="../_static/molamola.png"/>
@@ -155,7 +158,10 @@
  </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        <ul class="current nav bd-sidenav">
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.main.html">main</a></li>
+</ul>
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Alsaker.html">Alsaker</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.Alsaker.Bridge.html">Alsaker.Bridge</a></li>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.Alsaker.Compare.html">Alsaker.Compare</a></li>
@@ -1717,7 +1723,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -1733,6 +1741,28 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.DENSS.DenssManager.DenssManager"><code class="docutils literal notranslate"><span class="pre">DenssManager</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.DENSS.DenssManager.DenssManager.accept_job"><code class="docutils literal notranslate"><span class="pre">DenssManager.accept_job()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.DENSS.DenssManager.DenssManager.decide_num_workers"><code class="docutils literal notranslate"><span class="pre">DenssManager.decide_num_workers()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.DENSS.DenssManager.DenssManager.error_callback"><code class="docutils literal notranslate"><span class="pre">DenssManager.error_callback()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.DENSS.DenssManager.DenssManager.success_callback"><code class="docutils literal notranslate"><span class="pre">DenssManager.success_callback()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.DENSS.DenssManager.DenssManager.terminate"><code class="docutils literal notranslate"><span class="pre">DenssManager.terminate()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.DENSS.DenssManager.JobInfo"><code class="docutils literal notranslate"><span class="pre">JobInfo</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.DENSS.DenssManager.activate_manager"><code class="docutils literal notranslate"><span class="pre">activate_manager()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.DENSS.DenssManager.get_list"><code class="docutils literal notranslate"><span class="pre">get_list()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.DENSS.DenssManager.get_table"><code class="docutils literal notranslate"><span class="pre">get_table()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.DENSS.DenssManager.print_table"><code class="docutils literal notranslate"><span class="pre">print_table()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.DENSS.DenssManager.submit"><code class="docutils literal notranslate"><span class="pre">submit()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.DENSS.DenssManager.terminate_manager_impl"><code class="docutils literal notranslate"><span class="pre">terminate_manager_impl()</span></code></a></li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -1742,8 +1772,77 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="denss-denssmanager">
-<h1>DENSS.DenssManager<a class="headerlink" href="#denss-denssmanager" title="Link to this heading">#</a></h1>
+  <section id="module-molass_legacy.DENSS.DenssManager">
+<span id="denss-denssmanager"></span><h1>DENSS.DenssManager<a class="headerlink" href="#module-molass_legacy.DENSS.DenssManager" title="Link to this heading">#</a></h1>
+<p>DenssManager.py</p>
+<p>Copyright (c) 2019-2025, SAXS Team, KEK-PF</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="molass_legacy.DENSS.DenssManager.DenssManager">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DenssManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">log_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_gpu</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.DENSS.DenssManager.DenssManager" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.DENSS.DenssManager.DenssManager.accept_job">
+<span class="sig-name descname"><span class="pre">accept_job</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">job_info</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.DENSS.DenssManager.DenssManager.accept_job" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.DENSS.DenssManager.DenssManager.decide_num_workers">
+<span class="sig-name descname"><span class="pre">decide_num_workers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.DENSS.DenssManager.DenssManager.decide_num_workers" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.DENSS.DenssManager.DenssManager.error_callback">
+<span class="sig-name descname"><span class="pre">error_callback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">job_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exc_obj</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.DENSS.DenssManager.DenssManager.error_callback" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.DENSS.DenssManager.DenssManager.success_callback">
+<span class="sig-name descname"><span class="pre">success_callback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">job_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">result</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.DENSS.DenssManager.DenssManager.success_callback" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.DENSS.DenssManager.DenssManager.terminate">
+<span class="sig-name descname"><span class="pre">terminate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.DENSS.DenssManager.DenssManager.terminate" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="molass_legacy.DENSS.DenssManager.JobInfo">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">JobInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">code</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.DENSS.DenssManager.JobInfo" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="molass_legacy.DENSS.DenssManager.activate_manager">
+<span class="sig-name descname"><span class="pre">activate_manager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">log_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_gpu</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.DENSS.DenssManager.activate_manager" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="molass_legacy.DENSS.DenssManager.get_list">
+<span class="sig-name descname"><span class="pre">get_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.DENSS.DenssManager.get_list" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="molass_legacy.DENSS.DenssManager.get_table">
+<span class="sig-name descname"><span class="pre">get_table</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.DENSS.DenssManager.get_table" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="molass_legacy.DENSS.DenssManager.print_table">
+<span class="sig-name descname"><span class="pre">print_table</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.DENSS.DenssManager.print_table" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="molass_legacy.DENSS.DenssManager.submit">
+<span class="sig-name descname"><span class="pre">submit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">job_info</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.DENSS.DenssManager.submit" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="molass_legacy.DENSS.DenssManager.terminate_manager_impl">
+<span class="sig-name descname"><span class="pre">terminate_manager_impl</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.DENSS.DenssManager.terminate_manager_impl" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
 </section>
 
 
@@ -1781,6 +1880,35 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.DENSS.DenssManager.DenssManager"><code class="docutils literal notranslate"><span class="pre">DenssManager</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.DENSS.DenssManager.DenssManager.accept_job"><code class="docutils literal notranslate"><span class="pre">DenssManager.accept_job()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.DENSS.DenssManager.DenssManager.decide_num_workers"><code class="docutils literal notranslate"><span class="pre">DenssManager.decide_num_workers()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.DENSS.DenssManager.DenssManager.error_callback"><code class="docutils literal notranslate"><span class="pre">DenssManager.error_callback()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.DENSS.DenssManager.DenssManager.success_callback"><code class="docutils literal notranslate"><span class="pre">DenssManager.success_callback()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.DENSS.DenssManager.DenssManager.terminate"><code class="docutils literal notranslate"><span class="pre">DenssManager.terminate()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.DENSS.DenssManager.JobInfo"><code class="docutils literal notranslate"><span class="pre">JobInfo</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.DENSS.DenssManager.activate_manager"><code class="docutils literal notranslate"><span class="pre">activate_manager()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.DENSS.DenssManager.get_list"><code class="docutils literal notranslate"><span class="pre">get_list()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.DENSS.DenssManager.get_table"><code class="docutils literal notranslate"><span class="pre">get_table()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.DENSS.DenssManager.print_table"><code class="docutils literal notranslate"><span class="pre">print_table()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.DENSS.DenssManager.submit"><code class="docutils literal notranslate"><span class="pre">submit()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.DENSS.DenssManager.terminate_manager_impl"><code class="docutils literal notranslate"><span class="pre">terminate_manager_impl()</span></code></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>

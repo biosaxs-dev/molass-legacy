@@ -30,6 +30,7 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -39,6 +40,8 @@
     <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
     <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'source/molass_legacy.UV.Absorbance';</script>
     <link rel="icon" href="../_static/molamola.png"/>
@@ -155,7 +158,10 @@
  </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        <ul class="current nav bd-sidenav">
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.main.html">main</a></li>
+</ul>
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Alsaker.html">Alsaker</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.Alsaker.Bridge.html">Alsaker.Bridge</a></li>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.Alsaker.Compare.html">Alsaker.Compare</a></li>
@@ -1717,7 +1723,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -1733,6 +1741,46 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance"><code class="docutils literal notranslate"><span class="pre">Absorbance</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance.check_abnormality_in_wvlen_ends"><code class="docutils literal notranslate"><span class="pre">Absorbance.check_abnormality_in_wvlen_ends()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance.compute_base_curve"><code class="docutils literal notranslate"><span class="pre">Absorbance.compute_base_curve()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance.compute_integral_basecurve"><code class="docutils literal notranslate"><span class="pre">Absorbance.compute_integral_basecurve()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance.compute_scatter_factor_at"><code class="docutils literal notranslate"><span class="pre">Absorbance.compute_scatter_factor_at()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance.data"><code class="docutils literal notranslate"><span class="pre">Absorbance.data</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance.get_baseplane_params"><code class="docutils literal notranslate"><span class="pre">Absorbance.get_baseplane_params()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance.get_bottomline_matrix"><code class="docutils literal notranslate"><span class="pre">Absorbance.get_bottomline_matrix()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance.get_bottomline_vector"><code class="docutils literal notranslate"><span class="pre">Absorbance.get_bottomline_vector()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance.get_bottomline_vector_near_peak"><code class="docutils literal notranslate"><span class="pre">Absorbance.get_bottomline_vector_near_peak()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance.get_conc_params"><code class="docutils literal notranslate"><span class="pre">Absorbance.get_conc_params()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance.get_corrected_data"><code class="docutils literal notranslate"><span class="pre">Absorbance.get_corrected_data()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance.get_corrected_vector"><code class="docutils literal notranslate"><span class="pre">Absorbance.get_corrected_vector()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance.get_integral_basecurve"><code class="docutils literal notranslate"><span class="pre">Absorbance.get_integral_basecurve()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance.get_jump_point_base"><code class="docutils literal notranslate"><span class="pre">Absorbance.get_jump_point_base()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance.get_mapped_slope_and_intercept"><code class="docutils literal notranslate"><span class="pre">Absorbance.get_mapped_slope_and_intercept()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance.get_normal_region"><code class="docutils literal notranslate"><span class="pre">Absorbance.get_normal_region()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance.get_shifted_elution_base"><code class="docutils literal notranslate"><span class="pre">Absorbance.get_shifted_elution_base()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance.get_standard_elution_base"><code class="docutils literal notranslate"><span class="pre">Absorbance.get_standard_elution_base()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance.get_standard_vector"><code class="docutils literal notranslate"><span class="pre">Absorbance.get_standard_vector()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance.get_vector_at"><code class="docutils literal notranslate"><span class="pre">Absorbance.get_vector_at()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance.get_wave_len_ends"><code class="docutils literal notranslate"><span class="pre">Absorbance.get_wave_len_ends()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance.get_wv_index_vector"><code class="docutils literal notranslate"><span class="pre">Absorbance.get_wv_index_vector()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance.get_zlim_for_3d_plot"><code class="docutils literal notranslate"><span class="pre">Absorbance.get_zlim_for_3d_plot()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance.shifted_baseline_ok"><code class="docutils literal notranslate"><span class="pre">Absorbance.shifted_baseline_ok()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance.solve_bottomplane_LB"><code class="docutils literal notranslate"><span class="pre">Absorbance.solve_bottomplane_LB()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance.solve_bottomplane_LPM"><code class="docutils literal notranslate"><span class="pre">Absorbance.solve_bottomplane_LPM()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance.update_optimizer_range"><code class="docutils literal notranslate"><span class="pre">Absorbance.update_optimizer_range()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.FixedBaseResult"><code class="docutils literal notranslate"><span class="pre">FixedBaseResult</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.compute_scatter"><code class="docutils literal notranslate"><span class="pre">compute_scatter()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.non_zero_value"><code class="docutils literal notranslate"><span class="pre">non_zero_value()</span></code></a></li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -1742,8 +1790,171 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="uv-absorbance">
-<h1>UV.Absorbance<a class="headerlink" href="#uv-absorbance" title="Link to this heading">#</a></h1>
+  <section id="module-molass_legacy.UV.Absorbance">
+<span id="uv-absorbance"></span><h1>UV.Absorbance<a class="headerlink" href="#module-molass_legacy.UV.Absorbance" title="Link to this heading">#</a></h1>
+<p>Absorbance.py</p>
+<p>Copyright (c) 2017-2023, SAXS Tam, KEK-PF</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="molass_legacy.UV.Absorbance.Absorbance">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Absorbance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wl_vector</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_curve</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col_header</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">std_wvlen</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_wvlen</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scattering_base</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">independent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_lpm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orig_top_x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.UV.Absorbance.Absorbance" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.UV.Absorbance.Absorbance.check_abnormality_in_wvlen_ends">
+<span class="sig-name descname"><span class="pre">check_abnormality_in_wvlen_ends</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wl_vector</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.UV.Absorbance.Absorbance.check_abnormality_in_wvlen_ends" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.UV.Absorbance.Absorbance.compute_base_curve">
+<span class="sig-name descname"><span class="pre">compute_base_curve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pre_recog</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">baseline_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">full_width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.UV.Absorbance.Absorbance.compute_base_curve" title="Link to this definition">#</a></dt>
+<dd><p>full_width=True because this baseline_type should be called after trimming</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.UV.Absorbance.Absorbance.compute_integral_basecurve">
+<span class="sig-name descname"><span class="pre">compute_integral_basecurve</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.UV.Absorbance.Absorbance.compute_integral_basecurve" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.UV.Absorbance.Absorbance.compute_scatter_factor_at">
+<span class="sig-name descname"><span class="pre">compute_scatter_factor_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.UV.Absorbance.Absorbance.compute_scatter_factor_at" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="molass_legacy.UV.Absorbance.Absorbance.data">
+<span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#molass_legacy.UV.Absorbance.Absorbance.data" title="Link to this definition">#</a></dt>
+<dd><p>Due to thie slicing,
+be aware that self.data is not always equals to the input data,
+i.e., serial_data.conc_array.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.UV.Absorbance.Absorbance.get_baseplane_params">
+<span class="sig-name descname"><span class="pre">get_baseplane_params</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.UV.Absorbance.Absorbance.get_baseplane_params" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.UV.Absorbance.Absorbance.get_bottomline_matrix">
+<span class="sig-name descname"><span class="pre">get_bottomline_matrix</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.UV.Absorbance.Absorbance.get_bottomline_matrix" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.UV.Absorbance.Absorbance.get_bottomline_vector">
+<span class="sig-name descname"><span class="pre">get_bottomline_vector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.UV.Absorbance.Absorbance.get_bottomline_vector" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.UV.Absorbance.Absorbance.get_bottomline_vector_near_peak">
+<span class="sig-name descname"><span class="pre">get_bottomline_vector_near_peak</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.UV.Absorbance.Absorbance.get_bottomline_vector_near_peak" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.UV.Absorbance.Absorbance.get_conc_params">
+<span class="sig-name descname"><span class="pre">get_conc_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conc_factor</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.UV.Absorbance.Absorbance.get_conc_params" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.UV.Absorbance.Absorbance.get_corrected_data">
+<span class="sig-name descname"><span class="pre">get_corrected_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.UV.Absorbance.Absorbance.get_corrected_data" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.UV.Absorbance.Absorbance.get_corrected_vector">
+<span class="sig-name descname"><span class="pre">get_corrected_vector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">absorbance_baseline_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scattering_base</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">baseline_degree</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.UV.Absorbance.Absorbance.get_corrected_vector" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.UV.Absorbance.Absorbance.get_integral_basecurve">
+<span class="sig-name descname"><span class="pre">get_integral_basecurve</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.UV.Absorbance.Absorbance.get_integral_basecurve" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.UV.Absorbance.Absorbance.get_jump_point_base">
+<span class="sig-name descname"><span class="pre">get_jump_point_base</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.UV.Absorbance.Absorbance.get_jump_point_base" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.UV.Absorbance.Absorbance.get_mapped_slope_and_intercept">
+<span class="sig-name descname"><span class="pre">get_mapped_slope_and_intercept</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.UV.Absorbance.Absorbance.get_mapped_slope_and_intercept" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.UV.Absorbance.Absorbance.get_normal_region">
+<span class="sig-name descname"><span class="pre">get_normal_region</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.UV.Absorbance.Absorbance.get_normal_region" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.UV.Absorbance.Absorbance.get_shifted_elution_base">
+<span class="sig-name descname"><span class="pre">get_shifted_elution_base</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.UV.Absorbance.Absorbance.get_shifted_elution_base" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.UV.Absorbance.Absorbance.get_standard_elution_base">
+<span class="sig-name descname"><span class="pre">get_standard_elution_base</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.UV.Absorbance.Absorbance.get_standard_elution_base" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.UV.Absorbance.Absorbance.get_standard_vector">
+<span class="sig-name descname"><span class="pre">get_standard_vector</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.UV.Absorbance.Absorbance.get_standard_vector" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.UV.Absorbance.Absorbance.get_vector_at">
+<span class="sig-name descname"><span class="pre">get_vector_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wvlen</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.UV.Absorbance.Absorbance.get_vector_at" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.UV.Absorbance.Absorbance.get_wave_len_ends">
+<span class="sig-name descname"><span class="pre">get_wave_len_ends</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.UV.Absorbance.Absorbance.get_wave_len_ends" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.UV.Absorbance.Absorbance.get_wv_index_vector">
+<span class="sig-name descname"><span class="pre">get_wv_index_vector</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.UV.Absorbance.Absorbance.get_wv_index_vector" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.UV.Absorbance.Absorbance.get_zlim_for_3d_plot">
+<span class="sig-name descname"><span class="pre">get_zlim_for_3d_plot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.UV.Absorbance.Absorbance.get_zlim_for_3d_plot" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.UV.Absorbance.Absorbance.shifted_baseline_ok">
+<span class="sig-name descname"><span class="pre">shifted_baseline_ok</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.UV.Absorbance.Absorbance.shifted_baseline_ok" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.UV.Absorbance.Absorbance.solve_bottomplane_LB">
+<span class="sig-name descname"><span class="pre">solve_bottomplane_LB</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">j_min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">j_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixed_base</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixed_slope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">left_end_j</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.UV.Absorbance.Absorbance.solve_bottomplane_LB" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.UV.Absorbance.Absorbance.solve_bottomplane_LPM">
+<span class="sig-name descname"><span class="pre">solve_bottomplane_LPM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">j_min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">j_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.UV.Absorbance.Absorbance.solve_bottomplane_LPM" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.UV.Absorbance.Absorbance.update_optimizer_range">
+<span class="sig-name descname"><span class="pre">update_optimizer_range</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">std_wvlen</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_wvlen</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.UV.Absorbance.Absorbance.update_optimizer_range" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="molass_legacy.UV.Absorbance.FixedBaseResult">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FixedBaseResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fidex_base</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixed_slope</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">j</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.UV.Absorbance.FixedBaseResult" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="molass_legacy.UV.Absorbance.compute_scatter">
+<span class="sig-name descname"><span class="pre">compute_scatter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">S</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.UV.Absorbance.compute_scatter" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="molass_legacy.UV.Absorbance.non_zero_value">
+<span class="sig-name descname"><span class="pre">non_zero_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.UV.Absorbance.non_zero_value" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
 </section>
 
 
@@ -1781,6 +1992,53 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance"><code class="docutils literal notranslate"><span class="pre">Absorbance</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance.check_abnormality_in_wvlen_ends"><code class="docutils literal notranslate"><span class="pre">Absorbance.check_abnormality_in_wvlen_ends()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance.compute_base_curve"><code class="docutils literal notranslate"><span class="pre">Absorbance.compute_base_curve()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance.compute_integral_basecurve"><code class="docutils literal notranslate"><span class="pre">Absorbance.compute_integral_basecurve()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance.compute_scatter_factor_at"><code class="docutils literal notranslate"><span class="pre">Absorbance.compute_scatter_factor_at()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance.data"><code class="docutils literal notranslate"><span class="pre">Absorbance.data</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance.get_baseplane_params"><code class="docutils literal notranslate"><span class="pre">Absorbance.get_baseplane_params()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance.get_bottomline_matrix"><code class="docutils literal notranslate"><span class="pre">Absorbance.get_bottomline_matrix()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance.get_bottomline_vector"><code class="docutils literal notranslate"><span class="pre">Absorbance.get_bottomline_vector()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance.get_bottomline_vector_near_peak"><code class="docutils literal notranslate"><span class="pre">Absorbance.get_bottomline_vector_near_peak()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance.get_conc_params"><code class="docutils literal notranslate"><span class="pre">Absorbance.get_conc_params()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance.get_corrected_data"><code class="docutils literal notranslate"><span class="pre">Absorbance.get_corrected_data()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance.get_corrected_vector"><code class="docutils literal notranslate"><span class="pre">Absorbance.get_corrected_vector()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance.get_integral_basecurve"><code class="docutils literal notranslate"><span class="pre">Absorbance.get_integral_basecurve()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance.get_jump_point_base"><code class="docutils literal notranslate"><span class="pre">Absorbance.get_jump_point_base()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance.get_mapped_slope_and_intercept"><code class="docutils literal notranslate"><span class="pre">Absorbance.get_mapped_slope_and_intercept()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance.get_normal_region"><code class="docutils literal notranslate"><span class="pre">Absorbance.get_normal_region()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance.get_shifted_elution_base"><code class="docutils literal notranslate"><span class="pre">Absorbance.get_shifted_elution_base()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance.get_standard_elution_base"><code class="docutils literal notranslate"><span class="pre">Absorbance.get_standard_elution_base()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance.get_standard_vector"><code class="docutils literal notranslate"><span class="pre">Absorbance.get_standard_vector()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance.get_vector_at"><code class="docutils literal notranslate"><span class="pre">Absorbance.get_vector_at()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance.get_wave_len_ends"><code class="docutils literal notranslate"><span class="pre">Absorbance.get_wave_len_ends()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance.get_wv_index_vector"><code class="docutils literal notranslate"><span class="pre">Absorbance.get_wv_index_vector()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance.get_zlim_for_3d_plot"><code class="docutils literal notranslate"><span class="pre">Absorbance.get_zlim_for_3d_plot()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance.shifted_baseline_ok"><code class="docutils literal notranslate"><span class="pre">Absorbance.shifted_baseline_ok()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance.solve_bottomplane_LB"><code class="docutils literal notranslate"><span class="pre">Absorbance.solve_bottomplane_LB()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance.solve_bottomplane_LPM"><code class="docutils literal notranslate"><span class="pre">Absorbance.solve_bottomplane_LPM()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.Absorbance.update_optimizer_range"><code class="docutils literal notranslate"><span class="pre">Absorbance.update_optimizer_range()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.FixedBaseResult"><code class="docutils literal notranslate"><span class="pre">FixedBaseResult</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.compute_scatter"><code class="docutils literal notranslate"><span class="pre">compute_scatter()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.UV.Absorbance.non_zero_value"><code class="docutils literal notranslate"><span class="pre">non_zero_value()</span></code></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>

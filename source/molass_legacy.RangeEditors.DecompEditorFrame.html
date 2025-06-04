@@ -30,6 +30,7 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -39,6 +40,8 @@
     <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
     <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'source/molass_legacy.RangeEditors.DecompEditorFrame';</script>
     <link rel="icon" href="../_static/molamola.png"/>
@@ -155,7 +158,10 @@
  </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        <ul class="current nav bd-sidenav">
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.main.html">main</a></li>
+</ul>
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Alsaker.html">Alsaker</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.Alsaker.Bridge.html">Alsaker.Bridge</a></li>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.Alsaker.Compare.html">Alsaker.Compare</a></li>
@@ -1717,7 +1723,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -1733,6 +1741,56 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.add_range_patchs"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.add_range_patchs()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.add_widgets"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.add_widgets()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.apply"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.apply()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.compute_global_fitting"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.compute_global_fitting()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.compute_jsd"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.compute_jsd()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.create_popup_menu"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.create_popup_menu()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.debug_plot"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.debug_plot()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.draw1"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.draw1()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.draw2"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.draw2()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.get_decomp_score"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.get_decomp_score()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.get_extrapolation_solver"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.get_extrapolation_solver()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.get_figsize"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.get_figsize()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.get_fit_error"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.get_fit_error()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.get_param_hints_dict"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.get_param_hints_dict()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.is_delayed"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.is_delayed()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.log_info_for_reset"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.log_info_for_reset()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.make_range_info"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.make_range_info()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.make_restorable_ranges"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.make_restorable_ranges()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.on_mpl_button_press"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.on_mpl_button_press()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.recompute_decomposition"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.recompute_decomposition()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.refresh_figs"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.refresh_figs()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.refresh_frame"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.refresh_frame()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.refresh_spec_panels"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.refresh_spec_panels()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.reset"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.reset()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.reset_to_defaults"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.reset_to_defaults()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.save_the_curves"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.save_the_curves()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.set_data_label"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.set_data_label()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.set_toggle_text"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.set_toggle_text()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.toggle_params_constraints"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.toggle_params_constraints()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.toggle_show"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.toggle_show()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.update1"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.update1()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.update1_impl"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.update1_impl()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.update2"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.update2()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.update_error_label"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.update_error_label()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.update_figs"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.update_figs()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.update_range"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.update_range()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.update_with_result"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.update_with_result()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.write_residual_amount_to_testerlog"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.write_residual_amount_to_testerlog()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.ModelDecompInfo"><code class="docutils literal notranslate"><span class="pre">ModelDecompInfo</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.format_coord"><code class="docutils literal notranslate"><span class="pre">format_coord()</span></code></a></li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -1742,8 +1800,223 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="rangeeditors-decompeditorframe">
-<h1>RangeEditors.DecompEditorFrame<a class="headerlink" href="#rangeeditors-decompeditorframe" title="Link to this heading">#</a></h1>
+  <section id="module-molass_legacy.RangeEditors.DecompEditorFrame">
+<span id="rangeeditors-decompeditorframe"></span><h1>RangeEditors.DecompEditorFrame<a class="headerlink" href="#module-molass_legacy.RangeEditors.DecompEditorFrame" title="Link to this heading">#</a></h1>
+<p>DecompEditorFrame.py</p>
+<p>Copyright (c) 2018-2025, SAXS Team, KEK-PF</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DecompEditorFrame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dialog</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mapper</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">corbase_info</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decomp_result</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">global_flag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="molass_legacy.RangeEditors.SuperEditorFrame.html#molass_legacy.RangeEditors.SuperEditorFrame.SuperEditorFrame" title="molass_legacy.RangeEditors.SuperEditorFrame.SuperEditorFrame"><code class="xref py py-class docutils literal notranslate"><span class="pre">SuperEditorFrame</span></code></a></p>
+<p>Construct a frame widget with the parent MASTER.</p>
+<p>Valid resource names: background, bd, bg, borderwidth, class,
+colormap, container, cursor, height, highlightbackground,
+highlightcolor, highlightthickness, relief, takefocus, visual, width.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.add_range_patchs">
+<span class="sig-name descname"><span class="pre">add_range_patchs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">range_parts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.add_range_patchs" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.add_widgets">
+<span class="sig-name descname"><span class="pre">add_widgets</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.add_widgets" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.apply">
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.apply" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.compute_global_fitting">
+<span class="sig-name descname"><span class="pre">compute_global_fitting</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.compute_global_fitting" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.compute_jsd">
+<span class="sig-name descname"><span class="pre">compute_jsd</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.compute_jsd" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.create_popup_menu">
+<span class="sig-name descname"><span class="pre">create_popup_menu</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.create_popup_menu" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.debug_plot">
+<span class="sig-name descname"><span class="pre">debug_plot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.debug_plot" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.draw1">
+<span class="sig-name descname"><span class="pre">draw1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.draw1" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.draw2">
+<span class="sig-name descname"><span class="pre">draw2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">peak_no</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.draw2" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.get_decomp_score">
+<span class="sig-name descname"><span class="pre">get_decomp_score</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.get_decomp_score" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.get_extrapolation_solver">
+<span class="sig-name descname"><span class="pre">get_extrapolation_solver</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.get_extrapolation_solver" title="Link to this definition">#</a></dt>
+<dd><p>always construct a new solver to initialize simply</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.get_figsize">
+<span class="sig-name descname"><span class="pre">get_figsize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.get_figsize" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.get_fit_error">
+<span class="sig-name descname"><span class="pre">get_fit_error</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.get_fit_error" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.get_param_hints_dict">
+<span class="sig-name descname"><span class="pre">get_param_hints_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.get_param_hints_dict" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.is_delayed">
+<span class="sig-name descname"><span class="pre">is_delayed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.is_delayed" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.log_info_for_reset">
+<span class="sig-name descname"><span class="pre">log_info_for_reset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">modification</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'last</span> <span class="pre">applied'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.log_info_for_reset" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.make_range_info">
+<span class="sig-name descname"><span class="pre">make_range_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">concentration_datatype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.make_range_info" title="Link to this definition">#</a></dt>
+<dd><p>called at PreviewButtonFrame.get_preview_data()</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.make_restorable_ranges">
+<span class="sig-name descname"><span class="pre">make_restorable_ranges</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.make_restorable_ranges" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.on_mpl_button_press">
+<span class="sig-name descname"><span class="pre">on_mpl_button_press</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.on_mpl_button_press" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.recompute_decomposition">
+<span class="sig-name descname"><span class="pre">recompute_decomposition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">decomp_result</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">redraw</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.recompute_decomposition" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.refresh_figs">
+<span class="sig-name descname"><span class="pre">refresh_figs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">devel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.refresh_figs" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.refresh_frame">
+<span class="sig-name descname"><span class="pre">refresh_frame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elution_fig_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.refresh_frame" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.refresh_spec_panels">
+<span class="sig-name descname"><span class="pre">refresh_spec_panels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">restore</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hints_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.refresh_spec_panels" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.reset" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.reset_to_defaults">
+<span class="sig-name descname"><span class="pre">reset_to_defaults</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.reset_to_defaults" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.save_the_curves">
+<span class="sig-name descname"><span class="pre">save_the_curves</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.save_the_curves" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.set_data_label">
+<span class="sig-name descname"><span class="pre">set_data_label</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.set_data_label" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.set_toggle_text">
+<span class="sig-name descname"><span class="pre">set_toggle_text</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.set_toggle_text" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.toggle_params_constraints">
+<span class="sig-name descname"><span class="pre">toggle_params_constraints</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.toggle_params_constraints" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.toggle_show">
+<span class="sig-name descname"><span class="pre">toggle_show</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.toggle_show" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.update1">
+<span class="sig-name descname"><span class="pre">update1</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.update1" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.update1_impl">
+<span class="sig-name descname"><span class="pre">update1_impl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">range_parts</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.update1_impl" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.update2">
+<span class="sig-name descname"><span class="pre">update2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">peak_no</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.update2" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.update_error_label">
+<span class="sig-name descname"><span class="pre">update_error_label</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.update_error_label" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.update_figs">
+<span class="sig-name descname"><span class="pre">update_figs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">peak_no</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.update_figs" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.update_range">
+<span class="sig-name descname"><span class="pre">update_range</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pno</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ad</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.update_range" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.update_with_result">
+<span class="sig-name descname"><span class="pre">update_with_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">decomp_result</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.update_with_result" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.write_residual_amount_to_testerlog">
+<span class="sig-name descname"><span class="pre">write_residual_amount_to_testerlog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resid_y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.write_residual_amount_to_testerlog" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="molass_legacy.RangeEditors.DecompEditorFrame.ModelDecompInfo">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ModelDecompInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">decomp_ret</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.RangeEditors.DecompEditorFrame.ModelDecompInfo" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="molass_legacy.RangeEditors.DecompEditorFrame.format_coord">
+<span class="sig-name descname"><span class="pre">format_coord</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.RangeEditors.DecompEditorFrame.format_coord" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
 </section>
 
 
@@ -1781,6 +2054,63 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.add_range_patchs"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.add_range_patchs()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.add_widgets"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.add_widgets()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.apply"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.apply()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.compute_global_fitting"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.compute_global_fitting()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.compute_jsd"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.compute_jsd()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.create_popup_menu"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.create_popup_menu()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.debug_plot"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.debug_plot()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.draw1"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.draw1()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.draw2"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.draw2()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.get_decomp_score"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.get_decomp_score()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.get_extrapolation_solver"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.get_extrapolation_solver()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.get_figsize"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.get_figsize()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.get_fit_error"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.get_fit_error()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.get_param_hints_dict"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.get_param_hints_dict()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.is_delayed"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.is_delayed()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.log_info_for_reset"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.log_info_for_reset()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.make_range_info"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.make_range_info()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.make_restorable_ranges"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.make_restorable_ranges()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.on_mpl_button_press"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.on_mpl_button_press()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.recompute_decomposition"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.recompute_decomposition()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.refresh_figs"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.refresh_figs()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.refresh_frame"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.refresh_frame()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.refresh_spec_panels"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.refresh_spec_panels()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.reset"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.reset()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.reset_to_defaults"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.reset_to_defaults()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.save_the_curves"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.save_the_curves()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.set_data_label"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.set_data_label()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.set_toggle_text"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.set_toggle_text()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.toggle_params_constraints"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.toggle_params_constraints()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.toggle_show"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.toggle_show()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.update1"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.update1()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.update1_impl"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.update1_impl()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.update2"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.update2()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.update_error_label"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.update_error_label()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.update_figs"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.update_figs()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.update_range"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.update_range()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.update_with_result"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.update_with_result()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.DecompEditorFrame.write_residual_amount_to_testerlog"><code class="docutils literal notranslate"><span class="pre">DecompEditorFrame.write_residual_amount_to_testerlog()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.ModelDecompInfo"><code class="docutils literal notranslate"><span class="pre">ModelDecompInfo</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.RangeEditors.DecompEditorFrame.format_coord"><code class="docutils literal notranslate"><span class="pre">format_coord()</span></code></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>

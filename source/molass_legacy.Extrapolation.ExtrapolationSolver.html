@@ -30,6 +30,7 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -39,6 +40,8 @@
     <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
     <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'source/molass_legacy.Extrapolation.ExtrapolationSolver';</script>
     <link rel="icon" href="../_static/molamola.png"/>
@@ -155,7 +158,10 @@
  </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        <ul class="current nav bd-sidenav">
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.main.html">main</a></li>
+</ul>
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Alsaker.html">Alsaker</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.Alsaker.Bridge.html">Alsaker.Bridge</a></li>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.Alsaker.Compare.html">Alsaker.Compare</a></li>
@@ -1717,7 +1723,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -1733,6 +1741,30 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationSolver.ExtrapolationSolver"><code class="docutils literal notranslate"><span class="pre">ExtrapolationSolver</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationSolver.ExtrapolationSolver.compute_error"><code class="docutils literal notranslate"><span class="pre">ExtrapolationSolver.compute_error()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationSolver.ExtrapolationSolver.compute_error_grad"><code class="docutils literal notranslate"><span class="pre">ExtrapolationSolver.compute_error_grad()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationSolver.ExtrapolationSolver.compute_known_error"><code class="docutils literal notranslate"><span class="pre">ExtrapolationSolver.compute_known_error()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationSolver.ExtrapolationSolver.compute_known_error_grad"><code class="docutils literal notranslate"><span class="pre">ExtrapolationSolver.compute_known_error_grad()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationSolver.ExtrapolationSolver.compute_propagated_errors"><code class="docutils literal notranslate"><span class="pre">ExtrapolationSolver.compute_propagated_errors()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationSolver.ExtrapolationSolver.compute_propagated_errors_from_denoised_error"><code class="docutils literal notranslate"><span class="pre">ExtrapolationSolver.compute_propagated_errors_from_denoised_error()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationSolver.ExtrapolationSolver.extrapolate_wiser"><code class="docutils literal notranslate"><span class="pre">ExtrapolationSolver.extrapolate_wiser()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationSolver.ExtrapolationSolver.fit"><code class="docutils literal notranslate"><span class="pre">ExtrapolationSolver.fit()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationSolver.ExtrapolationSolver.get_anim_data"><code class="docutils literal notranslate"><span class="pre">ExtrapolationSolver.get_anim_data()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationSolver.ExtrapolationSolver.set_known_peak_info"><code class="docutils literal notranslate"><span class="pre">ExtrapolationSolver.set_known_peak_info()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationSolver.KnownInfo"><code class="docutils literal notranslate"><span class="pre">KnownInfo</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationSolver.run_extrapolation_solver"><code class="docutils literal notranslate"><span class="pre">run_extrapolation_solver()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationSolver.run_extrapolation_solver_impl"><code class="docutils literal notranslate"><span class="pre">run_extrapolation_solver_impl()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationSolver.run_extrapolation_solver_with_progress"><code class="docutils literal notranslate"><span class="pre">run_extrapolation_solver_with_progress()</span></code></a></li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -1742,8 +1774,87 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="extrapolation-extrapolationsolver">
-<h1>Extrapolation.ExtrapolationSolver<a class="headerlink" href="#extrapolation-extrapolationsolver" title="Link to this heading">#</a></h1>
+  <section id="module-molass_legacy.Extrapolation.ExtrapolationSolver">
+<span id="extrapolation-extrapolationsolver"></span><h1>Extrapolation.ExtrapolationSolver<a class="headerlink" href="#module-molass_legacy.Extrapolation.ExtrapolationSolver" title="Link to this heading">#</a></h1>
+<p>ExtrapolationSolver.py</p>
+<p>Copyright (c) 2018-2025, SAXS Team, KEK-PF</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolationSolver.ExtrapolationSolver">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ExtrapolationSolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pdata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">popts</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolationSolver.ExtrapolationSolver" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolationSolver.ExtrapolationSolver.compute_error">
+<span class="sig-name descname"><span class="pre">compute_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">P_flat</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolationSolver.ExtrapolationSolver.compute_error" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolationSolver.ExtrapolationSolver.compute_error_grad">
+<span class="sig-name descname"><span class="pre">compute_error_grad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">P_flat</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolationSolver.ExtrapolationSolver.compute_error_grad" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolationSolver.ExtrapolationSolver.compute_known_error">
+<span class="sig-name descname"><span class="pre">compute_known_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">P</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolationSolver.ExtrapolationSolver.compute_known_error" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolationSolver.ExtrapolationSolver.compute_known_error_grad">
+<span class="sig-name descname"><span class="pre">compute_known_error_grad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">P</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolationSolver.ExtrapolationSolver.compute_known_error_grad" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolationSolver.ExtrapolationSolver.compute_propagated_errors">
+<span class="sig-name descname"><span class="pre">compute_propagated_errors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">M</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_bq</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolationSolver.ExtrapolationSolver.compute_propagated_errors" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolationSolver.ExtrapolationSolver.compute_propagated_errors_from_denoised_error">
+<span class="sig-name descname"><span class="pre">compute_propagated_errors_from_denoised_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">D_</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E_</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_bq</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolationSolver.ExtrapolationSolver.compute_propagated_errors_from_denoised_error" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolationSolver.ExtrapolationSolver.extrapolate_wiser">
+<span class="sig-name descname"><span class="pre">extrapolate_wiser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">peakset_info</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_bq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">penalty_weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop_event</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">animation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">demo_info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">surplus_rank</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suppress_rank_control</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lrf_rank</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conc_depend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_cmatrix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolationSolver.ExtrapolationSolver.extrapolate_wiser" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolationSolver.ExtrapolationSolver.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolationSolver.ExtrapolationSolver.fit" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolationSolver.ExtrapolationSolver.get_anim_data">
+<span class="sig-name descname"><span class="pre">get_anim_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolationSolver.ExtrapolationSolver.get_anim_data" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolationSolver.ExtrapolationSolver.set_known_peak_info">
+<span class="sig-name descname"><span class="pre">set_known_peak_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">known_peak_info</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conc_depend</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolationSolver.ExtrapolationSolver.set_known_peak_info" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolationSolver.KnownInfo">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">KnownInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolationSolver.KnownInfo" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolationSolver.run_extrapolation_solver">
+<span class="sig-name descname"><span class="pre">run_extrapolation_solver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selector</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conc_depend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_gui</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolationSolver.run_extrapolation_solver" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolationSolver.run_extrapolation_solver_impl">
+<span class="sig-name descname"><span class="pre">run_extrapolation_solver_impl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selector</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conc_depend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exe_queue</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop_event</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolationSolver.run_extrapolation_solver_impl" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolationSolver.run_extrapolation_solver_with_progress">
+<span class="sig-name descname"><span class="pre">run_extrapolation_solver_with_progress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selector</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conc_depend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolationSolver.run_extrapolation_solver_with_progress" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
 </section>
 
 
@@ -1781,6 +1892,37 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationSolver.ExtrapolationSolver"><code class="docutils literal notranslate"><span class="pre">ExtrapolationSolver</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationSolver.ExtrapolationSolver.compute_error"><code class="docutils literal notranslate"><span class="pre">ExtrapolationSolver.compute_error()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationSolver.ExtrapolationSolver.compute_error_grad"><code class="docutils literal notranslate"><span class="pre">ExtrapolationSolver.compute_error_grad()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationSolver.ExtrapolationSolver.compute_known_error"><code class="docutils literal notranslate"><span class="pre">ExtrapolationSolver.compute_known_error()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationSolver.ExtrapolationSolver.compute_known_error_grad"><code class="docutils literal notranslate"><span class="pre">ExtrapolationSolver.compute_known_error_grad()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationSolver.ExtrapolationSolver.compute_propagated_errors"><code class="docutils literal notranslate"><span class="pre">ExtrapolationSolver.compute_propagated_errors()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationSolver.ExtrapolationSolver.compute_propagated_errors_from_denoised_error"><code class="docutils literal notranslate"><span class="pre">ExtrapolationSolver.compute_propagated_errors_from_denoised_error()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationSolver.ExtrapolationSolver.extrapolate_wiser"><code class="docutils literal notranslate"><span class="pre">ExtrapolationSolver.extrapolate_wiser()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationSolver.ExtrapolationSolver.fit"><code class="docutils literal notranslate"><span class="pre">ExtrapolationSolver.fit()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationSolver.ExtrapolationSolver.get_anim_data"><code class="docutils literal notranslate"><span class="pre">ExtrapolationSolver.get_anim_data()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationSolver.ExtrapolationSolver.set_known_peak_info"><code class="docutils literal notranslate"><span class="pre">ExtrapolationSolver.set_known_peak_info()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationSolver.KnownInfo"><code class="docutils literal notranslate"><span class="pre">KnownInfo</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationSolver.run_extrapolation_solver"><code class="docutils literal notranslate"><span class="pre">run_extrapolation_solver()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationSolver.run_extrapolation_solver_impl"><code class="docutils literal notranslate"><span class="pre">run_extrapolation_solver_impl()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationSolver.run_extrapolation_solver_with_progress"><code class="docutils literal notranslate"><span class="pre">run_extrapolation_solver_with_progress()</span></code></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>

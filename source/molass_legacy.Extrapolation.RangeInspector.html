@@ -30,6 +30,7 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -39,6 +40,8 @@
     <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
     <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'source/molass_legacy.Extrapolation.RangeInspector';</script>
     <link rel="icon" href="../_static/molamola.png"/>
@@ -155,7 +158,10 @@
  </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        <ul class="current nav bd-sidenav">
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.main.html">main</a></li>
+</ul>
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Alsaker.html">Alsaker</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.Alsaker.Bridge.html">Alsaker.Bridge</a></li>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.Alsaker.Compare.html">Alsaker.Compare</a></li>
@@ -1717,7 +1723,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -1733,6 +1741,56 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.apply"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.apply()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.auto_inspection"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.auto_inspection()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.body"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.body()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.build_canvas"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.build_canvas()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.build_panel"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.build_panel()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.builf_distinction"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.builf_distinction()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.clear_scattering_curves"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.clear_scattering_curves()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.compute_almerge_scattering"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.compute_almerge_scattering()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.compute_nSRD_info"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.compute_nSRD_info()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.compute_peak_top_scattering"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.compute_peak_top_scattering()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.compute_rg_info"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.compute_rg_info()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.create_line_variables"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.create_line_variables()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.create_range_variables"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.create_range_variables()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.draw_elution"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.draw_elution()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.draw_scattering"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.draw_scattering()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.get_initial_range"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.get_initial_range()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.get_range"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.get_range()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.init_control_vars"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.init_control_vars()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.keep_scattering_curve"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.keep_scattering_curve()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.layout_distinction"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.layout_distinction()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.line_buttons_tracer"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.line_buttons_tracer()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.on_mouse_motion"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.on_mouse_motion()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.place_diff_toggle_button"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.place_diff_toggle_button()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.place_line_buttons"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.place_line_buttons()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.place_scale_buttons"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.place_scale_buttons()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.plot_distinction"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.plot_distinction()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.plot_rg_errorbar"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.plot_rg_errorbar()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.range_ends_tracer"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.range_ends_tracer()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.scale_type_tracer"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.scale_type_tracer()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.show"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.show()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.show_diff_mode_tracer"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.show_diff_mode_tracer()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.show_guinier_kratky_plots"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.show_guinier_kratky_plots()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.show_quality_warning"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.show_quality_warning()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.solve_this_range"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.solve_this_range()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.update_almerge_line"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.update_almerge_line()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.update_current_manip_info"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.update_current_manip_info()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.update_diff_info"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.update_diff_info()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.update_drawing"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.update_drawing()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.update_yscale"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.update_yscale()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.validate"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.validate()</span></code></a></li>
+</ul>
+</li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -1742,8 +1800,235 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="extrapolation-rangeinspector">
-<h1>Extrapolation.RangeInspector<a class="headerlink" href="#extrapolation-rangeinspector" title="Link to this heading">#</a></h1>
+  <section id="module-molass_legacy.Extrapolation.RangeInspector">
+<span id="extrapolation-rangeinspector"></span><h1>Extrapolation.RangeInspector<a class="headerlink" href="#module-molass_legacy.Extrapolation.RangeInspector" title="Link to this heading">#</a></h1>
+<p>RangeInspector.py</p>
+<p>Copyright (c) 2020-2024, SAXS Team, KEK-PF</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RangeInspectorDialog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">solver</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">j0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">paired_range</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ad</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conc_depend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_result</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decomp_info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="molass_legacy.KekLib.OurTkinter.html#molass_legacy.KekLib.OurTkinter.Dialog" title="molass_legacy.KekLib.OurTkinter.Dialog"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dialog</span></code></a></p>
+<p>Initialize a dialog.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>window</strong> (<em>parent -- a parent</em>)</p></li>
+<li><p><strong>title</strong> (<em>title -- the dialog</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.apply">
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.apply" title="Link to this definition">#</a></dt>
+<dd><p>process the data</p>
+<p>This method is called automatically to process the data, <em>after</em>
+the dialog is destroyed. By default, it does nothing.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.auto_inspection">
+<span class="sig-name descname"><span class="pre">auto_inspection</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.auto_inspection" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.body">
+<span class="sig-name descname"><span class="pre">body</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">body_frame</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.body" title="Link to this definition">#</a></dt>
+<dd><p>create dialog body.</p>
+<p>return widget that should have initial focus.
+This method should be overridden, and is called
+by the __init__ method.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.build_canvas">
+<span class="sig-name descname"><span class="pre">build_canvas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">canvas_frame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tool_frame</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.build_canvas" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.build_panel">
+<span class="sig-name descname"><span class="pre">build_panel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">panel_frame</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.build_panel" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.builf_distinction">
+<span class="sig-name descname"><span class="pre">builf_distinction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dframe</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.builf_distinction" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.clear_scattering_curves">
+<span class="sig-name descname"><span class="pre">clear_scattering_curves</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.clear_scattering_curves" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.compute_almerge_scattering">
+<span class="sig-name descname"><span class="pre">compute_almerge_scattering</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.compute_almerge_scattering" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.compute_nSRD_info">
+<span class="sig-name descname"><span class="pre">compute_nSRD_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.compute_nSRD_info" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.compute_peak_top_scattering">
+<span class="sig-name descname"><span class="pre">compute_peak_top_scattering</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.compute_peak_top_scattering" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.compute_rg_info">
+<span class="sig-name descname"><span class="pre">compute_rg_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.compute_rg_info" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.create_line_variables">
+<span class="sig-name descname"><span class="pre">create_line_variables</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.create_line_variables" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.create_range_variables">
+<span class="sig-name descname"><span class="pre">create_range_variables</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.create_range_variables" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.draw_elution">
+<span class="sig-name descname"><span class="pre">draw_elution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axt</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.draw_elution" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.draw_scattering">
+<span class="sig-name descname"><span class="pre">draw_scattering</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.draw_scattering" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.get_initial_range">
+<span class="sig-name descname"><span class="pre">get_initial_range</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.get_initial_range" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.get_range">
+<span class="sig-name descname"><span class="pre">get_range</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shifted</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.get_range" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.init_control_vars">
+<span class="sig-name descname"><span class="pre">init_control_vars</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.init_control_vars" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.keep_scattering_curve">
+<span class="sig-name descname"><span class="pre">keep_scattering_curve</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.keep_scattering_curve" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.layout_distinction">
+<span class="sig-name descname"><span class="pre">layout_distinction</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.layout_distinction" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.line_buttons_tracer">
+<span class="sig-name descname"><span class="pre">line_buttons_tracer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.line_buttons_tracer" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.on_mouse_motion">
+<span class="sig-name descname"><span class="pre">on_mouse_motion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.on_mouse_motion" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.place_diff_toggle_button">
+<span class="sig-name descname"><span class="pre">place_diff_toggle_button</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.place_diff_toggle_button" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.place_line_buttons">
+<span class="sig-name descname"><span class="pre">place_line_buttons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.place_line_buttons" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.place_scale_buttons">
+<span class="sig-name descname"><span class="pre">place_scale_buttons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.place_scale_buttons" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.plot_distinction">
+<span class="sig-name descname"><span class="pre">plot_distinction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">legend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.plot_distinction" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.plot_rg_errorbar">
+<span class="sig-name descname"><span class="pre">plot_rg_errorbar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Rg_rec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.plot_rg_errorbar" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.range_ends_tracer">
+<span class="sig-name descname"><span class="pre">range_ends_tracer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.range_ends_tracer" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.scale_type_tracer">
+<span class="sig-name descname"><span class="pre">scale_type_tracer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.scale_type_tracer" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.show">
+<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.show" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.show_diff_mode_tracer">
+<span class="sig-name descname"><span class="pre">show_diff_mode_tracer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.show_diff_mode_tracer" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.show_guinier_kratky_plots">
+<span class="sig-name descname"><span class="pre">show_guinier_kratky_plots</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.show_guinier_kratky_plots" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.show_quality_warning">
+<span class="sig-name descname"><span class="pre">show_quality_warning</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.show_quality_warning" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.solve_this_range">
+<span class="sig-name descname"><span class="pre">solve_this_range</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">surplus_rank</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.solve_this_range" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.update_almerge_line">
+<span class="sig-name descname"><span class="pre">update_almerge_line</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.update_almerge_line" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.update_current_manip_info">
+<span class="sig-name descname"><span class="pre">update_current_manip_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.update_current_manip_info" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.update_diff_info">
+<span class="sig-name descname"><span class="pre">update_diff_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">diff</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.update_diff_info" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.update_drawing">
+<span class="sig-name descname"><span class="pre">update_drawing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tv</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.update_drawing" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.update_yscale">
+<span class="sig-name descname"><span class="pre">update_yscale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.update_yscale" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.validate">
+<span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.validate" title="Link to this definition">#</a></dt>
+<dd><p>validate the data</p>
+<p>This method is called automatically to validate the data before the
+dialog is destroyed. By default, it always validates OK.</p>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 
 
@@ -1781,6 +2066,63 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.apply"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.apply()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.auto_inspection"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.auto_inspection()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.body"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.body()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.build_canvas"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.build_canvas()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.build_panel"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.build_panel()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.builf_distinction"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.builf_distinction()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.clear_scattering_curves"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.clear_scattering_curves()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.compute_almerge_scattering"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.compute_almerge_scattering()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.compute_nSRD_info"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.compute_nSRD_info()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.compute_peak_top_scattering"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.compute_peak_top_scattering()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.compute_rg_info"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.compute_rg_info()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.create_line_variables"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.create_line_variables()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.create_range_variables"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.create_range_variables()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.draw_elution"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.draw_elution()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.draw_scattering"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.draw_scattering()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.get_initial_range"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.get_initial_range()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.get_range"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.get_range()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.init_control_vars"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.init_control_vars()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.keep_scattering_curve"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.keep_scattering_curve()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.layout_distinction"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.layout_distinction()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.line_buttons_tracer"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.line_buttons_tracer()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.on_mouse_motion"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.on_mouse_motion()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.place_diff_toggle_button"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.place_diff_toggle_button()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.place_line_buttons"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.place_line_buttons()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.place_scale_buttons"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.place_scale_buttons()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.plot_distinction"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.plot_distinction()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.plot_rg_errorbar"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.plot_rg_errorbar()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.range_ends_tracer"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.range_ends_tracer()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.scale_type_tracer"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.scale_type_tracer()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.show"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.show()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.show_diff_mode_tracer"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.show_diff_mode_tracer()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.show_guinier_kratky_plots"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.show_guinier_kratky_plots()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.show_quality_warning"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.show_quality_warning()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.solve_this_range"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.solve_this_range()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.update_almerge_line"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.update_almerge_line()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.update_current_manip_info"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.update_current_manip_info()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.update_diff_info"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.update_diff_info()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.update_drawing"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.update_drawing()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.update_yscale"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.update_yscale()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.validate"><code class="docutils literal notranslate"><span class="pre">RangeInspectorDialog.validate()</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>

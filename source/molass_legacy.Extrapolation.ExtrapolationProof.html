@@ -30,6 +30,7 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -39,6 +40,8 @@
     <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
     <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'source/molass_legacy.Extrapolation.ExtrapolationProof';</script>
     <link rel="icon" href="../_static/molamola.png"/>
@@ -155,7 +158,10 @@
  </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        <ul class="current nav bd-sidenav">
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.main.html">main</a></li>
+</ul>
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Alsaker.html">Alsaker</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.Alsaker.Bridge.html">Alsaker.Bridge</a></li>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.Alsaker.Compare.html">Alsaker.Compare</a></li>
@@ -1717,7 +1723,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -1733,6 +1741,54 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.AlMergeSolver"><code class="docutils literal notranslate"><span class="pre">AlMergeSolver</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.AlMergeSolver.copy"><code class="docutils literal notranslate"><span class="pre">AlMergeSolver.copy()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.AlMergeSolver.plot_A"><code class="docutils literal notranslate"><span class="pre">AlMergeSolver.plot_A()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.AlMergeSolver.plot_B"><code class="docutils literal notranslate"><span class="pre">AlMergeSolver.plot_B()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.AlMergeSolver.scale"><code class="docutils literal notranslate"><span class="pre">AlMergeSolver.scale()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.AlMergeSolver.solve"><code class="docutils literal notranslate"><span class="pre">AlMergeSolver.solve()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.IteratedWLS"><code class="docutils literal notranslate"><span class="pre">IteratedWLS</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.IteratedWLS.solve"><code class="docutils literal notranslate"><span class="pre">IteratedWLS.solve()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.MpInverse"><code class="docutils literal notranslate"><span class="pre">MpInverse</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.MpInverse.solve"><code class="docutils literal notranslate"><span class="pre">MpInverse.solve()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.NormMinizerSmoothed"><code class="docutils literal notranslate"><span class="pre">NormMinizerSmoothed</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.NormMinizerSmoothed.solve"><code class="docutils literal notranslate"><span class="pre">NormMinizerSmoothed.solve()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.ProofViewer"><code class="docutils literal notranslate"><span class="pre">ProofViewer</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.ProofViewer.apply"><code class="docutils literal notranslate"><span class="pre">ProofViewer.apply()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.ProofViewer.body"><code class="docutils literal notranslate"><span class="pre">ProofViewer.body()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.ProofViewer.save_image"><code class="docutils literal notranslate"><span class="pre">ProofViewer.save_image()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.ProofViewer.show"><code class="docutils literal notranslate"><span class="pre">ProofViewer.show()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.ZxSolver"><code class="docutils literal notranslate"><span class="pre">ZxSolver</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.ZxSolver.plot"><code class="docutils literal notranslate"><span class="pre">ZxSolver.plot()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.ZxSolver.plot_A"><code class="docutils literal notranslate"><span class="pre">ZxSolver.plot_A()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.ZxSolver.plot_B"><code class="docutils literal notranslate"><span class="pre">ZxSolver.plot_B()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.ZxSolver.plot_func"><code class="docutils literal notranslate"><span class="pre">ZxSolver.plot_func()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.compute_nrmsd"><code class="docutils literal notranslate"><span class="pre">compute_nrmsd()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.create_plot_specs"><code class="docutils literal notranslate"><span class="pre">create_plot_specs()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.do_a_range"><code class="docutils literal notranslate"><span class="pre">do_a_range()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.do_a_range_almerge"><code class="docutils literal notranslate"><span class="pre">do_a_range_almerge()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.do_a_range_definitive"><code class="docutils literal notranslate"><span class="pre">do_a_range_definitive()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.do_a_range_denoise"><code class="docutils literal notranslate"><span class="pre">do_a_range_denoise()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.survey_for_all_data"><code class="docutils literal notranslate"><span class="pre">survey_for_all_data()</span></code></a></li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -1742,8 +1798,177 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="extrapolation-extrapolationproof">
-<h1>Extrapolation.ExtrapolationProof<a class="headerlink" href="#extrapolation-extrapolationproof" title="Link to this heading">#</a></h1>
+  <section id="module-molass_legacy.Extrapolation.ExtrapolationProof">
+<span id="extrapolation-extrapolationproof"></span><h1>Extrapolation.ExtrapolationProof<a class="headerlink" href="#module-molass_legacy.Extrapolation.ExtrapolationProof" title="Link to this heading">#</a></h1>
+<p>ExtrapolationProof.py</p>
+<p>Copyright (c) 2019, SAXS Team, KEK-PF</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolationProof.AlMergeSolver">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AlMergeSolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">M</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolationProof.AlMergeSolver" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolationProof.AlMergeSolver.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolationProof.AlMergeSolver.copy" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolationProof.AlMergeSolver.plot_A">
+<span class="sig-name descname"><span class="pre">plot_A</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolationProof.AlMergeSolver.plot_A" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolationProof.AlMergeSolver.plot_B">
+<span class="sig-name descname"><span class="pre">plot_B</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolationProof.AlMergeSolver.plot_B" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolationProof.AlMergeSolver.scale">
+<span class="sig-name descname"><span class="pre">scale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other95</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolationProof.AlMergeSolver.scale" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolationProof.AlMergeSolver.solve">
+<span class="sig-name descname"><span class="pre">solve</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolationProof.AlMergeSolver.solve" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolationProof.IteratedWLS">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">IteratedWLS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">M</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolationProof.IteratedWLS" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#molass_legacy.Extrapolation.ExtrapolationProof.ZxSolver" title="molass_legacy.Extrapolation.ExtrapolationProof.ZxSolver"><code class="xref py py-class docutils literal notranslate"><span class="pre">ZxSolver</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolationProof.IteratedWLS.solve">
+<span class="sig-name descname"><span class="pre">solve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weighted</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_const</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolationProof.IteratedWLS.solve" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolationProof.MpInverse">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MpInverse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">M</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolationProof.MpInverse" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#molass_legacy.Extrapolation.ExtrapolationProof.ZxSolver" title="molass_legacy.Extrapolation.ExtrapolationProof.ZxSolver"><code class="xref py py-class docutils literal notranslate"><span class="pre">ZxSolver</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolationProof.MpInverse.solve">
+<span class="sig-name descname"><span class="pre">solve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">with_const</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolationProof.MpInverse.solve" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolationProof.NormMinizerSmoothed">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">NormMinizerSmoothed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">M</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolationProof.NormMinizerSmoothed" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#molass_legacy.Extrapolation.ExtrapolationProof.ZxSolver" title="molass_legacy.Extrapolation.ExtrapolationProof.ZxSolver"><code class="xref py py-class docutils literal notranslate"><span class="pre">ZxSolver</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolationProof.NormMinizerSmoothed.solve">
+<span class="sig-name descname"><span class="pre">solve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">apositive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smoothed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolationProof.NormMinizerSmoothed.solve" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolationProof.ProofViewer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ProofViewer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolationProof.ProofViewer" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="molass_legacy.KekLib.OurTkinter.html#molass_legacy.KekLib.OurTkinter.Dialog" title="molass_legacy.KekLib.OurTkinter.Dialog"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dialog</span></code></a></p>
+<p>Initialize a dialog.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>window</strong> (<em>parent -- a parent</em>)</p></li>
+<li><p><strong>title</strong> (<em>title -- the dialog</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolationProof.ProofViewer.apply">
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolationProof.ProofViewer.apply" title="Link to this definition">#</a></dt>
+<dd><p>process the data</p>
+<p>This method is called automatically to process the data, <em>after</em>
+the dialog is destroyed. By default, it does nothing.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolationProof.ProofViewer.body">
+<span class="sig-name descname"><span class="pre">body</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">body_frame</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolationProof.ProofViewer.body" title="Link to this definition">#</a></dt>
+<dd><p>create dialog body.</p>
+<p>return widget that should have initial focus.
+This method should be overridden, and is called
+by the __init__ method.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolationProof.ProofViewer.save_image">
+<span class="sig-name descname"><span class="pre">save_image</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolationProof.ProofViewer.save_image" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolationProof.ProofViewer.show">
+<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_specs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_images</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_bq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolationProof.ProofViewer.show" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolationProof.ZxSolver">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ZxSolver</span></span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolationProof.ZxSolver" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolationProof.ZxSolver.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolationProof.ZxSolver.plot" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolationProof.ZxSolver.plot_A">
+<span class="sig-name descname"><span class="pre">plot_A</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolationProof.ZxSolver.plot_A" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolationProof.ZxSolver.plot_B">
+<span class="sig-name descname"><span class="pre">plot_B</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolationProof.ZxSolver.plot_B" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolationProof.ZxSolver.plot_func">
+<span class="sig-name descname"><span class="pre">plot_func</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolationProof.ZxSolver.plot_func" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolationProof.compute_nrmsd">
+<span class="sig-name descname"><span class="pre">compute_nrmsd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolationProof.compute_nrmsd" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolationProof.create_plot_specs">
+<span class="sig-name descname"><span class="pre">create_plot_specs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uv_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">range_callback</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">range_</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolationProof.create_plot_specs" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolationProof.do_a_range">
+<span class="sig-name descname"><span class="pre">do_a_range</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pno</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ad</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">range_</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c_all</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolationProof.do_a_range" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolationProof.do_a_range_almerge">
+<span class="sig-name descname"><span class="pre">do_a_range_almerge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pno</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ad</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">range_</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c_all</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolationProof.do_a_range_almerge" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolationProof.do_a_range_definitive">
+<span class="sig-name descname"><span class="pre">do_a_range_definitive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pno</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ad</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">range_</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c_all</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolationProof.do_a_range_definitive" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolationProof.do_a_range_denoise">
+<span class="sig-name descname"><span class="pre">do_a_range_denoise</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pno</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ad</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">range_</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c_all</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolationProof.do_a_range_denoise" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.ExtrapolationProof.survey_for_all_data">
+<span class="sig-name descname"><span class="pre">survey_for_all_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">restart=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback=&lt;function</span> <span class="pre">do_a_range&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_bq=True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.ExtrapolationProof.survey_for_all_data" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
 </section>
 
 
@@ -1781,6 +2006,61 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.AlMergeSolver"><code class="docutils literal notranslate"><span class="pre">AlMergeSolver</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.AlMergeSolver.copy"><code class="docutils literal notranslate"><span class="pre">AlMergeSolver.copy()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.AlMergeSolver.plot_A"><code class="docutils literal notranslate"><span class="pre">AlMergeSolver.plot_A()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.AlMergeSolver.plot_B"><code class="docutils literal notranslate"><span class="pre">AlMergeSolver.plot_B()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.AlMergeSolver.scale"><code class="docutils literal notranslate"><span class="pre">AlMergeSolver.scale()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.AlMergeSolver.solve"><code class="docutils literal notranslate"><span class="pre">AlMergeSolver.solve()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.IteratedWLS"><code class="docutils literal notranslate"><span class="pre">IteratedWLS</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.IteratedWLS.solve"><code class="docutils literal notranslate"><span class="pre">IteratedWLS.solve()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.MpInverse"><code class="docutils literal notranslate"><span class="pre">MpInverse</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.MpInverse.solve"><code class="docutils literal notranslate"><span class="pre">MpInverse.solve()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.NormMinizerSmoothed"><code class="docutils literal notranslate"><span class="pre">NormMinizerSmoothed</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.NormMinizerSmoothed.solve"><code class="docutils literal notranslate"><span class="pre">NormMinizerSmoothed.solve()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.ProofViewer"><code class="docutils literal notranslate"><span class="pre">ProofViewer</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.ProofViewer.apply"><code class="docutils literal notranslate"><span class="pre">ProofViewer.apply()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.ProofViewer.body"><code class="docutils literal notranslate"><span class="pre">ProofViewer.body()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.ProofViewer.save_image"><code class="docutils literal notranslate"><span class="pre">ProofViewer.save_image()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.ProofViewer.show"><code class="docutils literal notranslate"><span class="pre">ProofViewer.show()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.ZxSolver"><code class="docutils literal notranslate"><span class="pre">ZxSolver</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.ZxSolver.plot"><code class="docutils literal notranslate"><span class="pre">ZxSolver.plot()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.ZxSolver.plot_A"><code class="docutils literal notranslate"><span class="pre">ZxSolver.plot_A()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.ZxSolver.plot_B"><code class="docutils literal notranslate"><span class="pre">ZxSolver.plot_B()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.ZxSolver.plot_func"><code class="docutils literal notranslate"><span class="pre">ZxSolver.plot_func()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.compute_nrmsd"><code class="docutils literal notranslate"><span class="pre">compute_nrmsd()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.create_plot_specs"><code class="docutils literal notranslate"><span class="pre">create_plot_specs()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.do_a_range"><code class="docutils literal notranslate"><span class="pre">do_a_range()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.do_a_range_almerge"><code class="docutils literal notranslate"><span class="pre">do_a_range_almerge()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.do_a_range_definitive"><code class="docutils literal notranslate"><span class="pre">do_a_range_definitive()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.do_a_range_denoise"><code class="docutils literal notranslate"><span class="pre">do_a_range_denoise()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.ExtrapolationProof.survey_for_all_data"><code class="docutils literal notranslate"><span class="pre">survey_for_all_data()</span></code></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>

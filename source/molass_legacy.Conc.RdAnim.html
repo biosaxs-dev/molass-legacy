@@ -30,6 +30,7 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -39,6 +40,8 @@
     <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
     <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'source/molass_legacy.Conc.RdAnim';</script>
     <link rel="icon" href="../_static/molamola.png"/>
@@ -155,7 +158,10 @@
  </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        <ul class="current nav bd-sidenav">
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.main.html">main</a></li>
+</ul>
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Alsaker.html">Alsaker</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.Alsaker.Bridge.html">Alsaker.Bridge</a></li>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.Alsaker.Compare.html">Alsaker.Compare</a></li>
@@ -1717,7 +1723,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -1733,6 +1741,26 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Conc.RdAnim.RdAnim"><code class="docutils literal notranslate"><span class="pre">RdAnim</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Conc.RdAnim.RdAnim.body"><code class="docutils literal notranslate"><span class="pre">RdAnim.body()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Conc.RdAnim.RdAnim.build_panel"><code class="docutils literal notranslate"><span class="pre">RdAnim.build_panel()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Conc.RdAnim.RdAnim.buttonbox"><code class="docutils literal notranslate"><span class="pre">RdAnim.buttonbox()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Conc.RdAnim.RdAnim.draw"><code class="docutils literal notranslate"><span class="pre">RdAnim.draw()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Conc.RdAnim.RdAnim.get_almerge_switch_point"><code class="docutils literal notranslate"><span class="pre">RdAnim.get_almerge_switch_point()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Conc.RdAnim.RdAnim.get_range"><code class="docutils literal notranslate"><span class="pre">RdAnim.get_range()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Conc.RdAnim.RdAnim.mode_tracer"><code class="docutils literal notranslate"><span class="pre">RdAnim.mode_tracer()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Conc.RdAnim.RdAnim.position_changed"><code class="docutils literal notranslate"><span class="pre">RdAnim.position_changed()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Conc.RdAnim.RdAnim.prepare_curves"><code class="docutils literal notranslate"><span class="pre">RdAnim.prepare_curves()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Conc.RdAnim.RdAnim.show"><code class="docutils literal notranslate"><span class="pre">RdAnim.show()</span></code></a></li>
+</ul>
+</li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -1742,8 +1770,81 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="conc-rdanim">
-<h1>Conc.RdAnim<a class="headerlink" href="#conc-rdanim" title="Link to this heading">#</a></h1>
+  <section id="module-molass_legacy.Conc.RdAnim">
+<span id="conc-rdanim"></span><h1>Conc.RdAnim<a class="headerlink" href="#module-molass_legacy.Conc.RdAnim" title="Link to this heading">#</a></h1>
+<p>RdAnim.py</p>
+<p>Copyright (c) 2020, SAXS Team, KEK-PF</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="molass_legacy.Conc.RdAnim.RdAnim">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RdAnim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sythesized</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Conc.RdAnim.RdAnim" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="molass_legacy.KekLib.OurTkinter.html#molass_legacy.KekLib.OurTkinter.Dialog" title="molass_legacy.KekLib.OurTkinter.Dialog"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dialog</span></code></a></p>
+<p>Initialize a dialog.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>window</strong> (<em>parent -- a parent</em>)</p></li>
+<li><p><strong>title</strong> (<em>title -- the dialog</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Conc.RdAnim.RdAnim.body">
+<span class="sig-name descname"><span class="pre">body</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">body_frame</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Conc.RdAnim.RdAnim.body" title="Link to this definition">#</a></dt>
+<dd><p>create dialog body.</p>
+<p>return widget that should have initial focus.
+This method should be overridden, and is called
+by the __init__ method.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Conc.RdAnim.RdAnim.build_panel">
+<span class="sig-name descname"><span class="pre">build_panel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Conc.RdAnim.RdAnim.build_panel" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Conc.RdAnim.RdAnim.buttonbox">
+<span class="sig-name descname"><span class="pre">buttonbox</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Conc.RdAnim.RdAnim.buttonbox" title="Link to this definition">#</a></dt>
+<dd><p>add standard button box.</p>
+<p>override if you do not want the standard buttons</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Conc.RdAnim.RdAnim.draw">
+<span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Conc.RdAnim.RdAnim.draw" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Conc.RdAnim.RdAnim.get_almerge_switch_point">
+<span class="sig-name descname"><span class="pre">get_almerge_switch_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Mj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ej</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Conc.RdAnim.RdAnim.get_almerge_switch_point" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Conc.RdAnim.RdAnim.get_range">
+<span class="sig-name descname"><span class="pre">get_range</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Conc.RdAnim.RdAnim.get_range" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Conc.RdAnim.RdAnim.mode_tracer">
+<span class="sig-name descname"><span class="pre">mode_tracer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Conc.RdAnim.RdAnim.mode_tracer" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Conc.RdAnim.RdAnim.position_changed">
+<span class="sig-name descname"><span class="pre">position_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Conc.RdAnim.RdAnim.position_changed" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Conc.RdAnim.RdAnim.prepare_curves">
+<span class="sig-name descname"><span class="pre">prepare_curves</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Conc.RdAnim.RdAnim.prepare_curves" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Conc.RdAnim.RdAnim.show">
+<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Conc.RdAnim.RdAnim.show" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </section>
 
 
@@ -1781,6 +1882,33 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Conc.RdAnim.RdAnim"><code class="docutils literal notranslate"><span class="pre">RdAnim</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Conc.RdAnim.RdAnim.body"><code class="docutils literal notranslate"><span class="pre">RdAnim.body()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Conc.RdAnim.RdAnim.build_panel"><code class="docutils literal notranslate"><span class="pre">RdAnim.build_panel()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Conc.RdAnim.RdAnim.buttonbox"><code class="docutils literal notranslate"><span class="pre">RdAnim.buttonbox()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Conc.RdAnim.RdAnim.draw"><code class="docutils literal notranslate"><span class="pre">RdAnim.draw()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Conc.RdAnim.RdAnim.get_almerge_switch_point"><code class="docutils literal notranslate"><span class="pre">RdAnim.get_almerge_switch_point()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Conc.RdAnim.RdAnim.get_range"><code class="docutils literal notranslate"><span class="pre">RdAnim.get_range()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Conc.RdAnim.RdAnim.mode_tracer"><code class="docutils literal notranslate"><span class="pre">RdAnim.mode_tracer()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Conc.RdAnim.RdAnim.position_changed"><code class="docutils literal notranslate"><span class="pre">RdAnim.position_changed()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Conc.RdAnim.RdAnim.prepare_curves"><code class="docutils literal notranslate"><span class="pre">RdAnim.prepare_curves()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Conc.RdAnim.RdAnim.show"><code class="docutils literal notranslate"><span class="pre">RdAnim.show()</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>

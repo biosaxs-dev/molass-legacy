@@ -30,6 +30,7 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -39,6 +40,8 @@
     <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
     <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'source/molass_legacy.ModelParams.EghParams';</script>
     <link rel="icon" href="../_static/molamola.png"/>
@@ -155,7 +158,10 @@
  </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        <ul class="current nav bd-sidenav">
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.main.html">main</a></li>
+</ul>
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Alsaker.html">Alsaker</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.Alsaker.Bridge.html">Alsaker.Bridge</a></li>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.Alsaker.Compare.html">Alsaker.Compare</a></li>
@@ -1717,7 +1723,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -1733,6 +1741,54 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghAdvansedParams"><code class="docutils literal notranslate"><span class="pre">EghAdvansedParams</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghAdvansedParams.get_estimator"><code class="docutils literal notranslate"><span class="pre">EghAdvansedParams.get_estimator()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghAdvansedParams.get_mr_start_index"><code class="docutils literal notranslate"><span class="pre">EghAdvansedParams.get_mr_start_index()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghAdvansedParams.get_parameter_names"><code class="docutils literal notranslate"><span class="pre">EghAdvansedParams.get_parameter_names()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghAdvansedParams.get_rg_start_index"><code class="docutils literal notranslate"><span class="pre">EghAdvansedParams.get_rg_start_index()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghAdvansedParams.make_bounds_mask"><code class="docutils literal notranslate"><span class="pre">EghAdvansedParams.make_bounds_mask()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghAdvansedParams.split_as_unified_params"><code class="docutils literal notranslate"><span class="pre">EghAdvansedParams.split_as_unified_params()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghAdvansedParams.split_get_unified_sec_params"><code class="docutils literal notranslate"><span class="pre">EghAdvansedParams.split_get_unified_sec_params()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghAdvansedParams.split_params"><code class="docutils literal notranslate"><span class="pre">EghAdvansedParams.split_params()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghAdvansedParams.split_params_simple"><code class="docutils literal notranslate"><span class="pre">EghAdvansedParams.split_params_simple()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghParams"><code class="docutils literal notranslate"><span class="pre">EghParams</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghParams.get_mr_start_index"><code class="docutils literal notranslate"><span class="pre">EghParams.get_mr_start_index()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghParams.get_parameter_names"><code class="docutils literal notranslate"><span class="pre">EghParams.get_parameter_names()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghParams.get_rg_start_index"><code class="docutils literal notranslate"><span class="pre">EghParams.get_rg_start_index()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghParams.make_bounds_mask"><code class="docutils literal notranslate"><span class="pre">EghParams.make_bounds_mask()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghParams.split_params"><code class="docutils literal notranslate"><span class="pre">EghParams.split_params()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghParams.split_params_simple"><code class="docutils literal notranslate"><span class="pre">EghParams.split_params_simple()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghParamsBase"><code class="docutils literal notranslate"><span class="pre">EghParamsBase</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghParamsBase.compute_comformance"><code class="docutils literal notranslate"><span class="pre">EghParamsBase.compute_comformance()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghParamsBase.compute_init_guess"><code class="docutils literal notranslate"><span class="pre">EghParamsBase.compute_init_guess()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghParamsBase.compute_xr_peak_position"><code class="docutils literal notranslate"><span class="pre">EghParamsBase.compute_xr_peak_position()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghParamsBase.estimate_conformance_params"><code class="docutils literal notranslate"><span class="pre">EghParamsBase.estimate_conformance_params()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghParamsBase.get_adjuster"><code class="docutils literal notranslate"><span class="pre">EghParamsBase.get_adjuster()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghParamsBase.get_extended_bounds"><code class="docutils literal notranslate"><span class="pre">EghParamsBase.get_extended_bounds()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghParamsBase.get_model_name"><code class="docutils literal notranslate"><span class="pre">EghParamsBase.get_model_name()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghParamsBase.get_param_bounds"><code class="docutils literal notranslate"><span class="pre">EghParamsBase.get_param_bounds()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghParamsBase.get_params_sheet"><code class="docutils literal notranslate"><span class="pre">EghParamsBase.get_params_sheet()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghParamsBase.get_peak_pos_array_list"><code class="docutils literal notranslate"><span class="pre">EghParamsBase.get_peak_pos_array_list()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghParamsBase.get_seccol_params_for_disp"><code class="docutils literal notranslate"><span class="pre">EghParamsBase.get_seccol_params_for_disp()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghParamsBase.get_sigma_bounds"><code class="docutils literal notranslate"><span class="pre">EghParamsBase.get_sigma_bounds()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghParamsBase.get_xr_param_bounds"><code class="docutils literal notranslate"><span class="pre">EghParamsBase.get_xr_param_bounds()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghParamsBase.split_bounds"><code class="docutils literal notranslate"><span class="pre">EghParamsBase.split_bounds()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghParamsBase.update_bounds_hook"><code class="docutils literal notranslate"><span class="pre">EghParamsBase.update_bounds_hook()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.construct_egh_params_type"><code class="docutils literal notranslate"><span class="pre">construct_egh_params_type()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.get_common_parameter_names"><code class="docutils literal notranslate"><span class="pre">get_common_parameter_names()</span></code></a></li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -1742,8 +1798,188 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="modelparams-eghparams">
-<h1>ModelParams.EghParams<a class="headerlink" href="#modelparams-eghparams" title="Link to this heading">#</a></h1>
+  <section id="module-molass_legacy.ModelParams.EghParams">
+<span id="modelparams-eghparams"></span><h1>ModelParams.EghParams<a class="headerlink" href="#module-molass_legacy.ModelParams.EghParams" title="Link to this heading">#</a></h1>
+<p>EghParams.py</p>
+<p>Copyright (c) 2022-2024, SAXS Team, KEK-PF</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="molass_legacy.ModelParams.EghParams.EghAdvansedParams">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">EghAdvansedParams</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_components</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">poresize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">poreexponent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sec_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">baseline_rg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.ModelParams.EghParams.EghAdvansedParams" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#molass_legacy.ModelParams.EghParams.EghParamsBase" title="molass_legacy.ModelParams.EghParams.EghParamsBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">EghParamsBase</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.ModelParams.EghParams.EghAdvansedParams.get_estimator">
+<span class="sig-name descname"><span class="pre">get_estimator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">editor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.ModelParams.EghParams.EghAdvansedParams.get_estimator" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.ModelParams.EghParams.EghAdvansedParams.get_mr_start_index">
+<span class="sig-name descname"><span class="pre">get_mr_start_index</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.ModelParams.EghParams.EghAdvansedParams.get_mr_start_index" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.ModelParams.EghParams.EghAdvansedParams.get_parameter_names">
+<span class="sig-name descname"><span class="pre">get_parameter_names</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.ModelParams.EghParams.EghAdvansedParams.get_parameter_names" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.ModelParams.EghParams.EghAdvansedParams.get_rg_start_index">
+<span class="sig-name descname"><span class="pre">get_rg_start_index</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.ModelParams.EghParams.EghAdvansedParams.get_rg_start_index" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.ModelParams.EghParams.EghAdvansedParams.make_bounds_mask">
+<span class="sig-name descname"><span class="pre">make_bounds_mask</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.ModelParams.EghParams.EghAdvansedParams.make_bounds_mask" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.ModelParams.EghParams.EghAdvansedParams.split_as_unified_params">
+<span class="sig-name descname"><span class="pre">split_as_unified_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.ModelParams.EghParams.EghAdvansedParams.split_as_unified_params" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.ModelParams.EghParams.EghAdvansedParams.split_get_unified_sec_params">
+<span class="sig-name descname"><span class="pre">split_get_unified_sec_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.ModelParams.EghParams.EghAdvansedParams.split_get_unified_sec_params" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.ModelParams.EghParams.EghAdvansedParams.split_params">
+<span class="sig-name descname"><span class="pre">split_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.ModelParams.EghParams.EghAdvansedParams.split_params" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.ModelParams.EghParams.EghAdvansedParams.split_params_simple">
+<span class="sig-name descname"><span class="pre">split_params_simple</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">convert</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.ModelParams.EghParams.EghAdvansedParams.split_params_simple" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="molass_legacy.ModelParams.EghParams.EghParams">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">EghParams</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_components</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">poresize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">poreexponent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sec_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.ModelParams.EghParams.EghParams" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#molass_legacy.ModelParams.EghParams.EghParamsBase" title="molass_legacy.ModelParams.EghParams.EghParamsBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">EghParamsBase</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.ModelParams.EghParams.EghParams.get_mr_start_index">
+<span class="sig-name descname"><span class="pre">get_mr_start_index</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.ModelParams.EghParams.EghParams.get_mr_start_index" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.ModelParams.EghParams.EghParams.get_parameter_names">
+<span class="sig-name descname"><span class="pre">get_parameter_names</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.ModelParams.EghParams.EghParams.get_parameter_names" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.ModelParams.EghParams.EghParams.get_rg_start_index">
+<span class="sig-name descname"><span class="pre">get_rg_start_index</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.ModelParams.EghParams.EghParams.get_rg_start_index" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.ModelParams.EghParams.EghParams.make_bounds_mask">
+<span class="sig-name descname"><span class="pre">make_bounds_mask</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.ModelParams.EghParams.EghParams.make_bounds_mask" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.ModelParams.EghParams.EghParams.split_params">
+<span class="sig-name descname"><span class="pre">split_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.ModelParams.EghParams.EghParams.split_params" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.ModelParams.EghParams.EghParams.split_params_simple">
+<span class="sig-name descname"><span class="pre">split_params_simple</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">convert</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.ModelParams.EghParams.EghParams.split_params_simple" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="molass_legacy.ModelParams.EghParams.EghParamsBase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">EghParamsBase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_components</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">poresize</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">poreexponent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sec_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.ModelParams.EghParams.EghParamsBase" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.ModelParams.EghParams.EghParamsBase.compute_comformance">
+<span class="sig-name descname"><span class="pre">compute_comformance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.ModelParams.EghParams.EghParamsBase.compute_comformance" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.ModelParams.EghParams.EghParamsBase.compute_init_guess">
+<span class="sig-name descname"><span class="pre">compute_init_guess</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.ModelParams.EghParams.EghParamsBase.compute_init_guess" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.ModelParams.EghParams.EghParamsBase.compute_xr_peak_position">
+<span class="sig-name descname"><span class="pre">compute_xr_peak_position</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xr_params</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.ModelParams.EghParams.EghParamsBase.compute_xr_peak_position" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.ModelParams.EghParams.EghParamsBase.estimate_conformance_params">
+<span class="sig-name descname"><span class="pre">estimate_conformance_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.ModelParams.EghParams.EghParamsBase.estimate_conformance_params" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.ModelParams.EghParams.EghParamsBase.get_adjuster">
+<span class="sig-name descname"><span class="pre">get_adjuster</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.ModelParams.EghParams.EghParamsBase.get_adjuster" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.ModelParams.EghParams.EghParamsBase.get_extended_bounds">
+<span class="sig-name descname"><span class="pre">get_extended_bounds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">init_sec_params</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.ModelParams.EghParams.EghParamsBase.get_extended_bounds" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.ModelParams.EghParams.EghParamsBase.get_model_name">
+<span class="sig-name descname"><span class="pre">get_model_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.ModelParams.EghParams.EghParamsBase.get_model_name" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.ModelParams.EghParams.EghParamsBase.get_param_bounds">
+<span class="sig-name descname"><span class="pre">get_param_bounds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.ModelParams.EghParams.EghParamsBase.get_param_bounds" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.ModelParams.EghParams.EghParamsBase.get_params_sheet">
+<span class="sig-name descname"><span class="pre">get_params_sheet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dsets</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.ModelParams.EghParams.EghParamsBase.get_params_sheet" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.ModelParams.EghParams.EghParamsBase.get_peak_pos_array_list">
+<span class="sig-name descname"><span class="pre">get_peak_pos_array_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_array</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.ModelParams.EghParams.EghParamsBase.get_peak_pos_array_list" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.ModelParams.EghParams.EghParamsBase.get_seccol_params_for_disp">
+<span class="sig-name descname"><span class="pre">get_seccol_params_for_disp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seccol_params</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.ModelParams.EghParams.EghParamsBase.get_seccol_params_for_disp" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.ModelParams.EghParams.EghParamsBase.get_sigma_bounds">
+<span class="sig-name descname"><span class="pre">get_sigma_bounds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.ModelParams.EghParams.EghParamsBase.get_sigma_bounds" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.ModelParams.EghParams.EghParamsBase.get_xr_param_bounds">
+<span class="sig-name descname"><span class="pre">get_xr_param_bounds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">temp_xr_params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ti</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Np</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.ModelParams.EghParams.EghParamsBase.get_xr_param_bounds" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.ModelParams.EghParams.EghParamsBase.split_bounds">
+<span class="sig-name descname"><span class="pre">split_bounds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bounds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.ModelParams.EghParams.EghParamsBase.split_bounds" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.ModelParams.EghParams.EghParamsBase.update_bounds_hook">
+<span class="sig-name descname"><span class="pre">update_bounds_hook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">masked_init_params</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.ModelParams.EghParams.EghParamsBase.update_bounds_hook" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="molass_legacy.ModelParams.EghParams.construct_egh_params_type">
+<span class="sig-name descname"><span class="pre">construct_egh_params_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_components</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sec_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">baseline_rg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.ModelParams.EghParams.construct_egh_params_type" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="molass_legacy.ModelParams.EghParams.get_common_parameter_names">
+<span class="sig-name descname"><span class="pre">get_common_parameter_names</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nc_rg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seccol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.ModelParams.EghParams.get_common_parameter_names" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
 </section>
 
 
@@ -1781,6 +2017,61 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghAdvansedParams"><code class="docutils literal notranslate"><span class="pre">EghAdvansedParams</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghAdvansedParams.get_estimator"><code class="docutils literal notranslate"><span class="pre">EghAdvansedParams.get_estimator()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghAdvansedParams.get_mr_start_index"><code class="docutils literal notranslate"><span class="pre">EghAdvansedParams.get_mr_start_index()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghAdvansedParams.get_parameter_names"><code class="docutils literal notranslate"><span class="pre">EghAdvansedParams.get_parameter_names()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghAdvansedParams.get_rg_start_index"><code class="docutils literal notranslate"><span class="pre">EghAdvansedParams.get_rg_start_index()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghAdvansedParams.make_bounds_mask"><code class="docutils literal notranslate"><span class="pre">EghAdvansedParams.make_bounds_mask()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghAdvansedParams.split_as_unified_params"><code class="docutils literal notranslate"><span class="pre">EghAdvansedParams.split_as_unified_params()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghAdvansedParams.split_get_unified_sec_params"><code class="docutils literal notranslate"><span class="pre">EghAdvansedParams.split_get_unified_sec_params()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghAdvansedParams.split_params"><code class="docutils literal notranslate"><span class="pre">EghAdvansedParams.split_params()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghAdvansedParams.split_params_simple"><code class="docutils literal notranslate"><span class="pre">EghAdvansedParams.split_params_simple()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghParams"><code class="docutils literal notranslate"><span class="pre">EghParams</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghParams.get_mr_start_index"><code class="docutils literal notranslate"><span class="pre">EghParams.get_mr_start_index()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghParams.get_parameter_names"><code class="docutils literal notranslate"><span class="pre">EghParams.get_parameter_names()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghParams.get_rg_start_index"><code class="docutils literal notranslate"><span class="pre">EghParams.get_rg_start_index()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghParams.make_bounds_mask"><code class="docutils literal notranslate"><span class="pre">EghParams.make_bounds_mask()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghParams.split_params"><code class="docutils literal notranslate"><span class="pre">EghParams.split_params()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghParams.split_params_simple"><code class="docutils literal notranslate"><span class="pre">EghParams.split_params_simple()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghParamsBase"><code class="docutils literal notranslate"><span class="pre">EghParamsBase</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghParamsBase.compute_comformance"><code class="docutils literal notranslate"><span class="pre">EghParamsBase.compute_comformance()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghParamsBase.compute_init_guess"><code class="docutils literal notranslate"><span class="pre">EghParamsBase.compute_init_guess()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghParamsBase.compute_xr_peak_position"><code class="docutils literal notranslate"><span class="pre">EghParamsBase.compute_xr_peak_position()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghParamsBase.estimate_conformance_params"><code class="docutils literal notranslate"><span class="pre">EghParamsBase.estimate_conformance_params()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghParamsBase.get_adjuster"><code class="docutils literal notranslate"><span class="pre">EghParamsBase.get_adjuster()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghParamsBase.get_extended_bounds"><code class="docutils literal notranslate"><span class="pre">EghParamsBase.get_extended_bounds()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghParamsBase.get_model_name"><code class="docutils literal notranslate"><span class="pre">EghParamsBase.get_model_name()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghParamsBase.get_param_bounds"><code class="docutils literal notranslate"><span class="pre">EghParamsBase.get_param_bounds()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghParamsBase.get_params_sheet"><code class="docutils literal notranslate"><span class="pre">EghParamsBase.get_params_sheet()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghParamsBase.get_peak_pos_array_list"><code class="docutils literal notranslate"><span class="pre">EghParamsBase.get_peak_pos_array_list()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghParamsBase.get_seccol_params_for_disp"><code class="docutils literal notranslate"><span class="pre">EghParamsBase.get_seccol_params_for_disp()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghParamsBase.get_sigma_bounds"><code class="docutils literal notranslate"><span class="pre">EghParamsBase.get_sigma_bounds()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghParamsBase.get_xr_param_bounds"><code class="docutils literal notranslate"><span class="pre">EghParamsBase.get_xr_param_bounds()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghParamsBase.split_bounds"><code class="docutils literal notranslate"><span class="pre">EghParamsBase.split_bounds()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.EghParamsBase.update_bounds_hook"><code class="docutils literal notranslate"><span class="pre">EghParamsBase.update_bounds_hook()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.construct_egh_params_type"><code class="docutils literal notranslate"><span class="pre">construct_egh_params_type()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ModelParams.EghParams.get_common_parameter_names"><code class="docutils literal notranslate"><span class="pre">get_common_parameter_names()</span></code></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>

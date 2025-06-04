@@ -30,6 +30,7 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -39,6 +40,8 @@
     <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
     <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'source/molass_legacy.ATSAS.CorMapAnalysis';</script>
     <link rel="icon" href="../_static/molamola.png"/>
@@ -155,7 +158,10 @@
  </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        <ul class="current nav bd-sidenav">
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.main.html">main</a></li>
+</ul>
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Alsaker.html">Alsaker</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.Alsaker.Bridge.html">Alsaker.Bridge</a></li>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.Alsaker.Compare.html">Alsaker.Compare</a></li>
@@ -1806,10 +1812,10 @@ image pairs.</p></li>
 <li><p><strong>x_axis_vec</strong> (<em>numpy array</em><em>, </em><em>optional</em><em> (</em><em>default=</em><em>[</em><em>]</em><em>)</em>) – Vector of values to use on the x-axis of plots. This can be things
 like dose values for example. If not specified then frame number is
 used as a default.</p></li>
-<li><p><strong>x_metric</strong> (<em>str</em><em>, </em><em>optional</em><em> (</em><em>default=&quot;&quot;</em><em>)</em>) – String specifying the type of metric used for the x-axis. An
+<li><p><strong>x_metric</strong> (<a class="reference internal" href="molass_legacy.DENSS.denss.html#molass_legacy.DENSS.denss.str" title="molass_legacy.DENSS.denss.str"><em>str</em></a><em>, </em><em>optional</em><em> (</em><em>default=&quot;&quot;</em><em>)</em>) – String specifying the type of metric used for the x-axis. An
 example would be “Dose”. If not specified then the default metric
 used on the x-axis is “Frame Number”</p></li>
-<li><p><strong>x_units</strong> (<em>str</em><em>, </em><em>optional</em><em> (</em><em>default=&quot;&quot;</em><em>)</em>) – String specifying the units used for the x-axis metric. For example
+<li><p><strong>x_units</strong> (<a class="reference internal" href="molass_legacy.DENSS.denss.html#molass_legacy.DENSS.denss.str" title="molass_legacy.DENSS.denss.str"><em>str</em></a><em>, </em><em>optional</em><em> (</em><em>default=&quot;&quot;</em><em>)</em>) – String specifying the units used for the x-axis metric. For example
 if the x-axis metric was the ‘dose’, then x_units may be specified
 as “kGy”.</p></li>
 </ul>
@@ -1889,7 +1895,7 @@ as well as whether to use the Bonferroni corrected P values or not.
 If not specified then all frames are compared to the first frame.</p></li>
 <li><p><strong>P_threshold</strong> (<em>float</em><em>, </em><em>optional</em><em> (</em><em>default=0.01</em><em>)</em>) – The significance threshold of the test. If it’s not given then the
 default value is 1%.</p></li>
-<li><p><strong>P_type</strong> (<em>str</em><em>, </em><em>optional</em><em> (</em><em>default=&quot;adjP&quot;</em><em>)</em>) – String denoting whether to use the Bonferroni corrected P value
+<li><p><strong>P_type</strong> (<a class="reference internal" href="molass_legacy.DENSS.denss.html#molass_legacy.DENSS.denss.str" title="molass_legacy.DENSS.denss.str"><em>str</em></a><em>, </em><em>optional</em><em> (</em><em>default=&quot;adjP&quot;</em><em>)</em>) – String denoting whether to use the Bonferroni corrected P value
 (input string=”adjP”) or the ordinary P value (input string=”P”).
 Default is to use the Bonferroni corrected P value.</p></li>
 </ul>
@@ -1923,7 +1929,7 @@ significant.</p></li>
 If not specified then all frames are compared to the first frame.</p></li>
 <li><p><strong>P_threshold</strong> (<em>float</em><em>, </em><em>optional</em><em> (</em><em>default=0.01</em><em>)</em>) – The significance threshold of the test. If it’s not given then the
 default value is 1%.</p></li>
-<li><p><strong>P_type</strong> (<em>str</em><em>, </em><em>optional</em><em> (</em><em>default=&quot;adjP&quot;</em><em>)</em>) – string denoting whether to use the Bonferroni corrected P value
+<li><p><strong>P_type</strong> (<a class="reference internal" href="molass_legacy.DENSS.denss.html#molass_legacy.DENSS.denss.str" title="molass_legacy.DENSS.denss.str"><em>str</em></a><em>, </em><em>optional</em><em> (</em><em>default=&quot;adjP&quot;</em><em>)</em>) – string denoting whether to use the Bonferroni corrected P value
 (input string=”adjP”) or the ordinary P value (input string=”P”).
 Default is to use the Bonferroni corrected P value.</p></li>
 </ul>
@@ -1952,14 +1958,14 @@ curve files.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>scattering_curve_location</strong> (<em>str</em>) – Location of the scattering curves for the dataset.</p></li>
+<li><p><strong>scattering_curve_location</strong> (<a class="reference internal" href="molass_legacy.DENSS.denss.html#molass_legacy.DENSS.denss.str" title="molass_legacy.DENSS.denss.str"><em>str</em></a>) – Location of the scattering curves for the dataset.</p></li>
 <li><p><strong>x_axis</strong> (<em>numpy array</em><em>, </em><em>optional</em><em> (</em><em>default=</em><em>[</em><em>]</em><em>)</em>) – Vector of values to use on the x-axis of plots. This can be things
 like dose values for example. If not specified then frame number is
 used as a default.</p></li>
-<li><p><strong>x_metric</strong> (<em>str</em><em>, </em><em>optional</em><em> (</em><em>default=&quot;&quot;</em><em>)</em>) – String specifying the type of metric used for the x-axis. An
+<li><p><strong>x_metric</strong> (<a class="reference internal" href="molass_legacy.DENSS.denss.html#molass_legacy.DENSS.denss.str" title="molass_legacy.DENSS.denss.str"><em>str</em></a><em>, </em><em>optional</em><em> (</em><em>default=&quot;&quot;</em><em>)</em>) – String specifying the type of metric used for the x-axis. An
 example would be “Dose”. If not specified then the default metric
 used on the x-axis is “Frame Number”</p></li>
-<li><p><strong>x_units</strong> (<em>str</em><em>, </em><em>optional</em><em> (</em><em>default=&quot;&quot;</em><em>)</em>) – String specifying the units used for the x-axis metric. For example
+<li><p><strong>x_units</strong> (<a class="reference internal" href="molass_legacy.DENSS.denss.html#molass_legacy.DENSS.denss.str" title="molass_legacy.DENSS.denss.str"><em>str</em></a><em>, </em><em>optional</em><em> (</em><em>default=&quot;&quot;</em><em>)</em>) – String specifying the units used for the x-axis metric. For example
 if the x-axis metric was the ‘dose’, then x_units may be specified
 as “kGy”.</p></li>
 <li><p><strong>first</strong> (<em>int</em><em>, </em><em>optional</em><em> (</em><em>default=-1</em><em>)</em>) – Index of the first point to be kept. This is mutually exclusive
@@ -2021,7 +2027,7 @@ class. It runs the DATCMP program on the dataset and returns a
 dictionary containing the main results from the DATCMP run.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>scattering_curve_files</strong> (<em>str</em>) – Location of the scattering curves for the dataset.</p>
+<dd class="field-odd"><p><strong>scattering_curve_files</strong> (<a class="reference internal" href="molass_legacy.DENSS.denss.html#molass_legacy.DENSS.denss.str" title="molass_legacy.DENSS.denss.str"><em>str</em></a>) – Location of the scattering curves for the dataset.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Dictionary containing the results of the DATCMP run. The dictionary
@@ -2031,7 +2037,7 @@ value is an array of DATCMP results for the corresponding pairwise
 comparison.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>dict(str, numpy.array)</p>
+<dd class="field-odd"><p>dict(<a class="reference internal" href="molass_legacy.DENSS.denss.html#molass_legacy.DENSS.denss.str" title="molass_legacy.DENSS.denss.str">str</a>, numpy.array)</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -2051,7 +2057,7 @@ output.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>frame1</strong> (<em>int</em>) – number of the 1st frame used for the pairwise analyis</p></li>
 <li><p><strong>frame2</strong> (<em>int</em>) – number of the 2nd frame used for the pairwise analyis</p></li>
-<li><p><strong>datcmp_data_type</strong> (<em>str</em><em>, </em><em>optional</em><em> (</em><em>default=&quot;adj P</em><em>(</em><em>&gt;C</em><em>)</em><em>&quot;</em><em>)</em>) – String specifying the pairwise result to be returned.
+<li><p><strong>datcmp_data_type</strong> (<a class="reference internal" href="molass_legacy.DENSS.denss.html#molass_legacy.DENSS.denss.str" title="molass_legacy.DENSS.denss.str"><em>str</em></a><em>, </em><em>optional</em><em> (</em><em>default=&quot;adj P</em><em>(</em><em>&gt;C</em><em>)</em><em>&quot;</em><em>)</em>) – String specifying the pairwise result to be returned.
 The input options are:
 1) ‘C’ - This will return the C value i.e. the max observed patch
 of continuous runs of -1 or 1
@@ -2143,10 +2149,10 @@ curve.</p></li>
 (default) or on an absolute scale.</p></li>
 <li><p><strong>display</strong> (<em>bool</em><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to display the plot. By default it is displayed.</p></li>
 <li><p><strong>save</strong> (<em>bool</em><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to save the plot. By default the plot is not saved.</p></li>
-<li><p><strong>filename</strong> (<em>str</em><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Choose a filename for the plot that you want to save. This includes
+<li><p><strong>filename</strong> (<a class="reference internal" href="molass_legacy.DENSS.denss.html#molass_legacy.DENSS.denss.str" title="molass_legacy.DENSS.denss.str"><em>str</em></a><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Choose a filename for the plot that you want to save. This includes
 the file extension.</p></li>
-<li><p><strong>directory</strong> (<em>str</em><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Select the directory in which you want the plot to be saved.</p></li>
-<li><p><strong>legend_loc</strong> (<em>str</em><em> or </em><em>int</em><em>, </em><em>optional</em><em> (</em><em>default=&quot;upper left&quot;</em><em>)</em>) – Set the location of the legend in the figure. All possible values
+<li><p><strong>directory</strong> (<a class="reference internal" href="molass_legacy.DENSS.denss.html#molass_legacy.DENSS.denss.str" title="molass_legacy.DENSS.denss.str"><em>str</em></a><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Select the directory in which you want the plot to be saved.</p></li>
+<li><p><strong>legend_loc</strong> (<a class="reference internal" href="molass_legacy.DENSS.denss.html#molass_legacy.DENSS.denss.str" title="molass_legacy.DENSS.denss.str"><em>str</em></a><em> or </em><em>int</em><em>, </em><em>optional</em><em> (</em><em>default=&quot;upper left&quot;</em><em>)</em>) – Set the location of the legend in the figure. All possible values
 can be found in the Matplotlib Legend API documentation:
 <a class="reference external" href="http://matplotlib.org/api/legend_api.html">http://matplotlib.org/api/legend_api.html</a>. Default is set to the
 upper left of the figure.</p></li>
@@ -2179,14 +2185,14 @@ displaying it.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>colour_scheme</strong> (<em>str</em><em>, </em><em>optional</em><em> (</em><em>default=&quot;gray&quot;</em><em>)</em>) – The colour scheme used to plot the correlation map. The list of
+<li><p><strong>colour_scheme</strong> (<a class="reference internal" href="molass_legacy.DENSS.denss.html#molass_legacy.DENSS.denss.str" title="molass_legacy.DENSS.denss.str"><em>str</em></a><em>, </em><em>optional</em><em> (</em><em>default=&quot;gray&quot;</em><em>)</em>) – The colour scheme used to plot the correlation map. The list of
 schemes can be found on the relevant matplotlib webpage:
 <a class="reference external" href="http://matplotlib.org/examples/color/colormaps_reference.html">http://matplotlib.org/examples/color/colormaps_reference.html</a></p></li>
 <li><p><strong>display</strong> (<em>bool</em><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to display the plot. By default it is displayed.</p></li>
 <li><p><strong>save</strong> (<em>bool</em><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to save the plot. By default the plot is not saved.</p></li>
-<li><p><strong>filename</strong> (<em>str</em><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Choose a filename for the plot that you want to save. This includes
+<li><p><strong>filename</strong> (<a class="reference internal" href="molass_legacy.DENSS.denss.html#molass_legacy.DENSS.denss.str" title="molass_legacy.DENSS.denss.str"><em>str</em></a><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Choose a filename for the plot that you want to save. This includes
 the file extension.</p></li>
-<li><p><strong>directory</strong> (<em>str</em><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Select the directory in which you want the plot to be saved.</p></li>
+<li><p><strong>directory</strong> (<a class="reference internal" href="molass_legacy.DENSS.denss.html#molass_legacy.DENSS.denss.str" title="molass_legacy.DENSS.denss.str"><em>str</em></a><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Select the directory in which you want the plot to be saved.</p></li>
 </ul>
 </dd>
 </dl>
@@ -2224,14 +2230,14 @@ dissimilar.</p></li>
 this value then one frame is considered dissimilar to the
 frame to which it is being compared. Default significance level is
 0.01.</p></li>
-<li><p><strong>P_type</strong> (<em>str</em><em>, </em><em>optional</em><em> (</em><em>default=&quot;adjP&quot;</em><em>)</em>) – String denoting whether to use the Bonferroni corrected P value
+<li><p><strong>P_type</strong> (<a class="reference internal" href="molass_legacy.DENSS.denss.html#molass_legacy.DENSS.denss.str" title="molass_legacy.DENSS.denss.str"><em>str</em></a><em>, </em><em>optional</em><em> (</em><em>default=&quot;adjP&quot;</em><em>)</em>) – String denoting whether to use the Bonferroni corrected P value
 (input string=”adjP”) or the ordinary P value (input string=”P”).
 Default is to use the Bonferroni corrected P value.</p></li>
 <li><p><strong>display</strong> (<em>bool</em><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to display the plot. By default it is displayed.</p></li>
 <li><p><strong>save</strong> (<em>bool</em><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to save the plot. By default the plot is not saved.</p></li>
-<li><p><strong>filename</strong> (<em>str</em><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Choose a filename for the plot that you want to save. This includes
+<li><p><strong>filename</strong> (<a class="reference internal" href="molass_legacy.DENSS.denss.html#molass_legacy.DENSS.denss.str" title="molass_legacy.DENSS.denss.str"><em>str</em></a><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Choose a filename for the plot that you want to save. This includes
 the file extension.</p></li>
-<li><p><strong>directory</strong> (<em>str</em><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Select the directory in which you want the plot to be saved.</p></li>
+<li><p><strong>directory</strong> (<a class="reference internal" href="molass_legacy.DENSS.denss.html#molass_legacy.DENSS.denss.str" title="molass_legacy.DENSS.denss.str"><em>str</em></a><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Select the directory in which you want the plot to be saved.</p></li>
 </ul>
 </dd>
 </dl>
@@ -2270,10 +2276,10 @@ frame to which it is being compared. Default significance level is
 <li><p><strong>markersize</strong> (<em>float</em><em>, </em><em>optional</em><em> (</em><em>default=60</em><em>)</em>) – Change the size of the markers on the plot. Default value is 60.</p></li>
 <li><p><strong>display</strong> (<em>bool</em><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to display the plot. By default it is displayed.</p></li>
 <li><p><strong>save</strong> (<em>bool</em><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to save the plot. By default the plot is not saved.</p></li>
-<li><p><strong>filename</strong> (<em>str</em><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Choose a filename for the plot that you want to save. This includes
+<li><p><strong>filename</strong> (<a class="reference internal" href="molass_legacy.DENSS.denss.html#molass_legacy.DENSS.denss.str" title="molass_legacy.DENSS.denss.str"><em>str</em></a><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Choose a filename for the plot that you want to save. This includes
 the file extension.</p></li>
-<li><p><strong>directory</strong> (<em>str</em><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Select the directory in which you want the plot to be saved.</p></li>
-<li><p><strong>legend_loc</strong> (<em>str</em><em> or </em><em>int</em><em>, </em><em>optional</em><em> (</em><em>default=2</em><em>)</em>) – Set the location of the legend in the figure. All possible values
+<li><p><strong>directory</strong> (<a class="reference internal" href="molass_legacy.DENSS.denss.html#molass_legacy.DENSS.denss.str" title="molass_legacy.DENSS.denss.str"><em>str</em></a><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Select the directory in which you want the plot to be saved.</p></li>
+<li><p><strong>legend_loc</strong> (<a class="reference internal" href="molass_legacy.DENSS.denss.html#molass_legacy.DENSS.denss.str" title="molass_legacy.DENSS.denss.str"><em>str</em></a><em> or </em><em>int</em><em>, </em><em>optional</em><em> (</em><em>default=2</em><em>)</em>) – Set the location of the legend in the figure. All possible values
 can be found in the Matplotlib Legend API documentation:
 <a class="reference external" href="http://matplotlib.org/api/legend_api.html">http://matplotlib.org/api/legend_api.html</a>. Default is set to the
 upper left (integer value is 2) of the figure.</p></li>
@@ -2326,7 +2332,7 @@ then the method plots all pairwise frame comparison data.</p>
 <li><p><strong>frame</strong> (<em>int</em><em>, </em><em>optional</em><em> (</em><em>default=0</em><em>)</em>) – Number of the frame for which all pairwise comparison data is
 plotted. If not specified then all pairwise frame comparison data
 is shown.</p></li>
-<li><p><strong>datcmp_data_type</strong> (<em>str</em><em>, </em><em>optional</em><em> (</em><em>default=&quot;C&quot;</em><em>)</em>) – The data type from the DATCMP results that is plotted.
+<li><p><strong>datcmp_data_type</strong> (<a class="reference internal" href="molass_legacy.DENSS.denss.html#molass_legacy.DENSS.denss.str" title="molass_legacy.DENSS.denss.str"><em>str</em></a><em>, </em><em>optional</em><em> (</em><em>default=&quot;C&quot;</em><em>)</em>) – The data type from the DATCMP results that is plotted.
 The input options are:
 1) ‘C’ - This will return the C value i.e. the max observed patch
 of continuous runs of -1 or 1
@@ -2337,9 +2343,9 @@ of observing a patch of continuous runs of -1 or 1 bigger than the
 corresponding C value.</p></li>
 <li><p><strong>display</strong> (<em>bool</em><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to display the plot. By default it is displayed.</p></li>
 <li><p><strong>save</strong> (<em>bool</em><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to save the plot. By default the plot is not saved.</p></li>
-<li><p><strong>filename</strong> (<em>str</em><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Choose a filename for the plot that you want to save. This includes
+<li><p><strong>filename</strong> (<a class="reference internal" href="molass_legacy.DENSS.denss.html#molass_legacy.DENSS.denss.str" title="molass_legacy.DENSS.denss.str"><em>str</em></a><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Choose a filename for the plot that you want to save. This includes
 the file extension.</p></li>
-<li><p><strong>directory</strong> (<em>str</em><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Select the directory in which you want the plot to be saved.</p></li>
+<li><p><strong>directory</strong> (<a class="reference internal" href="molass_legacy.DENSS.denss.html#molass_legacy.DENSS.denss.str" title="molass_legacy.DENSS.denss.str"><em>str</em></a><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Select the directory in which you want the plot to be saved.</p></li>
 <li><p><strong>num_bins</strong> (<em>int</em><em>, </em><em>optional</em><em> (</em><em>default=20</em><em>)</em>) – Number of bins used to plot in the histogram.</p></li>
 </ul>
 </dd>
@@ -2372,14 +2378,14 @@ it</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>fr1</strong> (<em>int</em>) – Number of the 1st frame used for the pairwise analyis</p></li>
 <li><p><strong>fr2</strong> (<em>int</em>) – Number of the 2nd frame used for the pairwise analyis</p></li>
-<li><p><strong>colour_scheme</strong> (<em>str</em><em>, </em><em>optional</em><em> (</em><em>default=&quot;gray&quot;</em><em>)</em>) – The colour scheme used to plot the correlation map. The list of
+<li><p><strong>colour_scheme</strong> (<a class="reference internal" href="molass_legacy.DENSS.denss.html#molass_legacy.DENSS.denss.str" title="molass_legacy.DENSS.denss.str"><em>str</em></a><em>, </em><em>optional</em><em> (</em><em>default=&quot;gray&quot;</em><em>)</em>) – The colour scheme used to plot the correlation map. The list of
 schemes can be found on the relevant matplotlib webpage:
 <a class="reference external" href="http://matplotlib.org/examples/color/colormaps_reference.html">http://matplotlib.org/examples/color/colormaps_reference.html</a></p></li>
 <li><p><strong>display</strong> (<em>bool</em><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to display the plot. By default it is displayed.</p></li>
 <li><p><strong>save</strong> (<em>bool</em><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to save the plot. By default the plot is not saved.</p></li>
-<li><p><strong>filename</strong> (<em>str</em><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Choose a filename for the plot that you want to save. This includes
+<li><p><strong>filename</strong> (<a class="reference internal" href="molass_legacy.DENSS.denss.html#molass_legacy.DENSS.denss.str" title="molass_legacy.DENSS.denss.str"><em>str</em></a><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Choose a filename for the plot that you want to save. This includes
 the file extension.</p></li>
-<li><p><strong>directory</strong> (<em>str</em><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Select the directory in which you want the plot to be saved.</p></li>
+<li><p><strong>directory</strong> (<a class="reference internal" href="molass_legacy.DENSS.denss.html#molass_legacy.DENSS.denss.str" title="molass_legacy.DENSS.denss.str"><em>str</em></a><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Select the directory in which you want the plot to be saved.</p></li>
 </ul>
 </dd>
 </dl>
@@ -2417,10 +2423,10 @@ frame to which it is being compared. Default significance level is
 <li><p><strong>markersize</strong> (<em>float</em><em>, </em><em>optional</em><em> (</em><em>default=60</em><em>)</em>) – Change the size of the markers on the plot. Default value is 60.</p></li>
 <li><p><strong>display</strong> (<em>bool</em><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to display the plot. By default it is displayed.</p></li>
 <li><p><strong>save</strong> (<em>bool</em><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to save the plot. By default the plot is not saved.</p></li>
-<li><p><strong>filename</strong> (<em>str</em><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Choose a filename for the plot that you want to save. This includes
+<li><p><strong>filename</strong> (<a class="reference internal" href="molass_legacy.DENSS.denss.html#molass_legacy.DENSS.denss.str" title="molass_legacy.DENSS.denss.str"><em>str</em></a><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Choose a filename for the plot that you want to save. This includes
 the file extension.</p></li>
-<li><p><strong>directory</strong> (<em>str</em><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Select the directory in which you want the plot to be saved.</p></li>
-<li><p><strong>legend_loc</strong> (<em>str</em><em> or </em><em>int</em><em>, </em><em>optional</em><em> (</em><em>default=&quot;upper left&quot;</em><em>)</em>) – Set the location of the legend in the figure. All possible values
+<li><p><strong>directory</strong> (<a class="reference internal" href="molass_legacy.DENSS.denss.html#molass_legacy.DENSS.denss.str" title="molass_legacy.DENSS.denss.str"><em>str</em></a><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Select the directory in which you want the plot to be saved.</p></li>
+<li><p><strong>legend_loc</strong> (<a class="reference internal" href="molass_legacy.DENSS.denss.html#molass_legacy.DENSS.denss.str" title="molass_legacy.DENSS.denss.str"><em>str</em></a><em> or </em><em>int</em><em>, </em><em>optional</em><em> (</em><em>default=&quot;upper left&quot;</em><em>)</em>) – Set the location of the legend in the figure. All possible values
 can be found in the Matplotlib Legend API documentation:
 <a class="reference external" href="http://matplotlib.org/api/legend_api.html">http://matplotlib.org/api/legend_api.html</a>. Default is set to the
 upper left of the figure.</p></li>
@@ -2483,7 +2489,7 @@ as well as whether to use the Bonferroni corrected P values or not.
 If not specified then all frames are compared to the first frame.</p></li>
 <li><p><strong>P_threshold</strong> (<em>float</em><em>, </em><em>optional</em><em> (</em><em>default=0.01</em><em>)</em>) – The significance threshold of the test. If it’s not given then the
 default value is 1%.</p></li>
-<li><p><strong>P_type</strong> (<em>str</em><em>, </em><em>optional</em><em> (</em><em>default=&quot;adjP&quot;</em><em>)</em>) – string denoting whether to use the Bonferroni corrected P value
+<li><p><strong>P_type</strong> (<a class="reference internal" href="molass_legacy.DENSS.denss.html#molass_legacy.DENSS.denss.str" title="molass_legacy.DENSS.denss.str"><em>str</em></a><em>, </em><em>optional</em><em> (</em><em>default=&quot;adjP&quot;</em><em>)</em>) – string denoting whether to use the Bonferroni corrected P value
 (input string=”adjP”) or the ordinary P value (input string=”P”).
 Default is to use the Bonferroni corrected P value.</p></li>
 </ul>

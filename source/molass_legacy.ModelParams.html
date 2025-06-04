@@ -30,6 +30,7 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -39,6 +40,8 @@
     <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
     <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'source/molass_legacy.ModelParams';</script>
     <link rel="icon" href="../_static/molamola.png"/>
@@ -155,7 +158,10 @@
  </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        <ul class="current nav bd-sidenav">
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.main.html">main</a></li>
+</ul>
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Alsaker.html">Alsaker</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.Alsaker.Bridge.html">Alsaker.Bridge</a></li>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.Alsaker.Compare.html">Alsaker.Compare</a></li>
@@ -1769,14 +1775,55 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.BaselineParams.html#molass_legacy.ModelParams.BaselineParams.get_num_baseparams"><code class="docutils literal notranslate"><span class="pre">get_num_baseparams()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="molass_legacy.ModelParams.BoundedSecParams.html">ModelParams.BoundedSecParams</a></li>
-<li class="toctree-l1"><a class="reference internal" href="molass_legacy.ModelParams.EdmParams.html">ModelParams.EdmParams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.ModelParams.BoundedSecParams.html">ModelParams.BoundedSecParams</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.BoundedSecParams.html#molass_legacy.ModelParams.BoundedSecParams.BoundedSecParams"><code class="docutils literal notranslate"><span class="pre">BoundedSecParams</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.BoundedSecParams.html#molass_legacy.ModelParams.BoundedSecParams.BoundedSecParams.bounded_sec_comformance"><code class="docutils literal notranslate"><span class="pre">BoundedSecParams.bounded_sec_comformance()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.ModelParams.EdmParams.html">ModelParams.EdmParams</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.EdmParams"><code class="docutils literal notranslate"><span class="pre">EdmParams</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.EdmParams.compute_comformance"><code class="docutils literal notranslate"><span class="pre">EdmParams.compute_comformance()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.EdmParams.compute_init_guess"><code class="docutils literal notranslate"><span class="pre">EdmParams.compute_init_guess()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.EdmParams.estimate_conformance_params"><code class="docutils literal notranslate"><span class="pre">EdmParams.estimate_conformance_params()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.EdmParams.get_adjuster"><code class="docutils literal notranslate"><span class="pre">EdmParams.get_adjuster()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.EdmParams.get_estimator"><code class="docutils literal notranslate"><span class="pre">EdmParams.get_estimator()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.EdmParams.get_model_name"><code class="docutils literal notranslate"><span class="pre">EdmParams.get_model_name()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.EdmParams.get_mr_start_index"><code class="docutils literal notranslate"><span class="pre">EdmParams.get_mr_start_index()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.EdmParams.get_param_bounds"><code class="docutils literal notranslate"><span class="pre">EdmParams.get_param_bounds()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.EdmParams.get_parameter_names"><code class="docutils literal notranslate"><span class="pre">EdmParams.get_parameter_names()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.EdmParams.get_params_sheet"><code class="docutils literal notranslate"><span class="pre">EdmParams.get_params_sheet()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.EdmParams.get_paramslider_info"><code class="docutils literal notranslate"><span class="pre">EdmParams.get_paramslider_info()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.EdmParams.get_peak_pos_array_list"><code class="docutils literal notranslate"><span class="pre">EdmParams.get_peak_pos_array_list()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.EdmParams.get_rg_start_index"><code class="docutils literal notranslate"><span class="pre">EdmParams.get_rg_start_index()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.EdmParams.get_trans_indeces"><code class="docutils literal notranslate"><span class="pre">EdmParams.get_trans_indeces()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.EdmParams.get_xr_param_bounds"><code class="docutils literal notranslate"><span class="pre">EdmParams.get_xr_param_bounds()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.EdmParams.make_bounds_mask"><code class="docutils literal notranslate"><span class="pre">EdmParams.make_bounds_mask()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.EdmParams.set_x"><code class="docutils literal notranslate"><span class="pre">EdmParams.set_x()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.EdmParams.split_as_unified_params"><code class="docutils literal notranslate"><span class="pre">EdmParams.split_as_unified_params()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.EdmParams.split_bounds"><code class="docutils literal notranslate"><span class="pre">EdmParams.split_bounds()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.EdmParams.split_get_unified_sec_params"><code class="docutils literal notranslate"><span class="pre">EdmParams.split_get_unified_sec_params()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.EdmParams.split_params"><code class="docutils literal notranslate"><span class="pre">EdmParams.split_params()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.EdmParams.split_params_simple"><code class="docutils literal notranslate"><span class="pre">EdmParams.split_params_simple()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.EdmParams.update_bounds_hook"><code class="docutils literal notranslate"><span class="pre">EdmParams.update_bounds_hook()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.get_common_parameter_names"><code class="docutils literal notranslate"><span class="pre">get_common_parameter_names()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="molass_legacy.ModelParams.EdmParamsSheet.html">ModelParams.EdmParamsSheet</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.EdmParamsSheet.html#molass_legacy.ModelParams.EdmParamsSheet.EdmParamsSheet"><code class="docutils literal notranslate"><span class="pre">EdmParamsSheet</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="molass_legacy.ModelParams.EdmPlotUtils.html">ModelParams.EdmPlotUtils</a></li>
-<li class="toctree-l1"><a class="reference internal" href="molass_legacy.ModelParams.EdmSliderInfo.html">ModelParams.EdmSliderInfo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.ModelParams.EdmPlotUtils.html">ModelParams.EdmPlotUtils</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.EdmPlotUtils.html#molass_legacy.ModelParams.EdmPlotUtils.plot_objective_state"><code class="docutils literal notranslate"><span class="pre">plot_objective_state()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.ModelParams.EdmSliderInfo.html">ModelParams.EdmSliderInfo</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.EdmSliderInfo.html#molass_legacy.ModelParams.EdmSliderInfo.EdmSliderInfo"><code class="docutils literal notranslate"><span class="pre">EdmSliderInfo</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="molass_legacy.ModelParams.EghAdjuster.html">ModelParams.EghAdjuster</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.EghAdjuster.html#molass_legacy.ModelParams.EghAdjuster.EghAdjuster"><code class="docutils literal notranslate"><span class="pre">EghAdjuster</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EghAdjuster.html#molass_legacy.ModelParams.EghAdjuster.EghAdjuster.convert"><code class="docutils literal notranslate"><span class="pre">EghAdjuster.convert()</span></code></a></li>
@@ -1785,7 +1832,50 @@ document.write(`
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="molass_legacy.ModelParams.EghParams.html">ModelParams.EghParams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.ModelParams.EghParams.html">ModelParams.EghParams</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghAdvansedParams"><code class="docutils literal notranslate"><span class="pre">EghAdvansedParams</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghAdvansedParams.get_estimator"><code class="docutils literal notranslate"><span class="pre">EghAdvansedParams.get_estimator()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghAdvansedParams.get_mr_start_index"><code class="docutils literal notranslate"><span class="pre">EghAdvansedParams.get_mr_start_index()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghAdvansedParams.get_parameter_names"><code class="docutils literal notranslate"><span class="pre">EghAdvansedParams.get_parameter_names()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghAdvansedParams.get_rg_start_index"><code class="docutils literal notranslate"><span class="pre">EghAdvansedParams.get_rg_start_index()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghAdvansedParams.make_bounds_mask"><code class="docutils literal notranslate"><span class="pre">EghAdvansedParams.make_bounds_mask()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghAdvansedParams.split_as_unified_params"><code class="docutils literal notranslate"><span class="pre">EghAdvansedParams.split_as_unified_params()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghAdvansedParams.split_get_unified_sec_params"><code class="docutils literal notranslate"><span class="pre">EghAdvansedParams.split_get_unified_sec_params()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghAdvansedParams.split_params"><code class="docutils literal notranslate"><span class="pre">EghAdvansedParams.split_params()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghAdvansedParams.split_params_simple"><code class="docutils literal notranslate"><span class="pre">EghAdvansedParams.split_params_simple()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghParams"><code class="docutils literal notranslate"><span class="pre">EghParams</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghParams.get_mr_start_index"><code class="docutils literal notranslate"><span class="pre">EghParams.get_mr_start_index()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghParams.get_parameter_names"><code class="docutils literal notranslate"><span class="pre">EghParams.get_parameter_names()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghParams.get_rg_start_index"><code class="docutils literal notranslate"><span class="pre">EghParams.get_rg_start_index()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghParams.make_bounds_mask"><code class="docutils literal notranslate"><span class="pre">EghParams.make_bounds_mask()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghParams.split_params"><code class="docutils literal notranslate"><span class="pre">EghParams.split_params()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghParams.split_params_simple"><code class="docutils literal notranslate"><span class="pre">EghParams.split_params_simple()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghParamsBase"><code class="docutils literal notranslate"><span class="pre">EghParamsBase</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghParamsBase.compute_comformance"><code class="docutils literal notranslate"><span class="pre">EghParamsBase.compute_comformance()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghParamsBase.compute_init_guess"><code class="docutils literal notranslate"><span class="pre">EghParamsBase.compute_init_guess()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghParamsBase.compute_xr_peak_position"><code class="docutils literal notranslate"><span class="pre">EghParamsBase.compute_xr_peak_position()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghParamsBase.estimate_conformance_params"><code class="docutils literal notranslate"><span class="pre">EghParamsBase.estimate_conformance_params()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghParamsBase.get_adjuster"><code class="docutils literal notranslate"><span class="pre">EghParamsBase.get_adjuster()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghParamsBase.get_extended_bounds"><code class="docutils literal notranslate"><span class="pre">EghParamsBase.get_extended_bounds()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghParamsBase.get_model_name"><code class="docutils literal notranslate"><span class="pre">EghParamsBase.get_model_name()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghParamsBase.get_param_bounds"><code class="docutils literal notranslate"><span class="pre">EghParamsBase.get_param_bounds()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghParamsBase.get_params_sheet"><code class="docutils literal notranslate"><span class="pre">EghParamsBase.get_params_sheet()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghParamsBase.get_peak_pos_array_list"><code class="docutils literal notranslate"><span class="pre">EghParamsBase.get_peak_pos_array_list()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghParamsBase.get_seccol_params_for_disp"><code class="docutils literal notranslate"><span class="pre">EghParamsBase.get_seccol_params_for_disp()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghParamsBase.get_sigma_bounds"><code class="docutils literal notranslate"><span class="pre">EghParamsBase.get_sigma_bounds()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghParamsBase.get_xr_param_bounds"><code class="docutils literal notranslate"><span class="pre">EghParamsBase.get_xr_param_bounds()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghParamsBase.split_bounds"><code class="docutils literal notranslate"><span class="pre">EghParamsBase.split_bounds()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghParamsBase.update_bounds_hook"><code class="docutils literal notranslate"><span class="pre">EghParamsBase.update_bounds_hook()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.construct_egh_params_type"><code class="docutils literal notranslate"><span class="pre">construct_egh_params_type()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.get_common_parameter_names"><code class="docutils literal notranslate"><span class="pre">get_common_parameter_names()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="molass_legacy.ModelParams.EghParamsSheet.html">ModelParams.EghParamsSheet</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.EghParamsSheet.html#molass_legacy.ModelParams.EghParamsSheet.EghParamsSheet"><code class="docutils literal notranslate"><span class="pre">EghParamsSheet</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.EghParamsSheet.html#molass_legacy.ModelParams.EghParamsSheet.EghParamsSheet.build_sheet"><code class="docutils literal notranslate"><span class="pre">EghParamsSheet.build_sheet()</span></code></a></li>
@@ -1794,7 +1884,10 @@ document.write(`
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="molass_legacy.ModelParams.EghPlotUtils.html">ModelParams.EghPlotUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.ModelParams.EghPlotUtils.html">ModelParams.EghPlotUtils</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.EghPlotUtils.html#molass_legacy.ModelParams.EghPlotUtils.plot_objective_state"><code class="docutils literal notranslate"><span class="pre">plot_objective_state()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="molass_legacy.ModelParams.EmgPlotUtils.html">ModelParams.EmgPlotUtils</a></li>
 <li class="toctree-l1"><a class="reference internal" href="molass_legacy.ModelParams.FdEmgParams.html">ModelParams.FdEmgParams</a></li>
 <li class="toctree-l1"><a class="reference internal" href="molass_legacy.ModelParams.FdEmgParamsSheet.html">ModelParams.FdEmgParamsSheet</a><ul>
@@ -1844,12 +1937,61 @@ document.write(`
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="molass_legacy.ModelParams.SdmParams.html">ModelParams.SdmParams</a></li>
-<li class="toctree-l1"><a class="reference internal" href="molass_legacy.ModelParams.SdmParamsSheet.html">ModelParams.SdmParamsSheet</a></li>
-<li class="toctree-l1"><a class="reference internal" href="molass_legacy.ModelParams.SdmPlotUtils.html">ModelParams.SdmPlotUtils</a></li>
-<li class="toctree-l1"><a class="reference internal" href="molass_legacy.ModelParams.SdmSliderInfo.html">ModelParams.SdmSliderInfo</a></li>
-<li class="toctree-l1"><a class="reference internal" href="molass_legacy.ModelParams.SeccolFunctions.html">ModelParams.SeccolFunctions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="molass_legacy.ModelParams.SimpleSecParams.html">ModelParams.SimpleSecParams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.ModelParams.SdmParams.html">ModelParams.SdmParams</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.SdmParams.html#molass_legacy.ModelParams.SdmParams.SdmParams"><code class="docutils literal notranslate"><span class="pre">SdmParams</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.SdmParams.html#molass_legacy.ModelParams.SdmParams.SdmParams.compute_comformance"><code class="docutils literal notranslate"><span class="pre">SdmParams.compute_comformance()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.SdmParams.html#molass_legacy.ModelParams.SdmParams.SdmParams.get_colparam_bounds"><code class="docutils literal notranslate"><span class="pre">SdmParams.get_colparam_bounds()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.SdmParams.html#molass_legacy.ModelParams.SdmParams.SdmParams.get_estimator"><code class="docutils literal notranslate"><span class="pre">SdmParams.get_estimator()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.SdmParams.html#molass_legacy.ModelParams.SdmParams.SdmParams.get_model_name"><code class="docutils literal notranslate"><span class="pre">SdmParams.get_model_name()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.SdmParams.html#molass_legacy.ModelParams.SdmParams.SdmParams.get_mr_start_index"><code class="docutils literal notranslate"><span class="pre">SdmParams.get_mr_start_index()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.SdmParams.html#molass_legacy.ModelParams.SdmParams.SdmParams.get_param_bounds"><code class="docutils literal notranslate"><span class="pre">SdmParams.get_param_bounds()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.SdmParams.html#molass_legacy.ModelParams.SdmParams.SdmParams.get_parameter_names"><code class="docutils literal notranslate"><span class="pre">SdmParams.get_parameter_names()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.SdmParams.html#molass_legacy.ModelParams.SdmParams.SdmParams.get_params_sheet"><code class="docutils literal notranslate"><span class="pre">SdmParams.get_params_sheet()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.SdmParams.html#molass_legacy.ModelParams.SdmParams.SdmParams.get_paramslider_info"><code class="docutils literal notranslate"><span class="pre">SdmParams.get_paramslider_info()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.SdmParams.html#molass_legacy.ModelParams.SdmParams.SdmParams.get_peak_pos_array_list"><code class="docutils literal notranslate"><span class="pre">SdmParams.get_peak_pos_array_list()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.SdmParams.html#molass_legacy.ModelParams.SdmParams.SdmParams.get_rg_start_index"><code class="docutils literal notranslate"><span class="pre">SdmParams.get_rg_start_index()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.SdmParams.html#molass_legacy.ModelParams.SdmParams.SdmParams.get_trans_indeces"><code class="docutils literal notranslate"><span class="pre">SdmParams.get_trans_indeces()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.SdmParams.html#molass_legacy.ModelParams.SdmParams.SdmParams.make_bounds_mask"><code class="docutils literal notranslate"><span class="pre">SdmParams.make_bounds_mask()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.SdmParams.html#molass_legacy.ModelParams.SdmParams.SdmParams.set_estimator"><code class="docutils literal notranslate"><span class="pre">SdmParams.set_estimator()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.SdmParams.html#molass_legacy.ModelParams.SdmParams.SdmParams.split_as_unified_params"><code class="docutils literal notranslate"><span class="pre">SdmParams.split_as_unified_params()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.SdmParams.html#molass_legacy.ModelParams.SdmParams.SdmParams.split_get_unified_sec_params"><code class="docutils literal notranslate"><span class="pre">SdmParams.split_get_unified_sec_params()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.SdmParams.html#molass_legacy.ModelParams.SdmParams.SdmParams.split_params"><code class="docutils literal notranslate"><span class="pre">SdmParams.split_params()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.SdmParams.html#molass_legacy.ModelParams.SdmParams.SdmParams.split_params_simple"><code class="docutils literal notranslate"><span class="pre">SdmParams.split_params_simple()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.SdmParams.html#molass_legacy.ModelParams.SdmParams.get_common_parameter_names"><code class="docutils literal notranslate"><span class="pre">get_common_parameter_names()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.ModelParams.SdmParamsSheet.html">ModelParams.SdmParamsSheet</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.SdmParamsSheet.html#molass_legacy.ModelParams.SdmParamsSheet.SdmParamsSheet"><code class="docutils literal notranslate"><span class="pre">SdmParamsSheet</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.SdmParamsSheet.html#molass_legacy.ModelParams.SdmParamsSheet.SdmParamsSheet.highlight_active_params"><code class="docutils literal notranslate"><span class="pre">SdmParamsSheet.highlight_active_params()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.ModelParams.SdmPlotUtils.html">ModelParams.SdmPlotUtils</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.SdmPlotUtils.html#molass_legacy.ModelParams.SdmPlotUtils.plot_objective_state"><code class="docutils literal notranslate"><span class="pre">plot_objective_state()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.ModelParams.SdmSliderInfo.html">ModelParams.SdmSliderInfo</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.SdmSliderInfo.html#molass_legacy.ModelParams.SdmSliderInfo.SdmSliderInfo"><code class="docutils literal notranslate"><span class="pre">SdmSliderInfo</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.ModelParams.SeccolFunctions.html">ModelParams.SeccolFunctions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.SeccolFunctions.html#molass_legacy.ModelParams.SeccolFunctions.rgfit_secconf_eval"><code class="docutils literal notranslate"><span class="pre">rgfit_secconf_eval()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.ModelParams.SimpleSecParams.html">ModelParams.SimpleSecParams</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.SimpleSecParams.html#molass_legacy.ModelParams.SimpleSecParams.SimpleSecParams"><code class="docutils literal notranslate"><span class="pre">SimpleSecParams</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.SimpleSecParams.html#molass_legacy.ModelParams.SimpleSecParams.SimpleSecParams.estimate_conformance_params_fixed_poreexponent"><code class="docutils literal notranslate"><span class="pre">SimpleSecParams.estimate_conformance_params_fixed_poreexponent()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.SimpleSecParams.html#molass_legacy.ModelParams.SimpleSecParams.SimpleSecParams.initial_guess_fixed_poreexponent"><code class="docutils literal notranslate"><span class="pre">SimpleSecParams.initial_guess_fixed_poreexponent()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.SimpleSecParams.html#molass_legacy.ModelParams.SimpleSecParams.SimpleSecParams.sec_comformance_fixed_poreexponent"><code class="docutils literal notranslate"><span class="pre">SimpleSecParams.sec_comformance_fixed_poreexponent()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.SimpleSecParams.html#molass_legacy.ModelParams.SimpleSecParams.initial_guess"><code class="docutils literal notranslate"><span class="pre">initial_guess()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.SimpleSecParams.html#molass_legacy.ModelParams.SimpleSecParams.sec_comformance"><code class="docutils literal notranslate"><span class="pre">sec_comformance()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="molass_legacy.ModelParams.StcAdjuster.html">ModelParams.StcAdjuster</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.ModelParams.StcAdjuster.html#molass_legacy.ModelParams.StcAdjuster.StcAdjuster"><code class="docutils literal notranslate"><span class="pre">StcAdjuster</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="molass_legacy.ModelParams.StcAdjuster.html#molass_legacy.ModelParams.StcAdjuster.StcAdjuster.convert"><code class="docutils literal notranslate"><span class="pre">StcAdjuster.convert()</span></code></a></li>

@@ -30,6 +30,7 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -39,6 +40,8 @@
     <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
     <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'source/molass_legacy.Extrapolation.PreviewButtonFrame';</script>
     <link rel="icon" href="../_static/molamola.png"/>
@@ -155,7 +158,10 @@
  </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        <ul class="current nav bd-sidenav">
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.main.html">main</a></li>
+</ul>
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Alsaker.html">Alsaker</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.Alsaker.Bridge.html">Alsaker.Bridge</a></li>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.Alsaker.Compare.html">Alsaker.Compare</a></li>
@@ -1717,7 +1723,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -1733,6 +1741,35 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame"><code class="docutils literal notranslate"><span class="pre">PreviewButtonFrame</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.config_states"><code class="docutils literal notranslate"><span class="pre">PreviewButtonFrame.config_states()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.config_states_alternative"><code class="docutils literal notranslate"><span class="pre">PreviewButtonFrame.config_states_alternative()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.do_devel_test"><code class="docutils literal notranslate"><span class="pre">PreviewButtonFrame.do_devel_test()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.get_cnv_ranges"><code class="docutils literal notranslate"><span class="pre">PreviewButtonFrame.get_cnv_ranges()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.get_conc_depend"><code class="docutils literal notranslate"><span class="pre">PreviewButtonFrame.get_conc_depend()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.get_desired_serial_data"><code class="docutils literal notranslate"><span class="pre">PreviewButtonFrame.get_desired_serial_data()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.get_last_change_id_from_advanced_frame"><code class="docutils literal notranslate"><span class="pre">PreviewButtonFrame.get_last_change_id_from_advanced_frame()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.get_preview_data"><code class="docutils literal notranslate"><span class="pre">PreviewButtonFrame.get_preview_data()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.memorize_preview_data"><code class="docutils literal notranslate"><span class="pre">PreviewButtonFrame.memorize_preview_data()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.rank_control_tracer"><code class="docutils literal notranslate"><span class="pre">PreviewButtonFrame.rank_control_tracer()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.remove_guard_for_three_state_model"><code class="docutils literal notranslate"><span class="pre">PreviewButtonFrame.remove_guard_for_three_state_model()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.set_conc_depend"><code class="docutils literal notranslate"><span class="pre">PreviewButtonFrame.set_conc_depend()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.set_guard_for_three_state_model"><code class="docutils literal notranslate"><span class="pre">PreviewButtonFrame.set_guard_for_three_state_model()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.show_conc_opts_dialog"><code class="docutils literal notranslate"><span class="pre">PreviewButtonFrame.show_conc_opts_dialog()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.show_zx_preview"><code class="docutils literal notranslate"><span class="pre">PreviewButtonFrame.show_zx_preview()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.show_zx_preview_using_pool"><code class="docutils literal notranslate"><span class="pre">PreviewButtonFrame.show_zx_preview_using_pool()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.update_modelframe"><code class="docutils literal notranslate"><span class="pre">PreviewButtonFrame.update_modelframe()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.update_settings"><code class="docutils literal notranslate"><span class="pre">PreviewButtonFrame.update_settings()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.update_widgets"><code class="docutils literal notranslate"><span class="pre">PreviewButtonFrame.update_widgets()</span></code></a></li>
+</ul>
+</li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -1742,8 +1779,125 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="extrapolation-previewbuttonframe">
-<h1>Extrapolation.PreviewButtonFrame<a class="headerlink" href="#extrapolation-previewbuttonframe" title="Link to this heading">#</a></h1>
+  <section id="module-molass_legacy.Extrapolation.PreviewButtonFrame">
+<span id="extrapolation-previewbuttonframe"></span><h1>Extrapolation.PreviewButtonFrame<a class="headerlink" href="#module-molass_legacy.Extrapolation.PreviewButtonFrame" title="Link to this heading">#</a></h1>
+<p>PreviewButtonFrame.py</p>
+<p>Copyright (c) 2018-2025, SAXS Team, KEK-PF</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PreviewButtonFrame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">LabelFrame</span></code></p>
+<p>Construct a labelframe widget with the parent MASTER.</p>
+<p>STANDARD OPTIONS</p>
+<blockquote>
+<div><p>borderwidth, cursor, font, foreground,
+highlightbackground, highlightcolor,
+highlightthickness, padx, pady, relief,
+takefocus, text</p>
+</div></blockquote>
+<p>WIDGET-SPECIFIC OPTIONS</p>
+<blockquote>
+<div><p>background, class, colormap, container,
+height, labelanchor, labelwidget,
+visual, width</p>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.config_states">
+<span class="sig-name descname"><span class="pre">config_states</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.config_states" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.config_states_alternative">
+<span class="sig-name descname"><span class="pre">config_states_alternative</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.config_states_alternative" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.do_devel_test">
+<span class="sig-name descname"><span class="pre">do_devel_test</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.do_devel_test" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.get_cnv_ranges">
+<span class="sig-name descname"><span class="pre">get_cnv_ranges</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.get_cnv_ranges" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.get_conc_depend">
+<span class="sig-name descname"><span class="pre">get_conc_depend</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.get_conc_depend" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.get_desired_serial_data">
+<span class="sig-name descname"><span class="pre">get_desired_serial_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mapper</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.get_desired_serial_data" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.get_last_change_id_from_advanced_frame">
+<span class="sig-name descname"><span class="pre">get_last_change_id_from_advanced_frame</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.get_last_change_id_from_advanced_frame" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.get_preview_data">
+<span class="sig-name descname"><span class="pre">get_preview_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">with_update</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.get_preview_data" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.memorize_preview_data">
+<span class="sig-name descname"><span class="pre">memorize_preview_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.memorize_preview_data" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.rank_control_tracer">
+<span class="sig-name descname"><span class="pre">rank_control_tracer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.rank_control_tracer" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.remove_guard_for_three_state_model">
+<span class="sig-name descname"><span class="pre">remove_guard_for_three_state_model</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.remove_guard_for_three_state_model" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.set_conc_depend">
+<span class="sig-name descname"><span class="pre">set_conc_depend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">revive_auto_rank</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.set_conc_depend" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.set_guard_for_three_state_model">
+<span class="sig-name descname"><span class="pre">set_guard_for_three_state_model</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.set_guard_for_three_state_model" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.show_conc_opts_dialog">
+<span class="sig-name descname"><span class="pre">show_conc_opts_dialog</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.show_conc_opts_dialog" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.show_zx_preview">
+<span class="sig-name descname"><span class="pre">show_zx_preview</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">use_pool</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.show_zx_preview" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.show_zx_preview_using_pool">
+<span class="sig-name descname"><span class="pre">show_zx_preview_using_pool</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pdata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">popts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.show_zx_preview_using_pool" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.update_modelframe">
+<span class="sig-name descname"><span class="pre">update_modelframe</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.update_modelframe" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.update_settings">
+<span class="sig-name descname"><span class="pre">update_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">update_memorized</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.update_settings" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.update_widgets">
+<span class="sig-name descname"><span class="pre">update_widgets</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.update_widgets" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </section>
 
 
@@ -1781,6 +1935,42 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame"><code class="docutils literal notranslate"><span class="pre">PreviewButtonFrame</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.config_states"><code class="docutils literal notranslate"><span class="pre">PreviewButtonFrame.config_states()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.config_states_alternative"><code class="docutils literal notranslate"><span class="pre">PreviewButtonFrame.config_states_alternative()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.do_devel_test"><code class="docutils literal notranslate"><span class="pre">PreviewButtonFrame.do_devel_test()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.get_cnv_ranges"><code class="docutils literal notranslate"><span class="pre">PreviewButtonFrame.get_cnv_ranges()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.get_conc_depend"><code class="docutils literal notranslate"><span class="pre">PreviewButtonFrame.get_conc_depend()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.get_desired_serial_data"><code class="docutils literal notranslate"><span class="pre">PreviewButtonFrame.get_desired_serial_data()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.get_last_change_id_from_advanced_frame"><code class="docutils literal notranslate"><span class="pre">PreviewButtonFrame.get_last_change_id_from_advanced_frame()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.get_preview_data"><code class="docutils literal notranslate"><span class="pre">PreviewButtonFrame.get_preview_data()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.memorize_preview_data"><code class="docutils literal notranslate"><span class="pre">PreviewButtonFrame.memorize_preview_data()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.rank_control_tracer"><code class="docutils literal notranslate"><span class="pre">PreviewButtonFrame.rank_control_tracer()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.remove_guard_for_three_state_model"><code class="docutils literal notranslate"><span class="pre">PreviewButtonFrame.remove_guard_for_three_state_model()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.set_conc_depend"><code class="docutils literal notranslate"><span class="pre">PreviewButtonFrame.set_conc_depend()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.set_guard_for_three_state_model"><code class="docutils literal notranslate"><span class="pre">PreviewButtonFrame.set_guard_for_three_state_model()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.show_conc_opts_dialog"><code class="docutils literal notranslate"><span class="pre">PreviewButtonFrame.show_conc_opts_dialog()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.show_zx_preview"><code class="docutils literal notranslate"><span class="pre">PreviewButtonFrame.show_zx_preview()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.show_zx_preview_using_pool"><code class="docutils literal notranslate"><span class="pre">PreviewButtonFrame.show_zx_preview_using_pool()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.update_modelframe"><code class="docutils literal notranslate"><span class="pre">PreviewButtonFrame.update_modelframe()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.update_settings"><code class="docutils literal notranslate"><span class="pre">PreviewButtonFrame.update_settings()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Extrapolation.PreviewButtonFrame.PreviewButtonFrame.update_widgets"><code class="docutils literal notranslate"><span class="pre">PreviewButtonFrame.update_widgets()</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>

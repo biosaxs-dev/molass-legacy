@@ -30,6 +30,7 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -39,6 +40,8 @@
     <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
     <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'source/molass_legacy.SerialAnalyzer';</script>
     <link rel="icon" href="../_static/molamola.png"/>
@@ -155,7 +158,10 @@
  </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        <ul class="current nav bd-sidenav">
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.main.html">main</a></li>
+</ul>
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Alsaker.html">Alsaker</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.Alsaker.Bridge.html">Alsaker.Bridge</a></li>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.Alsaker.Compare.html">Alsaker.Compare</a></li>
@@ -2098,7 +2104,11 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.InputOutputDisplay.html#molass_legacy.SerialAnalyzer.InputOutputDisplay.InputOutputDisplay"><code class="docutils literal notranslate"><span class="pre">InputOutputDisplay</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="molass_legacy.SerialAnalyzer.InputSmootherAveraging.html">SerialAnalyzer.InputSmootherAveraging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.SerialAnalyzer.InputSmootherAveraging.html">SerialAnalyzer.InputSmootherAveraging</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.InputSmootherAveraging.html#molass_legacy.SerialAnalyzer.InputSmootherAveraging.ConcentrationSmootherAveraging"><code class="docutils literal notranslate"><span class="pre">ConcentrationSmootherAveraging</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.InputSmootherAveraging.html#molass_legacy.SerialAnalyzer.InputSmootherAveraging.IntensitySmootherAveraging"><code class="docutils literal notranslate"><span class="pre">IntensitySmootherAveraging</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="molass_legacy.SerialAnalyzer.LPM_Animation.html">SerialAnalyzer.LPM_Animation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.LPM_Animation.html#molass_legacy.SerialAnalyzer.LPM_Animation.LPM_AnimationDialog"><code class="docutils literal notranslate"><span class="pre">LPM_AnimationDialog</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.LPM_Animation.html#molass_legacy.SerialAnalyzer.LPM_Animation.ScatteringBaseline"><code class="docutils literal notranslate"><span class="pre">ScatteringBaseline</span></code></a><ul>
@@ -2223,7 +2233,18 @@ document.write(`
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="molass_legacy.SerialAnalyzer.PrerecogProxy.html">SerialAnalyzer.PrerecogProxy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.SerialAnalyzer.PrerecogProxy.html">SerialAnalyzer.PrerecogProxy</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.PrerecogProxy.html#molass_legacy.SerialAnalyzer.PrerecogProxy.FlowChangeProxy"><code class="docutils literal notranslate"><span class="pre">FlowChangeProxy</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.PrerecogProxy.html#molass_legacy.SerialAnalyzer.PrerecogProxy.FlowChangeProxy.get_flow_changes"><code class="docutils literal notranslate"><span class="pre">FlowChangeProxy.get_flow_changes()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.PrerecogProxy.html#molass_legacy.SerialAnalyzer.PrerecogProxy.PrerecogProxy"><code class="docutils literal notranslate"><span class="pre">PrerecogProxy</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.PrerecogProxy.html#molass_legacy.SerialAnalyzer.PrerecogProxy.PrerecogProxy.get_rg"><code class="docutils literal notranslate"><span class="pre">PrerecogProxy.get_rg()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.PrerecogProxy.html#molass_legacy.SerialAnalyzer.PrerecogProxy.PrerecogProxy.get_xray_shift"><code class="docutils literal notranslate"><span class="pre">PrerecogProxy.get_xray_shift()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ProgressChart.html">SerialAnalyzer.ProgressChart</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ProgressChart.html#molass_legacy.SerialAnalyzer.ProgressChart.ProgressChart"><code class="docutils literal notranslate"><span class="pre">ProgressChart</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ProgressChart.html#molass_legacy.SerialAnalyzer.ProgressChart.ProgressChart.draw"><code class="docutils literal notranslate"><span class="pre">ProgressChart.draw()</span></code></a></li>
@@ -2274,7 +2295,19 @@ document.write(`
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ResultGui.html">SerialAnalyzer.ResultGui</a></li>
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ResultGui.html">SerialAnalyzer.ResultGui</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ResultGui.html#molass_legacy.SerialAnalyzer.ResultGui.ResultGui"><code class="docutils literal notranslate"><span class="pre">ResultGui</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ResultGui.html#molass_legacy.SerialAnalyzer.ResultGui.ResultGui.at_exit"><code class="docutils literal notranslate"><span class="pre">ResultGui.at_exit()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ResultGui.html#molass_legacy.SerialAnalyzer.ResultGui.ResultGui.control_c"><code class="docutils literal notranslate"><span class="pre">ResultGui.control_c()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ResultGui.html#molass_legacy.SerialAnalyzer.ResultGui.ResultGui.create_popup_menu"><code class="docutils literal notranslate"><span class="pre">ResultGui.create_popup_menu()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ResultGui.html#molass_legacy.SerialAnalyzer.ResultGui.ResultGui.run_autorg"><code class="docutils literal notranslate"><span class="pre">ResultGui.run_autorg()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ResultGui.html#molass_legacy.SerialAnalyzer.ResultGui.ResultGui.show_comments"><code class="docutils literal notranslate"><span class="pre">ResultGui.show_comments()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ResultGui.html#molass_legacy.SerialAnalyzer.ResultGui.ResultGui.show_proof_plot"><code class="docutils literal notranslate"><span class="pre">ResultGui.show_proof_plot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ResultGui.html#molass_legacy.SerialAnalyzer.ResultGui.ResultGui.show_results"><code class="docutils literal notranslate"><span class="pre">ResultGui.show_results()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ResultTable.html">SerialAnalyzer.ResultTable</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ResultTable.html#molass_legacy.SerialAnalyzer.ResultTable.ResultTable"><code class="docutils literal notranslate"><span class="pre">ResultTable</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ResultTable.html#molass_legacy.SerialAnalyzer.ResultTable.ResultTable.refresh"><code class="docutils literal notranslate"><span class="pre">ResultTable.refresh()</span></code></a></li>
@@ -2422,7 +2455,25 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ScatteringBasesurface.html#molass_legacy.SerialAnalyzer.ScatteringBasesurface.is_to_plot"><code class="docutils literal notranslate"><span class="pre">is_to_plot()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ScatteringPlot.html">SerialAnalyzer.ScatteringPlot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ScatteringPlot.html">SerialAnalyzer.ScatteringPlot</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ScatteringPlot.html#molass_legacy.SerialAnalyzer.ScatteringPlot.ScatteringPlot"><code class="docutils literal notranslate"><span class="pre">ScatteringPlot</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ScatteringPlot.html#molass_legacy.SerialAnalyzer.ScatteringPlot.ScatteringPlot.add_basesurface"><code class="docutils literal notranslate"><span class="pre">ScatteringPlot.add_basesurface()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ScatteringPlot.html#molass_legacy.SerialAnalyzer.ScatteringPlot.ScatteringPlot.change_to_corrected_3d"><code class="docutils literal notranslate"><span class="pre">ScatteringPlot.change_to_corrected_3d()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ScatteringPlot.html#molass_legacy.SerialAnalyzer.ScatteringPlot.ScatteringPlot.create_corrected_data"><code class="docutils literal notranslate"><span class="pre">ScatteringPlot.create_corrected_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ScatteringPlot.html#molass_legacy.SerialAnalyzer.ScatteringPlot.ScatteringPlot.create_popup_menu"><code class="docutils literal notranslate"><span class="pre">ScatteringPlot.create_popup_menu()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ScatteringPlot.html#molass_legacy.SerialAnalyzer.ScatteringPlot.ScatteringPlot.cunstom_button_box"><code class="docutils literal notranslate"><span class="pre">ScatteringPlot.cunstom_button_box()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ScatteringPlot.html#molass_legacy.SerialAnalyzer.ScatteringPlot.ScatteringPlot.cunstom_button_box_add"><code class="docutils literal notranslate"><span class="pre">ScatteringPlot.cunstom_button_box_add()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ScatteringPlot.html#molass_legacy.SerialAnalyzer.ScatteringPlot.ScatteringPlot.draw_3d_for_gui"><code class="docutils literal notranslate"><span class="pre">ScatteringPlot.draw_3d_for_gui()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ScatteringPlot.html#molass_legacy.SerialAnalyzer.ScatteringPlot.ScatteringPlot.draw_3d_scattering"><code class="docutils literal notranslate"><span class="pre">ScatteringPlot.draw_3d_scattering()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ScatteringPlot.html#molass_legacy.SerialAnalyzer.ScatteringPlot.ScatteringPlot.get_file_index"><code class="docutils literal notranslate"><span class="pre">ScatteringPlot.get_file_index()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ScatteringPlot.html#molass_legacy.SerialAnalyzer.ScatteringPlot.ScatteringPlot.guinier_analysis"><code class="docutils literal notranslate"><span class="pre">ScatteringPlot.guinier_analysis()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ScatteringPlot.html#molass_legacy.SerialAnalyzer.ScatteringPlot.ScatteringPlot.popup"><code class="docutils literal notranslate"><span class="pre">ScatteringPlot.popup()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ScatteringPlot.html#molass_legacy.SerialAnalyzer.ScatteringPlot.ScatteringPlot.redraw"><code class="docutils literal notranslate"><span class="pre">ScatteringPlot.redraw()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ScatteringPlot.html#molass_legacy.SerialAnalyzer.ScatteringPlot.ScatteringPlot.view_init"><code class="docutils literal notranslate"><span class="pre">ScatteringPlot.view_init()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ScatteringViewUtils.html">SerialAnalyzer.ScatteringViewUtils</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ScatteringViewUtils.html#molass_legacy.SerialAnalyzer.ScatteringViewUtils.compute_baselines"><code class="docutils literal notranslate"><span class="pre">compute_baselines()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.ScatteringViewUtils.html#molass_legacy.SerialAnalyzer.ScatteringViewUtils.draw_3d_scattering"><code class="docutils literal notranslate"><span class="pre">draw_3d_scattering()</span></code></a></li>
@@ -2469,8 +2520,85 @@ document.write(`
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialData.html">SerialAnalyzer.SerialData</a></li>
-<li class="toctree-l1"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialDataLoader.html">SerialAnalyzer.SerialDataLoader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialData.html">SerialAnalyzer.SerialData</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialData.html#molass_legacy.SerialAnalyzer.SerialData.SerialData"><code class="docutils literal notranslate"><span class="pre">SerialData</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialData.html#molass_legacy.SerialAnalyzer.SerialData.SerialData.apply_baseline_correction"><code class="docutils literal notranslate"><span class="pre">SerialData.apply_baseline_correction()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialData.html#molass_legacy.SerialAnalyzer.SerialData.SerialData.apply_data_reduction"><code class="docutils literal notranslate"><span class="pre">SerialData.apply_data_reduction()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialData.html#molass_legacy.SerialAnalyzer.SerialData.SerialData.compute_scattering_baseline_discomfort"><code class="docutils literal notranslate"><span class="pre">SerialData.compute_scattering_baseline_discomfort()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialData.html#molass_legacy.SerialAnalyzer.SerialData.SerialData.exclude_intensities"><code class="docutils literal notranslate"><span class="pre">SerialData.exclude_intensities()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialData.html#molass_legacy.SerialAnalyzer.SerialData.SerialData.exclude_intensity"><code class="docutils literal notranslate"><span class="pre">SerialData.exclude_intensity()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialData.html#molass_legacy.SerialAnalyzer.SerialData.SerialData.get_around_slice"><code class="docutils literal notranslate"><span class="pre">SerialData.get_around_slice()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialData.html#molass_legacy.SerialAnalyzer.SerialData.SerialData.get_averaged_data"><code class="docutils literal notranslate"><span class="pre">SerialData.get_averaged_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialData.html#molass_legacy.SerialAnalyzer.SerialData.SerialData.get_cd_slice"><code class="docutils literal notranslate"><span class="pre">SerialData.get_cd_slice()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialData.html#molass_legacy.SerialAnalyzer.SerialData.SerialData.get_copy"><code class="docutils literal notranslate"><span class="pre">SerialData.get_copy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialData.html#molass_legacy.SerialAnalyzer.SerialData.SerialData.get_data_shapes"><code class="docutils literal notranslate"><span class="pre">SerialData.get_data_shapes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialData.html#molass_legacy.SerialAnalyzer.SerialData.SerialData.get_elution_curves"><code class="docutils literal notranslate"><span class="pre">SerialData.get_elution_curves()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialData.html#molass_legacy.SerialAnalyzer.SerialData.SerialData.get_exec_copy"><code class="docutils literal notranslate"><span class="pre">SerialData.get_exec_copy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialData.html#molass_legacy.SerialAnalyzer.SerialData.SerialData.get_exec_copy_inside_of_flowchanges"><code class="docutils literal notranslate"><span class="pre">SerialData.get_exec_copy_inside_of_flowchanges()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialData.html#molass_legacy.SerialAnalyzer.SerialData.SerialData.get_id_info"><code class="docutils literal notranslate"><span class="pre">SerialData.get_id_info()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialData.html#molass_legacy.SerialAnalyzer.SerialData.SerialData.get_original_peak_top_x_pair"><code class="docutils literal notranslate"><span class="pre">SerialData.get_original_peak_top_x_pair()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialData.html#molass_legacy.SerialAnalyzer.SerialData.SerialData.get_usable_q_limit"><code class="docutils literal notranslate"><span class="pre">SerialData.get_usable_q_limit()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialData.html#molass_legacy.SerialAnalyzer.SerialData.SerialData.get_usable_slice"><code class="docutils literal notranslate"><span class="pre">SerialData.get_usable_slice()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialData.html#molass_legacy.SerialAnalyzer.SerialData.SerialData.get_uv_curve"><code class="docutils literal notranslate"><span class="pre">SerialData.get_uv_curve()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialData.html#molass_legacy.SerialAnalyzer.SerialData.SerialData.get_uv_data_separate_ly"><code class="docutils literal notranslate"><span class="pre">SerialData.get_uv_data_separate_ly()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialData.html#molass_legacy.SerialAnalyzer.SerialData.SerialData.get_uv_elution_vector"><code class="docutils literal notranslate"><span class="pre">SerialData.get_uv_elution_vector()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialData.html#molass_legacy.SerialAnalyzer.SerialData.SerialData.get_v2_copy"><code class="docutils literal notranslate"><span class="pre">SerialData.get_v2_copy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialData.html#molass_legacy.SerialAnalyzer.SerialData.SerialData.get_xr_curve"><code class="docutils literal notranslate"><span class="pre">SerialData.get_xr_curve()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialData.html#molass_legacy.SerialAnalyzer.SerialData.SerialData.get_xr_data_separate_ly"><code class="docutils literal notranslate"><span class="pre">SerialData.get_xr_data_separate_ly()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialData.html#molass_legacy.SerialAnalyzer.SerialData.SerialData.get_xray_curve"><code class="docutils literal notranslate"><span class="pre">SerialData.get_xray_curve()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialData.html#molass_legacy.SerialAnalyzer.SerialData.SerialData.get_xray_data"><code class="docutils literal notranslate"><span class="pre">SerialData.get_xray_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialData.html#molass_legacy.SerialAnalyzer.SerialData.SerialData.get_xray_elution_vector"><code class="docutils literal notranslate"><span class="pre">SerialData.get_xray_elution_vector()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialData.html#molass_legacy.SerialAnalyzer.SerialData.SerialData.get_xray_scale"><code class="docutils literal notranslate"><span class="pre">SerialData.get_xray_scale()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialData.html#molass_legacy.SerialAnalyzer.SerialData.SerialData.is_serial"><code class="docutils literal notranslate"><span class="pre">SerialData.is_serial()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialData.html#molass_legacy.SerialAnalyzer.SerialData.SerialData.load_conc_array"><code class="docutils literal notranslate"><span class="pre">SerialData.load_conc_array()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialData.html#molass_legacy.SerialAnalyzer.SerialData.SerialData.load_intensity_array"><code class="docutils literal notranslate"><span class="pre">SerialData.load_intensity_array()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialData.html#molass_legacy.SerialAnalyzer.SerialData.SerialData.log_id_values"><code class="docutils literal notranslate"><span class="pre">SerialData.log_id_values()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialData.html#molass_legacy.SerialAnalyzer.SerialData.SerialData.read"><code class="docutils literal notranslate"><span class="pre">SerialData.read()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialData.html#molass_legacy.SerialAnalyzer.SerialData.SerialData.save_xray_data"><code class="docutils literal notranslate"><span class="pre">SerialData.save_xray_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialData.html#molass_legacy.SerialAnalyzer.SerialData.SerialData.set_data"><code class="docutils literal notranslate"><span class="pre">SerialData.set_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialData.html#molass_legacy.SerialAnalyzer.SerialData.SerialData.set_intensity_array"><code class="docutils literal notranslate"><span class="pre">SerialData.set_intensity_array()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialData.html#molass_legacy.SerialAnalyzer.SerialData.SerialData.set_ivector_etcetera"><code class="docutils literal notranslate"><span class="pre">SerialData.set_ivector_etcetera()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialData.html#molass_legacy.SerialAnalyzer.SerialData.SerialData.set_mc_vector"><code class="docutils literal notranslate"><span class="pre">SerialData.set_mc_vector()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialData.html#molass_legacy.SerialAnalyzer.SerialData.SerialData.set_offsets"><code class="docutils literal notranslate"><span class="pre">SerialData.set_offsets()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialData.html#molass_legacy.SerialAnalyzer.SerialData.SerialData.set_offsets_from_md"><code class="docutils literal notranslate"><span class="pre">SerialData.set_offsets_from_md()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialData.html#molass_legacy.SerialAnalyzer.SerialData.SerialData.set_prerecog_proxy"><code class="docutils literal notranslate"><span class="pre">SerialData.set_prerecog_proxy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialData.html#molass_legacy.SerialAnalyzer.SerialData.SerialData.update_mapping_info"><code class="docutils literal notranslate"><span class="pre">SerialData.update_mapping_info()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialData.html#molass_legacy.SerialAnalyzer.SerialData.SerialData.update_xray_elution_info"><code class="docutils literal notranslate"><span class="pre">SerialData.update_xray_elution_info()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialData.html#molass_legacy.SerialAnalyzer.SerialData.SerialData.wait_until_ready"><code class="docutils literal notranslate"><span class="pre">SerialData.wait_until_ready()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialDataLoader.html">SerialAnalyzer.SerialDataLoader</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialDataLoader.html#molass_legacy.SerialAnalyzer.SerialDataLoader.SerialDataLoader"><code class="docutils literal notranslate"><span class="pre">SerialDataLoader</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialDataLoader.html#molass_legacy.SerialAnalyzer.SerialDataLoader.SerialDataLoader.get_active_uv_data"><code class="docutils literal notranslate"><span class="pre">SerialDataLoader.get_active_uv_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialDataLoader.html#molass_legacy.SerialAnalyzer.SerialDataLoader.SerialDataLoader.get_current_object"><code class="docutils literal notranslate"><span class="pre">SerialDataLoader.get_current_object()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialDataLoader.html#molass_legacy.SerialAnalyzer.SerialDataLoader.SerialDataLoader.get_current_object_impl"><code class="docutils literal notranslate"><span class="pre">SerialDataLoader.get_current_object_impl()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialDataLoader.html#molass_legacy.SerialAnalyzer.SerialDataLoader.SerialDataLoader.get_data_object"><code class="docutils literal notranslate"><span class="pre">SerialDataLoader.get_data_object()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialDataLoader.html#molass_legacy.SerialAnalyzer.SerialDataLoader.SerialDataLoader.get_init_object"><code class="docutils literal notranslate"><span class="pre">SerialDataLoader.get_init_object()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialDataLoader.html#molass_legacy.SerialAnalyzer.SerialDataLoader.SerialDataLoader.get_restricted_uv_data"><code class="docutils literal notranslate"><span class="pre">SerialDataLoader.get_restricted_uv_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialDataLoader.html#molass_legacy.SerialAnalyzer.SerialDataLoader.SerialDataLoader.get_restricted_xray_data"><code class="docutils literal notranslate"><span class="pre">SerialDataLoader.get_restricted_xray_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialDataLoader.html#molass_legacy.SerialAnalyzer.SerialDataLoader.SerialDataLoader.has_enough_num_files"><code class="docutils literal notranslate"><span class="pre">SerialDataLoader.has_enough_num_files()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialDataLoader.html#molass_legacy.SerialAnalyzer.SerialDataLoader.SerialDataLoader.load_data"><code class="docutils literal notranslate"><span class="pre">SerialDataLoader.load_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialDataLoader.html#molass_legacy.SerialAnalyzer.SerialDataLoader.SerialDataLoader.load_from_folders"><code class="docutils literal notranslate"><span class="pre">SerialDataLoader.load_from_folders()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialDataLoader.html#molass_legacy.SerialAnalyzer.SerialDataLoader.SerialDataLoader.load_uv_data"><code class="docutils literal notranslate"><span class="pre">SerialDataLoader.load_uv_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialDataLoader.html#molass_legacy.SerialAnalyzer.SerialDataLoader.SerialDataLoader.load_xray_data"><code class="docutils literal notranslate"><span class="pre">SerialDataLoader.load_xray_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialDataLoader.html#molass_legacy.SerialAnalyzer.SerialDataLoader.SerialDataLoader.load_xray_data_in_another_thread"><code class="docutils literal notranslate"><span class="pre">SerialDataLoader.load_xray_data_in_another_thread()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialDataLoader.html#molass_legacy.SerialAnalyzer.SerialDataLoader.SerialDataLoader.load_xray_data_only"><code class="docutils literal notranslate"><span class="pre">SerialDataLoader.load_xray_data_only()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialDataLoader.html#molass_legacy.SerialAnalyzer.SerialDataLoader.SerialDataLoader.load_xray_data_only_impl"><code class="docutils literal notranslate"><span class="pre">SerialDataLoader.load_xray_data_only_impl()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialDataLoader.html#molass_legacy.SerialAnalyzer.SerialDataLoader.SerialDataLoader.make_mtd_simulated_uv_data"><code class="docutils literal notranslate"><span class="pre">SerialDataLoader.make_mtd_simulated_uv_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialDataLoader.html#molass_legacy.SerialAnalyzer.SerialDataLoader.SerialDataLoader.make_xray_proportinal_uv_data"><code class="docutils literal notranslate"><span class="pre">SerialDataLoader.make_xray_proportinal_uv_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialDataLoader.html#molass_legacy.SerialAnalyzer.SerialDataLoader.SerialDataLoader.memorize_exclusion"><code class="docutils literal notranslate"><span class="pre">SerialDataLoader.memorize_exclusion()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialDataLoader.html#molass_legacy.SerialAnalyzer.SerialDataLoader.SerialDataLoader.reset_current_status"><code class="docutils literal notranslate"><span class="pre">SerialDataLoader.reset_current_status()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialDataLoader.html#molass_legacy.SerialAnalyzer.SerialDataLoader.SerialDataLoader.reset_input_status"><code class="docutils literal notranslate"><span class="pre">SerialDataLoader.reset_input_status()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialDataLoader.html#molass_legacy.SerialAnalyzer.SerialDataLoader.SerialDataLoader.reset_load_status"><code class="docutils literal notranslate"><span class="pre">SerialDataLoader.reset_load_status()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialDataLoader.html#molass_legacy.SerialAnalyzer.SerialDataLoader.SerialDataLoader.wait_for_xray_loading"><code class="docutils literal notranslate"><span class="pre">SerialDataLoader.wait_for_xray_loading()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialDataLoader.html#molass_legacy.SerialAnalyzer.SerialDataLoader.SerialDataLoader.wait_until_ready"><code class="docutils literal notranslate"><span class="pre">SerialDataLoader.wait_until_ready()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialDataLoader.html#molass_legacy.SerialAnalyzer.SerialDataLoader.get_restrict_ranges"><code class="docutils literal notranslate"><span class="pre">get_restrict_ranges()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialDataUtils.html">SerialAnalyzer.SerialDataUtils</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialDataUtils.html#molass_legacy.SerialAnalyzer.SerialDataUtils.convert_to_the_least_shape"><code class="docutils literal notranslate"><span class="pre">convert_to_the_least_shape()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialDataUtils.html#molass_legacy.SerialAnalyzer.SerialDataUtils.find_conc_files"><code class="docutils literal notranslate"><span class="pre">find_conc_files()</span></code></a></li>
@@ -2490,7 +2618,20 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialDataUtils.html#molass_legacy.SerialAnalyzer.SerialDataUtils.try_to_find_uv_in_any_txt"><code class="docutils literal notranslate"><span class="pre">try_to_find_uv_in_any_txt()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialTestUtils.html">SerialAnalyzer.SerialTestUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialTestUtils.html">SerialAnalyzer.SerialTestUtils</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialTestUtils.html#molass_legacy.SerialAnalyzer.SerialTestUtils.MockExecuter"><code class="docutils literal notranslate"><span class="pre">MockExecuter</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialTestUtils.html#molass_legacy.SerialAnalyzer.SerialTestUtils.create_our_logger"><code class="docutils literal notranslate"><span class="pre">create_our_logger()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialTestUtils.html#molass_legacy.SerialAnalyzer.SerialTestUtils.debug_plot_runner"><code class="docutils literal notranslate"><span class="pre">debug_plot_runner()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialTestUtils.html#molass_legacy.SerialAnalyzer.SerialTestUtils.get_global_info"><code class="docutils literal notranslate"><span class="pre">get_global_info()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialTestUtils.html#molass_legacy.SerialAnalyzer.SerialTestUtils.get_mapper_for_the_test"><code class="docutils literal notranslate"><span class="pre">get_mapper_for_the_test()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialTestUtils.html#molass_legacy.SerialAnalyzer.SerialTestUtils.get_serialdata_simply"><code class="docutils literal notranslate"><span class="pre">get_serialdata_simply()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialTestUtils.html#molass_legacy.SerialAnalyzer.SerialTestUtils.get_tttt_data_objects"><code class="docutils literal notranslate"><span class="pre">get_tttt_data_objects()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialTestUtils.html#molass_legacy.SerialAnalyzer.SerialTestUtils.get_uv_elution_vector"><code class="docutils literal notranslate"><span class="pre">get_uv_elution_vector()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialTestUtils.html#molass_legacy.SerialAnalyzer.SerialTestUtils.prepare_serialdata_env"><code class="docutils literal notranslate"><span class="pre">prepare_serialdata_env()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialTestUtils.html#molass_legacy.SerialAnalyzer.SerialTestUtils.set_setting_for_baseline_correction"><code class="docutils literal notranslate"><span class="pre">set_setting_for_baseline_correction()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SerialTestUtils.html#molass_legacy.SerialAnalyzer.SerialTestUtils.standard_setup"><code class="docutils literal notranslate"><span class="pre">standard_setup()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SettingsDialog.html">SerialAnalyzer.SettingsDialog</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SettingsDialog.html#molass_legacy.SerialAnalyzer.SettingsDialog.RestoreSettingDialog"><code class="docutils literal notranslate"><span class="pre">RestoreSettingDialog</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="molass_legacy.SerialAnalyzer.SettingsDialog.html#molass_legacy.SerialAnalyzer.SettingsDialog.RestoreSettingDialog.apply"><code class="docutils literal notranslate"><span class="pre">RestoreSettingDialog.apply()</span></code></a></li>

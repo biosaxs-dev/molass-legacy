@@ -30,6 +30,7 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -39,6 +40,8 @@
     <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
     <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'source/molass_legacy.GuinierTools.RgCurveUtils';</script>
     <link rel="icon" href="../_static/molamola.png"/>
@@ -155,7 +158,10 @@
  </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        <ul class="current nav bd-sidenav">
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.main.html">main</a></li>
+</ul>
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Alsaker.html">Alsaker</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.Alsaker.Bridge.html">Alsaker.Bridge</a></li>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.Alsaker.Compare.html">Alsaker.Compare</a></li>
@@ -1717,7 +1723,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -1733,6 +1741,19 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.GuinierTools.RgCurveUtils.compute_rg_curves"><code class="docutils literal notranslate"><span class="pre">compute_rg_curves()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.GuinierTools.RgCurveUtils.convert_to_milder_qualities"><code class="docutils literal notranslate"><span class="pre">convert_to_milder_qualities()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.GuinierTools.RgCurveUtils.get_connected_curve_info"><code class="docutils literal notranslate"><span class="pre">get_connected_curve_info()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.GuinierTools.RgCurveUtils.get_reconstructed_curve"><code class="docutils literal notranslate"><span class="pre">get_reconstructed_curve()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.GuinierTools.RgCurveUtils.plot_rg_curves"><code class="docutils literal notranslate"><span class="pre">plot_rg_curves()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.GuinierTools.RgCurveUtils.rg_deviation_inspect_impl"><code class="docutils literal notranslate"><span class="pre">rg_deviation_inspect_impl()</span></code></a></li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -1742,8 +1763,40 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="guiniertools-rgcurveutils">
-<h1>GuinierTools.RgCurveUtils<a class="headerlink" href="#guiniertools-rgcurveutils" title="Link to this heading">#</a></h1>
+  <section id="module-molass_legacy.GuinierTools.RgCurveUtils">
+<span id="guiniertools-rgcurveutils"></span><h1>GuinierTools.RgCurveUtils<a class="headerlink" href="#module-molass_legacy.GuinierTools.RgCurveUtils" title="Link to this heading">#</a></h1>
+<p>GuinierTools.RgCurveUtils.py</p>
+<p>Copyright (c) 2024, SAXS Team, KEK-PF</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="molass_legacy.GuinierTools.RgCurveUtils.compute_rg_curves">
+<span class="sig-name descname"><span class="pre">compute_rg_curves</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xr_weights</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rg_params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xr_cy_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xr_ty</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rg_curve</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.GuinierTools.RgCurveUtils.compute_rg_curves" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="molass_legacy.GuinierTools.RgCurveUtils.convert_to_milder_qualities">
+<span class="sig-name descname"><span class="pre">convert_to_milder_qualities</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">qualities</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.GuinierTools.RgCurveUtils.convert_to_milder_qualities" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="molass_legacy.GuinierTools.RgCurveUtils.get_connected_curve_info">
+<span class="sig-name descname"><span class="pre">get_connected_curve_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rg_curve</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.GuinierTools.RgCurveUtils.get_connected_curve_info" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="molass_legacy.GuinierTools.RgCurveUtils.get_reconstructed_curve">
+<span class="sig-name descname"><span class="pre">get_reconstructed_curve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid_bools</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cxr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rg_params</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.GuinierTools.RgCurveUtils.get_reconstructed_curve" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="molass_legacy.GuinierTools.RgCurveUtils.plot_rg_curves">
+<span class="sig-name descname"><span class="pre">plot_rg_curves</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xrh_params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rg_params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xr_cy_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xr_ty</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rg_curve</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.GuinierTools.RgCurveUtils.plot_rg_curves" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="molass_legacy.GuinierTools.RgCurveUtils.rg_deviation_inspect_impl">
+<span class="sig-name descname"><span class="pre">rg_deviation_inspect_impl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gdev</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid_components</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rg_params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lrf_rgs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.GuinierTools.RgCurveUtils.rg_deviation_inspect_impl" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
 </section>
 
 
@@ -1781,6 +1834,26 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.GuinierTools.RgCurveUtils.compute_rg_curves"><code class="docutils literal notranslate"><span class="pre">compute_rg_curves()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.GuinierTools.RgCurveUtils.convert_to_milder_qualities"><code class="docutils literal notranslate"><span class="pre">convert_to_milder_qualities()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.GuinierTools.RgCurveUtils.get_connected_curve_info"><code class="docutils literal notranslate"><span class="pre">get_connected_curve_info()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.GuinierTools.RgCurveUtils.get_reconstructed_curve"><code class="docutils literal notranslate"><span class="pre">get_reconstructed_curve()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.GuinierTools.RgCurveUtils.plot_rg_curves"><code class="docutils literal notranslate"><span class="pre">plot_rg_curves()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.GuinierTools.RgCurveUtils.rg_deviation_inspect_impl"><code class="docutils literal notranslate"><span class="pre">rg_deviation_inspect_impl()</span></code></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>

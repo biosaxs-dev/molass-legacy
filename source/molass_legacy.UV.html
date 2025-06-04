@@ -30,6 +30,7 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -39,6 +40,8 @@
     <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
     <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'source/molass_legacy.UV';</script>
     <link rel="icon" href="../_static/molamola.png"/>
@@ -155,7 +158,10 @@
  </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        <ul class="current nav bd-sidenav">
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.main.html">main</a></li>
+</ul>
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.Alsaker.html">Alsaker</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.Alsaker.Bridge.html">Alsaker.Bridge</a></li>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.Alsaker.Compare.html">Alsaker.Compare</a></li>
@@ -1758,8 +1764,56 @@ document.write(`
 <h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">#</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="molass_legacy.UV.Absorbance.html">UV.Absorbance</a></li>
-<li class="toctree-l1"><a class="reference internal" href="molass_legacy.UV.AbsorbancePlot.html">UV.AbsorbancePlot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.UV.Absorbance.html">UV.Absorbance</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.UV.Absorbance.html#molass_legacy.UV.Absorbance.Absorbance"><code class="docutils literal notranslate"><span class="pre">Absorbance</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.UV.Absorbance.html#molass_legacy.UV.Absorbance.Absorbance.check_abnormality_in_wvlen_ends"><code class="docutils literal notranslate"><span class="pre">Absorbance.check_abnormality_in_wvlen_ends()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.UV.Absorbance.html#molass_legacy.UV.Absorbance.Absorbance.compute_base_curve"><code class="docutils literal notranslate"><span class="pre">Absorbance.compute_base_curve()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.UV.Absorbance.html#molass_legacy.UV.Absorbance.Absorbance.compute_integral_basecurve"><code class="docutils literal notranslate"><span class="pre">Absorbance.compute_integral_basecurve()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.UV.Absorbance.html#molass_legacy.UV.Absorbance.Absorbance.compute_scatter_factor_at"><code class="docutils literal notranslate"><span class="pre">Absorbance.compute_scatter_factor_at()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.UV.Absorbance.html#molass_legacy.UV.Absorbance.Absorbance.data"><code class="docutils literal notranslate"><span class="pre">Absorbance.data</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.UV.Absorbance.html#molass_legacy.UV.Absorbance.Absorbance.get_baseplane_params"><code class="docutils literal notranslate"><span class="pre">Absorbance.get_baseplane_params()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.UV.Absorbance.html#molass_legacy.UV.Absorbance.Absorbance.get_bottomline_matrix"><code class="docutils literal notranslate"><span class="pre">Absorbance.get_bottomline_matrix()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.UV.Absorbance.html#molass_legacy.UV.Absorbance.Absorbance.get_bottomline_vector"><code class="docutils literal notranslate"><span class="pre">Absorbance.get_bottomline_vector()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.UV.Absorbance.html#molass_legacy.UV.Absorbance.Absorbance.get_bottomline_vector_near_peak"><code class="docutils literal notranslate"><span class="pre">Absorbance.get_bottomline_vector_near_peak()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.UV.Absorbance.html#molass_legacy.UV.Absorbance.Absorbance.get_conc_params"><code class="docutils literal notranslate"><span class="pre">Absorbance.get_conc_params()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.UV.Absorbance.html#molass_legacy.UV.Absorbance.Absorbance.get_corrected_data"><code class="docutils literal notranslate"><span class="pre">Absorbance.get_corrected_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.UV.Absorbance.html#molass_legacy.UV.Absorbance.Absorbance.get_corrected_vector"><code class="docutils literal notranslate"><span class="pre">Absorbance.get_corrected_vector()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.UV.Absorbance.html#molass_legacy.UV.Absorbance.Absorbance.get_integral_basecurve"><code class="docutils literal notranslate"><span class="pre">Absorbance.get_integral_basecurve()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.UV.Absorbance.html#molass_legacy.UV.Absorbance.Absorbance.get_jump_point_base"><code class="docutils literal notranslate"><span class="pre">Absorbance.get_jump_point_base()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.UV.Absorbance.html#molass_legacy.UV.Absorbance.Absorbance.get_mapped_slope_and_intercept"><code class="docutils literal notranslate"><span class="pre">Absorbance.get_mapped_slope_and_intercept()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.UV.Absorbance.html#molass_legacy.UV.Absorbance.Absorbance.get_normal_region"><code class="docutils literal notranslate"><span class="pre">Absorbance.get_normal_region()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.UV.Absorbance.html#molass_legacy.UV.Absorbance.Absorbance.get_shifted_elution_base"><code class="docutils literal notranslate"><span class="pre">Absorbance.get_shifted_elution_base()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.UV.Absorbance.html#molass_legacy.UV.Absorbance.Absorbance.get_standard_elution_base"><code class="docutils literal notranslate"><span class="pre">Absorbance.get_standard_elution_base()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.UV.Absorbance.html#molass_legacy.UV.Absorbance.Absorbance.get_standard_vector"><code class="docutils literal notranslate"><span class="pre">Absorbance.get_standard_vector()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.UV.Absorbance.html#molass_legacy.UV.Absorbance.Absorbance.get_vector_at"><code class="docutils literal notranslate"><span class="pre">Absorbance.get_vector_at()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.UV.Absorbance.html#molass_legacy.UV.Absorbance.Absorbance.get_wave_len_ends"><code class="docutils literal notranslate"><span class="pre">Absorbance.get_wave_len_ends()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.UV.Absorbance.html#molass_legacy.UV.Absorbance.Absorbance.get_wv_index_vector"><code class="docutils literal notranslate"><span class="pre">Absorbance.get_wv_index_vector()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.UV.Absorbance.html#molass_legacy.UV.Absorbance.Absorbance.get_zlim_for_3d_plot"><code class="docutils literal notranslate"><span class="pre">Absorbance.get_zlim_for_3d_plot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.UV.Absorbance.html#molass_legacy.UV.Absorbance.Absorbance.shifted_baseline_ok"><code class="docutils literal notranslate"><span class="pre">Absorbance.shifted_baseline_ok()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.UV.Absorbance.html#molass_legacy.UV.Absorbance.Absorbance.solve_bottomplane_LB"><code class="docutils literal notranslate"><span class="pre">Absorbance.solve_bottomplane_LB()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.UV.Absorbance.html#molass_legacy.UV.Absorbance.Absorbance.solve_bottomplane_LPM"><code class="docutils literal notranslate"><span class="pre">Absorbance.solve_bottomplane_LPM()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.UV.Absorbance.html#molass_legacy.UV.Absorbance.Absorbance.update_optimizer_range"><code class="docutils literal notranslate"><span class="pre">Absorbance.update_optimizer_range()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.UV.Absorbance.html#molass_legacy.UV.Absorbance.FixedBaseResult"><code class="docutils literal notranslate"><span class="pre">FixedBaseResult</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.UV.Absorbance.html#molass_legacy.UV.Absorbance.compute_scatter"><code class="docutils literal notranslate"><span class="pre">compute_scatter()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.UV.Absorbance.html#molass_legacy.UV.Absorbance.non_zero_value"><code class="docutils literal notranslate"><span class="pre">non_zero_value()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.UV.AbsorbancePlot.html">UV.AbsorbancePlot</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.UV.AbsorbancePlot.html#molass_legacy.UV.AbsorbancePlot.AbsorbancePlot"><code class="docutils literal notranslate"><span class="pre">AbsorbancePlot</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.UV.AbsorbancePlot.html#molass_legacy.UV.AbsorbancePlot.AbsorbancePlot.draw_3d_absorbance"><code class="docutils literal notranslate"><span class="pre">AbsorbancePlot.draw_3d_absorbance()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.UV.AbsorbancePlot.html#molass_legacy.UV.AbsorbancePlot.AbsorbancePlot.draw_3d_absorbance_detail"><code class="docutils literal notranslate"><span class="pre">AbsorbancePlot.draw_3d_absorbance_detail()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.UV.AbsorbancePlot.html#molass_legacy.UV.AbsorbancePlot.AbsorbancePlot.draw_3d_for_setting_gui"><code class="docutils literal notranslate"><span class="pre">AbsorbancePlot.draw_3d_for_setting_gui()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.UV.AbsorbancePlot.html#molass_legacy.UV.AbsorbancePlot.AbsorbancePlot.draw_3d_with_svd"><code class="docutils literal notranslate"><span class="pre">AbsorbancePlot.draw_3d_with_svd()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.UV.AbsorbancePlot.html#molass_legacy.UV.AbsorbancePlot.AbsorbancePlot.draw_wave_length_side_2d"><code class="docutils literal notranslate"><span class="pre">AbsorbancePlot.draw_wave_length_side_2d()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.UV.AbsorbancePlot.html#molass_legacy.UV.AbsorbancePlot.AbsorbancePlot.get_component"><code class="docutils literal notranslate"><span class="pre">AbsorbancePlot.get_component()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.UV.AbsorbancePlot.html#molass_legacy.UV.AbsorbancePlot.get_temp_absorbance"><code class="docutils literal notranslate"><span class="pre">get_temp_absorbance()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.UV.AbsorbancePlot.html#molass_legacy.UV.AbsorbancePlot.show_absorbance_figure_util"><code class="docutils literal notranslate"><span class="pre">show_absorbance_figure_util()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="molass_legacy.UV.AbsorbanceSaveDialog.html">UV.AbsorbanceSaveDialog</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.UV.AbsorbanceSaveDialog.html#molass_legacy.UV.AbsorbanceSaveDialog.AbsorbanceSaveDialog"><code class="docutils literal notranslate"><span class="pre">AbsorbanceSaveDialog</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="molass_legacy.UV.AbsorbanceSaveDialog.html#molass_legacy.UV.AbsorbanceSaveDialog.AbsorbanceSaveDialog.adjust_geometry"><code class="docutils literal notranslate"><span class="pre">AbsorbanceSaveDialog.adjust_geometry()</span></code></a></li>
@@ -1770,8 +1824,27 @@ document.write(`
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="molass_legacy.UV.AbsorbanceViewUtils.html">UV.AbsorbanceViewUtils</a></li>
-<li class="toctree-l1"><a class="reference internal" href="molass_legacy.UV.AbsorbanceViewer.html">UV.AbsorbanceViewer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.UV.AbsorbanceViewUtils.html">UV.AbsorbanceViewUtils</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.UV.AbsorbanceViewUtils.html#molass_legacy.UV.AbsorbanceViewUtils.draw_3d"><code class="docutils literal notranslate"><span class="pre">draw_3d()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.UV.AbsorbanceViewUtils.html#molass_legacy.UV.AbsorbanceViewUtils.draw_3d_detail"><code class="docutils literal notranslate"><span class="pre">draw_3d_detail()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="molass_legacy.UV.AbsorbanceViewer.html">UV.AbsorbanceViewer</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="molass_legacy.UV.AbsorbanceViewer.html#molass_legacy.UV.AbsorbanceViewer.AbsorbanceViewer"><code class="docutils literal notranslate"><span class="pre">AbsorbanceViewer</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.UV.AbsorbanceViewer.html#molass_legacy.UV.AbsorbanceViewer.AbsorbanceViewer.body"><code class="docutils literal notranslate"><span class="pre">AbsorbanceViewer.body()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.UV.AbsorbanceViewer.html#molass_legacy.UV.AbsorbanceViewer.AbsorbanceViewer.buttonbox"><code class="docutils literal notranslate"><span class="pre">AbsorbanceViewer.buttonbox()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.UV.AbsorbanceViewer.html#molass_legacy.UV.AbsorbanceViewer.AbsorbanceViewer.cancel"><code class="docutils literal notranslate"><span class="pre">AbsorbanceViewer.cancel()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.UV.AbsorbanceViewer.html#molass_legacy.UV.AbsorbanceViewer.AbsorbanceViewer.draw"><code class="docutils literal notranslate"><span class="pre">AbsorbanceViewer.draw()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.UV.AbsorbanceViewer.html#molass_legacy.UV.AbsorbanceViewer.AbsorbanceViewer.draw_baseplane"><code class="docutils literal notranslate"><span class="pre">AbsorbanceViewer.draw_baseplane()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.UV.AbsorbanceViewer.html#molass_legacy.UV.AbsorbanceViewer.AbsorbanceViewer.ok"><code class="docutils literal notranslate"><span class="pre">AbsorbanceViewer.ok()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.UV.AbsorbanceViewer.html#molass_legacy.UV.AbsorbanceViewer.AbsorbanceViewer.save_dialog"><code class="docutils literal notranslate"><span class="pre">AbsorbanceViewer.save_dialog()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.UV.AbsorbanceViewer.html#molass_legacy.UV.AbsorbanceViewer.AbsorbanceViewer.show"><code class="docutils literal notranslate"><span class="pre">AbsorbanceViewer.show()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.UV.AbsorbanceViewer.html#molass_legacy.UV.AbsorbanceViewer.AbsorbanceViewer.toggle_baseplane"><code class="docutils literal notranslate"><span class="pre">AbsorbanceViewer.toggle_baseplane()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.UV.AbsorbanceViewer.html#molass_legacy.UV.AbsorbanceViewer.AbsorbanceViewer.toggle_lpm_area"><code class="docutils literal notranslate"><span class="pre">AbsorbanceViewer.toggle_lpm_area()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="molass_legacy.UV.AbsorbanceViewerPub.html">UV.AbsorbanceViewerPub</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.UV.AbsorbanceViewerPub.html#molass_legacy.UV.AbsorbanceViewerPub.AbsorbanceViewerPub"><code class="docutils literal notranslate"><span class="pre">AbsorbanceViewerPub</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="molass_legacy.UV.AbsorbanceViewerPub.html#molass_legacy.UV.AbsorbanceViewerPub.AbsorbanceViewerPub.body"><code class="docutils literal notranslate"><span class="pre">AbsorbanceViewerPub.body()</span></code></a></li>
