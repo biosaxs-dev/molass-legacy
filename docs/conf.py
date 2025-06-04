@@ -24,6 +24,8 @@ extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.napoleon",
     "sphinx.ext.autosectionlabel",
+    'sphinx_copybutton',
+    'myst_parser',
 ]
 
 autoclass_content = 'both'

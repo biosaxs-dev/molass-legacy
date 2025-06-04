@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "molass_legacy"
-version = "0.0.9"
+version = "0.0.10"
 
 dependencies = [
   "numpy",
@@ -32,6 +32,9 @@ classifiers = [
   "Programming Language :: Python",
   "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
 ]
+
+[project.scripts]
+molass = "molass_legacy.main:molass_gui"
 
 [project.urls]
 Repository = "https://github.com/freesemt/molass-legacy"

@@ -6,7 +6,25 @@
 Molass Legacy Reference
 =======================
 
-Molass Library Legacy is the libray part of `MOLASS <https://www.jstage.jst.go.jp/article/biophysico/20/1/20_e200001/_article>`_, an analytical tool for SEC-SAXS experiment data currently hosted at `Photon Factory <https://pfwww.kek.jp/saxs/MOLASS.html>`_.
+Molass Legacy is an open-source version of `MOLASS <https://www.jstage.jst.go.jp/article/biophysico/20/1/20_e200001/_article>`_, an analytical tool for SEC-SAXS experiment data currently hosted at `Photon Factory <https://pfwww.kek.jp/saxs/MOLASS.html>`_.
+
+It can be installed via pip as follows::
+
+   pip install molass-legacy
+
+And run from the command line as follows::
+
+   molass
+
+See the User's Guide at the original `MOLASS page <https://pfwww.kek.jp/saxs/MOLASS.html>`_ for more information on how to use it.
+
+Main Function
+----------------
+
+.. toctree::
+   :maxdepth: 5
+
+   source/molass_legacy.main
 
 Module Functions
 ----------------
