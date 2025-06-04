@@ -10,7 +10,7 @@ Molass Legacy is an open-source version of `MOLASS <https://www.jstage.jst.go.jp
 
 It can be installed via pip as follows::
 
-   pip install molass-legacy
+   pip install molass_legacy
 
 And run from the command line as follows::
 

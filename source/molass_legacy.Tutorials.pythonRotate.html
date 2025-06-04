@@ -356,15 +356,24 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.DENSS.html">DENSS</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2 has-children"><a class="reference internal" href="molass_legacy.DENSS.resources.html">DENSS.resources</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.resources.resources.html">DENSS.resources.resources</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="molass_legacy.DENSS.denss.html">DENSS.denss</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="molass_legacy.DENSS.denss.resources.html">DENSS.denss.resources</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="molass_legacy.DENSS.denss.resources.resources.html">DENSS.denss.resources.resources</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="molass_legacy.DENSS.saxstats.html">DENSS.saxstats</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.saxstats.denssopts.html">DENSS.saxstats.denssopts</a></li>
-<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.saxstats.denssopts-orig.html">DENSS.saxstats.denssopts-orig</a></li>
-<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.saxstats.saxstats.html">DENSS.saxstats.saxstats</a></li>
-<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.saxstats.saxstats-orig.html">DENSS.saxstats.saxstats-orig</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="molass_legacy.DENSS.denss.scripts.html">DENSS.denss.scripts</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="molass_legacy.DENSS.denss.scripts.denss_fit_data.html">DENSS.denss.scripts.denss_fit_data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="molass_legacy.DENSS.denss.scripts.denss_pdb2mrc.html">DENSS.denss.scripts.denss_pdb2mrc</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.denss.core.html">DENSS.denss.core</a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.denss.core-orig.html">DENSS.denss.core-orig</a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.denss.options.html">DENSS.denss.options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.denss.options-orig.html">DENSS.denss.options-orig</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="molass_legacy.DENSS.resources.html">DENSS.resources</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.resources.resources.html">DENSS.resources.resources</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.DenssDriver.html">DENSS.DenssDriver</a></li>
@@ -1723,9 +1732,7 @@ document.write(`
   </button>
 `);
 </script>
-<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="fa-solid fa-list"></span>
-</button>
+
 </div></div>
       
     </div>
@@ -1741,17 +1748,6 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
-            <div>
-                <h2> Contents </h2>
-            </div>
-            <nav aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rotating-3d-voxel-animation">Rotating 3D voxel animation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Tutorials.pythonRotate.create_face"><code class="docutils literal notranslate"><span class="pre">create_face()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Tutorials.pythonRotate.explode"><code class="docutils literal notranslate"><span class="pre">explode()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Tutorials.pythonRotate.voxel_face"><code class="docutils literal notranslate"><span class="pre">voxel_face()</span></code></a></li>
-</ul>
-            </nav>
         </div>
     </div>
 </div>
@@ -1761,59 +1757,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="module-molass_legacy.Tutorials.pythonRotate">
-<span id="tutorials-pythonrotate"></span><h1>Tutorials.pythonRotate<a class="headerlink" href="#module-molass_legacy.Tutorials.pythonRotate" title="Link to this heading">#</a></h1>
-<section id="rotating-3d-voxel-animation">
-<h2>Rotating 3D voxel animation<a class="headerlink" href="#rotating-3d-voxel-animation" title="Link to this heading">#</a></h2>
-<p>from <a class="reference external" href="https://gist.github.com/mtesseracted/62ba9204d5fd3bb952c830c923c1b321">https://gist.github.com/mtesseracted/62ba9204d5fd3bb952c830c923c1b321</a></p>
-<p>Demonstrates using <code class="docutils literal notranslate"><span class="pre">ax.voxels</span></code> with uneven coordinates</p>
-</section>
-<dl class="py function">
-<dt class="sig sig-object py" id="molass_legacy.Tutorials.pythonRotate.create_face">
-<span class="sig-name descname"><span class="pre">create_face</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">voxels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">side</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">facestr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Tutorials.pythonRotate.create_face" title="Link to this definition">#</a></dt>
-<dd><p>Change voxels to True for cubes corresponding to
-‘#’ symbols in facestr on the side specified</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>voxels</strong> (<em>3D array</em><em> of </em><em>bools</em>)</p></li>
-<li><p><strong>side</strong> (<em>string representing the constant face</em>)</p></li>
-<li><p><strong>facestr</strong> (<em>string with '#' representing true and</em>) – rows seperated by newlines</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="molass_legacy.Tutorials.pythonRotate.explode">
-<span class="sig-name descname"><span class="pre">explode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Tutorials.pythonRotate.explode" title="Link to this definition">#</a></dt>
-<dd><p>Make a new grid where the original grid is every other point
-in the new grid, starting at the third point.  Also add an
-extra padding row/col when a dimension is even to prevent
-gaps in the middle when viewing that dimension face on.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>data</strong> (<em>3D np.array</em><em> of </em><em>coordinates</em>)</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="molass_legacy.Tutorials.pythonRotate.voxel_face">
-<span class="sig-name descname"><span class="pre">voxel_face</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">corns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offst</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Tutorials.pythonRotate.voxel_face" title="Link to this definition">#</a></dt>
-<dd><p>Grab the corner coordinates of one voxel face</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>corns</strong> (<em>np.indices array</em><em> of </em><em>corners for one voxel</em>)</p></li>
-<li><p><strong>dm</strong> (<em>(</em><em>dimension</em><em>)</em><em>, </em><em>values can be  0</em><em>(</em><em>x</em><em>)</em><em>, </em><em>1</em><em>(</em><em>y</em><em>)</em><em>, </em><em>2</em><em>(</em><em>z</em><em>)</em>)</p></li>
-<li><p><strong>nf</strong> (<em>(</em><em>near/far face</em><em>)</em><em>, </em><em>values can be 0</em><em>(</em><em>near</em><em>)</em><em>, </em><em>1</em><em>(</em><em>far</em><em>)</em>)</p></li>
-<li><p><strong>offst</strong> (<em>how much to offset the face size</em><em>, </em><em>also offsets at</em>) – 1/10th that amount in the perpendicular direction</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
+  <section id="tutorials-pythonrotate">
+<h1>Tutorials.pythonRotate<a class="headerlink" href="#tutorials-pythonrotate" title="Link to this heading">#</a></h1>
 </section>
 
 
@@ -1851,24 +1796,6 @@ gaps in the middle when viewing that dimension face on.</p>
             </div>
             
             
-              
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
-
-
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> Contents
-  </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rotating-3d-voxel-animation">Rotating 3D voxel animation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Tutorials.pythonRotate.create_face"><code class="docutils literal notranslate"><span class="pre">create_face()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Tutorials.pythonRotate.explode"><code class="docutils literal notranslate"><span class="pre">explode()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Tutorials.pythonRotate.voxel_face"><code class="docutils literal notranslate"><span class="pre">voxel_face()</span></code></a></li>
-</ul>
-  </nav></div>
-
-</div></div>
               
             
           </div>
