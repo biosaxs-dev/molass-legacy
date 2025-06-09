@@ -35,7 +35,7 @@ def get_a_peak(x, y, refine=True, model=None, affine=False, debug=False):
     mu_init = x[pt]
     max_y = y[pt]
     smax = len(x)//2
-    s_init = None
+    s_init = smax/2
 
     for s in range(3, smax):
         slice_ = slice(max(0, pt-s), min(len(x), pt+s))
