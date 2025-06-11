@@ -489,53 +489,15 @@ class SerialData:
         self.conc_factor = conc_factor      # TODO: better place to hold this info
 
     def exclude_intensities( self, to_be_excluded ):
+        from molass.DataUtils.AnomalyHandlers import remove_bubbles_impl
         self.wait_until_ready()
         print( 'to_be_excluded=', to_be_excluded )
 
-        from_ = None
-        for i in to_be_excluded:
-            if from_ is None:
-                from_ = i
-            else:
-                if i > last + 1:
-                    self.exclude_intensity( from_, last )
-                    from_ = i
-
-            last = i
-        if from_ is not None:
-            self.exclude_intensity( from_, last )
+        remove_bubbles_impl(self.intensity_array, to_be_excluded, self.excluded_set)
 
         self.has_excluded_xray_elutions = True
         self.set_ivector_etcetera()
         self.logger.info( 'Xray data at elution points ' + str(to_be_excluded) + ' have been removed and interpolated.' )
-
-    def exclude_intensity( self, from_, to_ ):
-        # print( 'exclude_intensity: ', from_, to_ )
-        size = self.intensity_array.shape[0]
-        if from_ == 0:
-            j = to_ + 1
-            for i in range( from_, j ):
-                self.intensity_array[i, :, 1:] = self.intensity_array[j, :, 1:]
-                self.excluded_set.add(i)
-        elif to_ == size - 1:
-            j = from_ - 1
-            for i in range( from_, size ):
-                self.intensity_array[i, :, 1:] = self.intensity_array[j, :, 1:]
-                self.excluded_set.add(i)
-        else:
-            lower = from_ - 1
-            upper = to_ + 1
-            lower_intensity = self.intensity_array[lower, :, : ]
-            upper_intensity = self.intensity_array[upper, :, : ]
-            width = upper - lower
-            for i in range( 1, width ):
-                w = i/width
-                intensity = ( 1 - w  ) * lower_intensity[ :, 1: ] + w * upper_intensity[ :, 1: ]
-                self.intensity_array[lower+i, :, 1:] = intensity
-                self.excluded_set.add(lower+i)
-                # TODO: save intensity
-
-        # TODO: make_adjusted_array
 
     def apply_baseline_correction( self, mapped_info, basic_lpm=False, progress_cb=None, return_base=False, debug_obj=None  ):
         frame = inspect.stack()[1]

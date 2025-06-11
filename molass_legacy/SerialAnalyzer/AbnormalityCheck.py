@@ -19,6 +19,7 @@ TAIL_NEG_RATIO          = 0.5
 #   Detect abnormal points caused by bubbles
 # ------------------------------------------------------------------------------
 def bubble_check(serial_data, **kwargs):
+    from molass.DataUtils.AnomalyHandlers import bubble_check_impl
     serial_data.wait_until_ready()
     exclude = []
 
@@ -28,42 +29,6 @@ def bubble_check(serial_data, **kwargs):
     y   = serial_data.xray_curve.y_orig     # use original considering such a case as 20171226
     # gy  = serial_data.xray_curve.gy
     return bubble_check_impl(y, **kwargs)
-
-BUBBLE_WIDTH_RANGE = (1, 5)
-BUBBLE_SEARCH_WIDTH = 10
-BUBBLE_GRADIENT_LIMIT = 0.03
-
-def bubble_check_impl(y, debug=False):
-    import numpy as np
-    from scipy.signal import find_peaks
-    max_y = np.max(y)
-    height = max_y*0.9
-    width = BUBBLE_WIDTH_RANGE
-    prominence = height
-    peaks, _ = find_peaks(y, height=height, width=width, prominence=prominence)
-    if len(peaks) > 0:
-        assert len(peaks) == 1
-        m = peaks[0]
-        start = max(0, m - BUBBLE_SEARCH_WIDTH)
-        stop = min(m + BUBBLE_SEARCH_WIDTH, len(y))
-        y_ = y[start:stop]
-        gy = np.abs(np.gradient(y_))/max_y
-        bubbles = start + np.where(gy > BUBBLE_GRADIENT_LIMIT)[0]
-    else:
-        bubbles = np.array([], dtype=int)
-    if debug:
-        import matplotlib.pyplot as plt
-        x = np.arange(len(y))
-        fig, ax = plt.subplots()
-        ax.set_title("find_peaks(y, height=%.3g, width=%s, prominence=%.3g)" % (height, width, prominence))
-        ax.plot(x, y)
-        ax.plot(x[bubbles], y[bubbles], 'o', color='orange', alpha=0.5)
-        ax.plot(x[peaks], y[peaks], 'o', color='red', alpha=0.5)
-        axt = ax.twinx()
-        if False:
-            x_ = x[start:stop]
-            axt.plot(x_, gy, 'x')
-    return bubbles
 
 # ------------------------------------------------------------------------------
 #   Exclusion Management

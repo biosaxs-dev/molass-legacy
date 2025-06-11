@@ -184,4 +184,15 @@ def molass_gui():
 
 if __name__ == '__main__':
     # main must not be called in multiprocessing
+    import sys
+    import os
+    this_dir = os.path.dirname(os.path.abspath(__file__))
+    legacy_dir = os.path.join(this_dir, "..")
+    molass_dir = os.path.join(legacy_dir, "..", "molass-library")
+    sys.path.insert(0, legacy_dir)
+    sys.path.insert(0, molass_dir)
+    from molass_legacy import get_version
+    print(f'MOLASS Legacy {get_version()}')
+    from molass import get_version
+    print(f'MOLASS Library {get_version()}')
     molass_gui()
