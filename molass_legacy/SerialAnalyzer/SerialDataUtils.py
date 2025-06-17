@@ -169,9 +169,13 @@ def load_uv_file(file, column_header=False, return_dict=False):
                     measurement_date=measurement_date,
                     uv_device_no=uv_device_no)
 
-    if column_header and len( comment_lines ) > 1:
-        header = comment_lines[-2]
-        col_header = header.split( '\t' )[0:-1]     # changed from [1:-1]
+    if column_header:
+        if len( comment_lines ) > 1:
+            header = comment_lines[-2]
+            col_header = header.split( '\t' )[0:-1]     # changed from [1:-1]
+        else:
+            # as in 00_model_*
+            col_header = None
         # print( 'len(col_header)=', len(col_header) )
         # print( 'data.shape=', data.shape )
         return data, col_header
