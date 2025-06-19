@@ -53,7 +53,9 @@ def get_analysis_area(args, ole_ws, interval, logger, debug=False):
 
     if debug:
         logger.info("get_analysis_area: j0=%d, num_points=%d, inverval=%s", args.j0, args.num_points, str(interval))
-        logger.info("get_analysis_area: (average_plot_left, chart_area.Left, plot_area.Left) = %s", str((average_plot_left, chart_area.Left, plot_area.Left)))
+        if ADJUST_PLOT_LEFT:
+            logger.info("get_analysis_area: average_plot_left = %s", str(average_plot_left))
+        logger.info("get_analysis_area: (chart_area.Left, plot_area.Left) = %s", str((chart_area.Left, plot_area.Left)))
         logger.info("get_analysis_area: (chart_area.Width, plot_area.Width) = %s", str((chart_area.Width, plot_area.Width)))
 
     x = []

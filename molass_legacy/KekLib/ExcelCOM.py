@@ -7,6 +7,7 @@ import os
 import re
 import time
 import numpy as np
+from win32com.client import Dispatch, DispatchEx, gencache
 from win32process import GetWindowThreadProcessId
 import pythoncom
 from shutil import copyfile
@@ -82,7 +83,7 @@ def cleanup_created_excels():
             logger.debug( str(exc) + '; ok' )
 
 class ExcelComClient:
-    def __init__(self, new_instance=True, excel_id=None, keep_remaining=False, visible=False, display_alerts=False, dynamic=False):
+    def __init__( self, new_instance=True, excel_id=None, keep_remaining=False, visible=False, display_alerts=False ):
         self.clsid = None
         self.excel = None
         self.new_instance = None
@@ -90,10 +91,6 @@ class ExcelComClient:
         self.visible = visible
         self.logger = logging.getLogger( __name__  )
         if excel_id is None:
-            if dynamic:
-                from .ExcelDynamic import Dispatch, DispatchEx
-            else:
-                from win32com.client import Dispatch, DispatchEx
             if new_instance:
                 self.excel  = DispatchEx(CLSID)
                 self.new_instance = True

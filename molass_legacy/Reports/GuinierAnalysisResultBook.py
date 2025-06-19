@@ -114,13 +114,13 @@ class GuinierAnalysisResultBook:
             if get_dev_setting( 'smoothed_xray_conc' ) == 1:
                 xray_text += ' & smoothed'
             xray_text += ')'
-        self.ceate_ConcentrationChart( array, ws,       chart_start_col+'2', 'Concentration' + xray_text, 4 )
+        self.create_ConcentrationChart( array, ws,       chart_start_col+'2', 'Concentration' + xray_text, 4 )
         self.create_QualityChart( array, ws,            chart_start_col+'19' )
-        self.ceate_IzChart( array, ws,                  chart_start_col+'36' )
-        self.ceate_Iz_devided_by_C_Chart( array, ws,    chart_start_col+'53' )
-        self.ceate_RgChart( array, ws,                  chart_start_col+'70' )
+        self.create_IzChart( array, ws,                  chart_start_col+'36' )
+        self.create_Iz_devided_by_C_Chart( array, ws,    chart_start_col+'53' )
+        self.create_RgChart( array, ws,                  chart_start_col+'70' )
 
-    def ceate_ConcentrationChart( self, array, ws, pos, title, col ):
+    def create_ConcentrationChart( self, array, ws, pos, title, col ):
 
         c_ = LineChart()
         c_.title = title
@@ -188,7 +188,7 @@ class GuinierAnalysisResultBook:
         self.set_layout( c_, adjust=0 )
         ws.add_chart(c_, pos)
 
-    def ceate_IzChart( self, array, ws, pos ):
+    def create_IzChart( self, array, ws, pos ):
         c_ = LineChart()
         c_.title = 'I(0)'
         c_.style = 13
@@ -224,7 +224,7 @@ class GuinierAnalysisResultBook:
         self.set_layout( c_, adjust=CHART_ADJUST )
         ws.add_chart(c_, pos)
 
-    def ceate_Iz_devided_by_C_Chart( self, array, ws, pos ):
+    def create_Iz_devided_by_C_Chart( self, array, ws, pos ):
 
         c_ = LineChart()
         c_.title = "I(0) / Concentration"
@@ -261,7 +261,7 @@ class GuinierAnalysisResultBook:
         self.set_layout( c_, adjust=CHART_ADJUST*4.6 )
         ws.add_chart(c_, pos)
 
-    def ceate_RgChart( self, array, ws, pos ):
+    def create_RgChart( self, array, ws, pos ):
 
         c_ = LineChart()
         c_.title = 'Rg'
