@@ -23,7 +23,7 @@ def save_allowing_user_reply( wb, xlsx_file, parent=None ):
             wb.save( xlsx_file )
         except Exception as ex:
             if str( ex ).find( 'Permission' ) >= 0:
-                import OurMessageBox        as MessageBox
+                import molass_legacy.KekLib.OurMessageBox as MessageBox
                 oc = MessageBox.askokcancel(
                         'Permission Error Retry',
                         "'%s' is being used by another application.\nClose it and press 'OK' if you wish retry." % xlsx_file,

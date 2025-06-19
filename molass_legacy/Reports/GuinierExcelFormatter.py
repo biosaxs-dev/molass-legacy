@@ -89,8 +89,12 @@ def add_guinier_annonations(excel_client, args, logger, debug=False):
     ranges = args.ranges
 
     book_path = os.path.abspath( book_file )
+    sheet_path = book_path + '(' + args.title  + ')'
+    if debug:
+        print("add_guinier_annonations: sheet_path=", sheet_path)
+        print("add_guinier_annonations: ranges=", str(ranges))
 
-    ws = excel_client.openWorksheet( book_path + '(' + args.title  + ')' )
+    ws = excel_client.openWorksheet( sheet_path )
     set_default_bookfont_com(ws.workbook)
 
     izc_max_axis = None

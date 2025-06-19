@@ -23,3 +23,5 @@ docs/rmsd.csv
 docs/*.mp4
 
 log/
+
+*.xlsx

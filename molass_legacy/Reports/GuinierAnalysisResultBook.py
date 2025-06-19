@@ -308,23 +308,23 @@ class GuinierAnalysisResultBook:
             )
         )
 
-    def add_annonations( self, book_file, ranges ):
+    def add_annonations(self, book_file, ranges, debug=False):
         from .GuinierExcelFormatter import GuinierReportArgs
         args = GuinierReportArgs(self.ws.title, self, book_file, ranges)    # make it picklable
 
         if self.parent.more_multicore:
             self.add_annonations_more_multicore(args)
         else:
-            self.add_annonations_less_multicore(args)
+            self.add_annonations_less_multicore(args, debug)
 
     def add_annonations_more_multicore(self, args):
         self.parent.teller.tell('guinier_book', args=args)
 
-    def add_annonations_less_multicore(self, args):
+    def add_annonations_less_multicore(self, args, debug):
         from .GuinierExcelFormatter import add_guinier_annonations
 
         try:
-            add_guinier_annonations(self.parent.excel_client, args, self.logger)
+            add_guinier_annonations(self.parent.excel_client, args, self.logger, debug=debug)
         except Exception as exc:
             etb = ExceptionTracebacker()
             self.logger.warning( etb )
