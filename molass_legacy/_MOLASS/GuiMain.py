@@ -1622,7 +1622,8 @@ class GuiMain( Tk.Toplevel ):
         self.threedim_dialog.show()
 
     def show_lpm_inspector(self):
-        from molass_legacy.Baseline.LpmInspect import LpmInspector
+        # from molass_legacy.Baseline.LpmInspect import LpmInspector
+        from molass_legacy.Baseline.LpmInspect_for_paper import LpmInspector
         self.baseline_inspector = LpmInspector(self.parent, self.measured_data)
         self.baseline_inspector.show()
 
