@@ -1,12 +1,12 @@
 """
     QuickAnalysis.RgDiffRatios.py
 
-    Copyright (c) 2023, SAXS Team, KEK-PF
+    Copyright (c) 2023-2025, SAXS Team, KEK-PF
 """
 import logging
 import numpy as np
-from SimpleGuinier import SimpleGuinier
-from SvdDenoise import get_denoised_data
+from molass_legacy.GuinierAnalyzer.SimpleGuinier import SimpleGuinier
+from molass_legacy.DataStructure.SvdDenoise import get_denoised_data
 
 def compute_rgr_legacy_impl(qv, M, E, P1, A1, A2):
     # called from Conc.ConcDepend

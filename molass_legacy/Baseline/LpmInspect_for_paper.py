@@ -50,7 +50,9 @@ def demo(root, in_folder, md, integral=False, for_all_q=True, peakno=None, whole
         dialog.show()
 
     fig = dplt.figure(figsize=(21, 11))
-    demo_impl(fig, in_folder, md, integral=integral, for_all_q=for_all_q, peakno=peakno, whole_angle=whole_angle, smooth_line=smooth_line, show_lpm_fixed=True)
+    demo_impl(fig, in_folder, md, integral=integral, for_all_q=for_all_q, peakno=peakno, whole_angle=whole_angle, smooth_line=smooth_line,
+                show_scd=True,  # show_scd=False,
+                show_lpm_fixed=True)
     dplt.show()
 
 def demo_impl(fig, in_folder, md, integral=False, for_all_q=True, peakno=None, whole_angle=True,
@@ -76,6 +78,7 @@ def demo_impl(fig, in_folder, md, integral=False, for_all_q=True, peakno=None, w
 
     if show_scd:
         from Conc.ConcDepend import ConcDepend
+        # judge_holder, rdr_hints
         ecurve_for_cds = EcurveProxyCds(xr.e_curve, j_slice)
         cd = ConcDepend(q, data, error, ecurve_for_cds)
         cds_list = cd.compute_judge_info()
