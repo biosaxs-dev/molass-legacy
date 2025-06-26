@@ -14,7 +14,6 @@ from time           import sleep
 from datetime import datetime
 from molass_legacy.KekLib.OurTkinter import Tk
 from molass_legacy.SerialAnalyzer.DataUtils import serial_folder_walk, mct_folder_walk
-from molass_legacy.KekLib.TkTester import TestClient, messagebox_shown
 from molass_legacy.KekLib.MessageBoxUtils import reply_messagebox, window_exists
 from molass_legacy.KekLib.BasicUtils import clear_dirs_with_retry, Struct
 from molass_legacy._MOLASS.SerialSettings import clear_settings, get_setting, set_setting, DF_PATH_LENGTH, DF_PATH_LENGTH_OLD
@@ -230,6 +229,7 @@ class Tester:
 
         self.report_folder  = report_folder
         self.report_subfolder = report_subfolder
+        from molass_legacy.KekLib.TkTester import TestClient
         self.client         = TestClient( self.app, self.test_all_entry, log_func=write_to_log )
 
     def test_all_entry( self, client, agent ):

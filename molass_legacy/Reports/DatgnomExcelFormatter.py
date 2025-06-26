@@ -4,11 +4,11 @@
 
     SummaryBook.py
 
-    Copyright (c) 2018-2023, SAXS Team, KEK-PF
+    Copyright (c) 2018-2025, SAXS Team, KEK-PF
 
 """
-from ExcelCOM import xlCategory, xlValue, xlLow, msoThemeColorText1
-from ExcelLogChart import ExcelLogChart
+from molass_legacy.KekLib.ExcelCOM import xlCategory, xlValue, xlLow, msoThemeColorText1
+from molass_legacy.KekLib.ExcelLogChart import ExcelLogChart
 from .DefaultFont import set_default_bookfont_com
 
 class DatgnomResultArgs:

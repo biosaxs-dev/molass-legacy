@@ -128,9 +128,25 @@ def molass_gui():
     print( strftime('%H:%M:%S openpyxl') )
     import openpyxl
     splash.update()
-    print( strftime('%H:%M:%S win32com.client') )
-    import win32com.client
-    splash.update()
+
+    try:
+        print( strftime('%H:%M:%S win32com.client') )
+        import win32com.client
+        splash.update()
+    except PermissionError:
+        print("PermissionError: failed to import win32com.client")
+        print("\nIf you have installed Python as administrator,")
+        print("you need to run molass once as administrator due to pywin32 permission issues.")
+        print("After that, you should be able to run molass as a normal user.")
+        exit(-1)
+
+    print( strftime('%H:%M:%S checking pywin32_postinstall execution') )
+    from molass.PackageUtils.PyWin32Utils import check_pywin32_postinstall
+    if not check_pywin32_postinstall():
+        print("Please run (possibly as administrator) the following command to fix the issue:")
+        print("python -m pywin32_postinstall -install")
+        exit(-1)
+
     print( strftime('%H:%M:%S win32process') )
     import win32process
     splash.update()

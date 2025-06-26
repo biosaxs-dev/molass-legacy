@@ -2,18 +2,18 @@
 
     ZeroExExcelFormatter.py
 
-    Copyright (c) 2017-2023, SAXS Team, KEK-PF
+    Copyright (c) 2017-2025, SAXS Team, KEK-PF
 
 """
-from ExcelCOM import (
+from molass_legacy.KekLib.ExcelCOM import (
         xlCategory, xlValue, xlLine,
         msoThemeColorText1, msoThemeColorAccent1,
         xlUpward, xlLow,
         msoTrue, xlXYScatter,
         RGB,
         xlMaximum )
-from ExcelLogChart import ExcelLogChart
-from HtmlColorNames import *
+from molass_legacy.KekLib.ExcelLogChart import ExcelLogChart
+from molass_legacy.KekLib.HtmlColorNames import *
 from .DefaultFont import set_default_bookfont_com
 
 ADD_ERROR_BARS = True

@@ -4,12 +4,29 @@ build-backend = "hatchling.build"
 
 [project]
 name = "molass_legacy"
-version = "0.0.12"
+version = "0.1.0"
 
 dependencies = [
   "numpy",
   "scipy",
   "matplotlib",
+  "pybaselines",
+  "molass",
+  "statsmodels",
+  "scikit-learn",
+  "toml",
+  "pywin32",
+  "psutil",
+  "python-tkdnd",
+  "screeninfo",
+  "lmfit",
+  "seaborn",
+  "openpyxl",
+  "pyperclip",
+  "wmi",
+  "numba",
+  "ruptures",
+  "termcolor",
 ]
 
 requires-python = ">=3.9"
