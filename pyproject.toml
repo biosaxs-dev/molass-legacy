@@ -10,7 +10,7 @@ dependencies = [
   "numpy",
   "scipy<1.16.0",
   "matplotlib",
-  "pybaselines",
+  "pybaselines>=1.2.0",
   "molass>=0.1.1",
   "statsmodels",
   "scikit-learn",
