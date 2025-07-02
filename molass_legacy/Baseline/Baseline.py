@@ -19,7 +19,7 @@ def integrative_curve(y, baseline=None, epsilon=1e-4, p_final=LPM_PERCENTILE, ra
     zeros = np.zeros(len(y))
     if baseline is None:
         x = np.arange(len(y))
-        sbl = ScatteringBaseline(y)
+        sbl = ScatteringBaseline(y, x=x)
         A, B = sbl.solve()
         baseline = A*x+B
 
