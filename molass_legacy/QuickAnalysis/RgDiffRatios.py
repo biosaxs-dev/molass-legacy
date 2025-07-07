@@ -53,7 +53,8 @@ class RgDiffRatios:
         y = xr_curve.y
         pair_list = []
         for k, erec in enumerate(self.paired_ranges):
-            print([k], erec)
+            if debug:
+                print([k], erec)
             rg_pairs = []
             for f, t in erec:
                 eslice = slice(f,t+1)
@@ -91,7 +92,7 @@ class RgDiffRatios:
 
         return pair_list
 
-    def get_rank_hints(self):
+    def get_rank_hints(self, debug=False):
         hints = []
         for k, quartet in enumerate(self.compute_rg_quartets()):
             if len(quartet[0,:]) == 1:
@@ -102,7 +103,8 @@ class RgDiffRatios:
             else:
                 rgL, rgR = quartet[0,:]
                 rdrLR = (rgL - rgR)*2/(rgL + rgR)
-                print([k], quartet, rdrLR)
+                if debug:
+                    print([k], quartet, rdrLR)
                 computable = abs(rdrLR) < RDR12_COMPUTABLE_RDRLR_LIMIT
                 if computable:
                     rg1 = np.average(quartet[0,:])

@@ -130,12 +130,12 @@ class ConcDepend:
         if debug_info is not None:
             if len(rdr_hints) != len(proc_peak_info):
                 # as in 
-                from OnTheFly.DebugDialog import DebugDialog
+                from molass_legacy.OnTheFly.DebugDialog import DebugDialog
                 dialog = DebugDialog(debug_info=[rdr_hints, x_curve, debug_info[0]])
                 dialog.show()
 
         for k, peak_rec in enumerate(proc_peak_info):
-            print([k], peak_rec)
+            # print([k], peak_rec)
             start = peak_rec[0]
             stop = peak_rec[2]+1
             if start >= stop:
@@ -147,7 +147,7 @@ class ConcDepend:
             M = self.data[:,eslice]
             E = self.error[:,eslice]
             U, s, VT= np.linalg.svd(M)
-            print('s[0:2]=', s[0:2])
+            # print('s[0:2]=', s[0:2])
             M1_ = get_denoised_data(M, rank=1)
             M2_ = get_denoised_data(M, rank=2)
             c = x_curve.y[eslice]
