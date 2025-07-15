@@ -2,7 +2,7 @@
 
     TkTester.py
 
-    Copyright (c) 2017-2023, Masatsuyo Takahashi, KEK-PF
+    Copyright (c) 2017-2025, Masatsuyo Takahashi, KEK-PF
 
 """
 
@@ -10,7 +10,6 @@ import os
 import re
 from time                   import sleep
 import threading
-from pyautogui              import typewrite
 from molass_legacy.KekLib.ExceptionTracebacker   import ExceptionTracebacker
 from OurMessageBox          import dialog_queue
 
@@ -24,13 +23,15 @@ ENTER               = [ 'enter' ]
 ESC                 = [ 'esc' ]
 
 def reply_ok():
-    # print( current_box_goemetry() )
+    from pyautogui import typewrite     # to avoid unnecessary import
     typewrite( ENTER )
 
 def reply_yes():
+    from pyautogui import typewrite     # to avoid unnecessary import
     typewrite( 'Y' )
 
 def reply_no():
+    from pyautogui import typewrite    # to avoid unnecessary import
     typewrite( 'N' )
 
 lock = threading.Lock()
