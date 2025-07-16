@@ -649,7 +649,7 @@ def run_extrapolation_solver_with_progress(
 
     import queue
     import threading
-    from ProgressMinDialog import ProgressMinDialog
+    from molass_legacy.KekLib.ProgressMinDialog import ProgressMinDialog
     from molass_legacy.KekLib.TkUtils import split_geometry
 
     w, h, x, y = split_geometry( parent.winfo_geometry() )

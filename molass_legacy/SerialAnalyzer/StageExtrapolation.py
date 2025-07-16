@@ -156,7 +156,7 @@ def do_extrapolation(self, debug=False):
         q_slice = slice( 30, len(qvector)//4 )
         x_ = qvector[q_slice]
 
-    if self.using_avareged_files:
+    if self.using_averaged_files:
         self.used_datafiles = self.averaged_datafiles
     else:
         self.used_datafiles = self.serial_data.datafiles

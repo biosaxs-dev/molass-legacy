@@ -137,7 +137,7 @@ class ConcMatrix:
             self.cdl_list.append(len(C_rows))
 
         if debug:
-            from PlotUtils import align_yaxis_np
+            from molass_legacy.KekLib.PlotUtils import align_yaxis_np
             ymin, ymax = ax.get_ylim()
             ymint, ymaxt = axt.get_ylim()
             axt.set_ylim(ymin, ymaxt)

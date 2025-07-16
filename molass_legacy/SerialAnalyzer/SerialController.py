@@ -371,7 +371,7 @@ class SerialExecuter:
             ZeroExtrapolator    c_vector
         """
 
-        self.using_avareged_files = False
+        self.using_averaged_files = False
         if self.input_smoothing == 1:
             num_curves_averaged = get_setting( 'num_curves_averaged' )
             intensity_array_, average_slice_array, c_vector = self.serial_data.get_averaged_data( num_curves_averaged )
@@ -380,7 +380,7 @@ class SerialExecuter:
             # save
             save_averaged_data = get_setting( 'save_averaged_data' )
             if save_averaged_data == 1:
-                self.using_avareged_files = True        # TODO: check consistency
+                self.using_averaged_files = True        # TODO: check consistency
                 self.save_smoothed_data( intensity_array_, average_slice_array )
         else:
             intensity_array_ = self.serial_data.intensity_array

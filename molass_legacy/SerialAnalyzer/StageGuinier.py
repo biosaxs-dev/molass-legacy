@@ -38,7 +38,7 @@ def run_gunier_analysis(self, debug=False):
     quality_array = []
 
     self.write_state( 'gunier_analysis-doing' )
-    if self.using_avareged_files:
+    if self.using_averaged_files:
         datafiles_  = self.averaged_datafiles
     else:
         datafiles_  = self.datafiles
