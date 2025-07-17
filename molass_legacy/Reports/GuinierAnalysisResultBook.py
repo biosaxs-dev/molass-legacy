@@ -183,7 +183,7 @@ class GuinierAnalysisResultBook:
             s_.graphicalProperties.solidFill                = color
             s_.graphicalProperties.line.solidFill           = color
             # the last series, i.e. atsas quality, which is the fitfh FullSeriesCollection,
-            # will be modified using COM in self.add_annonations_impl method.
+            # will be modified using COM in self.add_annotations_impl method.
 
         self.set_layout( c_, adjust=0 )
         ws.add_chart(c_, pos)
@@ -308,19 +308,19 @@ class GuinierAnalysisResultBook:
             )
         )
 
-    def add_annonations(self, book_file, ranges, debug=False):
+    def add_annotations(self, book_file, ranges, debug=False):
         from .GuinierExcelFormatter import GuinierReportArgs
         args = GuinierReportArgs(self.ws.title, self, book_file, ranges)    # make it picklable
 
         if self.parent.more_multicore:
-            self.add_annonations_more_multicore(args)
+            self.add_annotations_more_multicore(args)
         else:
-            self.add_annonations_less_multicore(args, debug)
+            self.add_annotations_less_multicore(args, debug)
 
-    def add_annonations_more_multicore(self, args):
+    def add_annotations_more_multicore(self, args):
         self.parent.teller.tell('guinier_book', args=args)
 
-    def add_annonations_less_multicore(self, args, debug):
+    def add_annotations_less_multicore(self, args, debug):
         from .GuinierExcelFormatter import add_guinier_annonations
 
         try:

@@ -85,7 +85,7 @@ def get_analysis_area(args, ole_ws, interval, logger, debug=False):
     return [ x_left, x_right, y_top, y_btm ]
 
 def add_guinier_annonations(excel_client, args, logger, debug=False):
-    # print( 'add_annonations: ranges=', ranges )
+    # print( 'add_annotations: ranges=', ranges )
 
     book_file = args.book_file
     ranges = args.ranges

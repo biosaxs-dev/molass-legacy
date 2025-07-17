@@ -145,7 +145,7 @@ def make_guinier_analysis_book(
     put_info( (STREAM_GUINIER, 1), 4 )
 
     if excel_is_available:
-        book.add_annonations( book_file, ranges )
+        book.add_annotations( book_file, ranges )
     else:
         if logger is not None:
             _, file = os.path.split(book_file)
