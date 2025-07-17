@@ -18,7 +18,7 @@ from molass_legacy._MOLASS.SerialSettings import get_setting
 from molass_legacy.AutorgKek.AtsasTools import autorg as autorg_atsas
 from molass_legacy.ATSAS.Almerge import AlmergeExecutor
 from molass_legacy.ATSAS.DatGnom import DatgnomExecutor
-from ZeroExtrapolator import ZeroExtrapolator, GuinierPorodAnalyzer, NUM_EXTRAPOLATION_POINTS
+from molass_legacy.SerialAnalyzer.ZeroExtrapolator import ZeroExtrapolator, GuinierPorodAnalyzer, NUM_EXTRAPOLATION_POINTS
 from molass_legacy.Reports.ZeroExtrapolationResultBook import divide
 from molass_legacy.Reports.DatgnomResultBook import make_datgnom_result_book
 from molass_legacy.KekLib.ProgressInfo import put_info, put_max_info, put_error

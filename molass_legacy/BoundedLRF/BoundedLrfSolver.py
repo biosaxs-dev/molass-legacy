@@ -92,7 +92,7 @@ class BoundedLrfSolver:
 
         debug_plot = debug and self.debug_info is not None
         if debug_plot:
-            from DataUtils import get_in_folder
+            from molass_legacy.SerialAnalyzer.DataUtils import get_in_folder
             print("L_=", L_)
             in_folder = get_in_folder()
             aq_, bq_ = P_.T
@@ -195,7 +195,7 @@ class BoundedLrfSolver:
         qvg2 = qvg**2
 
         if debug_plot:
-            from DataUtils import get_in_folder
+            from molass_legacy.SerialAnalyzer.DataUtils import get_in_folder
             K = 0.29
             L = 1.9
             j = self.j

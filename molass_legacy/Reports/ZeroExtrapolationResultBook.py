@@ -2,7 +2,7 @@
 
     ZeroExtrapolationResultBook.py
 
-    Copyright (c) 2016-2023, SAXS Team, KEK-PF
+    Copyright (c) 2016-2025, SAXS Team, KEK-PF
 
 """
 import os
@@ -14,9 +14,9 @@ from openpyxl.chart.series_factory  import SeriesFactory
 from openpyxl.chart.error_bar       import ErrorBars
 from openpyxl.chart.data_source     import NumDataSource, NumData, NumVal
 from openpyxl.chart.layout  import Layout, ManualLayout
-from OpenPyXlUtil           import save_allowing_user_reply, LINE_WIDTH
+from molass_legacy.KekLib.OpenPyXlUtil import save_allowing_user_reply, LINE_WIDTH
 from molass_legacy.KekLib.ExceptionTracebacker   import ExceptionTracebacker
-from HtmlColorNames         import *
+from molass_legacy.KekLib.HtmlColorNames import *
 from molass_legacy.Test.TesterLogger      import write_to_tester_log
 from molass_legacy._MOLASS.SerialSettings         import get_setting
 from molass_legacy.Reports.DefaultFont import set_default_font
