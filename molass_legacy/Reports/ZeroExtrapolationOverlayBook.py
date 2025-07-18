@@ -2,14 +2,14 @@
 
     ZeroExtrapolationOverlayBook.py
 
-    Copyright (c) 2017-2022, SAXS Team, KEK-PF
+    Copyright (c) 2017-2025, SAXS Team, KEK-PF
 
 """
 import os
 import numpy                as np
 import logging
 # from openpyxl               import Workbook
-from OpenPyXlUtil           import save_allowing_user_reply, LINE_WIDTH
+from molass_legacy.KekLib.OpenPyXlUtil import save_allowing_user_reply, LINE_WIDTH
 from .ZeroExtrapolationResultBook import create_extrapolation_params_chart_
 from molass_legacy.Reports.DefaultFont import set_default_font
 set_default_font()

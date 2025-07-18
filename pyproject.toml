@@ -11,7 +11,7 @@ dependencies = [
   "scipy<1.16.0",
   "matplotlib",
   "pybaselines>=1.2.0",
-  "molass>=0.1.1",
+  "molass>=0.3.0",
   "statsmodels",
   "scikit-learn",
   "toml",

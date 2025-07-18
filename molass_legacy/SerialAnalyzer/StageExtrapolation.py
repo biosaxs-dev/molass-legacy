@@ -161,6 +161,10 @@ def do_extrapolation(self, debug=False):
     else:
         self.used_datafiles = self.serial_data.datafiles
 
+    if False:
+        # self.logger.info("self.used_datafiles[0:5]=%s", str(self.used_datafiles[0:5]))
+        print("self.used_datafiles[0:5]=%s" % str(self.used_datafiles[0:5]))
+
     tester_zx_save  = get_dev_setting( 'tester_zx_save' )
     if tester_zx_save == 1 or self.maintenance_mode:
         self.zx_out_folder  = self.work_folder + '/extrapolated'
