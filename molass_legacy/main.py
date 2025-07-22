@@ -34,6 +34,8 @@ def molass_gui():
         print = logger.info
 
     global numba_is_available
+    from molass_legacy.SysArgs import parse_sys_args
+    parse_sys_args()
 
     print( 'import strftime' )
     from time   import strftime
@@ -187,14 +189,9 @@ def molass_gui():
     root.withdraw()
 
     print( strftime('%H:%M:%S GuiMain') )
-    import molass_legacy.SerialAnalyzer
-    import molass_legacy.AutorgKek
-    from molass_legacy.KekLib.ArgParser import ArgParser
-    from molass_legacy._MOLASS.GuiMain import GuiMain
 
-    ap = ArgParser(sys.argv)
-    kwargs = ap.get_dict()
-    guimain = GuiMain(root, **kwargs)
+    from molass_legacy._MOLASS.GuiMain import GuiMain
+    guimain = GuiMain(root)
 
     root.mainloop()
 

@@ -376,6 +376,9 @@ class SerialExecuter:
             num_curves_averaged = get_setting( 'num_curves_averaged' )
             intensity_array_, average_slice_array, c_vector = self.serial_data.get_averaged_data( num_curves_averaged )
             assert c_vector is not None
+            if False:
+                import numpy as np
+                np.savetxt(os.path.join(self.work_folder, "c_vector_legacy.csv"), c_vector, fmt='%.6e', delimiter=',')
 
             # save
             save_averaged_data = get_setting( 'save_averaged_data' )

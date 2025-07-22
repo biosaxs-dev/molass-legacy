@@ -222,9 +222,15 @@ class PreviewButtonFrame(Tk.LabelFrame):
             self.rc_dependents.append(cb)
             self.widgets.append(cb)
 
+        from molass_legacy.SysArgs import sys_args
+        if sys_args is not None and sys_args.devel:
+            self.devel_test_button = btn = Tk.Button(iframe, text='Devel Test', command=self.do_devel_test)
+            btn.grid(row=grid_row, column=2, padx=10)
+            self.widgets.append(btn)
+
         self.rank_control_tracer()
-        self.svd_reconstruct.trace("w", self.rank_control_tracer)
-        self.rank_control.trace("w", self.rank_control_tracer)
+        self.svd_reconstruct.trace_add("write", self.rank_control_tracer)
+        self.rank_control.trace_add("write", self.rank_control_tracer)
 
     def update_modelframe(self):
         self.editor = self.dialog.get_current_frame()
