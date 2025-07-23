@@ -15,13 +15,6 @@ def embed_cushion(caller):
         log_exception(None, "embed_cushion_impl: ", n=10)
         raise RuntimeError("embed_cushion_impl")
 
-def embed_cushion_impl_UnifiedDecompResultTest(caller):
-    from importlib import reload
-    import Decomposer.UnifiedDecompResultTest
-    reload(Decomposer.UnifiedDecompResultTest)
-    from molass_legacy.Decomposer.UnifiedDecompResultTest import unit_test
-    unit_test(caller)
-
 def embed_cushion_impl_OptRecsUtils(caller):
     import copy
     from importlib import reload
@@ -344,6 +337,13 @@ def debug_objective_function(caller):
     from molass_legacy.Optimizer.SimpleDebugUtils import debug_optimizer
     debug_optimizer(caller.fullopt)
 
+def UnifiedDecompResultTest(caller):
+    from importlib import reload
+    import molass_legacy.Decomposer.UnifiedDecompResultTest
+    reload(molass_legacy.Decomposer.UnifiedDecompResultTest)
+    from molass_legacy.Decomposer.UnifiedDecompResultTest import unit_test
+    unit_test(caller)
+
 def embed_cushion_impl(caller):
     import molass_legacy.KekLib.DebugPlot as plt
 
@@ -352,12 +352,13 @@ def embed_cushion_impl(caller):
         ("RgCurve Inspect", lambda: RgCurveInspect_impl(caller)),
         ("Restart Patcher", lambda: RestartPatcher_impl(caller)),
         ("Bounds Inspect", lambda: BoundsInspect_impl(caller)),
-        ("MCMC Trial", lambda: McmcTrial_impl(caller)),
-        ("SMC Trial", lambda: SmcTrial_impl(caller)),
-        ("ABC Trial", lambda: AbcTrial_impl(caller)),
-        ("Nest Trial", lambda: NestTrial_impl(caller)),
-        ("Plot callback.txt", lambda: Plot_callback_txt(caller)),
-        ("Objective Function Debug", lambda: debug_objective_function(caller)),
+        # ("MCMC Trial", lambda: McmcTrial_impl(caller)),
+        # ("SMC Trial", lambda: SmcTrial_impl(caller)),
+        # ("ABC Trial", lambda: AbcTrial_impl(caller)),
+        # ("Nest Trial", lambda: NestTrial_impl(caller)),
+        # ("Plot callback.txt", lambda: Plot_callback_txt(caller)),
+        # ("Objective Function Debug", lambda: debug_objective_function(caller)),
+        ("Decompresult Inspect", lambda: UnifiedDecompResultTest(caller)),
     ]
 
     with plt.Dp(button_spec=["OK", "Cancel"], extra_button_specs=extra_button_specs):

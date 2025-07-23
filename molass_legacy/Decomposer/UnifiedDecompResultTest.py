@@ -1,12 +1,66 @@
 """
     UnifiedDecompResultTest.py
 
-    Copyright (c) 2020, SAXS Team, KEK-PF
+    Copyright (c) 2020,2025, SAXS Team, KEK-PF
 """
-import copy
 import logging
 from matplotlib.patches import Rectangle
-import molass_legacy.KekLib.DebugPlot as plt
+
+def plot_decomp_results(results, editor_ranges, use_debug_plot=False):
+    """
+    Plot the decomposition results using matplotlib.
+    If use_debug_plot is True, use molass_legacy.KekLib.DebugPlot for plotting.
+    """
+    print("plot_decomp_results: editor_ranges=", editor_ranges)
+    if use_debug_plot:
+        import molass_legacy.KekLib.DebugPlot as plt
+    else:
+        import matplotlib.pyplot as plt
+
+    def plot_decomp_results_impl():
+        num_results = len(results)
+        fig, axes = plt.subplots(ncols=num_results, figsize=(6 * num_results, 5))
+        if num_results == 1:
+            axes = [axes]
+        for ax, result in zip(axes, results):
+            x = result.x
+            y = result.y
+            ax.set_title("Decomposition Results")
+            ax.plot(x, y)
+            ymin, ymax = ax.get_ylim()
+            ax.set_ylim(ymin, ymax)
+
+            for list_ in editor_ranges:
+                for f, t in list_:
+                    p = Rectangle(
+                            (f, ymin),  # (x,y)
+                            t - f,   # width
+                            ymax - ymin,    # height
+                            facecolor   = 'cyan',
+                            alpha       = 0.2,
+                        )
+                    ax.add_patch(p)
+
+            for rec in result.opt_recs:
+                func = rec[1]
+                cy = func(x)
+                ax.plot(x, cy, ":")
+
+            axt = ax.twinx()
+            axt.grid(False)
+            for rec in result.opt_recs_uv:
+                func = rec[1]
+                cy = func(x)
+                axt.plot(x, cy, "o", alpha=0.5)
+
+        fig.tight_layout()
+        plt.show()
+
+    if use_debug_plot:
+        with plt.Dp():
+            plot_decomp_results_impl()
+    else:
+        plot_decomp_results_impl()
 
 def unit_test(caller):
     from importlib import reload
@@ -47,25 +101,4 @@ def unit_test(caller):
     flags = result.identify_ignorable_elements()
     print("flags=", flags)
 
-    with plt.Dp():
-        x = result.x
-        y = result.y
-        fig, ax = plt.subplots()
-        ax.set_title("UnifiedDecompResultTest")
-        ax.plot(x, y)
-        ymin, ymax = ax.get_ylim()
-        ax.set_ylim(ymin, ymax )
-
-        for list_ in editor_ranges:
-            for f, t in list_:
-                p = Rectangle(
-                        (f, ymin),  # (x,y)
-                        t - f,   # width
-                        ymax - ymin,    # height
-                        facecolor   = 'cyan',
-                        alpha       = 0.2,
-                    )
-                ax.add_patch(p)
-
-        fig.tight_layout()
-        plt.show()
+    plot_decomp_results([old_result, result], editor_ranges, use_debug_plot=True)

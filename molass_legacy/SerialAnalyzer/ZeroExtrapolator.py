@@ -59,11 +59,6 @@ def is_boundary_candidate( max_y, y, slope, p_value, j=None, log_aq_dev=None ):
     else:
         return False
 
-def is_boundary_candidate_simple( y, slope, p_value ):
-    return (    abs( np.average( y[-20:] ) ) < IE_B_ROUGH_BOUNDARY
-            and abs( slope ) < IE_SLOPE_BOUNDARY
-            and p_value > IE_P_VALUE_BOUNDARY )
-
 def make_cx_vector_impl( use_elution_models, conc_factor, ad, paired_range, indeces, c_vector, jvector ):
     if use_elution_models:
         """
@@ -109,6 +104,7 @@ class ZeroExtrapolator:
 
         pdata, popts = preview_params
         self.use_elution_models = popts.use_elution_models
+        self.logger.info("ZeroExtrapolator: use_elution_models=%s", self.use_elution_models)
 
         if USE_LRF_RESULT_POOL:
             from molass_legacy.LRF.LrfResultPool import LrfResultPool

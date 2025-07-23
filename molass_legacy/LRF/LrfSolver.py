@@ -112,6 +112,7 @@ class LrfSolver:
 
                 result = A, B, Z, lrfE, lrfinfo, ret_C
                 done = True
+                self.logger.info("BoundedLrfSolver solved range %d-%d with lrf_rank=%d", start, stop, lrf_rank)
             except:
                 # task: identify this case for tests.
                 from molass_legacy.KekLib.ExceptionTracebacker import warnlog_exception      # to avaid producing error messages

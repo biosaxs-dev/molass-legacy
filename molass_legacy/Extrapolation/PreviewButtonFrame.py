@@ -452,8 +452,8 @@ class PreviewButtonFrame(Tk.LabelFrame):
 
     def do_devel_test(self):
         from importlib import reload
-        import Tools.EmbedCushion
-        reload(Tools.EmbedCushion)
+        import molass_legacy.Tools.EmbedCushion
+        reload(molass_legacy.Tools.EmbedCushion)
         from molass_legacy.Tools.EmbedCushion import embed_cushion
 
         embed_cushion(self)
