@@ -10,13 +10,14 @@ LRF_INFO = 4
 USE_LRF_SOLVER = True
 
 class LrfResultPool:
-    def __init__(self, pdata, popts):
+    def __init__(self, pdata, popts, conc_tracker):
         self.logger = logging.getLogger(__name__)
         self.lrf_bound_correction = get_setting("lrf_bound_correction")
         self.pdata = pdata
         self.popts = popts
         self.rank_control = get_setting('rank_control')
         self.conc_dependence = get_setting('conc_dependence')
+        self.conc_tracker = conc_tracker
 
     def run_solver(self, parent=None, debug=False):
         if debug:
@@ -37,7 +38,7 @@ class LrfResultPool:
         self.logger.info('cnv_ranges=%s, num_ranges=%s', str(self.pdata.cnv_ranges), str(self.pdata.num_ranges))
 
         self.solver_results = None
-        self.solver = Solver(self.pdata, self.popts)
+        self.solver = Solver(self.pdata, self.popts, self.conc_tracker)
         self.pno_map = self.solver.get_pno_map()
         self.selector = PeakSetSelector(self.pdata.cnv_ranges, self.pdata.mapper.x_curve, debug=debug)
 

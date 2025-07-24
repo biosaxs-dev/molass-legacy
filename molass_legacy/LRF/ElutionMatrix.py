@@ -4,7 +4,7 @@
     refactoring phase 1     using ConcMatrix
     refactoring phase 2     rewrite
 
-    Copyright (c) 2023, SAXS Team, KEK-PF
+    Copyright (c) 2023-2025, SAXS Team, KEK-PF
 """
 import logging
 import numpy as np
@@ -42,6 +42,7 @@ class ElutionMatrix:
         if self.rank_control:
             if lrf_rank is None:
                 if USE_DICTINCT_CD:
+                    from molass_legacy.Conc.ConcDepend import compute_distinct_cd
                     cmatrix = ConcMatrix(x, self.conc, conc_depend=1,
                                             paired_ranges=paired_ranges_, mc_vector=mc_vector,
                                             conc_factor=self.conc_factor,

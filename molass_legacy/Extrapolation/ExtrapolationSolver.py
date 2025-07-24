@@ -45,9 +45,10 @@ class KnownInfo:
         return str(self.data.shape)
 
 class ExtrapolationSolver:
-    def __init__( self, pdata, popts):
+    def __init__( self, pdata, popts, conc_tracker=None):
         self.rank_control = get_setting('rank_control')
         self.concentration_datatype = get_setting('concentration_datatype')
+        self.conc_tracker = conc_tracker
 
         self.judge_holder = pdata.judge_holder
         self.mapper = pdata.mapper          # self.mapper will be used in ElutionMatrix
@@ -214,6 +215,9 @@ class ExtrapolationSolver:
         if save_cmatrix:
             np.savetxt("C-%d-%d.dat" % (start, stop), C_)
         self.ret_C = C_
+
+        if self.conc_tracker is not None:
+            self.conc_tracker.add_concentration(start, stop, C_, conc_dependence=lrf_rank)
 
         D = self.data[:,start:stop]
         E = self.error[:,start:stop]

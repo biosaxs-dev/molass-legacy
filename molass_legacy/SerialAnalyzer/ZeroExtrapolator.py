@@ -85,7 +85,7 @@ def make_cx_vector_impl( use_elution_models, conc_factor, ad, paired_range, inde
     return cx_vector, min_c, max_c
 
 class ZeroExtrapolator:
-    def __init__( self, qvector, preview_params, serial_data, mapped_info, applied_ranges, known_info_list=None ):
+    def __init__( self, qvector, preview_params, serial_data, mapped_info, applied_ranges, conc_tracker, known_info_list=None ):
         self.logger     = logging.getLogger( __name__ )
         self.qvector    = qvector
         self.sd         = serial_data
@@ -108,7 +108,7 @@ class ZeroExtrapolator:
 
         if USE_LRF_RESULT_POOL:
             from molass_legacy.LRF.LrfResultPool import LrfResultPool
-            self.pool = LrfResultPool(pdata, popts)
+            self.pool = LrfResultPool(pdata, popts, conc_tracker)
             self.pool.run_solver()
             self.logger.info("ZeroExtrapolator: using LRF Ppol.")
         else:
@@ -218,12 +218,11 @@ class ZeroExtrapolator:
 
         self.stop_check()
 
-        C   = c_vector
-        C2  = C*C
-        C_  = np.array( [C, C2] ).T
-        Cpinv = np.linalg.pinv( C_ )        # Moore-Penrose inverse
-
         if USE_MOORE_PENROSE_ONLY:
+            C   = c_vector
+            C2  = C*C
+            C_  = np.array( [C, C2] ).T
+            Cpinv = np.linalg.pinv( C_ )       
             P   = np.dot( Cpinv, data_matrix )
         else:
             if USE_LRF_RESULT_POOL:

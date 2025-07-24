@@ -97,6 +97,8 @@ def unit_test(caller):
     control_info = result.get_range_edit_info(logger=logger, debug=False)
     editor_ranges = control_info.editor_ranges
     print("editor_ranges=", editor_ranges)
+    print("select_matrix=", control_info.select_matrix)
+    print("top_x_list=", control_info.top_x_list)
 
     flags = result.identify_ignorable_elements()
     print("flags=", flags)

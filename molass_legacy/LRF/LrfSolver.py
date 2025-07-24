@@ -11,7 +11,7 @@ from molass_legacy._MOLASS.SerialSettings import get_setting
 from .LrfInfoProxy import LrfInfoProxy
 
 class LrfSolver:
-    def __init__(self, pdata, popts, debug=False):
+    def __init__(self, pdata, popts, conc_tracker, debug=False):
         if debug:
             from importlib import reload
             import molass_legacy.Extrapolation.ExtrapolationSolver
@@ -30,9 +30,10 @@ class LrfSolver:
         self.logger = logging.getLogger(__name__)
         self.lrf_bound_correction = get_setting("lrf_bound_correction")
         self.logger.info("lrf_bound_correction=%d", self.lrf_bound_correction)
-        self.impl = ExtrapolationSolver(pdata, popts)
+        self.impl = ExtrapolationSolver(pdata, popts, conc_tracker=conc_tracker)
         self.mc_vector = self.impl.mc_vector                # already scaled with conc_factor
         self.pno_map = PnoScdMap(pdata.sd, self.impl.cnv_ranges)
+        self.conc_tracker = conc_tracker
 
     def get_pno_map(self):
         return self.pno_map
@@ -112,11 +113,12 @@ class LrfSolver:
 
                 result = A, B, Z, lrfE, lrfinfo, ret_C
                 done = True
+                self.conc_tracker.add_concentration(start, stop, C_, conc_dependence=lrf_rank)
                 self.logger.info("BoundedLrfSolver solved range %d-%d with lrf_rank=%d", start, stop, lrf_rank)
             except:
                 # task: identify this case for tests.
                 from molass_legacy.KekLib.ExceptionTracebacker import warnlog_exception      # to avaid producing error messages
-                warnlog_exception(self.logger, "BoundedLrfSolver failed: ")
+                warnlog_exception(self.logger, "BoundedLrfSolver failed: ", n=10)
                 self.logger.info("resorting to the unbounded solver")
 
         if not done:

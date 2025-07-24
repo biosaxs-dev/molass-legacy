@@ -36,6 +36,17 @@ TEST_LOG_AQ_GAP     = False
 LARGE_FLOAT_VALUE   = 0     # this is temporary. fix this case
 
 def control_extrapolation( self ):
+    from molass_legacy.SysArgs import sys_args
+    if sys_args is not None and sys_args.devel:
+        from molass.Backward.ConcTracker import DecompositionProxy, ConcTracker
+        c_vector = self.c_vector
+        xr_curve = self.serial_data.get_xr_curve()
+
+        adjusted_conc_factor = 1     # concentration factor is already applied to c_vector
+        datatype = get_setting('concentration_datatype')
+        self.conc_tracker = ConcTracker(DecompositionProxy(c_vector, xr_curve), adjusted_conc_factor, datatype)
+    else:
+        self.conc_tracker = None
     if len(self.applied_ranges) > 0:
         prepare_extrapolation( self )
         # log_peak_info( self )
@@ -48,6 +59,10 @@ def control_extrapolation( self ):
             put_error( self.stream )
     else:
         self.logger.warning( 'No range for zero concentration extrapolation was found.' )
+
+    if self.conc_tracker is not None:
+        savepath = os.path.join(self.work_folder, 'tracked_concentrations.png')
+        self.conc_tracker.plot(savepath=savepath)
 
 def log_peak_info( self ):
     for m, range_ in enumerate( self.applied_ranges ):
@@ -150,7 +165,7 @@ def do_extrapolation(self, debug=False):
     qvector = self.qvector      # self.qvector has been set at the start of run_gunier_analysis
     bq_sum_start = bisect_right( qvector, 0.2 )
 
-    zx = ZeroExtrapolator( qvector, self.preview_params, self.serial_data, self.mapped_info, self.applied_ranges, self.known_info_list)
+    zx = ZeroExtrapolator(qvector, self.preview_params, self.serial_data, self.mapped_info, self.applied_ranges, self.conc_tracker, self.known_info_list)
 
     if USE_SIMPLIFIED_GUINIER_POROD:
         q_slice = slice( 30, len(qvector)//4 )

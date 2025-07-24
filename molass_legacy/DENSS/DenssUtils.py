@@ -196,7 +196,8 @@ def fit_data(q, a, e, D=None, extrapolate=False, return_sasrec=False):
                                         D=D,
                                         alpha=0,        # backward compatibility
                                         max_alpha=None,
-                                        extrapolate=extrapolate)
+                                        extrapolate=extrapolate,
+                                        use_memory_data=True)
     if return_sasrec:
         return sasrec 
     else:
@@ -207,7 +208,8 @@ def fit_data_bc(q, a, e, extrapolate=False):    # backward compatible
                                         D=100,
                                         alpha=0,
                                         max_alpha=10,
-                                        extrapolate=extrapolate)
+                                        extrapolate=extrapolate,
+                                        use_memory_data=True)
     return sasrec.qc, sasrec.Ic, sasrec.Icerr, sasrec.D
 
 def get_dmax_with_datgnom(file_path):
