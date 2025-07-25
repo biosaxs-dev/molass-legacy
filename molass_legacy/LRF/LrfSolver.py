@@ -113,7 +113,8 @@ class LrfSolver:
 
                 result = A, B, Z, lrfE, lrfinfo, ret_C
                 done = True
-                self.conc_tracker.add_concentration(start, stop, C_, conc_dependence=lrf_rank)
+                if self.conc_tracker is not None:
+                    self.conc_tracker.add_concentration(start, stop, C_, conc_dependence=lrf_rank)
                 self.logger.info("BoundedLrfSolver solved range %d-%d with lrf_rank=%d", start, stop, lrf_rank)
             except:
                 # task: identify this case for tests.
