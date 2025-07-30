@@ -54,6 +54,20 @@ e2 = np.poly1d(A2i[::-1])
 A3i = np.array([0.49106035, -0.45648717, -0.93606276, 5.25394258, -9.16354757, 7.36039624, -2.25720537])
 e3 = np.poly1d(A3i[::-1])
 
+def egh_var(sigma, tau):
+    """
+    Returns the variance of the EGH distribution.
+    """
+    tau_ = abs(tau)
+    th = np.arctan2(tau_, sigma)
+    return (sigma**2 + sigma*tau_ + tau**2) * e2(th)
+
+def egh_std(sigma, tau):
+    """
+    Returns the standard deviation for the EGH distribution.
+    """
+    return np.sqrt(egh_var(sigma, tau))
+
 SQRT_PI_8 = np.sqrt(np.pi/8)
 def egh_pdf(x, tR=0, sigma=1.0, tau=0.0, scale=1):
     tau_ = abs(tau)
