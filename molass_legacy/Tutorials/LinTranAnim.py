@@ -1,8 +1,7 @@
-# coding: utf-8
 """
     LinTranAnim.py
 
-    Copyright (c) 2019-2024, SAXS Team, KEK-PF
+    Copyright (c) 2019-2025, SAXS Team, KEK-PF
 """
 import numpy as np
 import matplotlib.pyplot as plt
@@ -12,7 +11,7 @@ from matplotlib.patches import Polygon, Circle
 from molass_legacy.KekLib.OurTkinter import Tk, Dialog
 from molass_legacy.KekLib.TkSupplements import tk_set_icon_portable
 from molass_legacy.KekLib.OurMatplotlib import get_color
-from OurManim import manim_init, use_default_style, Animation, Collection, TextGroup, Parallelogram, Circles
+from molass_legacy.KekLib.OurManim import manim_init, use_default_style, Animation, Collection, TextGroup, Parallelogram, Circles
 from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar
 
 class LinTranAnim(Dialog):
