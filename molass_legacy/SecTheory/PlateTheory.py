@@ -36,7 +36,7 @@ def draw_column(ax, w, h, states_list):
             pos = np.random.uniform(0, 1, (n, 2))
             ax.plot(w*pos[:,0], y + dh*pos[:,1], "o", color=color, markersize=msize)
 
-def demo(save=False):
+def demo(save=False, mp4=False):
 
     plate_states = np.zeros(NUM_PLATES)
     plate_states[0] = NUM_PARTICLES
@@ -101,11 +101,14 @@ def demo(save=False):
         ims.append([im])
 
     ani = animation.ArtistAnimation(fig, ims, interval=100, blit=True, repeat_delay=1000)
-    ani.save("plate_theory.gif")
+    if mp4:
+        ani.save("plate_theory.mp4", writer="ffmpeg")
+    else:
+        ani.save("plate_theory.gif")
 
     plt.show()
 
-def demo2(save=False):
+def demo2(save=False, mp4=False):
 
     plate_states1 = np.zeros(NUM_PLATES)
     plate_states2 = np.zeros(NUM_PLATES)
@@ -177,12 +180,14 @@ def demo2(save=False):
 
     ims = []
     for img in images:
-        print(".")
         im = ax.imshow(img, animated=True)
         ims.append([im])
 
     ani = animation.ArtistAnimation(fig, ims, interval=100, blit=True, repeat_delay=1000)
-    ani.save("plate_theory.gif")
+    if mp4:
+        ani.save("plate_theory.mp4", writer="ffmpeg")
+    else:
+        ani.save("plate_theory.gif")
 
     plt.show()
 
