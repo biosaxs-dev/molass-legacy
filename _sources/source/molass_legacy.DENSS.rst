@@ -12,8 +12,8 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
-   molass_legacy.DENSS.denss
    molass_legacy.DENSS.resources
+   molass_legacy.DENSS.saxstats
 
 Submodules
 ----------

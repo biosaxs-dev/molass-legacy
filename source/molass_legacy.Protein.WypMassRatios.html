@@ -356,24 +356,15 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.DENSS.html">DENSS</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2 has-children"><a class="reference internal" href="molass_legacy.DENSS.denss.html">DENSS.denss</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3 has-children"><a class="reference internal" href="molass_legacy.DENSS.denss.resources.html">DENSS.denss.resources</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l4"><a class="reference internal" href="molass_legacy.DENSS.denss.resources.resources.html">DENSS.denss.resources.resources</a></li>
-</ul>
-</details></li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="molass_legacy.DENSS.denss.scripts.html">DENSS.denss.scripts</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l4"><a class="reference internal" href="molass_legacy.DENSS.denss.scripts.denss_fit_data.html">DENSS.denss.scripts.denss_fit_data</a></li>
-<li class="toctree-l4"><a class="reference internal" href="molass_legacy.DENSS.denss.scripts.denss_pdb2mrc.html">DENSS.denss.scripts.denss_pdb2mrc</a></li>
-</ul>
-</details></li>
-<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.denss.core.html">DENSS.denss.core</a></li>
-<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.denss.core-orig.html">DENSS.denss.core-orig</a></li>
-<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.denss.options.html">DENSS.denss.options</a></li>
-<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.denss.options-orig.html">DENSS.denss.options-orig</a></li>
-</ul>
-</details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="molass_legacy.DENSS.resources.html">DENSS.resources</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.resources.resources.html">DENSS.resources.resources</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="molass_legacy.DENSS.saxstats.html">DENSS.saxstats</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.saxstats.denssopts.html">DENSS.saxstats.denssopts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.saxstats.denssopts-orig.html">DENSS.saxstats.denssopts-orig</a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.saxstats.saxstats.html">DENSS.saxstats.saxstats</a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.saxstats.saxstats-orig.html">DENSS.saxstats.saxstats-orig</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.DenssDriver.html">DENSS.DenssDriver</a></li>
@@ -1732,9 +1723,7 @@ document.write(`
   </button>
 `);
 </script>
-<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="fa-solid fa-list"></span>
-</button>
+
 </div></div>
       
     </div>
@@ -1750,17 +1739,6 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
-            <div>
-                <h2> Contents </h2>
-            </div>
-            <nav aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Protein.WypMassRatios.compute_mass_ratios"><code class="docutils literal notranslate"><span class="pre">compute_mass_ratios()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Protein.WypMassRatios.create_mass_ratios_file"><code class="docutils literal notranslate"><span class="pre">create_mass_ratios_file()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Protein.WypMassRatios.estimate_coefficients"><code class="docutils literal notranslate"><span class="pre">estimate_coefficients()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Protein.WypMassRatios.get_amino_acids_props"><code class="docutils literal notranslate"><span class="pre">get_amino_acids_props()</span></code></a></li>
-</ul>
-            </nav>
         </div>
     </div>
 </div>
@@ -1770,34 +1748,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="module-molass_legacy.Protein.WypMassRatios">
-<span id="protein-wypmassratios"></span><h1>Protein.WypMassRatios<a class="headerlink" href="#module-molass_legacy.Protein.WypMassRatios" title="Link to this heading">#</a></h1>
-<p>Protein.WypMassRatios.py</p>
-<p>Copyright (c) 2023, SAXS Team, KEK-PF</p>
-<dl class="py function">
-<dt class="sig sig-object py" id="molass_legacy.Protein.WypMassRatios.compute_mass_ratios">
-<span class="sig-name descname"><span class="pre">compute_mass_ratios</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pdb_file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Protein.WypMassRatios.compute_mass_ratios" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="molass_legacy.Protein.WypMassRatios.create_mass_ratios_file">
-<span class="sig-name descname"><span class="pre">create_mass_ratios_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pdb_folder</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Protein.WypMassRatios.create_mass_ratios_file" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="molass_legacy.Protein.WypMassRatios.estimate_coefficients">
-<span class="sig-name descname"><span class="pre">estimate_coefficients</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Protein.WypMassRatios.estimate_coefficients" title="Link to this definition">#</a></dt>
-<dd><p>1ova.pdb,2.96,2.63  0.981,0.552
-1ald.pdb,3.84,3.57  0.960,0.433
-2glk.pdb,1.33,1.79  0.965,0.566
-3v03.pdb,8.87,7.89  1.01, 0.611</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="molass_legacy.Protein.WypMassRatios.get_amino_acids_props">
-<span class="sig-name descname"><span class="pre">get_amino_acids_props</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pdb_file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.Protein.WypMassRatios.get_amino_acids_props" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
+  <section id="protein-wypmassratios">
+<h1>Protein.WypMassRatios<a class="headerlink" href="#protein-wypmassratios" title="Link to this heading">#</a></h1>
 </section>
 
 
@@ -1835,24 +1787,6 @@ document.write(`
             </div>
             
             
-              
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
-
-
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> Contents
-  </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Protein.WypMassRatios.compute_mass_ratios"><code class="docutils literal notranslate"><span class="pre">compute_mass_ratios()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Protein.WypMassRatios.create_mass_ratios_file"><code class="docutils literal notranslate"><span class="pre">create_mass_ratios_file()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Protein.WypMassRatios.estimate_coefficients"><code class="docutils literal notranslate"><span class="pre">estimate_coefficients()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.Protein.WypMassRatios.get_amino_acids_props"><code class="docutils literal notranslate"><span class="pre">get_amino_acids_props()</span></code></a></li>
-</ul>
-  </nav></div>
-
-</div></div>
               
             
           </div>

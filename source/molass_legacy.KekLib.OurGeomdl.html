@@ -356,24 +356,15 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="molass_legacy.DENSS.html">DENSS</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2 has-children"><a class="reference internal" href="molass_legacy.DENSS.denss.html">DENSS.denss</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3 has-children"><a class="reference internal" href="molass_legacy.DENSS.denss.resources.html">DENSS.denss.resources</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l4"><a class="reference internal" href="molass_legacy.DENSS.denss.resources.resources.html">DENSS.denss.resources.resources</a></li>
-</ul>
-</details></li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="molass_legacy.DENSS.denss.scripts.html">DENSS.denss.scripts</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l4"><a class="reference internal" href="molass_legacy.DENSS.denss.scripts.denss_fit_data.html">DENSS.denss.scripts.denss_fit_data</a></li>
-<li class="toctree-l4"><a class="reference internal" href="molass_legacy.DENSS.denss.scripts.denss_pdb2mrc.html">DENSS.denss.scripts.denss_pdb2mrc</a></li>
-</ul>
-</details></li>
-<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.denss.core.html">DENSS.denss.core</a></li>
-<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.denss.core-orig.html">DENSS.denss.core-orig</a></li>
-<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.denss.options.html">DENSS.denss.options</a></li>
-<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.denss.options-orig.html">DENSS.denss.options-orig</a></li>
-</ul>
-</details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="molass_legacy.DENSS.resources.html">DENSS.resources</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.resources.resources.html">DENSS.resources.resources</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="molass_legacy.DENSS.saxstats.html">DENSS.saxstats</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.saxstats.denssopts.html">DENSS.saxstats.denssopts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.saxstats.denssopts-orig.html">DENSS.saxstats.denssopts-orig</a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.saxstats.saxstats.html">DENSS.saxstats.saxstats</a></li>
+<li class="toctree-l3"><a class="reference internal" href="molass_legacy.DENSS.saxstats.saxstats-orig.html">DENSS.saxstats.saxstats-orig</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2"><a class="reference internal" href="molass_legacy.DENSS.DenssDriver.html">DENSS.DenssDriver</a></li>
@@ -1732,9 +1723,7 @@ document.write(`
   </button>
 `);
 </script>
-<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="fa-solid fa-list"></span>
-</button>
+
 </div></div>
       
     </div>
@@ -1750,18 +1739,6 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
-            <div>
-                <h2> Contents </h2>
-            </div>
-            <nav aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.OurGeomdl.VisSurface"><code class="docutils literal notranslate"><span class="pre">VisSurface</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.OurGeomdl.VisSurface.animate"><code class="docutils literal notranslate"><span class="pre">VisSurface.animate()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.OurGeomdl.VisSurface.render"><code class="docutils literal notranslate"><span class="pre">VisSurface.render()</span></code></a></li>
-</ul>
-</li>
-</ul>
-            </nav>
         </div>
     </div>
 </div>
@@ -1771,51 +1748,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="module-molass_legacy.KekLib.OurGeomdl">
-<span id="keklib-ourgeomdl"></span><h1>KekLib.OurGeomdl<a class="headerlink" href="#module-molass_legacy.KekLib.OurGeomdl" title="Link to this heading">#</a></h1>
-<p>OurGeomdl.py</p>
-<p>modified from geomdl/visualization/VisMPL.VisSurface</p>
-<dl class="py class">
-<dt class="sig sig-object py" id="molass_legacy.KekLib.OurGeomdl.VisSurface">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">VisSurface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config=&lt;geomdl.visualization.VisMPL.VisConfig</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.OurGeomdl.VisSurface" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">VisAbstract</span></code></p>
-<p>Matplotlib visualization module for surfaces.</p>
-<p>Wireframe plot for the control points and triangulated plot (using <code class="docutils literal notranslate"><span class="pre">plot_trisurf</span></code>) for the surface points.
-The surface is triangulated externally using <code class="xref py py-func docutils literal notranslate"><span class="pre">utilities.make_triangle_mesh()</span></code> function.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="molass_legacy.KekLib.OurGeomdl.VisSurface.animate">
-<span class="sig-name descname"><span class="pre">animate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.OurGeomdl.VisSurface.animate" title="Link to this definition">#</a></dt>
-<dd><p>Animates the surface.</p>
-<p>This function only animates the triangulated surface. There will be no other elements, such as control points
-grid or bounding box.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Keyword Arguments<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>colormap</strong> (<em>*</em>) – applies colormap to the surface</p>
-</dd>
-</dl>
-<p>Colormaps are a visualization feature of Matplotlib. They can be used for several types of surface plots via
-the following import statement: <code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">matplotlib</span> <span class="pre">import</span> <span class="pre">cm</span></code></p>
-<p>The following link displays the list of Matplolib colormaps and some examples on colormaps:
-<a class="reference external" href="https://matplotlib.org/tutorials/colors/colormaps.html">https://matplotlib.org/tutorials/colors/colormaps.html</a></p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="molass_legacy.KekLib.OurGeomdl.VisSurface.render">
-<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.KekLib.OurGeomdl.VisSurface.render" title="Link to this definition">#</a></dt>
-<dd><p>Plots the surface and the control points grid.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Keyword Arguments<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>colormap</strong> (<em>*</em>) – applies colormap to the surface</p>
-</dd>
-</dl>
-<p>Colormaps are a visualization feature of Matplotlib. They can be used for several types of surface plots via
-the following import statement: <code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">matplotlib</span> <span class="pre">import</span> <span class="pre">cm</span></code></p>
-<p>The following link displays the list of Matplolib colormaps and some examples on colormaps:
-<a class="reference external" href="https://matplotlib.org/tutorials/colors/colormaps.html">https://matplotlib.org/tutorials/colors/colormaps.html</a></p>
-</dd></dl>
-
-</dd></dl>
-
+  <section id="keklib-ourgeomdl">
+<h1>KekLib.OurGeomdl<a class="headerlink" href="#keklib-ourgeomdl" title="Link to this heading">#</a></h1>
 </section>
 
 
@@ -1853,25 +1787,6 @@ the following import statement: <code class="docutils literal notranslate"><span
             </div>
             
             
-              
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
-
-
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> Contents
-  </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.OurGeomdl.VisSurface"><code class="docutils literal notranslate"><span class="pre">VisSurface</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.OurGeomdl.VisSurface.animate"><code class="docutils literal notranslate"><span class="pre">VisSurface.animate()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.KekLib.OurGeomdl.VisSurface.render"><code class="docutils literal notranslate"><span class="pre">VisSurface.render()</span></code></a></li>
-</ul>
-</li>
-</ul>
-  </nav></div>
-
-</div></div>
               
             
           </div>
