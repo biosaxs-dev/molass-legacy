@@ -6,7 +6,7 @@
 Molass Legacy Reference
 =======================
 
-Molass Legacy is an open-source version of `MOLASS <https://www.jstage.jst.go.jp/article/biophysico/20/1/20_e200001/_article>`_, an analytical tool for SEC-SAXS experiment data currently hosted at `Photon Factory <https://pfwww.kek.jp/saxs/MOLASS.html>`_ or `SPring-8 <https://www.spring8.or.jp/en/>`_, Japan.
+Molass Legacy is an open-source version of `MOLASS <https://pfwww.kek.jp/saxs/MOLASSE.html>`_, an analytical tool for SEC-SAXS experiment data currently hosted at `Photon Factory <https://www2.kek.jp/imss/pf/eng/>`_ or `SPring-8 <http://www.spring8.or.jp/en/>`_, Japan.
 
 It can be installed via pip as follows::
 
@@ -16,7 +16,7 @@ And run from the command line as follows::
 
    molass
 
-See the User's Guide at the original `MOLASS page <https://pfwww.kek.jp/saxs/MOLASS.html>`_ for more information on how to use it.
+See the User's Guide at the original `MOLASS page <https://pfwww.kek.jp/saxs/MOLASSE.html>`_ for more information on how to use it.
 
 Main Function
 ----------------
