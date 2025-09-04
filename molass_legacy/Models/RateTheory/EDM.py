@@ -152,8 +152,8 @@ def guess_init_params_better(x, y, M):
 def guess(x, y, init_params=None, debug=False, debug_info=None):
     if debug:
         from importlib import reload
-        import Models.RateTheory.RobustEDM
-        reload(Models.RateTheory.RobustEDM)
+        import molass_legacy.Models.RateTheory.RobustEDM
+        reload(molass_legacy.Models.RateTheory.RobustEDM)
     from molass_legacy.Models.RateTheory.RobustEDM import guess_init_params
 
     if debug:
