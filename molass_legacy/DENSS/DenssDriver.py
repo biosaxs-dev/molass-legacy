@@ -35,7 +35,7 @@ class DenssLoghandler(logging.Handler):
 
 def run_denss(job_id, out_folder, job_info, table, use_gpu):
     try:
-        from .DenssUtils import run_denss_impl
+        from molass.SAXS.DenssUtils import run_denss_impl
 
         logger  = logging.getLogger()
         started = time()

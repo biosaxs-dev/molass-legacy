@@ -25,7 +25,7 @@ class ExtrapolationDenssMenu(Tk.Frame):
 
     def submit_all(self):
         print('submit_all')
-        from molass_legacy.DENSS.DenssUtils import fit_data
+        from molass.SAXS.DenssUtils import fit_data
         from molass_legacy.DENSS.DenssManager import get_list
         import molass_legacy.KekLib.CustomMessageBox as MessageBox
 

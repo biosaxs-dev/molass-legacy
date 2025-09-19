@@ -21,7 +21,7 @@ import molass_legacy.KekLib.CustomMessageBox as MessageBox
 from molass_legacy.KekLib.BasicUtils import mkdirs_with_retry
 from molass_legacy._MOLASS.SerialSettings import get_setting
 from molass_legacy.KekLib.OurMatplotlib import get_color
-from .DenssUtils import get_outfolder
+from molass.SAXS.DenssUtils import get_outfolder
 from molass_legacy.KekLib.NumpyUtils import np_loadtxt
 import molass_legacy.KekLib.DebugPlot as dplt
 
@@ -90,7 +90,7 @@ class DenssGuiDialog(Dialog):
             self.prepare_from_args(q, a, e, infile_name)
         self.cwd_init = os.getcwd()
         self.thread = None
-        from .denss._version import __version__ as denss_version
+        from molass.SAXS.denss._version import __version__ as denss_version
         Dialog.__init__( self, parent, "Gui for DENSS-%s" % denss_version, visible=False )
 
     def show(self):
@@ -318,9 +318,9 @@ class DenssGuiDialog(Dialog):
     def apply_fit_data(self, q, a, e, infile_name, use_memory_data=False, debug=False):
         if debug:
             from importlib import reload
-            import molass_legacy.DENSS.DenssUtils as DenssUtils
+            import molass.SAXS.DenssUtils as DenssUtils
             reload(DenssUtils)
-        from .DenssUtils import fit_data_impl
+        from molass.SAXS.DenssUtils import fit_data_impl
         sasrec, work_info = fit_data_impl(q, a, e, file=infile_name, gui=True, use_memory_data=use_memory_data)
         self.sasrec = sasrec
         self.work_info = work_info
@@ -451,9 +451,9 @@ class DenssGuiDialog(Dialog):
         from molass_legacy.Env.EnvInfo import get_global_env_info
         if debug:
             from importlib import reload
-            import molass_legacy.DENSS.DenssUtils as DenssUtils
+            import molass.SAXS.DenssUtils as DenssUtils
             reload(DenssUtils)
-        from .DenssUtils import run_denss_impl
+        from molass.SAXS.DenssUtils import run_denss_impl
 
         env_info = get_global_env_info(gpu_info=True)
 
@@ -519,9 +519,9 @@ class DenssGuiDialog(Dialog):
     def illustrate_dmax(self, debug=False):
         if debug:
             from importlib import reload
-            import molass_legacy.DENSS.DmaxEstimation as DmaxEstimation
+            import molass.SAXS.DmaxEstimation as DmaxEstimation
             reload(DmaxEstimation)
-        from .DmaxEstimation import illustrate_dmax
+        from molass.SAXS.DmaxEstimation import illustrate_dmax
         from molass_legacy.KekLib.DebugPlot import DialogWrapper
 
         with DialogWrapper(parent=self, window_title="Illustration"):

@@ -71,7 +71,7 @@ class ErrorModel:
         return np.sqrt(error_model(qv, scale*self.spline(qv), k*K_SCALE, c, scale*self.Iarb))
 
 def demo_impl(in_folder, v2_copy):
-    from molass_legacy.DENSS.DenssUtils import fit_data_bc
+    from molass.SAXS.DenssUtils import fit_data_bc
     from DataUtils import get_in_folder
     from MatrixData import simple_plot_3d
     from molass_legacy.KekLib.BasicUtils import Struct

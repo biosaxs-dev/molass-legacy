@@ -16,7 +16,7 @@ from time import time
 def demo_impl(sd, f, t):
     from DataUtils import get_in_folder
     from .NaiiveLrfSolver import NaiiveLrfSolver
-    from molass_legacy.DENSS.DenssUtils import fit_data
+    from molass.SAXS.DenssUtils import fit_data
     if False:
         from importlib import reload
         import BoundedLRF.BoundedLrfSolver

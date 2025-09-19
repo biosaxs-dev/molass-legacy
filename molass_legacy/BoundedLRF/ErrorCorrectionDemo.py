@@ -24,7 +24,7 @@ def save_aq(file, qv, P, Pe):
 
 def demo_impl(sd, f, t):
     from DataUtils import get_in_folder
-    from molass_legacy.DENSS.DenssUtils import fit_data
+    from molass.SAXS.DenssUtils import fit_data
     from .NaiiveLrfSolver import NaiiveLrfSolver
     from .BoundedLrfSolver import BoundedLrfSolver
     from importlib import reload

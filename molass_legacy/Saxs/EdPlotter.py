@@ -172,7 +172,7 @@ def ed_scatter(fig, axes, data, file):
     return esc
 
 def get_log_items(path):
-    from molass_legacy.DENSS.DenssUtils import get_denss_log_items
+    from molass.SAXS.DenssUtils import get_denss_log_items
     return get_denss_log_items(path)
 
 def get_name_for_title(file):

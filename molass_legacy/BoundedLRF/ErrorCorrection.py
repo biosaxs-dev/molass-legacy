@@ -7,7 +7,7 @@ import numpy as np
 from scipy.optimize import minimize
 from scipy.interpolate import UnivariateSpline
 from molass_legacy.Trimming.Sigmoid import sigmoid
-from molass_legacy.DENSS.DenssUtils import fit_data
+from molass.SAXS.DenssUtils import fit_data
 
 def compute_corrected_error(qv, i, P, c1, c2, P_, Pe, bq_bounds_, coerced_bq_, debug=False):
 

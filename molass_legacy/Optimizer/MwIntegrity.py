@@ -11,7 +11,7 @@ from molass_legacy.KekLib.OurTkinter import Tk, Dialog
 from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar, get_color
 from molass_legacy._MOLASS.SerialSettings import get_setting
 from molass_legacy.SerialAnalyzer.DataUtils import get_in_folder
-# from molass_legacy.DENSS.DenssUtils import fit_data_impl
+# from molass.SAXS.DenssUtils import fit_data_impl
 from molass_legacy.GuinierAnalyzer.SimpleGuinier import SimpleGuinier
 from .LrfExporter import LrfExporter
 from .FvScoreConverter import convert_score

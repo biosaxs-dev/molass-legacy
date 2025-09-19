@@ -16,7 +16,7 @@ from molass_legacy.KekLib.OurTkinter import Tk, Dialog
 from molass_legacy.KekLib.TkCustomWidgets import FileEntry, FolderEntry
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar
-from molass_legacy.DENSS.DenssUtils import fit_data
+from molass.SAXS.DenssUtils import fit_data
 from molass_legacy._MOLASS.Version import is_developing_version
 from molass_legacy.Saxs.SaxsCurveUtils import percentile_normalize
 

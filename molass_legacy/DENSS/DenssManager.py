@@ -4,7 +4,7 @@
     Copyright (c) 2019-2025, SAXS Team, KEK-PF
 """
 from time import time, sleep
-from .DenssUtils import get_outfolder
+from molass.SAXS.DenssUtils import get_outfolder
 from molass_legacy._MOLASS.SerialSettings import get_setting
 
 class JobInfo:

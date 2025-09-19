@@ -3,4 +3,4 @@
 """
 
 from . import DenssGui
-from . import DenssUtils
+from molass.SAXS import DenssUtils

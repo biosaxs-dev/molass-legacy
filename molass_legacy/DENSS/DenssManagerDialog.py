@@ -11,7 +11,7 @@ from molass_legacy.KekLib.OurTkinter import Tk, Dialog, ttk
 from molass_legacy.KekLib.TkUtils import get_widget_geometry
 from molass_legacy.KekLib.TkSupplements import set_icon
 from molass_legacy.KekLib.ScrolledFrame import ScrolledFrame
-from .DenssUtils import MAXNUM_STEPS
+from molass.SAXS.DenssUtils import MAXNUM_STEPS
 
 dialogs = []
 # DIALOG_HEIGHT = 250

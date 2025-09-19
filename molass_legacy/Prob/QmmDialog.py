@@ -25,7 +25,7 @@ DISTINCTION_Q = 0.15
 DISTINCTION_WL = 220
 APPLY_DENSS_FIT = True
 if APPLY_DENSS_FIT:
-    from molass_legacy.DENSS.DenssUtils import fit_data
+    from molass.SAXS.DenssUtils import fit_data
 
 class QmmDialog(Dialog):
     def __init__(self, parent, controller, **kwargs):

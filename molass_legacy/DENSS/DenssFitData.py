@@ -58,7 +58,7 @@ class DenssFitDataDialog(Dialog):
 
 def fit_data_plot(init_sasrec, work_info, fig, output, tkinter_gui=False):
     # from .saxstats import saxstats as saxs
-    import molass_legacy.DENSS.denss as denss
+    import molass.SAXS.denss as denss
     global sasrec
 
     args = work_info.args

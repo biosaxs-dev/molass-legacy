@@ -51,7 +51,7 @@ def make_pdb_files():
     dplt.show()
 
 def make_mrc_files():
-    from molass_legacy.DENSS.DenssUtils import run_pdb2mrc
+    from molass.SAXS.DenssUtils import run_pdb2mrc
 
     pdb_folder, mrc_folder = make_folders()[0:2]
     num_files = len(os.listdir(mrc_folder))

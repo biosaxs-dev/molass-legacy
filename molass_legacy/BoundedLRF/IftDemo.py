@@ -21,7 +21,7 @@ def demo_impl(sd, f, t):
     import BoundedLRF.BoundedLrfSolver
     reload(BoundedLRF.BoundedLrfSolver)
     from .BoundedLrfSolver import BoundedLrfSolver
-    from molass_legacy.DENSS.DenssUtils import fit_data
+    from molass.SAXS.DenssUtils import fit_data
 
     print("demo_impl")
 

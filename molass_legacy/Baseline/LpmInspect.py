@@ -17,7 +17,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.widgets import SpanSelector
 from molass_legacy.KekLib.ExceptionTracebacker import log_exception
 from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar
-from molass_legacy.DENSS.DenssUtils import fit_data
+from molass.SAXS.DenssUtils import fit_data
 import molass_legacy.KekLib.DebugPlot as dplt
 from molass_legacy._MOLASS.SerialSettings import get_setting, set_setting
 from MatrixData import simple_plot_3d
