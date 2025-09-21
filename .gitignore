@@ -12,6 +12,9 @@ __pycache__/
 # Ignore the Sphinx build directory
 docs/_build/
 
+# Do NOT ignore molass_legacy/Build
+!molass_legacy/Build/
+
 docs/source/**
 
 docs/kpe. out
