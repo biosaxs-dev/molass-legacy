@@ -14,6 +14,6 @@ For details, see also:
 
 See also:
 
-- **Molass Library Repository:** https://github.com/nshimizu0721/molass-library
+- **Molass Library Repository:** https://github.com/molass-saxs/molass-library
 
 <br>
