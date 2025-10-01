@@ -1,12 +1,16 @@
 """
     PersistentPy.py - succcesor of PersistentInfo.py
 
-    Copyright (c) 2024, Masatsuyo Takahashi, KEK-PF
+    Copyright (c) 2024-2025, Masatsuyo Takahashi, KEK-PF
 """
 import os
-import shutil
+import platform
 from molass_legacy.KekLib.BasicUtils import home_dir, exe_name
-import molass_legacy.KekLib.CustomMessageBox as MessageBox
+ON_WINDOWS = platform.system() == "Windows"
+if ON_WINDOWS:
+    import molass_legacy.KekLib.CustomMessageBox as MessageBox
+else:
+    import molass_legacy.KekLib.OurMessageBox as MessageBox
 
 def kek_tools_folder():
     return '%s/.KekTools' % (home_dir())
