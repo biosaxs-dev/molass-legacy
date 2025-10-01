@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "molass_legacy"
-version = "0.2.7"
+version = "0.2.8"
 
 dependencies = [
   "numpy",
@@ -15,7 +15,6 @@ dependencies = [
   "statsmodels",
   "scikit-learn",
   "toml",
-  "pywin32",
   "psutil",
   "python-tkdnd",
   "screeninfo",
@@ -48,6 +47,11 @@ classifiers = [
   "Development Status :: 4 - Beta",
   "Programming Language :: Python",
   "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+]
+
+[project.optional-dependencies]
+excel = [
+  "pywin32"
 ]
 
 [project.scripts]
