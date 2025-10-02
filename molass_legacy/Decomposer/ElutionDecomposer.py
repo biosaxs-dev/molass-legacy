@@ -14,8 +14,8 @@ from molass_legacy.SerialAnalyzer.ElutionCurve import ElutionCurve
 from molass_legacy.Models.ElutionCurveModels import (EGHA, EMG, EMGA, model_debug_plot)
 from molass_legacy.KekLib.ExceptionTracebacker import ExceptionTracebacker
 from molass_legacy._MOLASS.SerialSettings import get_setting
-from FitRecord import FitRecord, sort_fit_recs
-from ModelEvaluator import ModelEvaluator
+from .FitRecord import FitRecord, sort_fit_recs
+from .ModelEvaluator import ModelEvaluator
 
 DEBUG   = False
 FIT_DEBUG = False
