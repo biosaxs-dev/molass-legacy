@@ -1,7 +1,7 @@
 """
     ElutionDecomposer.py
 
-    Copyright (c) 2018-2023, SAXS Team, KEK-PF
+    Copyright (c) 2018-2025, SAXS Team, KEK-PF
 """
 import time
 import numpy as np
@@ -12,7 +12,6 @@ from molass_legacy.KekLib.BasicUtils import clear_dirs_with_retry, Struct
 from molass_legacy.KekLib.NumpyUtils import np_savetxt
 from molass_legacy.SerialAnalyzer.ElutionCurve import ElutionCurve
 from molass_legacy.Models.ElutionCurveModels import (EGHA, EMG, EMGA, model_debug_plot)
-from CanvasDialog import CanvasDialog
 from molass_legacy.KekLib.ExceptionTracebacker import ExceptionTracebacker
 from molass_legacy._MOLASS.SerialSettings import get_setting
 from FitRecord import FitRecord, sort_fit_recs
@@ -37,6 +36,7 @@ else:
     SCALE_PEAK_ERROR    = 50
 
 def proof_plot( decomposer, parent=None ):
+    from molass_legacy.KekLib.CanvasDialog import CanvasDialog
     dialog = CanvasDialog( "proof_plot", parent=parent )
 
     def result_plot( fig ):
