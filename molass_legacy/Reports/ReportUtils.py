@@ -291,5 +291,5 @@ def make_summary_book(excel_is_available, wb, book_file, controller, debug=False
         summary.add_format_setting( book_file )
 
     path = book_file.replace( '.xlsx', '.csv' )
-    print( 'path=', path )
+    # print( 'path=', path )
     summary.save_as_csv( path )

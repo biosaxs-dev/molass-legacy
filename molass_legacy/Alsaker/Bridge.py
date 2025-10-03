@@ -96,7 +96,7 @@ def bridge_test_impl(caller):
 
         # numpy interface test
         data = np.loadtxt(filepath)
-        print("data.shape=", data.shape)
+        # print("data.shape=", data.shape)
         output = rb.estimate_Rg(data, 1)
         print(type(output), output)
     

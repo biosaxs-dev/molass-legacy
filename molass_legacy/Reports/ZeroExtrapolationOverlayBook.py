@@ -38,7 +38,7 @@ class ZeroExtrapolationOverlayBook:
         ws.append( [ 'Q', 'A(q) Asc', 'A(q) Desc', 'B(q) Asc', 'B(q) Desc' ] )
 
         num_rows = len(aq_asc_vector)       # <= len(qvector)
-        print( 'num_rows=', num_rows )
+        # print( 'num_rows=', num_rows )
         for i in range( num_rows ):
             a = aq_asc_vector[i]
             if a <= 0:

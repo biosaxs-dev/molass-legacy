@@ -214,7 +214,7 @@ class ZeroExtrapolator:
 
         data_matrix = np.vstack( data_list )
         error_matrix = np.vstack( error_list )
-        print( 'data_matrix.shape=',data_matrix.shape )
+        # print( 'data_matrix.shape=',data_matrix.shape )
 
         self.stop_check()
 

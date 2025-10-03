@@ -243,7 +243,7 @@ class ZeroExtrapolationResultBook:
                         'I(0)/Conc-error', 'x-I(0)/Conc-error', 'atsas-x-I(0)/Conc-error' ] )
         self.nx_rows = nx_rows = len( c_rg_iz[0][0] )
         self.zx_rows = zx_rows = len( c_rg_iz[0][1] )
-        print( 'nx_rows=', nx_rows, ', zx_rows=', zx_rows )
+        # print( 'nx_rows=', nx_rows, ', zx_rows=', zx_rows )
         assert( nx_rows <= zx_rows )
 
         self.orig_param_array = orig_param_array

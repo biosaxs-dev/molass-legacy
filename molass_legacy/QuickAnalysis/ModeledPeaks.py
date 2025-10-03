@@ -177,7 +177,8 @@ def recognize_peaks(x, y, num_peaks=5, exact_num_peaks=None, affine=False, model
         else:
             h_ratio = params[0]/y_max
             if h_ratio < H_RATIO_LIMIT:
-                print([k], "h_ratio=", h_ratio)
+                if debug:
+                    print([k], "h_ratio=", h_ratio)
                 if not get_exact_num_peaks:
                     break
             y_model = model(x, params)

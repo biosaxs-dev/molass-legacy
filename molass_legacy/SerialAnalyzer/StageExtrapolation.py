@@ -95,7 +95,7 @@ def prepare_extrapolation( self ):
         for j, fromto in enumerate(from_to_list):
             f, t = fromto
             indeces = np.array( np.arange( f, t+1 ), dtype=int )
-            print( 'indeces[%d]=' % m, indeces )
+            # print( 'indeces[%d]=' % m, indeces )
             indeces_pair.append( indeces )
             for i in indeces:
                 key_list = to_extrapolate.get(i)

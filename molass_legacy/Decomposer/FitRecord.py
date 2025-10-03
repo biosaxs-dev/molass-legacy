@@ -48,7 +48,7 @@ class FitRecord:
         # neccesary in case when sorted( temp_pair_list ) fails
         return self.evaluator.get_param_value(1) < other.evaluator.get_param_value(1)
 
-    def get_range_list(self, x, debug=True):
+    def get_range_list(self, x, debug=False):
         # print('get_range_list: self=', self)
 
         rec_id = self.kno

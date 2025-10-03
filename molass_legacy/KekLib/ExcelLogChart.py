@@ -30,9 +30,9 @@ class ExcelLogChart:
         # self.x_axis.TickLabelPosition = xlNone
         self.y_axis.TickLabelPosition = xlNone
 
-        print( 'MajorUnit=', self.y_axis.MajorUnit )
-        print( 'MinimumScale=', self.y_axis.MinimumScale )
-        print( 'MaximumScale=', self.y_axis.MaximumScale )
+        # print( 'MajorUnit=', self.y_axis.MajorUnit )
+        # print( 'MinimumScale=', self.y_axis.MinimumScale )
+        # print( 'MaximumScale=', self.y_axis.MaximumScale )
 
         minscale = int( np.floor( np.log10( self.y_axis.MinimumScale) ) )
         maxscale = int( np.ceil ( np.log10( self.y_axis.MaximumScale) ) )
@@ -56,7 +56,7 @@ class ExcelLogChart:
         work_col2   = work_col+2
         work_col3   = work_col+3
 
-        print( 'work_row=', work_row )
+        # print( 'work_row=', work_row )
 
         for i in range( len(y_ticks) ):
             self.ws.Cells( work_row + i, work_col1 ).Value = label_x[i]

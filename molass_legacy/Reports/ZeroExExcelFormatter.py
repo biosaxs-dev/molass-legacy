@@ -167,7 +167,7 @@ def add_result_format_setting(excel_client_, args, logger):
             point.MarkerSize = 10
 
     atsas_j = args.overlap_from_max
-    print( "boundary_j=", args.boundary_j )
+    # print( "boundary_j=", args.boundary_j )
 
     boundaries = []
 

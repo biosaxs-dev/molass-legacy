@@ -30,7 +30,7 @@ class DatgnomExecutor:
 
         self.datgnom4_compat = self.exe_path.find("datgnom4") >= 0
 
-    def execute( self, in_file_, rg, out_file_, debug=True ):
+    def execute(self, in_file_, rg, out_file_, debug=False):
         in_file = in_file_.replace('/', '\\')
         out_file = out_file_.replace('/', '\\')
         if self.exe_path is None or rg is None:
