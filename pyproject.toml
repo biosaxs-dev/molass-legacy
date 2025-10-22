@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "molass_legacy"
-version = "0.3.0"
+version = "0.3.1"
 
 dependencies = [
   "numpy",
@@ -58,4 +58,4 @@ excel = [
 molass = "molass_legacy.main:molass_gui"
 
 [project.urls]
-Repository = "https://github.com/freesemt/molass-legacy"
+Repository = "https://github.com/biosaxs-dev/molass-legacy"

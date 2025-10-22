@@ -1,4 +1,4 @@
-<h1 align="center"><a href="https://freesemt.github.io/molass-legacy"><img src="docs/_static/molass-legacy.png" width="400"></a></h1>
+<h1 align="center"><a href="https://biosaxs-dev.github.io/molass-legacy"><img src="docs/_static/molass-legacy.png" width="400"></a></h1>
 
 Molass Legacy is an open-source version of [MOLASS](https://pfwww.kek.jp/saxs/MOLASSE.html) a tool for the analysis of SEC-SAXS experiment data currently hosted at [Photon Factory](https://www2.kek.jp/imss/pf/eng/) and [SPring-8](http://www.spring8.or.jp/en/), Japan.
 
@@ -18,10 +18,10 @@ pip install -U molass[excel]
 
 For more information, see:
 
-- **Legacy Reference:** https://freesemt.github.io/molass-legacy for legacy function reference
+- **Legacy Reference:** https://biosaxs-dev.github.io/molass-legacy for legacy function reference
 
 See also:
 
-- **Molass Library Repository:** https://github.com/molass-saxs/molass-library
+- **Molass Library Repository:** https://github.com/biosaxs-dev/molass-library
 
 <br>

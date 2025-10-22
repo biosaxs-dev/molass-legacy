@@ -42,7 +42,7 @@ add_module_names = False  # Removes the "molass." prefix from module names in ti
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme_options = {
-    "repository_url": "https://github.com/freesemt/molass-legacy",
+    "repository_url": "https://github.com/biosaxs-dev/molass-legacy",
     "use_repository_button": True,
 }
 
