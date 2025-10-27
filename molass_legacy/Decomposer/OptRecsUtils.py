@@ -1,7 +1,5 @@
 """
     OptRecsUtils.py
-
-    Copyright (c) 2023-2024, SAXS Team, KEK-PF
 """
 import numpy as np
 import molass_legacy.KekLib.DebugPlot as plt
@@ -10,8 +8,8 @@ def debug_plot_opt_recs_impl(ax, x, y, opt_recs, color=None, spline=None):
     for k, rec in enumerate(opt_recs):
         func = rec.evaluator
         peak = rec.peak
-        ax.plot(x, y, color="orange")
-        ax.plot(x, func(x), ":", color=color)
+        ax.plot(x, y, color=color)
+        ax.plot(x, func(x), ":")
         if spline is not None:
             px = peak.top_x
             py = spline(px)

@@ -1,7 +1,5 @@
 """
     PeakSetSelector.py
-
-    Copyright (c) 2018-2024, SAXS Team, KEK-PF
 """
 import logging
 import molass_legacy.KekLib.DebugPlot as plt
@@ -78,7 +76,7 @@ def get_range_from_elm_recs(p, num, k, f, t, elm_recs, ecurve=None, debug=False)
     return int(round(f)), int(round(t))
 
 class PeakSetSelector:
-    def __init__(self, paired_ranges, ecurve=None, debug=False):
+    def __init__(self, paired_ranges, ecurve=None, debug=False, legacy=True):
         self.logger = logging.getLogger(__name__)
         self.paired_ranges = paired_ranges
         x0 = ecurve.x[0]    # x0 == 0 for traditional v1 usage
@@ -86,8 +84,9 @@ class PeakSetSelector:
         if debug:
             x = ecurve.x
             y = ecurve.y
-            with plt.Dp():
-                fig, ax = plt.subplots()
+
+            def plot_closure1(plot_module):
+                fig, ax = plot_module.subplots()
                 ax.set_title("PeakSetSelector entry")
                 ax.plot(x, y)
                 for p, paired_range in enumerate(paired_ranges):
@@ -96,7 +95,15 @@ class PeakSetSelector:
                         ax.plot(x, func(x), ":", label="%d-%d" % (p,k))
                 ax.legend()
                 fig.tight_layout()
-                plt.show()
+                plot_module.show()
+
+            if legacy:
+                with plt.Dp():
+                    plot_closure1(plt)                    
+            else:
+                import matplotlib.pyplot as mpl
+                plot_closure1(mpl)
+
 
         range_indeces = []
         pfoot_indeces = []
@@ -182,8 +189,8 @@ class PeakSetSelector:
             print('pfoot_indeces=', pfoot_indeces)
             print('required_peakset_infos=', self.required_peakset_infos)
 
-            with plt.Dp():
-                fig, ax = plt.subplots()
+            def plot_closure2(plot_module):
+                fig, ax = plot_module.subplots()
                 ax.set_title("PeakSetSelector Debug for" + str(paired_ranges))
                 x = ecurve.x
                 y = ecurve.y
@@ -204,7 +211,14 @@ class PeakSetSelector:
                 plot_ranges(ymin, ymax, range_indeces, 'cyan', "%dth range")
                 plot_ranges(ymin, ymax/2, pfoot_indeces, 'pink', "%dth foot")
                 ax.legend()
-                plt.show()
+                plot_module.show()
+        
+            if legacy:
+                with plt.Dp():
+                    plot_closure2(plt)
+            else:
+                import matplotlib.pyplot as mpl
+                plot_closure2(mpl)
 
     def update_known_peak_info_list(self, known_info_list):
         # print('update_known_peak_info_list: required_peakset_infos=', self.required_peakset_infos)
@@ -234,6 +248,7 @@ class PeakSetSelector:
     def select_demo_ranges_for_gd(self, uv_y, opt_recs):
         print('paired_ranges=', self.paired_ranges)
         print('required_peakset_infos=', self.required_peakset_infos)
+        ALLOW_WIDER = 5
 
         max_top_y = None
         max_top_x = None
