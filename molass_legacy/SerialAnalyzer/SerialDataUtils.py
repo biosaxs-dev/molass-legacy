@@ -225,14 +225,7 @@ def load_xray_files(datafiles_, return_lacking_info=False, qv=None, uniform_qv=T
         data_list.append( data )
 
     if uniform_qv:
-        size_array = np.array(size_list)
-        minn = np.min(size_array)
-        maxn = np.max(size_array)
-        if minn < maxn or qv is not None:
-            data_list, lacking_list, minn_qv = convert_to_the_least_shape(data_list, size_array, minn, maxn, qv=qv)
-        else:
-            lacking_list = []
-            minn_qv = None
+        data_list, (minn, maxn, lacking_list, minn_qv) = convert_to_the_least_shape(data_list, size_list=size_list, qv=qv)
     else:
         pass
 
@@ -259,7 +252,20 @@ def load_xray_files(datafiles_, return_lacking_info=False, qv=None, uniform_qv=T
     else:
         return np.array( data_list ), comments
 
-def convert_to_the_least_shape(data_list, size_array, minn, maxn, qv=None):
+def convert_to_the_least_shape(data_list, size_list=None, qv=None):
+    if size_list is None:
+        size_list = [ data.shape[0] for data in data_list ]
+    size_array = np.array(size_list)
+    minn = np.min(size_array)
+    maxn = np.max(size_array)
+    if minn < maxn or qv is not None:
+        data_list, lacking_list, minn_qv = convert_to_the_least_shape_impl(data_list, size_array, minn, maxn, qv=qv)
+    else:
+        lacking_list = []
+        minn_qv = None
+    return data_list, (minn, maxn, lacking_list, minn_qv)
+
+def convert_to_the_least_shape_impl(data_list, size_array, minn, maxn, qv=None):
     import logging
     logger = logging.getLogger(__name__)
     logger.warning("Converting the input data set by adjusting to the intersecting q-values with (minn, maxn)=(%d, %d)", minn, maxn)
