@@ -4,15 +4,15 @@ build-backend = "hatchling.build"
 
 [project]
 name = "molass_legacy"
-version = "0.3.2"
+version = "0.3.3"
 
 dependencies = [
   "numpy",
-  "scipy<1.16.0",
+  "scipy",
   "matplotlib",
   "pybaselines>=1.2.0",
   "molass>=0.7.0",
-  "statsmodels",
+  "statsmodels>=0.14.5",
   "scikit-learn",
   "toml",
   "psutil",
@@ -20,7 +20,7 @@ dependencies = [
   "screeninfo",
   "lmfit",
   "seaborn",
-  "openpyxl",
+  "openpyxl==3.1.2",
   "pyperclip",
   "wmi",
   "numba",
@@ -28,7 +28,7 @@ dependencies = [
   "termcolor",
 ]
 
-requires-python = ">=3.9,<3.13"
+requires-python = ">=3.9,<3.14"
 
 authors = [
   {name = "Molass Community"},
