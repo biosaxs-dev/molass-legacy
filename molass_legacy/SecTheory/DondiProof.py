@@ -18,7 +18,7 @@ def fitting_demo_impl(in_folder, stochastic_model, init_params):
     from molass_legacy.Peaks.ElutionModels import egh
     from LPM import get_corrected
     from DataUtils import get_in_folder
-    from SecSaxs.DataTreatment import DataTreatment
+    from molass_legacy.SecSaxs.DataTreatment import DataTreatment
     from .StochasticSolver import CfDomain
 
     sp = StandardProcedure()

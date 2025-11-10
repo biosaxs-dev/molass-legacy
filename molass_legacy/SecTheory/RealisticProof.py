@@ -73,7 +73,7 @@ def fitting_demo(in_folder, niter=1):
     from molass_legacy.Peaks.ElutionModels import egh
     from LPM import get_corrected
     from DataUtils import get_in_folder
-    from SecSaxs.DataTreatment import DataTreatment
+    from molass_legacy.SecSaxs.DataTreatment import DataTreatment
     from .RealisticSolver import RealisticCfDomain
 
     sp = StandardProcedure()

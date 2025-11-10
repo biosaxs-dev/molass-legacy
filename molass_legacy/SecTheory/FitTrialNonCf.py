@@ -13,7 +13,7 @@ from molass_legacy.Trimming.PreliminaryRecognition import PreliminaryRecognition
 from molass_legacy.Peaks.ElutionModels import egh
 from LPM import get_corrected
 from DataUtils import get_in_folder
-from SecSaxs.DataTreatment import DataTreatment
+from molass_legacy.SecSaxs.DataTreatment import DataTreatment
 
 class DemoDialog(Dialog):
     def __init__(self, parent, ecurve, rg_curve, rp_params, rg_params, wt_params):

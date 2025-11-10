@@ -46,7 +46,7 @@ def roud_trip(in_folder=None):
     from molass_legacy.Peaks.ElutionModels import egh
     from LPM import get_corrected
     from DataUtils import get_in_folder
-    from SecSaxs.DataTreatment import DataTreatment
+    from molass_legacy.SecSaxs.DataTreatment import DataTreatment
     from .SecPDF import compute_standard_wCD
 
     sp = StandardProcedure()

@@ -27,7 +27,7 @@ class FullBatch:
     def prepare(self, sd, num_peaks=None, min_num_peaks=None, debug=False):
         from molass_legacy.Trimming.PreliminaryRecognition import PreliminaryRecognition
         from molass_legacy.Optimizer.DefaultNumPeaks import get_default_num_peaks
-        from SecSaxs.DataTreatment import DataTreatment
+        from molass_legacy.SecSaxs.DataTreatment import DataTreatment
         self.pre_recog = PreliminaryRecognition(sd)
         if num_peaks is None:
             num_peaks = get_default_num_peaks(sd)

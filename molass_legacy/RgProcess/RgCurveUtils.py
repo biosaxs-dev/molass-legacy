@@ -37,7 +37,7 @@ def rg_folder_from_in_folder(in_folder):
 def do_a_folder(in_folder, uv_folder, plot):
     from molass_legacy.Batch.StandardProcedure import StandardProcedure
     from molass_legacy.Trimming.PreliminaryRecognition import PreliminaryRecognition
-    from SecSaxs.DataTreatment import DataTreatment
+    from molass_legacy.SecSaxs.DataTreatment import DataTreatment
 
     print(in_folder)
     if False:
@@ -72,7 +72,7 @@ def do_a_folder(in_folder, uv_folder, plot):
 def make_an_rg_folder(in_folder, rg_folder):
     from molass_legacy.Batch.StandardProcedure import StandardProcedure
     from molass_legacy.Trimming.PreliminaryRecognition import PreliminaryRecognition
-    from SecSaxs.DataTreatment import DataTreatment
+    from molass_legacy.SecSaxs.DataTreatment import DataTreatment
     from molass_legacy._MOLASS.SerialSettings import clear_temporary_settings
 
     clear_temporary_settings()

@@ -12,7 +12,7 @@ class DataBridge(FullBatch):
         self.pre_recog = pre_recog
         FullBatch.__init__(self)
         if treat is None:
-            from SecSaxs.DataTreatment import DataTreatment
+            from molass_legacy.SecSaxs.DataTreatment import DataTreatment
             # task: inspect to make these consistent with OptStategyDialog
             correction = 1
             trimming = 2

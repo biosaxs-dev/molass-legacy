@@ -15,7 +15,7 @@ def show_test_dialog(root, in_folder, prepare_func, tester_func, frame_func=None
     from molass_legacy.KekLib.OurTkinter import Tk, Dialog
     from molass_legacy.Batch.StandardProcedure import StandardProcedure
     from molass_legacy.Trimming.PreliminaryRecognition import PreliminaryRecognition
-    from SecSaxs.DataTreatment import DataTreatment
+    from molass_legacy.SecSaxs.DataTreatment import DataTreatment
     from molass_legacy.Optimizer.StateSequence import StateSequence
     from molass_legacy.Optimizer.OptimizerSettings import OptimizerSettings
     from molass_legacy.Optimizer.InitialInfo import InitialInfo
