@@ -28,5 +28,6 @@ docs/*.mp4
 log/
 
 *.xlsx
+*.txt
 
 temp_analysis/
