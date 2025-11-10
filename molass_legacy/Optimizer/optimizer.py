@@ -49,7 +49,7 @@ def main_impl(optdict, optlist):
     log_file = "optimizer.log"
     logger = Logger(log_file)
 
-    logger.info(get_version_string())
+    logger.info(get_version_string(with_date=True))
 
     analysis_folder = get_analysis_folder_from_work_folder(work_folder)
     set_setting("analysis_folder", analysis_folder)

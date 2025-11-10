@@ -19,7 +19,7 @@ class OptLogFile:
         
         with open(path) as fh:
             for k, line in enumerate(fh.readlines()):
-                if line.find("_MOLASS") > 0:
+                if line.find("MOLASS") > 0:
                     m = version_re.search(line)
                     if m:
                         version_date = m.group(1)

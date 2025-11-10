@@ -117,7 +117,7 @@ class FullOptResult:
                 import molass_legacy.KekLib.CustomMessageBox as MessageBox
                 MessageBox.showerror("Not Supported Error",
                     "View of results made with versions earlier than 2022-09-20\n"
-                    "is not supported!",
+                    "is not supported! Version date=" + log_file.version_date,
                     parent=None,
                     )
                 assert False
