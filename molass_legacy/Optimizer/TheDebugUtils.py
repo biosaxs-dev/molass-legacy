@@ -73,15 +73,17 @@ def convert_score_list(score_list_pair):
     score_list, penalties = score_list_pair
     return np.concatenate([score_list, penalties])
 
-def plot_scores(ax, score_list, score_names, alpha=1, label=None, invert=True, add_patch=True, debug=True):
+def plot_scores(ax, score_list, score_names, alpha=1, label=None, invert=True, add_patch=True, debug=False):
     if debug:
         from importlib import reload
         import molass_legacy.Optimizer.FvScoreConverter
         reload(molass_legacy.Optimizer.FvScoreConverter)
     from .FvScoreConverter import convert_score
 
+    if debug:
+        print("plot_scores: len(score_list)", len(score_list), "len(score_names)", len(score_names))
     converted_list = [convert_score(v) for v in score_list]
-
+ 
     NUM_MAJOR_SCORES = get_setting("NUM_MAJOR_SCORES")
     major_scores = score_list[0:NUM_MAJOR_SCORES]
     score_mean = np.mean(major_scores)

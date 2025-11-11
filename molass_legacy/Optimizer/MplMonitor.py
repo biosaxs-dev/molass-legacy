@@ -31,7 +31,8 @@ class MplMonitor:
 
     def clear_jobs(self):
         folder = self.runner.optjob_folder
-        shutil.rmtree(folder)
+        if os.path.exists(folder):
+            shutil.rmtree(folder)
         os.makedirs(folder, exist_ok=True)
 
     def run(self, optimizer, init_params, niter=100, seed=1234, work_folder=None, debug=False):
