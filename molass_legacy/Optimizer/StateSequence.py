@@ -118,8 +118,7 @@ def read_callback_txt_impl(cb_file):
                     x_list.append(x)
         fh.close()
     else:
-        # not yet written
-        pass
+        assert False, "callback.txt file not found: %s" % cb_file
 
     return fv_list, x_list
 

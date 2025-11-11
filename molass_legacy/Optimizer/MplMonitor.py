@@ -15,6 +15,7 @@ import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
 import ipywidgets as widgets
 from IPython.display import display, clear_output
+from molass_legacy._MOLASS.SerialSettings import get_setting
 
 class MplMonitor:
     def __init__(self, debug=True):
@@ -23,7 +24,17 @@ class MplMonitor:
             import molass_legacy.Optimizer.BackRunner
             reload(molass_legacy.Optimizer.BackRunner)
         from molass_legacy.Optimizer.BackRunner import BackRunner
+        analysis_folder = get_setting("analysis_folder")
+        optimizer_folder = os.path.join(analysis_folder, "optimized")
+        logpath = os.path.join(optimizer_folder, 'monitor.log')
+        self.fileh = logging.FileHandler(logpath, 'a')
+        format_csv_ = '%(asctime)s,%(levelname)s,%(name)s,%(message)s'
+        datefmt_ = '%Y-%m-%d %H:%M:%S'
+        self.formatter_csv_ = logging.Formatter(format_csv_, datefmt_)
+        self.fileh.setFormatter(self.formatter_csv_)
         self.logger = logging.getLogger(__name__)
+        self.logger.setLevel(logging.INFO)
+        self.logger.addHandler(self.fileh)
         self.runner = BackRunner()
         self.logger.info("MplMonitor initialized.")
         self.logger.info(f"Optimizer job folder: {self.runner.optjob_folder}")
@@ -39,6 +50,9 @@ class MplMonitor:
         self.optimizer = optimizer
         self.init_params = init_params
         self.runner.run(optimizer, init_params, niter=niter, seed=seed, work_folder=work_folder)
+        abs_working_folder = os.path.abspath(self.runner.working_folder)
+        self.cb_file = os.path.join(abs_working_folder, 'callback.txt')
+        self.logger.info("Starting optimization job in folder: %s", abs_working_folder)
 
     def terminate_job(self, b):
         self.logger.info("Terminating optimization job...")
@@ -131,10 +145,12 @@ class MplMonitor:
             time.sleep(interval)
     
     def update_job_state(self, debug=True):
-        cb_file = os.path.join(self.runner.optjob_folder, 'callback.txt')
-        fv_list, x_list = self.read_callback_txt(cb_file)
+        if not os.path.exists(self.cb_file):
+            self.logger.warning("callback.txt file not found: %s", self.cb_file)
+            return
+        fv_list, x_list = self.read_callback_txt(self.cb_file)
         if debug:
-                self.logger.info("updating information from %s, len(x_list)=%d", cb_file, len(x_list))
+                self.logger.info("updating information from %s, len(x_list)=%d", self.cb_file, len(x_list))
   
     def read_callback_txt(self, cb_file):
         from .StateSequence import read_callback_txt_impl
