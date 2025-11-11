@@ -90,13 +90,24 @@ def prepare_optimizer(in_folder, sd=None, num_components=None, function_code='G0
 
     init_params = batch.compute_init_params()
     optimizer.prepare_for_optimization(init_params)
-    return optimizer, init_params
+    return treat, optimizer, init_params
 
+def set_optimizer_settings(treat, param_init_type=0):
+    from .OptimizerSettings import OptimizerSettings
+    treat.save()
+    settings = OptimizerSettings(param_init_type=param_init_type)
+    settings.save()
 
-def run_optimizer(in_folder, optimizer, init_params, debug=False):
+def run_optimizer(in_folder, optimizer, init_params, clear_jobs=True, debug=True):
     if debug:
         from importlib import reload
         import molass_legacy.Optimizer.MplMonitor
         reload(molass_legacy.Optimizer.MplMonitor)
     from molass_legacy.Optimizer.MplMonitor import MplMonitor
-    from molass_legacy.Optimizer.BackRunner import BackRunner
+    monitor = MplMonitor()
+    if clear_jobs:
+        monitor.clear_jobs()  # equivalent to BackRunner.
+    monitor.run(optimizer, init_params, debug=debug)
+    monitor.create_dashboard()
+    monitor.show(debug=debug)
+    monitor.watch_progress(interval=1.0)

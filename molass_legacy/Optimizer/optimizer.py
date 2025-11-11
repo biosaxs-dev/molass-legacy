@@ -43,6 +43,7 @@ def main_impl(optdict, optlist):
 
     work_folder = optdict['-w']
     os.chdir(work_folder)
+    work_folder = os.getcwd()   # to get absolute path
 
     nnn = int(work_folder[-3:])
 
@@ -52,6 +53,8 @@ def main_impl(optdict, optlist):
     logger.info(get_version_string(with_date=True))
 
     analysis_folder = get_analysis_folder_from_work_folder(work_folder)
+    logger.info("work_folder: %s", work_folder)
+    logger.info("analysis_folder inferred as %s", analysis_folder)
     set_setting("analysis_folder", analysis_folder)
     optimizer_folder = os.path.join(analysis_folder, "optimized")
     set_setting("optimizer_folder", optimizer_folder)   # optimizer_folder will be referenced in DataTreatment.load()

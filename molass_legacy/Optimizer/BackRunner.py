@@ -65,7 +65,8 @@ class BackRunner:
         else:
             # i.e., caller has prepared the folder (may be by get_work_folder())
             folder = work_folder
-
+        if debug:
+            print("BackRunner: work_folder =", folder)
         self.working_folder = folder
         set_setting("optjob_folder", folder)
         set_setting("optworking_folder", folder)    # unifiy these setting items
