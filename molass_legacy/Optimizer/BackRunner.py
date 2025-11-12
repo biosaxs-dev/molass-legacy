@@ -20,6 +20,7 @@ class BackRunner:
     def __init__(self):
         self.optjob_folder = get_optjob_folder_impl()
         self.np_shm = get_shm_singleton()
+        self.proc = None
         self.solver = None
 
     def get_optjob_folder(self):
@@ -50,7 +51,7 @@ class BackRunner:
         # this method is currently used by tester
         self.working_folder = folder
 
-    def run(self, optimizer, init_params, niter=100, seed=1234, work_folder=None, debug=True):
+    def run(self, optimizer, init_params, niter=100, seed=1234, work_folder=None, dummy=False, debug=False):
         from .FullOptResult import FILES
 
         n_components = optimizer.n_components
@@ -79,7 +80,7 @@ class BackRunner:
             np.savetxt(os.path.join(folder, bounds_txt), optimizer.real_bounds)
 
         this_folder = os.path.dirname(os.path.abspath( __file__ ))
-        optimizer_py = os.path.join(this_folder, 'optimizer.py')
+        optimizer_py = os.path.join(this_folder, 'optimizer-dummy.py' if dummy else 'optimizer.py')
 
         in_folder = get_setting('in_folder')
 

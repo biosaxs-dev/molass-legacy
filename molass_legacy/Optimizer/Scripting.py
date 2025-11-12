@@ -98,7 +98,7 @@ def set_optimizer_settings(treat, param_init_type=0):
     settings = OptimizerSettings(param_init_type=param_init_type)
     settings.save()
 
-def run_optimizer(in_folder, optimizer, init_params, clear_jobs=True, debug=True):
+def run_optimizer(in_folder, optimizer, init_params, clear_jobs=True, dummy=False, debug=True):
     if debug:
         from importlib import reload
         import molass_legacy.Optimizer.MplMonitor
@@ -107,7 +107,13 @@ def run_optimizer(in_folder, optimizer, init_params, clear_jobs=True, debug=True
     monitor = MplMonitor()
     if clear_jobs:
         monitor.clear_jobs()  # equivalent to BackRunner.
-    monitor.run(optimizer, init_params, debug=debug)
+    monitor.run(optimizer, init_params, dummy=dummy, debug=debug)
     monitor.create_dashboard()
     monitor.show(debug=debug)
-    monitor.watch_progress(interval=1.0)
+
+    if dummy:
+        import time
+        time.sleep(10)
+        monitor.terminate_job(None)
+    else:
+        monitor.start_watching()

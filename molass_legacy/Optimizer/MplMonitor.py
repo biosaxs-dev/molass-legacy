@@ -10,9 +10,9 @@ import os
 import logging
 import shutil
 import time
+import threading
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.gridspec import GridSpec
 import ipywidgets as widgets
 from IPython.display import display, clear_output
 from molass_legacy._MOLASS.SerialSettings import get_setting
@@ -27,7 +27,7 @@ class MplMonitor:
         analysis_folder = get_setting("analysis_folder")
         optimizer_folder = os.path.join(analysis_folder, "optimized")
         logpath = os.path.join(optimizer_folder, 'monitor.log')
-        self.fileh = logging.FileHandler(logpath, 'a')
+        self.fileh = logging.FileHandler(logpath, 'w')
         format_csv_ = '%(asctime)s,%(levelname)s,%(name)s,%(message)s'
         datefmt_ = '%Y-%m-%d %H:%M:%S'
         self.formatter_csv_ = logging.Formatter(format_csv_, datefmt_)
@@ -46,19 +46,17 @@ class MplMonitor:
             shutil.rmtree(folder)
         os.makedirs(folder, exist_ok=True)
 
-    def run(self, optimizer, init_params, niter=100, seed=1234, work_folder=None, debug=False):
+    def run(self, optimizer, init_params, niter=100, seed=1234, work_folder=None, dummy=False, debug=False):
         self.optimizer = optimizer
         self.init_params = init_params
-        self.runner.run(optimizer, init_params, niter=niter, seed=seed, work_folder=work_folder)
+        self.runner.run(optimizer, init_params, niter=niter, seed=seed, work_folder=work_folder, dummy=dummy, debug=debug)
         abs_working_folder = os.path.abspath(self.runner.working_folder)
         self.cb_file = os.path.join(abs_working_folder, 'callback.txt')
         self.logger.info("Starting optimization job in folder: %s", abs_working_folder)
-
-    def terminate_job(self, b):
-        self.logger.info("Terminating optimization job...")
-        self.runner.terminate()
+        self.curr_index = None
 
     def create_dashboard(self):
+        self.terminate_event = threading.Event()
         self.terminate_button = widgets.Button(description="Terminate Job", button_style='danger')
         self.terminate_button.on_click(self.terminate_job)
         self.plot_output = widgets.Output()
@@ -66,12 +64,17 @@ class MplMonitor:
         self.message_output = widgets.Output(layout=widgets.Layout(border='1px solid gray', background_color='gray', padding='10px'))
         self.controls = widgets.HBox([self.terminate_button])
         self.dashboard = widgets.VBox([self.plot_output, self.controls, self.message_output])
-    
+
+    def terminate_job(self, b):
+        self.terminate_event.set()
+        self.logger.info("Terminate job requested. id(self)=%d", id(self))
+
     def show(self, debug=False):
-        self.update_plot()
+        self.update_plot(params=self.init_params)
         display(self.dashboard)
 
-    def update_plot(self, change=None):
+    def update_plot(self, params=None, job_state=None):
+        from molass_legacy.Optimizer.JobStatePlot import plot_job_state
         # Prepare to capture warnings and prints
         buf_out = io.StringIO()
         buf_err = io.StringIO()
@@ -83,34 +86,9 @@ class MplMonitor:
             try:
                 with self.plot_output:
                     clear_output(wait=True)
-                    self.fig = fig = plt.figure(figsize=(18, 9))
-                    gs = GridSpec(33, 15)
-                    axes = []
-                    for j in range(3):
-                        j_ = j*5
-                        ax = fig.add_subplot(gs[0:16,j_:j_+5])
-                        axes.append(ax)
-
-                    axt = axes[1].twinx()
-                    axes.append(axt)
-                    self.axes = axes
-                    self.prog_ax = fig.add_subplot(gs[17:21,2:])
-                    peak_ax = fig.add_subplot(gs[21:25,2:])
-                    rg_ax = fig.add_subplot(gs[25:29,2:])
-                    map_ax = fig.add_subplot(gs[29:33,2:])
-                    self.prog_axes = [self.prog_ax, peak_ax, rg_ax, map_ax]
-                    for ax in self.prog_axes[0:3]:
-                        ax.set_xticklabels([])
-                    self.prog_title_axes = [fig.add_subplot(gs[17+i*4:21+i*4,0:2]) for i in range(0,4)]
-                    prog_titles = ["Function SV", "Peak Top Positions", "Rg Values", "Mapped Range"]
-                    for ax, title in zip(self.prog_title_axes, prog_titles):
-                        ax.set_axis_off()
-                        ax.text(-0.3, 0.5, title, fontsize=16)
-
-                    axis_info = (fig, (*axes,))
-                    self.optimizer.objective_func(self.init_params, plot=True, axis_info=axis_info)
-                    display(fig)
-                    plt.close(fig)
+                    plot_job_state(self, params=params, job_state=job_state)
+                    display(self.fig)
+                    plt.close(self.fig)
             finally:
                 # Restore stdout/stderr
                 sys.stdout = old_stdout
@@ -136,14 +114,26 @@ class MplMonitor:
                 print(msg)
 
     def watch_progress(self, interval=1.0):
-        last_state_info = None
         while True:
             ret = self.runner.poll()
             if ret is not None:
                 break
-            self.update_job_state()
+            self.logger.info("self.terminate=%s, id(self)=%d", str(self.terminate_event.is_set()), id(self))
+            if self.terminate_event.is_set():
+                self.logger.info("Terminating optimization job.")
+                self.runner.terminate()
+                with self.plot_output:
+                    clear_output(wait=True)  # Remove any possibly remaining plot
+                break
+            job_state = self.update_job_state()
+            if job_state is not None:
+                self.update_plot(job_state=job_state)
             time.sleep(interval)
-    
+
+    def start_watching(self):
+        # Never run a long or infinite loop in the main thread in Jupyter if you want widget interactivity.
+        threading.Thread(target=self.watch_progress, daemon=True).start()
+
     def update_job_state(self, debug=True):
         if not os.path.exists(self.cb_file):
             self.logger.warning("callback.txt file not found: %s", self.cb_file)
@@ -151,7 +141,24 @@ class MplMonitor:
         fv_list, x_list = self.read_callback_txt(self.cb_file)
         if debug:
                 self.logger.info("updating information from %s, len(x_list)=%d", self.cb_file, len(x_list))
-  
+
+        fv, xmax = self.get_fv_array(fv_list)
+        return fv, xmax, np.array(x_list)
+
+    def get_running_solver_info(self):
+        return self.runner.solver, 100
+
+    def get_fv_array(self, fv_list):
+        fv = np.array(fv_list)
+        solver_name, niter = self.get_running_solver_info()
+        if solver_name == "ultranest":
+            from molass_legacy.Solvers.UltraNest.SolverUltraNest import get_max_ncalls
+            # task: unify this estimation
+            xmax = get_max_ncalls(niter)
+        else:
+            xmax = 500000   # default large number
+        return fv, xmax
+
     def read_callback_txt(self, cb_file):
         from .StateSequence import read_callback_txt_impl
 
