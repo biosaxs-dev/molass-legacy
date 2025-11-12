@@ -1,10 +1,10 @@
 """
-Optimizer.IpyUtils.py - Utility functions for interactive user prompts in Jupyter notebooks.
+KekLib.IpyUtils.py - Utility functions for interactive user prompts in Jupyter notebooks.
 """
 import ipywidgets as widgets
 from IPython.display import display, clear_output
 
-def ask_user(question, callback):
+def ask_user(dialog_output, question, callback):
     """
     Ask a yes/no question to the user in a Jupyter notebook and execute a callback with the response.
 
@@ -44,4 +44,6 @@ def ask_user(question, callback):
     btn_yes.on_click(on_yes)
     btn_no.on_click(on_no)
 
-    display(widgets.VBox([widgets.Label(question), widgets.HBox([btn_yes, btn_no])]), out)
+    with dialog_output:
+        clear_output(wait=True)
+        display(widgets.VBox([widgets.Label(question), widgets.HBox([btn_yes, btn_no])]), out)

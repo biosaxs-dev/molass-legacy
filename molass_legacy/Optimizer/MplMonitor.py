@@ -64,13 +64,25 @@ class MplMonitor:
         self.message_output = widgets.Output(layout=widgets.Layout(border='1px solid gray', background_color='gray', padding='10px'))
         self.controls = widgets.HBox([self.terminate_button])
         self.dashboard = widgets.VBox([self.plot_output, self.controls, self.message_output])
+        self.dashboard_output = widgets.Output()
+        self.dialog_output = widgets.Output()
 
     def terminate_job(self, b):
+        from molass_legacy.KekLib.IpyUtils import ask_user
+        response = None
+        def handle_response(answer):
+            nonlocal response
+            response = answer
+            print("Callback received:", answer)
+        ask_user(self.dialog_output, "Do you want to continue?", handle_response)
+        if not response:
+            return
         self.terminate_event.set()
         self.logger.info("Terminate job requested. id(self)=%d", id(self))
 
     def show(self, debug=False):
         self.update_plot(params=self.init_params)
+        # with self.dashboard_output:
         display(self.dashboard)
 
     def update_plot(self, params=None, job_state=None):
@@ -131,6 +143,7 @@ class MplMonitor:
             time.sleep(interval)
 
     def start_watching(self):
+        # Avoid Blocking the Main Thread:
         # Never run a long or infinite loop in the main thread in Jupyter if you want widget interactivity.
         threading.Thread(target=self.watch_progress, daemon=True).start()
 
