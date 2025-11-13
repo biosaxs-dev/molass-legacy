@@ -10,7 +10,8 @@ Optimizer.Scripting.py
 - Optimizer/optimizer.py
     - Optimizer/OptimizerMain.py
 """
-import  os
+import os
+import numpy as np
 
 def prepare_optimizer(in_folder, sd=None, num_components=None, function_code='G0346', analysis_folder=None, clear_temp_settings=True, debug=False):
     import logging
@@ -117,3 +118,31 @@ def run_optimizer(in_folder, optimizer, init_params, clear_jobs=True, dummy=Fals
         monitor.terminate_job(None)
     else:
         monitor.start_watching()
+
+def get_params(job_result_folder, index=None, debug=False):
+    from .StateSequence import read_callback_txt_impl
+    cb_file = os.path.join(job_result_folder, 'callback.txt')
+    fv_list, x_list = read_callback_txt_impl(cb_file)
+    fv = np.array(fv_list)
+    x = np.array(x_list)
+    if index is None:
+        k = np.argmin(fv[:,1])
+        params = x[k]
+        if debug:
+            print("Best parameters at index %d with fv=%g" % (k, fv[k,1]))
+    else:
+        params = x[index]
+        if debug:
+            print("Parameters at index %d with fv=%g" % (index, fv[index,1]))
+    return params
+
+def plot_params(optimizer, params, axis_info=None, debug=False):
+    if axis_info is None:
+        import matplotlib.pyplot as plt
+        fig, axes = plt.subplots(ncols=3, figsize=(18,4.5))
+        ax1, ax2, ax3 = axes
+        axt = ax2.twinx()
+        axt.grid(False)
+        axis_info = (fig, (ax1, ax2, ax3, axt))
+
+    optimizer.objective_func(params, plot=True, axis_info=axis_info, debug=debug)

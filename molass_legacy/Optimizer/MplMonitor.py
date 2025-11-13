@@ -15,8 +15,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import ipywidgets as widgets
 from IPython.display import display, clear_output
+from molass_legacy.KekLib.IpyLabelUtils import inject_label_color_css
 from molass_legacy._MOLASS.SerialSettings import get_setting
-
+from molass_legacy.KekLib.IpyLabelUtils import inject_label_color_css, set_label_color
 class MplMonitor:
     def __init__(self, debug=True):
         if debug:
@@ -39,6 +40,8 @@ class MplMonitor:
         self.logger.info("MplMonitor initialized.")
         self.logger.info(f"Optimizer job folder: {self.runner.optjob_folder}")
         self.result_list = []
+        self.suptitle = None
+        self.func_code = "G0346"
 
     def clear_jobs(self):
         folder = self.runner.optjob_folder
@@ -46,46 +49,61 @@ class MplMonitor:
             shutil.rmtree(folder)
         os.makedirs(folder, exist_ok=True)
 
+    def get_running_solver_info(self):
+        return self.runner.solver, 100
+
     def run(self, optimizer, init_params, niter=100, seed=1234, work_folder=None, dummy=False, debug=False):
+        from importlib import reload
+        import molass_legacy.Optimizer.JobState
+        reload(molass_legacy.Optimizer.JobState)
+        from molass_legacy.Optimizer.JobState import JobState
+        solver_name, niter = self.get_running_solver_info()
         self.optimizer = optimizer
         self.init_params = init_params
         self.runner.run(optimizer, init_params, niter=niter, seed=seed, work_folder=work_folder, dummy=dummy, debug=debug)
         abs_working_folder = os.path.abspath(self.runner.working_folder)
-        self.cb_file = os.path.join(abs_working_folder, 'callback.txt')
+        cb_file = os.path.join(abs_working_folder, 'callback.txt')
+        self.job_state = JobState(cb_file, solver_name, niter)
         self.logger.info("Starting optimization job in folder: %s", abs_working_folder)
         self.curr_index = None
 
     def create_dashboard(self):
+        self.status_label = widgets.Label(value="Status: Running")
+        self.space_label = widgets.Label(value="　　　　")
         self.terminate_event = threading.Event()
         self.terminate_button = widgets.Button(description="Terminate Job", button_style='danger')
-        self.terminate_button.on_click(self.terminate_job)
+        self.terminate_button.on_click(self.trigger_terminate)
         self.plot_output = widgets.Output()
-        # self.message_output = widgets.Output()
         self.message_output = widgets.Output(layout=widgets.Layout(border='1px solid gray', background_color='gray', padding='10px'))
-        self.controls = widgets.HBox([self.terminate_button])
+        self.controls = widgets.HBox([self.status_label, self.space_label, self.terminate_button])
         self.dashboard = widgets.VBox([self.plot_output, self.controls, self.message_output])
         self.dashboard_output = widgets.Output()
         self.dialog_output = widgets.Output()
 
-    def terminate_job(self, b):
+    def trigger_terminate(self, b):
         from molass_legacy.KekLib.IpyUtils import ask_user
-        response = None
+
         def handle_response(answer):
-            nonlocal response
-            response = answer
             print("Callback received:", answer)
-        ask_user(self.dialog_output, "Do you want to continue?", handle_response)
-        if not response:
-            return
-        self.terminate_event.set()
-        self.logger.info("Terminate job requested. id(self)=%d", id(self))
+            if answer:
+                self.terminate_event.set()
+                self.status_label.value = "Status: Terminating"
+                set_label_color(self.status_label, "yellow")
+                self.logger.info("Terminate job requested. id(self)=%d", id(self))
+        display(self.dialog_output)
+        ask_user("Do you really want to terminate?", callback=handle_response, output_widget=self.dialog_output)
 
     def show(self, debug=False):
         self.update_plot(params=self.init_params)
         # with self.dashboard_output:
         display(self.dashboard)
+        inject_label_color_css()
+        set_label_color(self.status_label, "green")
 
-    def update_plot(self, params=None, job_state=None):
+    def update_plot(self, params=None, plot_info=None):
+        from importlib import reload
+        import molass_legacy.Optimizer.JobStatePlot
+        reload(molass_legacy.Optimizer.JobStatePlot)
         from molass_legacy.Optimizer.JobStatePlot import plot_job_state
         # Prepare to capture warnings and prints
         buf_out = io.StringIO()
@@ -98,7 +116,7 @@ class MplMonitor:
             try:
                 with self.plot_output:
                     clear_output(wait=True)
-                    plot_job_state(self, params=params, job_state=job_state)
+                    plot_job_state(self, params=params, plot_info=plot_info)
                     display(self.fig)
                     plt.close(self.fig)
             finally:
@@ -127,60 +145,35 @@ class MplMonitor:
 
     def watch_progress(self, interval=1.0):
         while True:
+            exit_loop = False
             ret = self.runner.poll()
             if ret is not None:
-                break
-            self.logger.info("self.terminate=%s, id(self)=%d", str(self.terminate_event.is_set()), id(self))
+                exit_loop = True
+            # self.logger.info("self.terminate=%s, id(self)=%d", str(self.terminate_event.is_set()), id(self))
             if self.terminate_event.is_set():
                 self.logger.info("Terminating optimization job.")
                 self.runner.terminate()
+                exit_loop = True
+            if exit_loop:
+                self.status_label.value = "Status: Terminated"
+                set_label_color(self.status_label, "gray")
+                self.terminate_button.disabled = True
                 with self.plot_output:
                     clear_output(wait=True)  # Remove any possibly remaining plot
                 break
-            job_state = self.update_job_state()
-            if job_state is not None:
-                self.update_plot(job_state=job_state)
+
+            self.job_state.update()
+            if self.job_state.has_changed():
+                plot_info = self.job_state.get_plot_info()
+                self.update_plot(plot_info=plot_info)
+                # clear_output(wait=True)
+                # display(self.dashboard)
             time.sleep(interval)
 
     def start_watching(self):
         # Avoid Blocking the Main Thread:
         # Never run a long or infinite loop in the main thread in Jupyter if you want widget interactivity.
         threading.Thread(target=self.watch_progress, daemon=True).start()
-
-    def update_job_state(self, debug=True):
-        if not os.path.exists(self.cb_file):
-            self.logger.warning("callback.txt file not found: %s", self.cb_file)
-            return
-        fv_list, x_list = self.read_callback_txt(self.cb_file)
-        if debug:
-                self.logger.info("updating information from %s, len(x_list)=%d", self.cb_file, len(x_list))
-
-        fv, xmax = self.get_fv_array(fv_list)
-        return fv, xmax, np.array(x_list)
-
-    def get_running_solver_info(self):
-        return self.runner.solver, 100
-
-    def get_fv_array(self, fv_list):
-        fv = np.array(fv_list)
-        solver_name, niter = self.get_running_solver_info()
-        if solver_name == "ultranest":
-            from molass_legacy.Solvers.UltraNest.SolverUltraNest import get_max_ncalls
-            # task: unify this estimation
-            xmax = get_max_ncalls(niter)
-        else:
-            xmax = 500000   # default large number
-        return fv, xmax
-
-    def read_callback_txt(self, cb_file):
-        from .StateSequence import read_callback_txt_impl
-
-        fv_list, x_list = read_callback_txt_impl(cb_file)
-        if len(fv_list) == 0:
-            # note that the first record is always included in these lists
-            self.logger.info("making up the first record in callback.txt from the caller.")
-
-        return fv_list, x_list
     
     def append_result(self, last_info):
         from .OptJobResultInfo import OptJobResultInfo

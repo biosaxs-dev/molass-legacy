@@ -47,7 +47,7 @@ def get_remaining_time(fv):
     remaining_time = ""
     return remaining_time
 
-def draw_progress(self, job_state):
+def draw_progress(self, plot_info):
     for ax in self.prog_axes:
         ax.cla()
     for ax in self.prog_axes[0:3]:
@@ -56,7 +56,7 @@ def draw_progress(self, job_state):
     # Function Values
     prog_ax = self.prog_ax
 
-    fv, max_num_evals, x_array = job_state
+    fv, max_num_evals, x_array = plot_info
     x_, y_ = fv[:,0:2].T
     prog_ax.plot(x_, convert_score(y_))
     prog_ax.set_xlim(-PROGRESS_X_MARGIN, max_num_evals + PROGRESS_X_MARGIN)
