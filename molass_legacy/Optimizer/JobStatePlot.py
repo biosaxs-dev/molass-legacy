@@ -19,7 +19,7 @@ def draw_suptitle(self):
     else:
         self.suptitle.set_text(text)
 
-def plot_job_state(self, params=None, plot_info=None):
+def plot_job_state(self, params=None, plot_info=None, niter=20):
     from matplotlib.gridspec import GridSpec
     import seaborn
     seaborn.set_theme()
@@ -41,7 +41,7 @@ def plot_job_state(self, params=None, plot_info=None):
         self.curr_index = 0
 
     self.fig = fig = plt.figure(figsize=(18, 9))
-    gs = GridSpec(33, 15)
+    gs = GridSpec(33, 15, wspace=1.3, hspace=1.0)
     axes = []
     for j in range(3):
         j_ = j*5
@@ -69,7 +69,7 @@ def plot_job_state(self, params=None, plot_info=None):
     plot_objective_func(self.optimizer, params, axis_info=(self.fig, self.axes))
 
     if plot_info is not None:
-        draw_progress(self, plot_info)
+        draw_progress(self, plot_info, niter=niter)
 
 def plot_objective_func(optimizer, params, axis_info=None):
     from .FvScoreConverter import convert_score

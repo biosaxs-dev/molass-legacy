@@ -50,7 +50,8 @@ class MplMonitor:
         os.makedirs(folder, exist_ok=True)
 
     def get_running_solver_info(self):
-        return self.runner.solver, 100
+        # dummy implementation, to be replaced with actual info from runner
+        return self.runner.solver, 20
 
     def run(self, optimizer, init_params, niter=100, seed=1234, work_folder=None, dummy=False, debug=False):
         from importlib import reload

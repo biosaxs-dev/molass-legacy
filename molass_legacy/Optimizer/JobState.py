@@ -26,6 +26,15 @@ class JobState:
     def get_plot_info(self):
         return self.fv, self.xmax, self.x
 
+    def estimate_xmax(self, fv_list):
+        counter = fv_list[-1][0] if len(fv_list) > 0 else 0
+        if counter == 0:
+            # init state
+            xmax = 500000*self.niter//100
+        else:
+            xmax = int(counter * (self.niter+1)/len(fv_list))
+        return xmax
+
     def update(self, debug=True):
         if not os.path.exists(self.cb_file):
             t = time.time() - self.time_created
@@ -54,6 +63,6 @@ class JobState:
             # task: unify this estimation
             xmax = get_max_ncalls(self.niter)
         else:
-            xmax = 500000   # default large number
+            xmax = self.estimate_xmax(fv_list)
 
         self.xmax = xmax

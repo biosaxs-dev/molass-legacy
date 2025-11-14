@@ -1,6 +1,7 @@
 """
 Progress chart for optimization GUI.
 """
+from datetime import timedelta
 from molass_legacy.KekLib.NumpyUtils import get_proportional_points
 from molass_legacy.KekLib.TimeUtils import friendly_time_str
 from molass_legacy.KekLib.ExceptionTracebacker import log_exception
@@ -39,15 +40,45 @@ def get_time_elapsed(fv_array):
         time = ""
     return time
 
-def guess_ending_time(fv):
+def guess_ending_time(fv_array):
     ending_time = ""
     return ending_time
 
-def get_remaining_time(fv):
-    remaining_time = ""
-    return remaining_time
+def guess_ending_time(fv_array, niter=20):
+    finish_time = None
+    time = ""
 
-def draw_progress(self, plot_info):
+    if fv_array.shape[0] > 3:
+        # unreliable when fv.shape[0] <= 3
+        try:
+            start_time = fv_array[0,3]
+            curr_time = fv_array[-1,3]
+            finish_time = start_time + (curr_time - start_time)*(niter/fv_array.shape[0])
+            # add 1 minute so that it won't be too early
+            time = friendly_time_str(finish_time + timedelta(minutes=1))
+        except:
+            pass
+
+    return time, finish_time
+
+def get_remaining_time(fv_array, finish_time):
+    if finish_time is None:
+        return ""
+    try:
+        curr_time = fv_array[-1,3]
+        # add 1 minute so that it won't be too short
+        hhmmss = str(finish_time - curr_time + timedelta(minutes=1) ).split(":")
+        time = "%3d.%02d" % tuple([int(s) for s in hhmmss[0:2]])
+        # %3d instead of %2d is just for positioning purpose with non-fixed-width fonts.
+        # to be fixed: ValueError: invalid literal for int() with base 10: '-1 day, 23'
+    except:
+        # log_exception(self.logger, "get_remaining_time: ")
+        # IndexError: index 3 is out of bounds for axis 1 with size 2
+        # ValueError: invalid literal for int() with base 10: '-1 day, 23'
+        time = ""
+    return time
+
+def draw_progress(self, plot_info, niter=20):
     for ax in self.prog_axes:
         ax.cla()
     for ax in self.prog_axes[0:3]:
@@ -118,7 +149,9 @@ def draw_progress(self, plot_info):
             x = fv[-1,0]
             ax.plot([x, x], [ymin, ymax], color='gray', alpha=0.3)
 
-    ymin, ymax = map_ax.get_ylim()
+    ymin_, ymax_ = map_ax.get_ylim()
+    dy = (ymax_ - ymin_) * 1.0
+    ymin, ymax = ymin_ + dy, ymax_ + dy
     tx = xmax*1.07
 
     w = 2.2
@@ -144,7 +177,7 @@ def draw_progress(self, plot_info):
     map_ax.text(tx, ty, "Ending Time", ha="center")
 
     # guess_ending_time() must be called before get_remaining_time()
-    time_str = guess_ending_time(fv)
+    time_str, finish_time = guess_ending_time(fv, niter=niter)
     w = 0.2
     ty = ymin*(1-w) + ymax*w
     map_ax.text(tx, ty, time_str, ha="center", va="center")
@@ -153,7 +186,7 @@ def draw_progress(self, plot_info):
     ty = ymin*(1-w) + ymax*w
     map_ax.text(tx, ty, "Time Ahead", ha="center")
 
-    time_str = get_remaining_time(fv)
+    time_str = get_remaining_time(fv, finish_time)
     w = 0.8
     ty = ymin*(1-w) + ymax*w
     map_ax.text(tx, ty, time_str, ha="center", va="center")
