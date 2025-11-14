@@ -1,11 +1,9 @@
 """
-Optimizer.JobStatusPlot.py
+Optimizer.JobStatePlot.py
 Job status plot for optimization GUI.
 """
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.gridspec import GridSpec
-from .FvScoreConverter import convert_score
 
 def draw_suptitle(self):
     from molass_legacy.SerialAnalyzer.DataUtils import get_in_folder
@@ -22,6 +20,7 @@ def draw_suptitle(self):
         self.suptitle.set_text(text)
 
 def plot_job_state(self, params=None, plot_info=None):
+    from matplotlib.gridspec import GridSpec
     import seaborn
     seaborn.set_theme()
     from importlib import reload
@@ -38,10 +37,8 @@ def plot_job_state(self, params=None, plot_info=None):
         k = np.argmin(fv[:,1])
         self.curr_index = k
         params = x_array[k]
-        fv_ = fv[k,1]
     else:
         self.curr_index = 0
-        fv_ = self.optimizer.objective_func(params, plot=False)
 
     self.fig = fig = plt.figure(figsize=(18, 9))
     gs = GridSpec(33, 15)
@@ -69,17 +66,27 @@ def plot_job_state(self, params=None, plot_info=None):
         ax.text(-0.3, 0.5, title, fontsize=16)
 
     draw_suptitle(self)
-    sv = convert_score(fv_)
-    for ax in self.axes:
-        ax.cla()
-    ax1, ax2, ax3, axt = self.axes
-    axt.grid(False)
-    ax1.set_title("UV Decomposition", fontsize=16)
-    ax2.set_title("Xray Decomposition", fontsize=16)
-    ax3.set_title("Objective Function Scores in SV=%.3g" % sv, fontsize=16)
-
-    axis_info = (fig, (*axes,))
-    self.optimizer.objective_func(params, plot=True, axis_info=axis_info)
+    plot_objective_func(self.optimizer, params, axis_info=(self.fig, self.axes))
 
     if plot_info is not None:
         draw_progress(self, plot_info)
+
+def plot_objective_func(optimizer, params, axis_info=None):
+    from .FvScoreConverter import convert_score
+    fv_ = optimizer.objective_func(params)
+    sv = convert_score(fv_)
+
+    if axis_info is None:
+        fig, axes = plt.subplots(ncols=3, figsize=(18,4.5))
+        ax1, ax2, ax3 = axes
+        axt = ax2.twinx()
+        axt.grid(False)
+        axis_info = (fig, (*axes, axt))
+    else:
+        fig, axes = axis_info
+        ax1, ax2, ax3 = axes[:3]
+
+    ax1.set_title("UV Decomposition", fontsize=16)
+    ax2.set_title("Xray Decomposition", fontsize=16)
+    ax3.set_title("Objective Function Scores in SV=%.3g" % sv, fontsize=16)
+    optimizer.objective_func(params, plot=True, axis_info=axis_info)

@@ -68,7 +68,7 @@ def prepare_optimizer(in_folder, sd=None, num_components=None, function_code='G0
     # equivalent to PeakEditor.__init__
     batch = FullBatch()
     batch.logger = logging.getLogger(__name__)
-    batch.sd = sd
+    batch.sd = trimmed_sd
     batch.corrected_sd = corrected_sd
     batch.pre_recog = pre_recog
     batch.base_curve_info = treat.get_base_curve_info()     # not used?
@@ -76,7 +76,7 @@ def prepare_optimizer(in_folder, sd=None, num_components=None, function_code='G0
     batch.exact_num_peaks = num_components
     batch.strict_sec_penalty = False
     batch.fullopt_class, batch.class_code = None, None
-    batch.fullopt_input = FullOptInput(sd=sd, corrected_sd=corrected_sd, rg_folder=rg_folder)
+    batch.fullopt_input = FullOptInput(sd=trimmed_sd, corrected_sd=corrected_sd, rg_folder=rg_folder)
     batch.dsets = batch.fullopt_input.get_dsets(progress_cb=None, compute_rg=True, possibly_relocated=False)
 
     # equivalent to PeakEditor.body
@@ -135,14 +135,3 @@ def get_params(job_result_folder, index=None, debug=False):
         if debug:
             print("Parameters at index %d with fv=%g" % (index, fv[index,1]))
     return params
-
-def plot_params(optimizer, params, axis_info=None, debug=False):
-    if axis_info is None:
-        import matplotlib.pyplot as plt
-        fig, axes = plt.subplots(ncols=3, figsize=(18,4.5))
-        ax1, ax2, ax3 = axes
-        axt = ax2.twinx()
-        axt.grid(False)
-        axis_info = (fig, (ax1, ax2, ax3, axt))
-
-    optimizer.objective_func(params, plot=True, axis_info=axis_info, debug=debug)

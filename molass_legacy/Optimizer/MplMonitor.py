@@ -68,14 +68,28 @@ class MplMonitor:
         self.curr_index = None
 
     def create_dashboard(self):
+        self.plot_output = widgets.Output()
+
         self.status_label = widgets.Label(value="Status: Running")
-        self.space_label = widgets.Label(value="　　　　")
+        self.space_label1 = widgets.Label(value="　　　　")
+        self.skip_button = widgets.Button(description="Skip Job", button_style='warning', disabled=True)
+        self.space_label2 = widgets.Label(value="　　　　")
         self.terminate_event = threading.Event()
         self.terminate_button = widgets.Button(description="Terminate Job", button_style='danger')
         self.terminate_button.on_click(self.trigger_terminate)
-        self.plot_output = widgets.Output()
+        self.space_label3 = widgets.Label(value="　　　　")
+        self.export_button = widgets.Button(description="Export Data", button_style='success', disabled=True)
+        self.export_button.on_click(self.export_data)
+        self.controls = widgets.HBox([self.status_label,
+                                      self.space_label1,
+                                      self.skip_button,
+                                      self.space_label2,
+                                      self.terminate_button,
+                                      self.space_label3,
+                                      self.export_button])
+
         self.message_output = widgets.Output(layout=widgets.Layout(border='1px solid gray', background_color='gray', padding='10px'))
-        self.controls = widgets.HBox([self.status_label, self.space_label, self.terminate_button])
+
         self.dashboard = widgets.VBox([self.plot_output, self.controls, self.message_output])
         self.dashboard_output = widgets.Output()
         self.dialog_output = widgets.Output()
@@ -175,17 +189,23 @@ class MplMonitor:
         # Never run a long or infinite loop in the main thread in Jupyter if you want widget interactivity.
         threading.Thread(target=self.watch_progress, daemon=True).start()
     
-    def append_result(self, last_info):
-        from .OptJobResultInfo import OptJobResultInfo
-        fv_vector = last_info[0][:,1]
-        k = np.argmin(fv_vector)
-        fv = fv_vector[k]
-        if self.known_best_fv is None or fv < self.known_best_fv:
-            self.known_best_fv = fv
-            self.known_best_index = len(self.result_list)
-            self.logger.info("updated known_best_index to %d with known_best_fv=%g", self.known_best_index, fv)
+    def export_data(self, b, debug=True):
+        if debug:
+            from importlib import reload
+            import Optimizer.LrfExporter
+            reload(Optimizer.LrfExporter)
+        from .LrfExporter import LrfExporter
 
-        x_array = last_info[1]
-        result_info = OptJobResultInfo(fv=fv, params=x_array[k])
-        self.result_list.append(result_info)
-        self.logger.info("appended to result_list[%d]: fv=%g", len(self.result_list)-1, fv)
+        params = self.optimizer.init_params
+        try:
+            exporter = LrfExporter(self.optimizer, params, self.dsets)
+            folder = exporter.export()
+            fig_file = os.path.join(folder, "result_fig.jpg")
+            self.save_the_result_figure(fig_file=fig_file)
+            print(f"Exported to folder: {folder}")
+        except Exception as exc:
+            from molass_legacy.KekLib.ExceptionTracebacker import log_exception
+            log_exception(self.logger, "export: ")
+            print(f"Failed to export due to: {exc}")
+
+
