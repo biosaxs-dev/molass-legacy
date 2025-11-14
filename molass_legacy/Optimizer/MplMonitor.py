@@ -16,7 +16,7 @@ import matplotlib.pyplot as plt
 import ipywidgets as widgets
 from IPython.display import display, clear_output
 from molass_legacy.KekLib.IpyLabelUtils import inject_label_color_css
-from molass_legacy._MOLASS.SerialSettings import get_setting
+from molass_legacy._MOLASS.SerialSettings import get_setting, set_setting
 from molass_legacy.KekLib.IpyLabelUtils import inject_label_color_css, set_label_color
 class MplMonitor:
     def __init__(self, debug=True):
@@ -49,22 +49,18 @@ class MplMonitor:
             shutil.rmtree(folder)
         os.makedirs(folder, exist_ok=True)
 
-    def get_running_solver_info(self):
-        # dummy implementation, to be replaced with actual info from runner
-        return self.runner.solver, 20
-
-    def run(self, optimizer, init_params, niter=100, seed=1234, work_folder=None, dummy=False, debug=False):
+    def run(self, optimizer, init_params, niter=20, seed=1234, work_folder=None, dummy=False, debug=False):
         from importlib import reload
         import molass_legacy.Optimizer.JobState
         reload(molass_legacy.Optimizer.JobState)
         from molass_legacy.Optimizer.JobState import JobState
-        solver_name, niter = self.get_running_solver_info()
+
         self.optimizer = optimizer
         self.init_params = init_params
         self.runner.run(optimizer, init_params, niter=niter, seed=seed, work_folder=work_folder, dummy=dummy, debug=debug)
         abs_working_folder = os.path.abspath(self.runner.working_folder)
         cb_file = os.path.join(abs_working_folder, 'callback.txt')
-        self.job_state = JobState(cb_file, solver_name, niter)
+        self.job_state = JobState(cb_file, niter)
         self.logger.info("Starting optimization job in folder: %s", abs_working_folder)
         self.curr_index = None
 

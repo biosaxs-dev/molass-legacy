@@ -11,10 +11,11 @@ Optimizer.Scripting.py
     - Optimizer/OptimizerMain.py
 """
 import os
+import logging
 import numpy as np
+from molass_legacy._MOLASS.SerialSettings import set_setting
 
-def prepare_optimizer(in_folder, sd=None, num_components=None, function_code='G0346', analysis_folder=None, clear_temp_settings=True, debug=False):
-    import logging
+def prepare_data(in_folder, sd=None, clear_temp_settings=True, analysis_folder=None):
     from molass_legacy.Global.V2Init import update_sec_settings
 
     if clear_temp_settings:
@@ -48,13 +49,7 @@ def prepare_optimizer(in_folder, sd=None, num_components=None, function_code='G0
     pre_recog = sd.pre_recog
     trimmed_sd = treat.get_trimmed_sd(sd, pre_recog)
     corrected_sd = treat.get_corrected_sd(sd, pre_recog, trimmed_sd)
-
-    if function_code is not None:
-        from molass_legacy.Optimizer.FuncImporter import import_objective_function
-        function_class = import_objective_function(function_code)
-
-    if debug:
-        print("Running optimizer with function:", function_class.__name__)
+    treat.save()
 
     optimizer_folder = os.path.join(analysis_folder, "optimized")
     if not os.path.exists(optimizer_folder):
@@ -73,11 +68,21 @@ def prepare_optimizer(in_folder, sd=None, num_components=None, function_code='G0
     batch.pre_recog = pre_recog
     batch.base_curve_info = treat.get_base_curve_info()     # not used?
 
-    batch.exact_num_peaks = num_components
     batch.strict_sec_penalty = False
     batch.fullopt_class, batch.class_code = None, None
     batch.fullopt_input = FullOptInput(sd=trimmed_sd, corrected_sd=corrected_sd, rg_folder=rg_folder)
     batch.dsets = batch.fullopt_input.get_dsets(progress_cb=None, compute_rg=True, possibly_relocated=False)
+    return batch
+
+def prepare_optimizer(batch, num_components=None, function_code='G0346', debug=False):
+    if function_code is not None:
+        from molass_legacy.Optimizer.FuncImporter import import_objective_function
+        function_class = import_objective_function(function_code)
+
+    if debug:
+        print("Running optimizer with function:", function_class.__name__)
+
+    batch.exact_num_peaks = num_components
 
     # equivalent to PeakEditor.body
     uv_x, uv_y, xr_x, xr_y, baselines = batch.get_curve_xy(return_baselines=True)
@@ -91,12 +96,22 @@ def prepare_optimizer(in_folder, sd=None, num_components=None, function_code='G0
 
     init_params = batch.compute_init_params()
     optimizer.prepare_for_optimization(init_params)
-    return treat, optimizer, init_params
+    return optimizer, init_params
 
-def set_optimizer_settings(treat, param_init_type=0):
+def set_optimizer_settings(param_init_type=0, method="BH"):
+    from molass_legacy._MOLASS.SerialSettings import set_setting
     from .OptimizerSettings import OptimizerSettings
-    treat.save()
-    settings = OptimizerSettings(param_init_type=param_init_type)
+
+    solver_name = method.upper()
+    if solver_name == "BH":
+        optimization_method = 0
+    elif solver_name == "NS":
+        optimization_method = 1
+    else:
+        assert False, f"Unknown method: {method}"
+    set_setting("optimization_method", optimization_method)     # for backward compatibility 
+
+    settings = OptimizerSettings(param_init_type=param_init_type, optimization_method=optimization_method)
     settings.save()
 
 def run_optimizer(in_folder, optimizer, init_params, clear_jobs=True, dummy=False, debug=True):

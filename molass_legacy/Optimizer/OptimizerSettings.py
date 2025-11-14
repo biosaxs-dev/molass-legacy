@@ -44,7 +44,6 @@ def delayed_settings_init():
         ("mw_integer_ratios", None),
         ("avoid_peak_fronting", 0),
         ("optimization_method", 0),
-
         # SEC parameters
         ("exclusion_limit", default_columntype.excl_limit),
         ("poresize", poresize),
@@ -62,12 +61,19 @@ class OptimizerSettings:
         self.logger = logging.getLogger(__name__)
         self._dict = OrderedDict()
 
+        not_found_value = -1
+
         if len(kwargs) > 0:
-            for key, value in OPT_DEFAULT_SETTINGS[0:2]:
-                self._dict[key] =  kwargs.pop(key, value)
+            for i, (key, default_value) in enumerate(OPT_DEFAULT_SETTINGS):
+                value = kwargs.pop(key, not_found_value)
+                if value == not_found_value:
+                    if i < 2:
+                        # for param_init_type and bounds_type, use the default value
+                        value = default_value
+                    else:
+                        value = get_setting(key)
+                self._dict[key] = value
             assert len(kwargs) == 0
-            for key, _ in OPT_DEFAULT_SETTINGS[2:]:
-                self._dict[key] = get_setting(key)
 
     def save(self, path=None):
         if path is None:

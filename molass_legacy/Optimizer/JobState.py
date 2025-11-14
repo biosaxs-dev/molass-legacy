@@ -6,12 +6,13 @@ import logging
 import numpy as np
 import time
 from .StateSequence import read_callback_txt_impl
+from .OptimizerUtils import get_method_name
 
 class JobState:
-    def __init__(self, cb_file, solver_name=None, niter=20):
+    def __init__(self, cb_file, niter=20):
         self.logger = logging.getLogger(__name__)
         self.cb_file = cb_file
-        self.solver_name = solver_name
+        self.solver_name = get_method_name()
         self.niter = niter
         self.last_mod_time = None
         self._has_changed = False
