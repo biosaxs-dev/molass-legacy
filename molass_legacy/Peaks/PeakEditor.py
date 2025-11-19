@@ -89,6 +89,10 @@ class PeakEditor(FullBatch, Dialog):
         self.key_list = self.func_info.key_list
         Dialog.__init__(self, parent, "Initial Estimator", visible=False)
     
+    def update(self):
+        # overriding update to update GUI elements if any
+        Dialog.update(self)
+
     def is_busy(self):
         return self.is_busy_
 

@@ -8,8 +8,15 @@ MODEL_NAME_DICT = {
     "G1100" : "SDM",
     "G2010" : "EDM",
 }
+
 def get_model_name(class_code):
     return MODEL_NAME_DICT[class_code]
+
+def get_function_code(model_name):
+    for code, name in MODEL_NAME_DICT.items():
+        if name == model_name:
+            return code
+    return None
 
 METHOD_NAMES = ["BH", "NS", "MCMC", "SMC"]
 def get_method_name():

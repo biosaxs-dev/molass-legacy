@@ -9,6 +9,7 @@ import re
 import numpy as np
 from molass_legacy._MOLASS.SerialSettings import get_setting, set_setting, clear_temporary_settings
 from molass_legacy.Peaks.PeakParamsSet import PeakParamsSet
+from molass_legacy.KekLib.ExceptionTracebacker import log_exception
 
 class FullBatch:
     def __init__(self):
@@ -200,17 +201,33 @@ class FullBatch:
         self.fullopt = self.optimizer   # for backward compatibility
         self.params_type = self.fullopt.params_type
 
+    def get_ready_for_progress_display(self):
+        self.pbar = {"value": None}     # for compatibility with GUI estimators
+
+    def update_status_bar(self, status_text):
+        # override in subclasses with GUI elements
+        self.logger.info("Status update: %s", status_text)
+
+    def update(self):
+        # override in subclasses with GUI elements
+        pass
+
     def get_optimizer(self):
         return self.optimizer
 
-    def compute_init_params(self, debug=False):
-
-        estimator = self.params_type.get_estimator(self)
+    def compute_init_params(self, devel_version=False, debug=False):
+        try:
+            estimator = self.params_type.get_estimator(self, devel_version=devel_version, debug=debug)
+        except:
+            # for classes not supporting devel_version
+            log_exception(self.logger, "Exception in get_estimator; trying without devel_version.")
+            estimator = self.params_type.get_estimator(self)
 
         try:
-            self.init_params = estimator.estimate_params(debug=debug)
+            self.init_params = estimator.estimate_params(debug=False)
         except:
             # for classes not supporing debug
+            log_exception(self.logger, "Exception in estimate_params; trying without debug.")
             self.init_params = estimator.estimate_params()
 
         self.logger.info("len(init_params)=%d, init_params[-7:]=%s", len(self.init_params), str(self.init_params[-7:]))

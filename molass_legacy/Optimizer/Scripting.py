@@ -29,7 +29,14 @@ def prepare_data(in_folder, sd=None, clear_temp_settings=True, analysis_folder=N
             os.makedirs(analysis_folder, exist_ok=True)
     set_setting('analysis_folder', analysis_folder)
     update_sec_settings()
-    
+
+    optimizer_folder = os.path.join(analysis_folder, "optimized")
+    if not os.path.exists(optimizer_folder):
+        os.makedirs(optimizer_folder, exist_ok=True)
+    rg_folder = os.path.join(optimizer_folder, "rg-curve")
+    if not os.path.exists(rg_folder):
+        os.makedirs(rg_folder, exist_ok=True)
+
     if sd is None:
         from molass_legacy.Batch.StandardProcedure import StandardProcedure
         sp = StandardProcedure()
@@ -51,13 +58,6 @@ def prepare_data(in_folder, sd=None, clear_temp_settings=True, analysis_folder=N
     corrected_sd = treat.get_corrected_sd(sd, pre_recog, trimmed_sd)
     treat.save()
 
-    optimizer_folder = os.path.join(analysis_folder, "optimized")
-    if not os.path.exists(optimizer_folder):
-        os.makedirs(optimizer_folder, exist_ok=True)
-    rg_folder = os.path.join(optimizer_folder, "rg-curve")
-    if not os.path.exists(rg_folder):
-        os.makedirs(rg_folder, exist_ok=True)
-
     from molass_legacy.Batch.FullBatch import FullBatch
     from molass_legacy.Optimizer.FullOptInput import FullOptInput
     # equivalent to PeakEditor.__init__
@@ -74,10 +74,19 @@ def prepare_data(in_folder, sd=None, clear_temp_settings=True, analysis_folder=N
     batch.dsets = batch.fullopt_input.get_dsets(progress_cb=None, compute_rg=True, possibly_relocated=False)
     return batch
 
-def prepare_optimizer(batch, num_components=None, function_code='G0346', debug=False):
-    if function_code is not None:
-        from molass_legacy.Optimizer.FuncImporter import import_objective_function
-        function_class = import_objective_function(function_code)
+def prepare_optimizer(batch, num_components=None, model='EGH', function_code=None, debug=False):
+    from molass_legacy.Optimizer.FuncImporter import import_objective_function
+
+    if function_code is None:
+        assert model is not None, "Either model or function_code must be provided."
+        from molass_legacy.Optimizer.OptimizerUtils import get_function_code
+        function_code = get_function_code(model)
+    else:
+        assert model is None, "Either model or function_code must be provided, not both."
+        from molass_legacy.Optimizer.OptimizerUtils import get_model_name       
+        model_name = get_model_name(function_code)
+
+    function_class = import_objective_function(function_code)
 
     if debug:
         print("Running optimizer with function:", function_class.__name__)
@@ -92,11 +101,14 @@ def prepare_optimizer(batch, num_components=None, function_code='G0346', debug=F
     batch.set_lrf_src_args1(uv_x, uv_y, xr_x, xr_y, baselines)
 
     batch.construct_optimizer(fullopt_class=function_class)
-    optimizer = batch.optimizer
+    return batch.optimizer
 
-    init_params = batch.compute_init_params()
+def estimate_init_params(batch, optimizer, devel_version=False, debug=True):
+    batch.get_ready_for_progress_display()
+
+    init_params = batch.compute_init_params(devel_version=devel_version, debug=debug)
     optimizer.prepare_for_optimization(init_params)
-    return optimizer, init_params
+    return init_params
 
 def set_optimizer_settings(param_init_type=0, method="BH"):
     from molass_legacy._MOLASS.SerialSettings import set_setting
@@ -120,7 +132,7 @@ def run_optimizer(in_folder, optimizer, init_params, clear_jobs=True, dummy=Fals
         import molass_legacy.Optimizer.MplMonitor
         reload(molass_legacy.Optimizer.MplMonitor)
     from molass_legacy.Optimizer.MplMonitor import MplMonitor
-    monitor = MplMonitor()
+    monitor = MplMonitor(optimizer.get_function_code())
     if clear_jobs:
         monitor.clear_jobs()  # equivalent to BackRunner.
     monitor.run(optimizer, init_params, dummy=dummy, debug=debug)

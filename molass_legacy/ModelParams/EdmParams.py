@@ -67,15 +67,23 @@ class EdmParams:
     def set_x(self, x):
         self.x = x
 
-    def get_estimator(self, editor, debug=True):
-        if debug:
-            from importlib import reload
-            import molass_legacy.Estimators.EdmEstimator
-            reload(molass_legacy.Estimators.EdmEstimator)
-        from molass_legacy.Estimators.EdmEstimator import EdmEstimator
-
-        estimator = EdmEstimator(editor, self.n_components)
-        self.t0_upper_bound = estimator.get_t0_upper_bound()
+    def get_estimator(self, editor, devel_version=False, debug=False):
+        if devel_version:
+            if debug:
+                from importlib import reload
+                import molass_legacy.Estimators.EdmEstimatorDevel
+                reload(molass_legacy.Estimators.EdmEstimatorDevel)
+            from molass_legacy.Estimators.EdmEstimatorDevel import EdmEstimatorDevel
+            estimator = EdmEstimatorDevel(editor, self.n_components)
+            # self.t0_upper_bound = estimator.get_t0_upper_bound()
+        else:
+            if debug:
+                from importlib import reload
+                import molass_legacy.Estimators.EdmEstimator
+                reload(molass_legacy.Estimators.EdmEstimator)
+            from molass_legacy.Estimators.EdmEstimator import EdmEstimator
+            estimator = EdmEstimator(editor, self.n_components)
+            self.t0_upper_bound = estimator.get_t0_upper_bound()
         return estimator
 
     def compute_init_guess(self, *args):

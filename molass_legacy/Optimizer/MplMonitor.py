@@ -19,7 +19,7 @@ from molass_legacy.KekLib.IpyLabelUtils import inject_label_color_css
 from molass_legacy._MOLASS.SerialSettings import get_setting, set_setting
 from molass_legacy.KekLib.IpyLabelUtils import inject_label_color_css, set_label_color
 class MplMonitor:
-    def __init__(self, debug=True):
+    def __init__(self, function_code=None, debug=True):
         if debug:
             from importlib import reload
             import molass_legacy.Optimizer.BackRunner
@@ -41,7 +41,7 @@ class MplMonitor:
         self.logger.info(f"Optimizer job folder: {self.runner.optjob_folder}")
         self.result_list = []
         self.suptitle = None
-        self.func_code = "G0346"
+        self.func_code = function_code
 
     def clear_jobs(self):
         folder = self.runner.optjob_folder

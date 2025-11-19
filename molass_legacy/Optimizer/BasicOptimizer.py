@@ -212,6 +212,9 @@ class BasicOptimizer:
         self.exports_bounds = False
         self.vc = ValidComponents(self.num_pure_components)
 
+    def get_function_code(self):
+        return self.__class__.__name__
+
     def get_model_name(self):
         return self.params_type.get_model_name()
 

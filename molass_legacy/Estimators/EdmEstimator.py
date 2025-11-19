@@ -1,7 +1,7 @@
 """
     Estimators.EdmEstimator.py
 
-    Copyright (c) 2022-2024, SAXS Team, KEK-PF
+    Copyright (c) 2022-2025, SAXS Team, KEK-PF
 """
 import numpy as np
 import molass_legacy.KekLib.DebugPlot as plt
@@ -17,8 +17,8 @@ class EdmEstimator(EghEstimator):
     def estimate_params(self, debug=False):
         if debug:
             from importlib import reload
-            import Models.RateTheory.EDM
-            reload(Models.RateTheory.EDM)
+            import molass_legacy.Models.RateTheory.EDM
+            reload(molass_legacy.Models.RateTheory.EDM)
         from molass_legacy.Models.RateTheory.EDM import guess_multiple_impl, edm_impl
 
         init_xr_params, init_xr_baseparams, temp_rgs, init_mapping, init_uv_heights, init_uv_baseparams, init_mappable_range, seccol_params = self.estimate_egh_params()
