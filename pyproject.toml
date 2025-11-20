@@ -11,7 +11,7 @@ dependencies = [
   "scipy",
   "matplotlib",
   "pybaselines>=1.2.0",
-  "molass>=0.7.0",
+  "molass>=0.7.3",
   "statsmodels>=0.14.5",
   "scikit-learn",
   "toml",
@@ -25,6 +25,7 @@ dependencies = [
   "wmi",
   "numba",
   "ruptures",
+  "ultranest",
   "termcolor",
 ]
 
@@ -55,7 +56,7 @@ excel = [
 ]
 
 [project.scripts]
-molass = "molass_legacy.main:molass_gui"
+molass = "molass_legacy.molass:gui_main"
 
 [project.urls]
 Repository = "https://github.com/biosaxs-dev/molass-legacy"

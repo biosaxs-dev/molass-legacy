@@ -103,10 +103,11 @@ def prepare_optimizer(batch, num_components=None, model='EGH', function_code=Non
     batch.construct_optimizer(fullopt_class=function_class)
     return batch.optimizer
 
-def estimate_init_params(batch, optimizer, devel_version=False, debug=True):
+def estimate_init_params(batch, optimizer, developing=False, debug=True):
     batch.get_ready_for_progress_display()
 
-    init_params = batch.compute_init_params(devel_version=devel_version, debug=debug)
+    init_params = batch.compute_init_params(developing=developing, debug=debug)
+    print("Initial Parameters:", len(init_params))
     optimizer.prepare_for_optimization(init_params)
     return init_params
 
@@ -126,7 +127,7 @@ def set_optimizer_settings(param_init_type=0, method="BH"):
     settings = OptimizerSettings(param_init_type=param_init_type, optimization_method=optimization_method)
     settings.save()
 
-def run_optimizer(in_folder, optimizer, init_params, clear_jobs=True, dummy=False, debug=True):
+def run_optimizer(in_folder, optimizer, init_params, niter=20, clear_jobs=True, dummy=False, debug=True):
     if debug:
         from importlib import reload
         import molass_legacy.Optimizer.MplMonitor
@@ -135,8 +136,8 @@ def run_optimizer(in_folder, optimizer, init_params, clear_jobs=True, dummy=Fals
     monitor = MplMonitor(optimizer.get_function_code())
     if clear_jobs:
         monitor.clear_jobs()  # equivalent to BackRunner.
-    monitor.run(optimizer, init_params, dummy=dummy, debug=debug)
     monitor.create_dashboard()
+    monitor.run(optimizer, init_params, niter=niter, dummy=dummy, debug=debug)
     monitor.show(debug=debug)
 
     if dummy:

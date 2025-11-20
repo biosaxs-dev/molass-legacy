@@ -215,12 +215,12 @@ class FullBatch:
     def get_optimizer(self):
         return self.optimizer
 
-    def compute_init_params(self, devel_version=False, debug=False):
+    def compute_init_params(self, developing=False, debug=False):
         try:
-            estimator = self.params_type.get_estimator(self, devel_version=devel_version, debug=debug)
+            estimator = self.params_type.get_estimator(self, developing=developing, debug=debug)
         except:
-            # for classes not supporting devel_version
-            log_exception(self.logger, "Exception in get_estimator; trying without devel_version.")
+            # for classes not supporting developing
+            log_exception(self.logger, "Exception in get_estimator; trying without developing.")
             estimator = self.params_type.get_estimator(self)
 
         try:

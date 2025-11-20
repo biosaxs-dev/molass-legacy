@@ -454,7 +454,7 @@ class PeakEditor(FullBatch, Dialog):
 
     def re_construct_optimizer(self):
         self.construct_optimizer()
-        init_params = self.compute_init_params()
+        init_params = self.compute_init_params(developing=True)  # to enable developing version features
         self.fullopt.prepare_for_optimization(init_params)
 
     def draw_scores(self, init_params=None, draw_rg_curve=True, create_new_optimizer=True):
@@ -466,7 +466,7 @@ class PeakEditor(FullBatch, Dialog):
             pass
 
         if init_params is None:
-            init_params = self.compute_init_params()
+            init_params = self.compute_init_params(developing=True)
 
         self.fullopt.prepare_for_optimization(init_params)
 

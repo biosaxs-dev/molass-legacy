@@ -43,27 +43,6 @@ class MplMonitor:
         self.suptitle = None
         self.func_code = function_code
 
-    def clear_jobs(self):
-        folder = self.runner.optjob_folder
-        if os.path.exists(folder):
-            shutil.rmtree(folder)
-        os.makedirs(folder, exist_ok=True)
-
-    def run(self, optimizer, init_params, niter=20, seed=1234, work_folder=None, dummy=False, debug=False):
-        from importlib import reload
-        import molass_legacy.Optimizer.JobState
-        reload(molass_legacy.Optimizer.JobState)
-        from molass_legacy.Optimizer.JobState import JobState
-
-        self.optimizer = optimizer
-        self.init_params = init_params
-        self.runner.run(optimizer, init_params, niter=niter, seed=seed, work_folder=work_folder, dummy=dummy, debug=debug)
-        abs_working_folder = os.path.abspath(self.runner.working_folder)
-        cb_file = os.path.join(abs_working_folder, 'callback.txt')
-        self.job_state = JobState(cb_file, niter)
-        self.logger.info("Starting optimization job in folder: %s", abs_working_folder)
-        self.curr_index = None
-
     def create_dashboard(self):
         self.plot_output = widgets.Output()
 
@@ -90,6 +69,34 @@ class MplMonitor:
         self.dashboard = widgets.VBox([self.plot_output, self.controls, self.message_output])
         self.dashboard_output = widgets.Output()
         self.dialog_output = widgets.Output()
+
+    def clear_jobs(self):
+        folder = self.runner.optjob_folder
+        if os.path.exists(folder):
+            shutil.rmtree(folder)
+        os.makedirs(folder, exist_ok=True)
+
+    def run(self, optimizer, init_params, niter=20, seed=1234, max_trials=30, work_folder=None, dummy=False, debug=False):
+        self.optimizer = optimizer
+        self.init_params = init_params
+        self.nitrer = niter
+        self.seed = seed
+        self.num_trials = 0
+        self.max_trials = max_trials
+        self.run_impl(optimizer, init_params, niter=niter, seed=seed, work_folder=work_folder, dummy=dummy, debug=debug)
+
+    def run_impl(self, optimizer, init_params, niter=20, seed=1234, work_folder=None, dummy=False, debug=False):
+        from importlib import reload
+        import molass_legacy.Optimizer.JobState
+        reload(molass_legacy.Optimizer.JobState)
+        from molass_legacy.Optimizer.JobState import JobState
+
+        self.runner.run(optimizer, init_params, niter=niter, seed=seed, work_folder=work_folder, dummy=dummy, debug=debug)
+        abs_working_folder = os.path.abspath(self.runner.working_folder)
+        cb_file = os.path.join(abs_working_folder, 'callback.txt')
+        self.job_state = JobState(cb_file, niter)
+        self.logger.info("Starting optimization job in folder: %s", abs_working_folder)
+        self.curr_index = None
 
     def trigger_terminate(self, b):
         from molass_legacy.KekLib.IpyUtils import ask_user
@@ -135,11 +142,23 @@ class MplMonitor:
                 sys.stdout = old_stdout
                 sys.stderr = old_stderr
 
+        # Unique warning messages and counts
+        messages_counts = {}
+        for w in wlist:
+            msg = str(w.message)
+            if msg in messages_counts:
+                messages_counts[msg] += 1
+            else:
+                messages_counts[msg] = 1
+
         # Collect all messages
         messages = []
         # Warnings
-        for w in wlist:
-            messages.append(f"Warning: {w.message}")
+        for msg, count in messages_counts.items():
+            if count > 1:
+                messages.append(f"Warning: {msg} (x {count})")
+            else:
+                messages.append(f"Warning: {msg}")
         # Print output and errors
         out_str = buf_out.getvalue()
         err_str = buf_err.getvalue()
@@ -157,21 +176,46 @@ class MplMonitor:
     def watch_progress(self, interval=1.0):
         while True:
             exit_loop = False
+            has_ended = False
             ret = self.runner.poll()
+
             if ret is not None:
                 exit_loop = True
+                has_ended = True
             # self.logger.info("self.terminate=%s, id(self)=%d", str(self.terminate_event.is_set()), id(self))
             if self.terminate_event.is_set():
                 self.logger.info("Terminating optimization job.")
                 self.runner.terminate()
                 exit_loop = True
+
+            resume_loop = False
             if exit_loop:
-                self.status_label.value = "Status: Terminated"
-                set_label_color(self.status_label, "gray")
-                self.terminate_button.disabled = True
+                self.num_trials += 1
+                if has_ended:
+                    self.logger.info("Optimization job ended normally.")
+                    self.status_label.value = "Status: Completed"
+                    set_label_color(self.status_label, "blue")
+                    if self.num_trials < self.max_trials:
+                        self.logger.info("Starting a new optimization trial (%d/%d).", self.num_trials, self.max_trials)
+                        best_params = self.get_best_params()
+                        self.run_impl(self.optimizer, best_params, niter=self.nitrer, seed=self.seed, work_folder=None, dummy=False, debug=False)
+                        self.status_label.value = "Status: Running"
+                        set_label_color(self.status_label, "green")
+                        resume_loop = True
+                    else:
+                        self.status_label.value = "Status: Max Trials Reached"
+                        set_label_color(self.status_label, "gray")
+                        self.terminate_button.disabled = True
+                else:
+                    self.logger.info("Optimization job terminated by user.")
+                    self.status_label.value = "Status: Terminated"
+                    set_label_color(self.status_label, "gray")
+                    self.terminate_button.disabled = True
+
                 with self.plot_output:
                     clear_output(wait=True)  # Remove any possibly remaining plot
-                break
+                if not resume_loop:
+                    break
 
             self.job_state.update()
             if self.job_state.has_changed():
@@ -186,6 +230,20 @@ class MplMonitor:
         # Never run a long or infinite loop in the main thread in Jupyter if you want widget interactivity.
         threading.Thread(target=self.watch_progress, daemon=True).start()
     
+    def get_best_params(self):
+        plot_info = self.job_state.get_plot_info()
+        x_array = plot_info[-1]
+
+        if len(x_array) == 0:
+            self.curr_index = 0
+            return self.init_params
+
+        fv = plot_info[0]
+        k = np.argmin(fv[:,1])
+        self.curr_index = k
+        best_params = x_array[k]
+        return best_params
+
     def export_data(self, b, debug=True):
         if debug:
             from importlib import reload

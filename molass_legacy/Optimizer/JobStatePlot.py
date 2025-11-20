@@ -9,7 +9,7 @@ def draw_suptitle(self):
     from molass_legacy.SerialAnalyzer.DataUtils import get_in_folder
     from molass_legacy.KekLib.BasicUtils import ordinal_str
     from molass_legacy.Optimizer.OptimizerUtils import get_model_name, get_method_name
-    job_name = "000"
+    job_name = "%03d" % (self.num_trials,)
     in_folder = get_in_folder()
     model_name = get_model_name(self.func_code)
     text = "Job %s State at %s local minimum on %s with model=%s method=%s" % (
@@ -30,6 +30,7 @@ def plot_job_state(self, params=None, plot_info=None, niter=20):
 
     if params is None:
         assert plot_info is not None, "Either params or plot_info must be provided."
+        # task: unify with self.get_best_params()
         x_array = plot_info[-1]
         if len(x_array) == 0:
             return

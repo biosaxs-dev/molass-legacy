@@ -7,9 +7,9 @@
 numba_is_available = False
 DEBUG = False
 
-def molass_gui():
+def gui_main():
     """
-    molass_gui()
+    gui_main()
     This function initializes the Molass GUI application.
     It sets up the environment, imports necessary modules, and starts the main GUI loop.
     It also handles debugging and logging if DEBUG is set to True.
@@ -18,7 +18,7 @@ def molass_gui():
     Note that the entry point is defined in pyproject.toml as follows::
 
         [project.scripts]
-        molass = "molass_legacy.main:molass_gui"
+        molass = "molass_legacy.molass:gui_main"
 
     This definition allows the application to be run from the command line using the `molass` command.
     
@@ -208,4 +208,4 @@ if __name__ == '__main__':
     print(f'MOLASS Legacy {get_version()}')
     from molass import get_version
     print(f'MOLASS Library {get_version()}')
-    molass_gui()
+    gui_main()

@@ -67,8 +67,8 @@ class EdmParams:
     def set_x(self, x):
         self.x = x
 
-    def get_estimator(self, editor, devel_version=False, debug=False):
-        if devel_version:
+    def get_estimator(self, editor, developing=False, debug=False):
+        if developing:
             if debug:
                 from importlib import reload
                 import molass_legacy.Estimators.EdmEstimatorDevel
