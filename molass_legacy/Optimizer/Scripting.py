@@ -133,9 +133,7 @@ def run_optimizer(in_folder, optimizer, init_params, niter=20, clear_jobs=True, 
         import molass_legacy.Optimizer.MplMonitor
         reload(molass_legacy.Optimizer.MplMonitor)
     from molass_legacy.Optimizer.MplMonitor import MplMonitor
-    monitor = MplMonitor(optimizer.get_function_code())
-    if clear_jobs:
-        monitor.clear_jobs()  # equivalent to BackRunner.
+    monitor = MplMonitor(optimizer.get_function_code(), clear_jobs=clear_jobs)
     monitor.create_dashboard()
     monitor.run(optimizer, init_params, niter=niter, dummy=dummy, debug=debug)
     monitor.show(debug=debug)

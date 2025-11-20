@@ -19,7 +19,7 @@ def draw_suptitle(self):
     else:
         self.suptitle.set_text(text)
 
-def plot_job_state(self, params=None, plot_info=None, niter=20):
+def plot_job_state(self, params, plot_info=None, niter=20):
     from matplotlib.gridspec import GridSpec
     import seaborn
     seaborn.set_theme()
@@ -27,19 +27,6 @@ def plot_job_state(self, params=None, plot_info=None, niter=20):
     import molass_legacy.Optimizer.ProgressChart
     reload(molass_legacy.Optimizer.ProgressChart)
     from molass_legacy.Optimizer.ProgressChart import draw_progress
-
-    if params is None:
-        assert plot_info is not None, "Either params or plot_info must be provided."
-        # task: unify with self.get_best_params()
-        x_array = plot_info[-1]
-        if len(x_array) == 0:
-            return
-        fv = plot_info[0]
-        k = np.argmin(fv[:,1])
-        self.curr_index = k
-        params = x_array[k]
-    else:
-        self.curr_index = 0
 
     self.fig = fig = plt.figure(figsize=(18, 9))
     gs = GridSpec(33, 15, wspace=1.3, hspace=1.0)

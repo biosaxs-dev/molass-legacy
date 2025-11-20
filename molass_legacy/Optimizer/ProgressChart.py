@@ -79,15 +79,19 @@ def get_remaining_time(fv_array, finish_time):
     return time
 
 def draw_progress(self, plot_info, niter=20):
+
     for ax in self.prog_axes:
         ax.cla()
     for ax in self.prog_axes[0:3]:
         ax.set_xticklabels([])
 
+    fv, max_num_evals, x_array = plot_info
+    if fv.shape[0] == 0:
+        return
+
     # Function Values
     prog_ax = self.prog_ax
 
-    fv, max_num_evals, x_array = plot_info
     x_, y_ = fv[:,0:2].T
     prog_ax.plot(x_, convert_score(y_))
     prog_ax.set_xlim(-PROGRESS_X_MARGIN, max_num_evals + PROGRESS_X_MARGIN)

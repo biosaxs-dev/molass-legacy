@@ -18,8 +18,9 @@ from IPython.display import display, clear_output
 from molass_legacy.KekLib.IpyLabelUtils import inject_label_color_css
 from molass_legacy._MOLASS.SerialSettings import get_setting, set_setting
 from molass_legacy.KekLib.IpyLabelUtils import inject_label_color_css, set_label_color
+
 class MplMonitor:
-    def __init__(self, function_code=None, debug=True):
+    def __init__(self, function_code=None, clear_jobs=True, debug=True):
         if debug:
             from importlib import reload
             import molass_legacy.Optimizer.BackRunner
@@ -27,6 +28,9 @@ class MplMonitor:
         from molass_legacy.Optimizer.BackRunner import BackRunner
         analysis_folder = get_setting("analysis_folder")
         optimizer_folder = os.path.join(analysis_folder, "optimized")
+        self.optimizer_folder = optimizer_folder
+        if clear_jobs:
+            self.clear_jobs()
         logpath = os.path.join(optimizer_folder, 'monitor.log')
         self.fileh = logging.FileHandler(logpath, 'w')
         format_csv_ = '%(asctime)s,%(levelname)s,%(name)s,%(message)s'
@@ -42,6 +46,14 @@ class MplMonitor:
         self.result_list = []
         self.suptitle = None
         self.func_code = function_code
+
+    def clear_jobs(self):
+        folder = self.optimizer_folder
+        for sub in os.listdir(folder):
+            subpath =  os.path.join(folder, sub)
+            if os.path.isdir(subpath):
+                shutil.rmtree(subpath)
+                os.makedirs(subpath, exist_ok=True)
 
     def create_dashboard(self):
         self.plot_output = widgets.Output()
@@ -70,12 +82,6 @@ class MplMonitor:
         self.dashboard_output = widgets.Output()
         self.dialog_output = widgets.Output()
 
-    def clear_jobs(self):
-        folder = self.runner.optjob_folder
-        if os.path.exists(folder):
-            shutil.rmtree(folder)
-        os.makedirs(folder, exist_ok=True)
-
     def run(self, optimizer, init_params, niter=20, seed=1234, max_trials=30, work_folder=None, dummy=False, debug=False):
         self.optimizer = optimizer
         self.init_params = init_params
@@ -90,6 +96,8 @@ class MplMonitor:
         import molass_legacy.Optimizer.JobState
         reload(molass_legacy.Optimizer.JobState)
         from molass_legacy.Optimizer.JobState import JobState
+
+        optimizer.prepare_for_optimization(init_params)
 
         self.runner.run(optimizer, init_params, niter=niter, seed=seed, work_folder=work_folder, dummy=dummy, debug=debug)
         abs_working_folder = os.path.abspath(self.runner.working_folder)
@@ -112,17 +120,22 @@ class MplMonitor:
         ask_user("Do you really want to terminate?", callback=handle_response, output_widget=self.dialog_output)
 
     def show(self, debug=False):
-        self.update_plot(params=self.init_params)
+        self.update_plot()
         # with self.dashboard_output:
         display(self.dashboard)
         inject_label_color_css()
         set_label_color(self.status_label, "green")
 
-    def update_plot(self, params=None, plot_info=None):
+    def update_plot(self):
         from importlib import reload
         import molass_legacy.Optimizer.JobStatePlot
         reload(molass_legacy.Optimizer.JobStatePlot)
         from molass_legacy.Optimizer.JobStatePlot import plot_job_state
+
+        # Get current plot info and best params
+        plot_info = self.job_state.get_plot_info()
+        params = self.get_best_params(plot_info=plot_info)
+
         # Prepare to capture warnings and prints
         buf_out = io.StringIO()
         buf_err = io.StringIO()
@@ -134,7 +147,7 @@ class MplMonitor:
             try:
                 with self.plot_output:
                     clear_output(wait=True)
-                    plot_job_state(self, params=params, plot_info=plot_info)
+                    plot_job_state(self, params, plot_info=plot_info, niter=self.nitrer)
                     display(self.fig)
                     plt.close(self.fig)
             finally:
@@ -190,7 +203,6 @@ class MplMonitor:
 
             resume_loop = False
             if exit_loop:
-                self.num_trials += 1
                 if has_ended:
                     self.logger.info("Optimization job ended normally.")
                     self.status_label.value = "Status: Completed"
@@ -212,6 +224,9 @@ class MplMonitor:
                     set_label_color(self.status_label, "gray")
                     self.terminate_button.disabled = True
 
+                self.save_the_result_figure()
+                self.num_trials += 1
+
                 with self.plot_output:
                     clear_output(wait=True)  # Remove any possibly remaining plot
                 if not resume_loop:
@@ -219,8 +234,7 @@ class MplMonitor:
 
             self.job_state.update()
             if self.job_state.has_changed():
-                plot_info = self.job_state.get_plot_info()
-                self.update_plot(plot_info=plot_info)
+                self.update_plot()
                 # clear_output(wait=True)
                 # display(self.dashboard)
             time.sleep(interval)
@@ -230,8 +244,10 @@ class MplMonitor:
         # Never run a long or infinite loop in the main thread in Jupyter if you want widget interactivity.
         threading.Thread(target=self.watch_progress, daemon=True).start()
     
-    def get_best_params(self):
-        plot_info = self.job_state.get_plot_info()
+    def get_best_params(self, plot_info=None):
+        if plot_info is None:
+            plot_info = self.job_state.get_plot_info()
+
         x_array = plot_info[-1]
 
         if len(x_array) == 0:
@@ -243,6 +259,14 @@ class MplMonitor:
         self.curr_index = k
         best_params = x_array[k]
         return best_params
+
+    def save_the_result_figure(self, fig_file=None):
+        if fig_file is None:
+            figs_folder = os.path.join(self.optimizer_folder, "figs")
+            if not os.path.exists(figs_folder):
+                os.makedirs(figs_folder)
+            fig_file = os.path.join(figs_folder, "fig-%03d.jpg" % self.num_trials)
+        self.fig.savefig(fig_file)
 
     def export_data(self, b, debug=True):
         if debug:
