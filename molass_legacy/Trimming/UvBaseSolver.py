@@ -61,8 +61,8 @@ class UvBaseSolver:
         sigmoid_param_array = np.array(sigmoid_param_list)
         d_egh_param_array = np.array(d_egh_param_list)
 
-        np1 = np.product(egh_param_array.shape)
-        np2 = np1 + np.product(sigmoid_param_array.shape)
+        np1 = np.prod(egh_param_array.shape)
+        np2 = np1 + np.prod(sigmoid_param_array.shape)
 
         x = np.arange(U.shape[1])
         egh_param_list_ = [prm.copy()for prm in egh_param_list]

@@ -79,7 +79,12 @@ class OptimizerSettings:
         if path is None:
             path = get_settings_path()
         with open(path, "w") as fh:
-            fh.write(self.__repr__())
+            fh.write("OptimizerSettings(\n")
+            items = list(self._dict.items())
+            for i, (key, value) in enumerate(items):
+                comma = "," if i < len(items) - 1 else ""
+                fh.write(f"    {key} = {repr(value)}{comma}\n")
+            fh.write(")\n")
 
     def load(self, path=None, optimizer_folder=None):
         from molass_legacy.KekLib.EvalUtils import eval_file

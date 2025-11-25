@@ -25,7 +25,7 @@ class StcParamsSheet(ParamsSheetBase):
         t0, rp, N, me, T, mp = sec_params
 
         xr_base = 0
-        xr_bp_base = xr_base + np.product(xr_params.shape)
+        xr_bp_base = xr_base + np.prod(xr_params.shape)
         rg_base = xr_bp_base + len(xr_baseparams)
         mp_base = rg_base + len(rgs)
         uv_base = mp_base + len(mapping)

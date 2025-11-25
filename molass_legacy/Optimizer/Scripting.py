@@ -49,7 +49,7 @@ def prepare_data(in_folder, sd=None, clear_temp_settings=True, analysis_folder=N
     from molass_legacy.Batch.OptDataSetsProxy import OptDataSetsProxy as OptDataSets
     from molass_legacy.SecSaxs.DataTreatment import DataTreatment
 
-    trimming = 1
+    trimming = 2
     correction = 1
     unified_baseline_type = 1
     treat = DataTreatment(route="v2", trimming=trimming, correction=correction, unified_baseline_type=unified_baseline_type)
@@ -65,7 +65,7 @@ def prepare_data(in_folder, sd=None, clear_temp_settings=True, analysis_folder=N
     batch.logger = logging.getLogger(__name__)
     batch.sd = trimmed_sd
     batch.corrected_sd = corrected_sd
-    batch.pre_recog = pre_recog
+    batch.pre_recog = PreliminaryRecognition(corrected_sd)  # to ensure better that mapping is available
     batch.base_curve_info = treat.get_base_curve_info()     # not used?
 
     batch.strict_sec_penalty = False
@@ -74,7 +74,7 @@ def prepare_data(in_folder, sd=None, clear_temp_settings=True, analysis_folder=N
     batch.dsets = batch.fullopt_input.get_dsets(progress_cb=None, compute_rg=True, possibly_relocated=False)
     return batch
 
-def prepare_optimizer(batch, num_components=None, model='EGH', function_code=None, debug=False):
+def prepare_optimizer(batch, num_components=3, model="EGH", method="BH", function_code=None, debug=False):
     from molass_legacy.Optimizer.FuncImporter import import_objective_function
 
     if function_code is None:
@@ -87,6 +87,7 @@ def prepare_optimizer(batch, num_components=None, model='EGH', function_code=Non
         model_name = get_model_name(function_code)
 
     function_class = import_objective_function(function_code)
+    set_optimizer_settings(num_components=num_components, model=model, method=method)
 
     if debug:
         print("Running optimizer with function:", function_class.__name__)
@@ -103,17 +104,20 @@ def prepare_optimizer(batch, num_components=None, model='EGH', function_code=Non
     batch.construct_optimizer(fullopt_class=function_class)
     return batch.optimizer
 
-def estimate_init_params(batch, optimizer, developing=False, debug=True):
-    batch.get_ready_for_progress_display()
-
-    init_params = batch.compute_init_params(developing=developing, debug=debug)
-    print("Initial Parameters:", len(init_params))
-    optimizer.prepare_for_optimization(init_params)
-    return init_params
-
-def set_optimizer_settings(param_init_type=0, method="BH"):
+def set_optimizer_settings(num_components=3, model="EGH", method="BH", param_init_type=1):
     from molass_legacy._MOLASS.SerialSettings import set_setting
     from .OptimizerSettings import OptimizerSettings
+
+    elution_model = 0
+    model = model.upper()
+    if model == "EGH":
+        elution_model = 0
+    elif model == "SDM":
+        elution_model = 2
+    elif model == "EDM":
+        elution_model = 5
+    else:
+        assert False, f"Unknown model: {model}"
 
     solver_name = method.upper()
     if solver_name == "BH":
@@ -122,10 +126,23 @@ def set_optimizer_settings(param_init_type=0, method="BH"):
         optimization_method = 1
     else:
         assert False, f"Unknown method: {method}"
-    set_setting("optimization_method", optimization_method)     # for backward compatibility 
+    set_setting("optimization_method", optimization_method)     # for backward compatibility
 
-    settings = OptimizerSettings(param_init_type=param_init_type, optimization_method=optimization_method)
+    separate_eoii_flags = [0] * num_components
+
+    settings = OptimizerSettings(param_init_type=param_init_type,
+                                 elution_model=elution_model,
+                                 optimization_method=optimization_method,
+                                 separate_eoii_flags=separate_eoii_flags)
     settings.save()
+
+def estimate_init_params(batch, optimizer, developing=False, debug=False):
+    batch.get_ready_for_progress_display()
+
+    init_params = batch.compute_init_params(developing=developing, debug=debug)
+    print("Initial Parameters:", len(init_params))
+    optimizer.prepare_for_optimization(init_params)
+    return init_params
 
 def run_optimizer(in_folder, optimizer, init_params, niter=20, clear_jobs=True, dummy=False, debug=True):
     if debug:

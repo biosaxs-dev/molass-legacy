@@ -53,7 +53,7 @@ class ConstrainedPrior(DistributionBase):
             return 0.0
         # print("values=", values)
         # print("ordering_values=", ordering_values)
-        # return np.product([rv.pdf(p) for rv, p in zip(self.rv_list, values)])
-        p = np.product([rv.pdf(p) for rv, p in zip(self.rv_list, values)])
+        # return np.prod([rv.pdf(p) for rv, p in zip(self.rv_list, values)])
+        p = np.prod([rv.pdf(p) for rv, p in zip(self.rv_list, values)])
         # print("p=", p)
         return p * self.pdf_factor
