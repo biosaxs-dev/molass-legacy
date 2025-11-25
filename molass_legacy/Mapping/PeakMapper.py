@@ -2,7 +2,7 @@
 
     PeakMapper.py
 
-    Copyright (c) 2018-2024, SAXS Team, KEK-PF
+    Copyright (c) 2018-2025, SAXS Team, KEK-PF
 
 """
 import copy
@@ -13,7 +13,7 @@ from scipy.stats        import pearsonr, linregress
 from scipy.interpolate  import UnivariateSpline
 from scipy.optimize     import minimize
 from itertools          import combinations
-import OurStatsModels   as sm
+import molass_legacy.KekLib.OurStatsModels as sm
 from importlib import reload
 from .SimplestMapper import SimplestMapper
 from .PeakCurve import PeakCurve, get_peak_curve_info
@@ -43,7 +43,7 @@ DEEM_SINGLE_PEAK_RATIO      = 0.1
 ACCEPTABLE_ENDS_RATIO_DEV   = 0.5
 
 def debug_plot( a_curve, x_curve, where_str, params=None):
-    from DataUtils import get_in_folder
+    from molass_legacy.SerialAnalyzer.DataUtils import get_in_folder
 
     plt.push()
     fig = plt.figure(figsize=(14, 7))
@@ -83,7 +83,7 @@ def debug_plot( a_curve, x_curve, where_str, params=None):
     plt.pop()
 
 def simple_plot_pair_curves(title, a_curve, x_curve):
-    from DataUtils import get_in_folder
+    from molass_legacy.SerialAnalyzer.DataUtils import get_in_folder
     in_folder = get_in_folder()
 
     with plt.Dp():
@@ -249,6 +249,7 @@ class PeakMapper:
             except Exception as exc:
                 # as in 20201007_2
                 from .ReducedCurve import make_reduced_curve
+                warnlog_exception(self.logger, "get_imroved_mapping failed: ")
                 self.logger.warning("resorting to curve reducing due to exception: %s", str(exc))
                 curves = []
                 for curve in self.a_curve, self.x_curve:
@@ -435,7 +436,7 @@ class PeakMapper:
             simple_plot_pair_curves("before mapping", a_curve, x_curve)
 
         if self.debug:
-            from CallStack import CallStack
+            from molass_legacy.KekLib.CallStack import CallStack
             cstack = CallStack()
             print('PeakMapper call stack=', cstack)
             debug_plot( a_curve, x_curve, "before" )
@@ -601,7 +602,7 @@ class PeakMapper:
         mod = sm.WLS( y, X, weights=w )
         res = mod.fit()
 
-        if False:
+        if debug:
             B, A = res.params
             mp_x = curve2.x*A + B
             mp_y = curve2.spline(mp_x)/curve2.max_y*curve1.max_y
@@ -694,7 +695,11 @@ class PeakMapper:
         j = slope * i + intercept
 
         source_y = curve2.spline(i)
-        scale = curve2.height/curve1.height
+        try:
+            scale = curve2.height/curve1.height
+        except:
+            self.logger.warning("curve height not available, using max_y instead.")
+            scale = curve2.max_y/curve1.max_y
         mapped_y_ = curve1.spline(j) * scale
 
         def obj_func(params):
@@ -713,7 +718,7 @@ class PeakMapper:
         if debug:
         # if True:
             from matplotlib.patches import Polygon
-            from DataUtils import get_in_folder
+            from  molass_legacy.SerialAnalyzer.DataUtils import get_in_folder
 
             in_folder = get_in_folder()
             markersize = 10
@@ -1081,7 +1086,7 @@ class PeakMapper:
         # if debug and self.debug:
         if debug:
             def best_debug_plot(title, curve1, curve2, feature_info=None, orig_curves=None):
-                from DataUtils import get_in_folder
+                from  molass_legacy.SerialAnalyzer.DataUtils import get_in_folder
                 reversed_=False
                 plt.push()
                 fig, axes = plt.subplots( figsize=(21, 8), nrows=1, ncols=2 )
@@ -1144,7 +1149,7 @@ class PeakMapper:
                 B, A = max_params
                 best_params = np.array([A, B])
                 self.logger.info("get_best_mapping_features_params has been successful: A=%g, B=%g" % (A, B))
-            except:
+            except Exception as etb:
                 self.logger.warning(" " + etb.last_lines())
                 log_exception(self.logger, "get_best_mapping_features_params failed: ")
                 max_score, best_params, max_indeces, max_correl, max_simil, max_info = 0, None, None, None, None, None
@@ -1231,7 +1236,7 @@ class PeakMapper:
         debug = True
         if debug:
             from matplotlib.patches import Rectangle
-            from DataUtils import get_in_folder
+            from molass_legacy.SerialAnalyzer.DataUtils import get_in_folder
             print('A_, B_=', A_, B_)
             plt.push()
             fig, axes = plt.subplots(nrows=1, ncols=2, figsize=(14, 7))
@@ -1562,10 +1567,10 @@ class PeakMapper:
         return np.min(num_peaks) == 1
 
     def get_imroved_mapping(self, fallback=False, debug=False):
-        from LPM import get_corrected   # moved due to ImportError: ... (most likely due to a circular import)
+        from  molass_legacy.DataStructure.LPM import get_corrected   # moved due to ImportError: ... (most likely due to a circular import)
 
         if debug:
-            from DebugUtils import show_call_stack
+            from  molass_legacy.KekLib.DebugUtils import show_call_stack
             show_call_stack("----: ", indented_only=True)            
 
         curves = self.mapped_curves

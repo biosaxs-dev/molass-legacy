@@ -47,7 +47,7 @@ class DataSet:
             except:
                 self.xr_index = sd.xray_index
 
-    def copy(self):
+    def copy(self, pre_recog=None):
         ds = DataSet(
                 self.xr_array.copy(),
                 self.xr_ex.copy(),
@@ -57,6 +57,7 @@ class DataSet:
                 self.uv_wv.copy(),
                 self.xr_ey.copy(),
                 self.uv_ey.copy(),
+                pre_recog=self.pre_recog if pre_recog is None else pre_recog,
                 )
 
         ds.absorbance = self.absorbance     # note that this is not a copy
@@ -64,8 +65,8 @@ class DataSet:
         ds.sd = self.sd                     # necessary?
         return ds
 
-    def get_copy(self):             # for backward compatibility
-        return self.copy()
+    def get_copy(self, pre_recog=None):             # for backward compatibility
+        return self.copy(pre_recog=pre_recog)
 
     def get_id_info(self):          # for backward compatibility
         baseline_corrected = True   # not sure
