@@ -13,6 +13,7 @@ def get_model_name(class_code):
     return MODEL_NAME_DICT[class_code]
 
 def get_function_code(model_name):
+    model_name = model_name.upper()
     for code, name in MODEL_NAME_DICT.items():
         if name == model_name:
             return code

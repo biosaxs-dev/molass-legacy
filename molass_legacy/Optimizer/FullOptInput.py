@@ -1,7 +1,7 @@
 """
     Optimizer.FullOptInput.py
 
-    Copyright (c) 2021-2023, SAXS Team, KEK-PF
+    Copyright (c) 2021-2025, SAXS Team, KEK-PF
 
     First note that FullOptInput is constructed in the both processes, namely
         ・ monitor process and
@@ -110,3 +110,7 @@ class FullOptInput:
     def restore_trimming_info(self):
         from molass_legacy.Trimming import restore_trimming_info_impl
         restore_trimming_info_impl(self.trimming_txt, self.logger)
+
+    def get_spectral_vectors(self):
+        sd = self.get_sd()
+        return sd.qvector, sd.lvector

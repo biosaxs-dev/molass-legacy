@@ -12,7 +12,7 @@ def main():
     root_dir = os.path.dirname(os.path.dirname( this_dir ))
     sys.path.insert(0, root_dir)
 
-    optlist, args = getopt.getopt(sys.argv[1:], 'c:w:f:n:i:b:d:m:s:r:t:p:T:M:S:')
+    optlist, args = getopt.getopt(sys.argv[1:], 'c:w:f:n:i:b:d:m:s:r:t:p:T:M:S:L:')
     print(optlist, args)
     optdict = dict(optlist)
     if optdict.get('-r'):
@@ -81,6 +81,7 @@ def main_impl(optdict, optlist):
         seed = int(optdict['-s'])
         trimming_txt = optdict['-r']
         sleep_seconds = optdict.get('-t')
+        legacy = optdict.get('-L') == 'legacy'
 
         unserialize_for_optimizer(optdict.get('-p'))    # "poresize_bounds", "t0_upper_bound"
 
@@ -124,6 +125,7 @@ def main_impl(optdict, optlist):
                     class_code=class_code,
                     shared_memory=shared_memory,
                     nnn=nnn,
+                    legacy=legacy,
                     debug=False,
                     )
 

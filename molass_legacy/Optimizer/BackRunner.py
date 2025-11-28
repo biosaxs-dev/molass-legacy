@@ -51,7 +51,7 @@ class BackRunner:
         # this method is currently used by tester
         self.working_folder = folder
 
-    def run(self, optimizer, init_params, niter=100, seed=1234, work_folder=None, dummy=False, debug=False):
+    def run(self, optimizer, init_params, niter=100, seed=1234, work_folder=None, dummy=False, legacy=True, debug=False):
         from .FullOptResult import FILES
 
         n_components = optimizer.n_components
@@ -115,6 +115,7 @@ class BackRunner:
                 '-T', test_pattern,
                 '-M', np_shm_name,
                 '-S', self.solver,
+                '-L', 'legacy' if legacy else 'library',
                 ])
 
     def poll(self):

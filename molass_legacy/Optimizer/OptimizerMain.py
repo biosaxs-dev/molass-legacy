@@ -12,10 +12,12 @@ def optimizer_main(in_folder, trimming_txt=None, n_components=3,
                    init_params=None, real_bounds=None,
                    drift_type=None, niter=100, seed=None,
                    callback=True, class_code='F0000', shared_memory=None,
-                   nnn=0,  debug=True):
-    from .FullOptInput import FullOptInput
+                   nnn=0,
+                   legacy=True,
+                   debug=True):
+    from molass.Bridge.OptimizerInput import OptimizerInput
 
-    fullopt_input = FullOptInput(in_folder=in_folder, trimming_txt=trimming_txt)
+    fullopt_input = OptimizerInput(in_folder=in_folder, trimming_txt=trimming_txt, legacy=legacy)
     dsets = fullopt_input.get_dsets()
 
     if seed is None:
@@ -24,11 +26,12 @@ def optimizer_main(in_folder, trimming_txt=None, n_components=3,
     fullopt_class = import_objective_function(class_code)
     uv_base_curve = fullopt_input.get_base_curve()      # uv_base_curve comes from FullOptInput.get_sd_from_folder()
     xr_base_curve = create_xr_baseline_object()
+    qvector, wvector = fullopt_input.get_spectral_vectors()
     optimizer = fullopt_class(dsets, n_components,
                 uv_base_curve=uv_base_curve,
                 xr_base_curve=xr_base_curve,
-                qvector=fullopt_input.sd.qvector,   # trimmmed sd
-                wvector=fullopt_input.sd.lvector,
+                qvector=qvector,   # trimmmed sd
+                wvector=wvector,
                 shared_memory=shared_memory)
 
     strategy = optimizer.get_strategy()

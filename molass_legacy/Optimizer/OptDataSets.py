@@ -1,7 +1,7 @@
 """
     Optimizer.OptDataSets.py
 
-    Copyright (c) 2022-2024, SAXS Team, KEK-PF
+    Copyright (c) 2022-2025, SAXS Team, KEK-PF
 """
 import os
 import logging
@@ -127,36 +127,38 @@ def get_dsets_impl(sd, corrected_sd, progress_cb=None, rg_folder=None, rg_info=T
     return ((xr_curve, D), rg_curve, (uv_curve, U))
 
 class OptDataSets:
-    def __init__(self, sd, corrected_sd, dsets=None, rg_folder=None, progress_cb=None, compute_rg=False, possibly_relocated=True, current_folder=None):
+    def __init__(self, sd, corrected_sd, dsets=None, rg_folder=None, E=None,
+                 progress_cb=None, compute_rg=False, possibly_relocated=True, current_folder=None):
         self.logger = logging.getLogger(__name__)
         if dsets is None:
             dsets = get_dsets_impl(sd, corrected_sd, progress_cb=progress_cb, rg_folder=rg_folder, logger=self.logger,
                                     compute_rg=compute_rg, possibly_relocated=possibly_relocated, current_folder=current_folder)
         self.dsets = dsets
-        try:
-            D = dsets[0][1]
-            E = sd.intensity_array[:,:,2].T
-            self.weight_info = self.compute_weight_info(1/(E + D/100))
-        except:
-            # LinAlgError("SVD did not converge") as in 20200214_2
-            from molass_legacy.KekLib.ExceptionTracebacker import log_exception
-            log_exception(self.logger, "compute_weight_info error: ")
+        if E is None:
+            try:
+                D = dsets[0][1]
+                E = sd.intensity_array[:,:,2].T
+                self.weight_info = self.compute_weight_info(1/(E + D/100))
+            except:
+                # LinAlgError("SVD did not converge") as in 20200214_2
+                from molass_legacy.KekLib.ExceptionTracebacker import log_exception
+                log_exception(self.logger, "compute_weight_info error: ")
 
-            D, E, qv, curve = sd.get_xr_data_separate_ly()
-            self.weight_info = self.compute_weight_info(1/(E + D/100))  # seems to work for 20200214_2
-            self.logger.info("retried with self.compute_weight_info(1/(E + np.abs(D)/100))")
+                D, E, qv, curve = sd.get_xr_data_separate_ly()
+                self.weight_info = self.compute_weight_info(1/(E + D/100))  # seems to work for 20200214_2
+                self.logger.info("retried with self.compute_weight_info(1/(E + np.abs(D)/100))")
 
-            if False:
-                # this plot failes to appear
-                import molass_legacy.KekLib.DebugPlot as plt
-                from MatrixData import simple_plot_3d
-                with plt.Dp():
-                    fig, (ax1, ax2)= plt.subplots(ncols=2, figsize=(12,5), subplot_kw=dict(projection="3d"))
-                    fig.suptitle("compute_weight_info Error")
-                    simple_plot_3d(ax1, D, x=qv)
-                    simple_plot_3d(ax2, E, x=qv)
-                    fig.tight_layout()
-                    plt.show()
+                if False:
+                    # this plot failes to appear
+                    import molass_legacy.KekLib.DebugPlot as plt
+                    from MatrixData import simple_plot_3d
+                    with plt.Dp():
+                        fig, (ax1, ax2)= plt.subplots(ncols=2, figsize=(12,5), subplot_kw=dict(projection="3d"))
+                        fig.suptitle("compute_weight_info Error")
+                        simple_plot_3d(ax1, D, x=qv)
+                        simple_plot_3d(ax2, E, x=qv)
+                        fig.tight_layout()
+                        plt.show()
         self.E = E
 
     def relocate_rg_folder(self):
