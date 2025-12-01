@@ -369,23 +369,23 @@ def get_curve_xy_impl(sd, baseline_type=1, return_details=False, debug=False):
                 if baseline_type == 1:
                     if debug:
                         from importlib import reload
-                        import Baseline.LinearBaseline
-                        reload(Baseline.LinearBaseline)
-                        import UV.UvPreRecog
-                        reload(UV.UvPreRecog)
+                        import molass_legacy.Baseline.LinearBaseline
+                        reload(molass_legacy.Baseline.LinearBaseline)
+                        import molass_legacy.UV.UvPreRecog
+                        reload(molass_legacy.UV.UvPreRecog)
                     from molass_legacy.Baseline.LinearBaseline import LinearBaseline as XrBaselineClass
                     from molass_legacy.UV.UvPreRecog import UvPreRecog
                 elif baseline_type == 2:
                     if debug:
                         from importlib import reload
-                        import Baseline.IntegralBaseline
-                        reload(Baseline.IntegralBaseline)            
+                        import molass_legacy.Baseline.IntegralBaseline
+                        reload(molass_legacy.Baseline.IntegralBaseline)            
                     from molass_legacy.Baseline.IntegralBaseline import IntegralBaseline as XrBaselineClass
                 elif baseline_type == 3:
                     if debug:
                         from importlib import reload
-                        import Baseline.FoulingBaseline
-                        reload(Baseline.FoulingBaseline)            
+                        import molass_legacy.Baseline.FoulingBaseline
+                        reload(molass_legacy.Baseline.FoulingBaseline)            
                     from molass_legacy.Baseline.FoulingBaseline import FoulingBaseline as XrBaselineClass
                 else:
                     assert False
