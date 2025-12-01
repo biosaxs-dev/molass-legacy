@@ -1,13 +1,17 @@
 """
     Optimizer.PenaltyUtils.py
 
-    Copyright (c) 2024, SAXS Team, KEK-PF
+    Copyright (c) 2024-2025, SAXS Team, KEK-PF
 """
-from molass_legacy.Optimizer.XrUvScaleRatio import xruv_scale_ratio_penalty
 PENALTY_SCALE = 1e3
 UV_B_ALLOW_RATIO = 0.1
 
 def compute_mapping_penalty(uv_curve, xr_curve, init_mapping, mapping, uv_x_size, xr_scales, uv_scales, debug=False):
+    if debug:
+        from importlib import reload
+        import molass_legacy.Optimizer.XrUvScaleRatio
+        reload(molass_legacy.Optimizer.XrUvScaleRatio)
+    from molass_legacy.Optimizer.XrUvScaleRatio import xruv_scale_ratio_penalty
     a_init, b_init = init_mapping
     a, b = mapping
     ratio = a/a_init
