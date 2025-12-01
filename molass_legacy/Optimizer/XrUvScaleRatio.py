@@ -21,7 +21,7 @@ def xruv_scale_ratio_penalty(xr_scales, uv_scales, log_ratio=True, debug=False):
         import molass_legacy.KekLib.DebugPlot as plt
         print("average=", average)
         print("dev=", dev)
-        allow = std*ALLOW_RRATIO_ALLOWATIO
+        allow = std*RATIO_ALLOW
         with plt.Dp():
             fig, ax = plt.subplots()
             ax.set_title(f"UV/Xray Ratio Debug: RATIO_ALLOW={RATIO_ALLOW}", fontsize=16)
