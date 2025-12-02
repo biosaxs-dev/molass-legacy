@@ -1,7 +1,7 @@
 """
     SecTheory.SecEstimator.py
 
-    Copyright (c) 2023, SAXS Team, KEK-PF
+    Copyright (c) 2023-2025, SAXS Team, KEK-PF
 """
 import numpy as np
 from scipy.optimize import minimize, basinhopping
@@ -11,7 +11,7 @@ from molass_legacy.Models.ElutionCurveModels import egh
 
 NUM_SEC_PARAMS = 6      # used in other modules
 
-def guess_initial_secparams(init_xr_params, rgs):
+def guess_initial_secparams(init_xr_params, rgs, poresize=None):
     Npc = get_setting('num_plates_pc')
     k = np.argmax(init_xr_params[:,0])
     tR = init_xr_params[k,1]
@@ -24,14 +24,16 @@ def guess_initial_secparams(init_xr_params, rgs):
     t0 = tR - P*(1 - rho)**m
     """
     tI = tR - np.sqrt(Npc)*sigma
-    rp = get_setting('poresize')
-    print("----------------- guess_initial_secparams: rp=", rp)
+    if poresize is None:
+        poresize = get_setting('poresize')
+
+    print("----------------- guess_initial_secparams: poresize=", poresize)
     rg = rgs[k]
-    rho = rg/rp
+    rho = rg/poresize
     P = 2000
     m = 2
     t0 = tR - P*(1 - rho)**m
-    return Npc, rp, tI, t0, P, m
+    return Npc, poresize, tI, t0, P, m
 
 
 NUM_PARAMS = 4
