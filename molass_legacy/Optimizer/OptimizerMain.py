@@ -1,11 +1,36 @@
 """
     Optimizer.OptimizerMain.py
 
-    Copyright (c) 2021-2024, SAXS Team, KEK-PF
+    Copyright (c) 2021-2025, SAXS Team, KEK-PF
 """
+import os
 import numpy as np
 from molass_legacy.Baseline.BaselineUtils import create_xr_baseline_object
 from .FuncImporter import import_objective_function
+
+def create_optimizer_from_job(in_folder=None, n_components=None, class_code=None, trimming_txt=None, shared_memory=None,
+                              need_settings=False):
+    if need_settings:
+        pass
+
+    from molass.Bridge.OptimizerInput import OptimizerInput
+    fullopt_input = OptimizerInput(in_folder=in_folder, trimming_txt=trimming_txt, legacy=True)
+    dsets = fullopt_input.get_dsets()
+    x_shifts_file = trimming_txt.replace('trimming.txt', 'x_shifts.txt')
+    if os.path.exists(x_shifts_file):
+        x_shifts = np.loadtxt(x_shifts_file, dtype=int)
+        dsets.apply_x_shifts(x_shifts)
+    fullopt_class = import_objective_function(class_code)
+    uv_base_curve = fullopt_input.get_base_curve()      # uv_base_curve comes from FullOptInput.get_sd_from_folder()
+    xr_base_curve = create_xr_baseline_object()
+    qvector, wvector = fullopt_input.get_spectral_vectors()
+    optimizer = fullopt_class(dsets, n_components,
+                uv_base_curve=uv_base_curve,
+                xr_base_curve=xr_base_curve,
+                qvector=qvector,
+                wvector=wvector,
+                shared_memory=shared_memory)
+    return optimizer
 
 def optimizer_main(in_folder, trimming_txt=None, n_components=3,
                    solver=None,
@@ -15,25 +40,15 @@ def optimizer_main(in_folder, trimming_txt=None, n_components=3,
                    nnn=0,
                    legacy=True,
                    debug=True):
-    from molass.Bridge.OptimizerInput import OptimizerInput
 
-    fullopt_input = OptimizerInput(in_folder=in_folder, trimming_txt=trimming_txt, legacy=legacy)
-    dsets = fullopt_input.get_dsets()
+    optimizer = create_optimizer_from_job(in_folder=in_folder,
+                                          n_components=n_components,
+                                          class_code=class_code,
+                                          trimming_txt=trimming_txt,
+                                          shared_memory=shared_memory)
 
     if seed is None:
         seed = np.random.randint(100000, 999999)
-
-    fullopt_class = import_objective_function(class_code)
-    uv_base_curve = fullopt_input.get_base_curve()      # uv_base_curve comes from FullOptInput.get_sd_from_folder()
-    xr_base_curve = create_xr_baseline_object()
-    qvector, wvector = fullopt_input.get_spectral_vectors()
-    optimizer = fullopt_class(dsets, n_components,
-                uv_base_curve=uv_base_curve,
-                xr_base_curve=xr_base_curve,
-                qvector=qvector,   # trimmmed sd
-                wvector=wvector,
-                shared_memory=shared_memory)
-
     strategy = optimizer.get_strategy()
     if strategy.trust_initial_baseline():
         baseline_fixed = True

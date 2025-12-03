@@ -26,16 +26,16 @@ def prepare_data(in_folder, sd=None, clear_temp_settings=True, analysis_folder=N
     if analysis_folder is None:
         analysis_folder = 'temp_analysis'
         if not os.path.exists(analysis_folder):
-            os.makedirs(analysis_folder, exist_ok=True)
+            os.makedirs(analysis_folder)
     set_setting('analysis_folder', analysis_folder)
     update_sec_settings()
 
     optimizer_folder = os.path.join(analysis_folder, "optimized")
     if not os.path.exists(optimizer_folder):
-        os.makedirs(optimizer_folder, exist_ok=True)
+        os.makedirs(optimizer_folder)
     rg_folder = os.path.join(optimizer_folder, "rg-curve")
     if not os.path.exists(rg_folder):
-        os.makedirs(rg_folder, exist_ok=True)
+        os.makedirs(rg_folder)
 
     if sd is None:
         from molass_legacy.Batch.StandardProcedure import StandardProcedure
@@ -144,7 +144,7 @@ def estimate_init_params(batch, optimizer, developing=False, debug=False):
     optimizer.prepare_for_optimization(init_params)
     return init_params
 
-def run_optimizer(in_folder, optimizer, init_params, niter=20, clear_jobs=True, dummy=False, debug=True):
+def run_optimizer(optimizer, init_params, niter=20, clear_jobs=True, dummy=False, x_shifts=None, debug=True):
     if debug:
         from importlib import reload
         import molass_legacy.Optimizer.MplMonitor
@@ -152,7 +152,7 @@ def run_optimizer(in_folder, optimizer, init_params, niter=20, clear_jobs=True, 
     from molass_legacy.Optimizer.MplMonitor import MplMonitor
     monitor = MplMonitor(optimizer.get_function_code(), clear_jobs=clear_jobs)
     monitor.create_dashboard()
-    monitor.run(optimizer, init_params, niter=niter, dummy=dummy, debug=debug)
+    monitor.run(optimizer, init_params, niter=niter, dummy=dummy, x_shifts=x_shifts, debug=debug)
     monitor.show(debug=debug)
 
     if dummy:

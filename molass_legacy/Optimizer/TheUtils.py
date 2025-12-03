@@ -16,6 +16,7 @@ FILES = [
     "seed.txt",
     "trimming.txt",
     "bounds.txt",
+    "x_shifts.txt",
     ]
 
 def get_optimizer_folder():

@@ -51,7 +51,7 @@ class BackRunner:
         # this method is currently used by tester
         self.working_folder = folder
 
-    def run(self, optimizer, init_params, niter=100, seed=1234, work_folder=None, dummy=False, legacy=True, debug=False):
+    def run(self, optimizer, init_params, niter=100, seed=1234, work_folder=None, dummy=False, x_shifts=None, legacy=True, debug=False):
         from .FullOptResult import FILES
 
         n_components = optimizer.n_components
@@ -87,6 +87,11 @@ class BackRunner:
         trimming_txt = FILES[6]
         trimming_file = os.path.join(folder, trimming_txt)
         save_trimming_txt(trimming_file)
+
+        if x_shifts is not None:
+            x_shifts_txt = FILES[8]
+            x_shifts_file = os.path.join(folder, x_shifts_txt)
+            np.savetxt(x_shifts_file, x_shifts, fmt="%d")
 
         # test_pattern = str(get_setting("test_pattern"))
         test_pattern = "0"      # always set it to "0" to suppress execution-blocking messages

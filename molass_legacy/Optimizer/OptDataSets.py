@@ -202,3 +202,15 @@ class OptDataSets:
 
     def get_opt_weight_info(self):
         return self.weight_info
+    
+    def get_x_shifts(self):
+        """ return array-like of two elements [xr_shift, uv_shift] """
+        (xr_curve, D), rg_curve, (uv_curve, U) = self.dsets
+        return np.array([xr_curve.x[0], uv_curve.x[0]])
+
+    def apply_x_shifts(self, x_shifts):
+        """ x_shifts: array-like of two elements [xr_shift, uv_shift] """
+        (xr_curve, D), rg_curve, (uv_curve, U) = self.dsets
+        xr_curve.x += x_shifts[0]
+        uv_curve.x += x_shifts[1]
+        self.dsets = ((xr_curve, D), rg_curve, (uv_curve, U))

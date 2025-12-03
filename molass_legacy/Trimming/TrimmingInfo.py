@@ -2,16 +2,16 @@
 
     TrimmingInfo.py
 
-    Copyright (c) 2016-2024, SAXS Team, KEK-PF
+    Copyright (c) 2016-2025, SAXS Team, KEK-PF
 """
 
 TRIMMING_ITEMS = ["uv_restrict_list", "xr_restrict_list"]
 
 class TrimmingInfo:
     def __init__(self, flag, start_, stop_, size_, extra=None):
-        start = int(start_)     # int to avoid overspecification with numpy.int64
-        stop = int(stop_)       # int to avoid overspecification with numpy.int64
-        size = int(size_)       # int to avoid overspecification with numpy.int64
+        start = None if start_ is None else int(start_) # int to avoid overspecification with numpy.int64
+        stop = None if stop_ is None else int(stop_)    # int to avoid overspecification with numpy.int64
+        size = 0 if size_ is None else int(size_)    # int to avoid overspecification with numpy.int64
         self.flag   = flag
         self.start  = start
         self.end    = size - 1 if stop is None else stop - 1    # for plot (to be used)
