@@ -89,9 +89,10 @@ class MplMonitor:
         self.seed = seed
         self.num_trials = 0
         self.max_trials = max_trials
-        self.run_impl(optimizer, init_params, niter=niter, seed=seed, work_folder=work_folder, dummy=dummy, x_shifts=x_shifts, debug=debug)
+        self.x_shifts = x_shifts
+        self.run_impl(optimizer, init_params, niter=niter, seed=seed, work_folder=work_folder, dummy=dummy, debug=debug)
 
-    def run_impl(self, optimizer, init_params, niter=20, seed=1234, work_folder=None, dummy=False, x_shifts=None, debug=False):
+    def run_impl(self, optimizer, init_params, niter=20, seed=1234, work_folder=None, dummy=False, debug=False):
         from importlib import reload
         import molass_legacy.Optimizer.JobState
         reload(molass_legacy.Optimizer.JobState)
@@ -99,7 +100,7 @@ class MplMonitor:
 
         optimizer.prepare_for_optimization(init_params)
 
-        self.runner.run(optimizer, init_params, niter=niter, seed=seed, work_folder=work_folder, dummy=dummy, x_shifts=x_shifts, debug=debug)
+        self.runner.run(optimizer, init_params, niter=niter, seed=seed, work_folder=work_folder, dummy=dummy, x_shifts=self.x_shifts, debug=debug)
         abs_working_folder = os.path.abspath(self.runner.working_folder)
         cb_file = os.path.join(abs_working_folder, 'callback.txt')
         self.job_state = JobState(cb_file, niter)
