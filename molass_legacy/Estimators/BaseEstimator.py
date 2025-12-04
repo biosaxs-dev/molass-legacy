@@ -8,14 +8,14 @@ from molass_legacy._MOLASS.SerialSettings import set_setting
 from molass_legacy.SecTheory.T0UpperBound import estimate_t0upper_bound
 
 class BaseEstimator:
-    def __init__(self, editor):
+    def __init__(self, editor, t0_upper_bound=None):
         self.logger = logging.getLogger(self.__class__.__name__)
         self.editor = editor
         self.sd = editor.sd
         self.corrected_sd = editor.corrected_sd
         self.nc = editor.get_n_components()     # this includes baseline
         self.ecurves = editor.ecurves
-        self.t0_upper_bound = None
+        self.t0_upper_bound = t0_upper_bound
 
     def get_t0_upper_bound(self):
         if self.t0_upper_bound is None:

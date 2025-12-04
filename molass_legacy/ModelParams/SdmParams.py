@@ -59,15 +59,14 @@ class SdmParams:
     def get_model_name(self):
         return 'SDM'
 
-    def get_estimator(self, editor, debug=True):
+    def get_estimator(self, editor, t0_upper_bound=None, debug=True):
         if debug:
             from importlib import reload
             import molass_legacy.Estimators.SdmEstimator
             reload(molass_legacy.Estimators.SdmEstimator)
         from molass_legacy.Estimators.SdmEstimator import SdmEstimator
 
-        estimator = SdmEstimator(editor)
-        self.t0_upper_bound = estimator.get_t0_upper_bound()
+        estimator = SdmEstimator(editor, t0_upper_bound=t0_upper_bound)
         self.estimator = estimator
         return estimator
 

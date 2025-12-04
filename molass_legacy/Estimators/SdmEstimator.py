@@ -10,9 +10,9 @@ from molass_legacy.Peaks.PeProgressConstants import MAXNUM_STEPS, STOCH_INIT_STE
 from .BaseEstimator import BaseEstimator
 
 class SdmEstimator(BaseEstimator):
-    def __init__(self, editor):
-        BaseEstimator.__init__(self, editor)
-
+    def __init__(self, editor, t0_upper_bound=None):
+        BaseEstimator.__init__(self, editor, t0_upper_bound=t0_upper_bound)
+    
     def estimate_params(self, lrf_src=None, edm_available=False, debug=False):
         return self.compute_sdm_init_params(self.nc, lrf_src=lrf_src, edm_available=edm_available, debug=debug)
 

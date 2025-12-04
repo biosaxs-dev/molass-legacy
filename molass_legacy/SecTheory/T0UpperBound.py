@@ -1,12 +1,12 @@
 """
     SecTheory.T0UpperBound.py
 
-    Copyright (c) 2022, SAXS Team, KEK-PF
+    Copyright (c) 2022-2025, SAXS Team, KEK-PF
 """
 import numpy as np
 from bisect import bisect_right
 import molass_legacy.KekLib.DebugPlot as plt
-from GeometryUtils import rotated_argmin
+from molass_legacy.KekLib.GeometryUtils import rotated_argmin
 from molass_legacy._MOLASS.SerialSettings import get_setting
 
 SMALL_RATIO = 0.005
@@ -26,8 +26,8 @@ def estimate_t0upper_bound(ecurve, debug=False):
     k = min(i, j)
 
     if debug:
-        from PlotUtils import align_yaxis_np
-        from DataUtils import get_in_folder
+        from molass_legacy.KekLib.PlotUtils import align_yaxis_np
+        from molass_legacy.SerialAnalyzer.DataUtils import get_in_folder
 
         in_folder = get_in_folder()
 
