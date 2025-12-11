@@ -570,7 +570,10 @@ class SummaryBook:
     def get_xray_scattering_info( self ):
         ret_dict = {}
         in_folder = get_setting( 'in_folder' )
-        info_file = in_folder + '/Xray_Scattering_Info.txt'
+        info_file = os.path.join(in_folder, 'Xray_Scattering_Info.txt')
+        if not os.path.isfile( info_file ):
+            self.logger.warning( 'Xray_Scattering_Info.txt not found in %s' % in_folder )
+            return ret_dict
         fh = open( info_file )
         wavelength_re   = re.compile( r'Wavelength:\s+(\d+\.\d+)' )
         pixel_size_re   = re.compile( r'PixelSize:\s+(\d+e-\d+)\s*m\s+x\s+(\d+e-\d+)\s*m' )

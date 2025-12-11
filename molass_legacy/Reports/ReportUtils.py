@@ -2,7 +2,7 @@
 
     ReportUtils.py
 
-    Copyright (c) 2016-2024, SAXS Team, KEK-PF
+    Copyright (c) 2016-2025, SAXS Team, KEK-PF
 
 """
 import os
@@ -172,7 +172,11 @@ def make_zero_extrapolation_book(
                                         boundary_j, parent=parent, lrf_info=lrf_info )
     if excel_is_available:
         book.save( book_file )
-        book.add_format_setting( book_file )
+        try:
+            book.add_format_setting( book_file )
+        except Exception:
+            from molass_legacy.KekLib.ExceptionTracebacker import warnlog_exception
+            warnlog_exception( logger, 'Failed to format excel book: %s' % book_file )
     else:
         if logger is not None:
             _, file = os.path.split(book_file)
