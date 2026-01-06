@@ -1,7 +1,7 @@
 """
     Optimizer.BackRunner.py
 
-    Copyright (c) 2021-2024, SAXS Team, KEK-PF
+    Copyright (c) 2021-2026, SAXS Team, KEK-PF
 """
 import os
 import sys
@@ -51,7 +51,8 @@ class BackRunner:
         # this method is currently used by tester
         self.working_folder = folder
 
-    def run(self, optimizer, init_params, niter=100, seed=1234, work_folder=None, dummy=False, x_shifts=None, legacy=True, debug=False):
+    def run(self, optimizer, init_params, niter=100, seed=1234, work_folder=None, dummy=False, x_shifts=None, legacy=True,
+            debug=False, devel=False):
         from .FullOptResult import FILES
 
         n_components = optimizer.n_components
@@ -83,6 +84,8 @@ class BackRunner:
         optimizer_py = os.path.join(this_folder, 'optimizer-dummy.py' if dummy else 'optimizer.py')
 
         in_folder = get_setting('in_folder')
+        if in_folder is None:
+            in_folder = 'IN_FOLDER_NOT_SET'
 
         trimming_txt = FILES[6]
         trimming_file = os.path.join(folder, trimming_txt)
@@ -103,6 +106,7 @@ class BackRunner:
         from .OptimizerUtils import get_impl_method_name
         nnn = int(self.working_folder[-3:])
         self.solver = get_impl_method_name(nnn)
+        python_syspath = os.getenv('PYTHONPATH', '') if devel else ''
 
         self.proc = subprocess.Popen([sys.executable, optimizer_py,
                 '-c', class_code,
@@ -121,6 +125,7 @@ class BackRunner:
                 '-M', np_shm_name,
                 '-S', self.solver,
                 '-L', 'legacy' if legacy else 'library',
+                '-P', python_syspath
                 ])
 
     def poll(self):

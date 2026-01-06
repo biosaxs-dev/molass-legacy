@@ -1,7 +1,7 @@
 """
     Experiment.DataUtils.py
 
-    Copyright (c) 2024-2025, SAXS Team, KEK-PF
+    Copyright (c) 2024-2026, SAXS Team, KEK-PF
 """
 import logging
 import numpy as np
@@ -24,10 +24,14 @@ def get_columntype(in_folder=None):
         return get_columntype_from_id(test_columtype_id)
 
     columtype_id = None
-    for column_name in UNKNOWN_NAMES:
-        if in_folder.find(column_name) >= 0:
-            columtype_id = 'unknown'
-            return get_columntype_from_id(columtype_id)
+    if in_folder is None:
+        columtype_id = 'unknown'
+        return get_columntype_from_id(columtype_id)
+    else:
+        for column_name in UNKNOWN_NAMES:
+            if in_folder.find(column_name) >= 0:
+                columtype_id = 'unknown'
+                return get_columntype_from_id(columtype_id)
 
     if in_folder.find('20230706') >= 0:
         columtype_id = 'agilentw'

@@ -12,9 +12,14 @@ def main():
     root_dir = os.path.dirname(os.path.dirname( this_dir ))
     sys.path.insert(0, root_dir)
 
-    optlist, args = getopt.getopt(sys.argv[1:], 'c:w:f:n:i:b:d:m:s:r:t:p:T:M:S:L:')
+    optlist, args = getopt.getopt(sys.argv[1:], 'c:w:f:n:i:b:d:m:s:r:t:p:T:M:S:L:P:')
     print(optlist, args)
     optdict = dict(optlist)
+    python_syspath = optdict.get('-P')
+    if python_syspath is not None:
+        for path in python_syspath.split(os.pathsep):
+            if path not in sys.path:
+                sys.path.insert(0, path)
     if optdict.get('-r'):
         main_impl(optdict, optlist)
     else:
