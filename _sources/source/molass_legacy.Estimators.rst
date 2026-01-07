@@ -14,6 +14,7 @@ Submodules
 
    molass_legacy.Estimators.BaseEstimator
    molass_legacy.Estimators.EdmEstimator
+   molass_legacy.Estimators.EdmEstimatorDevel
    molass_legacy.Estimators.EghEstimator
    molass_legacy.Estimators.FdEmgEstimator
    molass_legacy.Estimators.LjEghEstimator

@@ -93,7 +93,6 @@ Submodules
    molass_legacy.Solvers
    molass_legacy.Stochastic
    molass_legacy.SymPy
-   molass_legacy.Synthesizer
    molass_legacy.Test
    molass_legacy.Theory
    molass_legacy.Tools
@@ -104,3 +103,12 @@ Submodules
    molass_legacy.V2PropOptimizer
    molass_legacy.Wave
    molass_legacy.ref_codes
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   molass_legacy.SysArgs
+   molass_legacy.molass

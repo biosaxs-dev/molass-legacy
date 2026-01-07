@@ -52,6 +52,8 @@ Submodules
    molass_legacy.KekLib.HtmlColorNames
    molass_legacy.KekLib.ImportUtils
    molass_legacy.KekLib.IntegrateUtils
+   molass_legacy.KekLib.IpyLabelUtils
+   molass_legacy.KekLib.IpyUtils
    molass_legacy.KekLib.KillableThread
    molass_legacy.KekLib.KnownPaths
    molass_legacy.KekLib.LinkedToplevel

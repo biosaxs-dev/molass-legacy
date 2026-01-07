@@ -17,4 +17,5 @@ Submodules
    molass_legacy.ObjectiveFunctions.G0665
    molass_legacy.ObjectiveFunctions.G0705
    molass_legacy.ObjectiveFunctions.G1100
+   molass_legacy.ObjectiveFunctions.G1200
    molass_legacy.ObjectiveFunctions.G2010

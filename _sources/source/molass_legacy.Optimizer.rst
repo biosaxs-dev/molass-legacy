@@ -53,12 +53,15 @@ Submodules
    molass_legacy.Optimizer.GuinierRg
    molass_legacy.Optimizer.InitialInfo
    molass_legacy.Optimizer.IntegerRatios
+   molass_legacy.Optimizer.JobState
    molass_legacy.Optimizer.JobStateCanvas
    molass_legacy.Optimizer.JobStateInfo
+   molass_legacy.Optimizer.JobStatePlot
    molass_legacy.Optimizer.LrfExporter
    molass_legacy.Optimizer.LrfOptimizer
    molass_legacy.Optimizer.ModelDataSet
    molass_legacy.Optimizer.ModifyStateDialog
+   molass_legacy.Optimizer.MplMonitor
    molass_legacy.Optimizer.MwIntegrity
    molass_legacy.Optimizer.NaviFrame
    molass_legacy.Optimizer.NpSharedMemory
@@ -83,6 +86,7 @@ Submodules
    molass_legacy.Optimizer.ParamsIterator
    molass_legacy.Optimizer.ParamsSelector
    molass_legacy.Optimizer.PenaltyUtils
+   molass_legacy.Optimizer.ProgressChart
    molass_legacy.Optimizer.RatioInterpretIllust
    molass_legacy.Optimizer.ResidualView
    molass_legacy.Optimizer.RestartPatcher
@@ -95,6 +99,7 @@ Submodules
    molass_legacy.Optimizer.RgVisibleFigure
    molass_legacy.Optimizer.ScaleAdjustInspect
    molass_legacy.Optimizer.ScoreTransition
+   molass_legacy.Optimizer.Scripting
    molass_legacy.Optimizer.SecConformance
    molass_legacy.Optimizer.SecInspection
    molass_legacy.Optimizer.SettingsSerializer
@@ -114,4 +119,5 @@ Submodules
    molass_legacy.Optimizer.XrStateFigure
    molass_legacy.Optimizer.XrUvScaleRatio
    molass_legacy.Optimizer.optimizer
+   molass_legacy.Optimizer.optimizer-dummy
    molass_legacy.Optimizer.temp
