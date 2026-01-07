@@ -20,7 +20,7 @@ class BackRunner:
     def __init__(self):
         self.optjob_folder = get_optjob_folder_impl()
         self.np_shm = get_shm_singleton()
-        self.proc = None
+        self.process = None
         self.solver = None
 
     def get_optjob_folder(self):
@@ -108,7 +108,7 @@ class BackRunner:
         self.solver = get_impl_method_name(nnn)
         python_syspath = os.getenv('PYTHONPATH', '') if devel else ''
 
-        self.proc = subprocess.Popen([sys.executable, optimizer_py,
+        self.process = subprocess.Popen([sys.executable, optimizer_py,
                 '-c', class_code,
                 '-w', folder,
                 '-f', in_folder,
@@ -129,16 +129,16 @@ class BackRunner:
                 ])
 
     def poll(self):
-        return self.proc.poll()
+        return self.process.poll()
 
     def getpid(self):
-        return self.proc.pid
+        return self.process.pid
 
     def get_callback_txt_path(self):
         return os.path.join(self.working_folder, 'callback.txt')
 
     def terminate(self):
-        self.proc.terminate()
+        self.process.terminate()
 
     def revive(self):
         # still working on this method as of 20210616
@@ -146,7 +146,7 @@ class BackRunner:
         for i in range(1, 3):
             last_folder = os.path.join(self.optjob_folder, nodes[-i])
             try:
-                self.proc = PopenProxy(nodes[-1])
+                self.process = PopenProxy(nodes[-1])
                 break
             except:
                 pass
