@@ -150,7 +150,7 @@ def run_optimizer(optimizer, init_params, niter=20, clear_jobs=True, dummy=False
         import molass_legacy.Optimizer.MplMonitor
         reload(molass_legacy.Optimizer.MplMonitor)
     from molass_legacy.Optimizer.MplMonitor import MplMonitor
-    monitor = MplMonitor(optimizer.get_function_code(), clear_jobs=clear_jobs)
+    monitor = MplMonitor(optimizer.get_function_code(), clear_jobs=clear_jobs, xr_only=optimizer.get_xr_only())
     monitor.create_dashboard()
     monitor.run(optimizer, init_params, niter=niter, dummy=dummy, x_shifts=x_shifts, debug=debug)
     monitor.show(debug=debug)
