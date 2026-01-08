@@ -8,7 +8,8 @@ from bisect import bisect_right
 import numpy as np
 from scipy.stats import linregress
 import molass_legacy.KekLib.DebugPlot as plt
-from molass_legacy.GuinierAnalyzer.SimpleGuinier import SimpleGuinier
+# from molass_legacy.GuinierAnalyzer.SimpleGuinier import SimpleGuinier
+from molass.Guinier.RgEstimator import RgEstimator as SimpleGuinier
 from importlib import reload
 import molass_legacy.GuinierTools.RgCurveUtils
 reload(molass_legacy.GuinierTools.RgCurveUtils)

@@ -39,6 +39,7 @@ def optimizer_main(in_folder, trimming_txt=None, n_components=3,
                    callback=True, class_code='F0000', shared_memory=None,
                    nnn=0,
                    legacy=True,
+                   xr_only=False,
                    debug=True):
 
     optimizer = create_optimizer_from_job(in_folder=in_folder,
@@ -46,6 +47,7 @@ def optimizer_main(in_folder, trimming_txt=None, n_components=3,
                                           class_code=class_code,
                                           trimming_txt=trimming_txt,
                                           shared_memory=shared_memory)
+    optimizer.set_xr_only(xr_only)
 
     if seed is None:
         seed = np.random.randint(100000, 999999)

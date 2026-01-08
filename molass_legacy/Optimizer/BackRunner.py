@@ -17,11 +17,12 @@ from .SettingsSerializer import serialize_for_optimizer
 MAX_NUM_JOBS = 1000
 
 class BackRunner:
-    def __init__(self):
+    def __init__(self, xr_only=False):
         self.optjob_folder = get_optjob_folder_impl()
         self.np_shm = get_shm_singleton()
         self.process = None
         self.solver = None
+        self.xr_only = xr_only
 
     def get_optjob_folder(self):
         return self.optjob_folder
@@ -125,7 +126,8 @@ class BackRunner:
                 '-M', np_shm_name,
                 '-S', self.solver,
                 '-L', 'legacy' if legacy else 'library',
-                '-P', python_syspath
+                '-P', python_syspath,
+                '-X', '1' if self.xr_only else '0',
                 ])
 
     def poll(self):

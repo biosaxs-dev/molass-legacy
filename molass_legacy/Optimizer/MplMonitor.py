@@ -121,7 +121,7 @@ class MplMonitor:
     JobState : Tracks and parses optimization job state from callback files.
     
     """
-    def __init__(self, function_code=None, clear_jobs=True, debug=True):
+    def __init__(self, function_code=None, clear_jobs=True, xr_only=False, debug=True):
         if debug:
             from importlib import reload
             import molass_legacy.Optimizer.BackRunner
@@ -141,7 +141,7 @@ class MplMonitor:
         self.logger = logging.getLogger(__name__)
         self.logger.setLevel(logging.INFO)
         self.logger.addHandler(self.fileh)
-        self.runner = BackRunner()
+        self.runner = BackRunner(xr_only=xr_only)
         self.logger.info("MplMonitor initialized.")
         self.logger.info(f"Optimizer job folder: {self.runner.optjob_folder}")
         self.result_list = []

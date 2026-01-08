@@ -1,7 +1,7 @@
 """
     BasicOptimizer.py
 
-    Copyright (c) 2021-2025, SAXS Team, KEK-PF
+    Copyright (c) 2021-2026, SAXS Team, KEK-PF
 """
 import logging
 import numpy as np
@@ -244,7 +244,14 @@ class BasicOptimizer:
     def get_parameter_names(self):
         return self.params_type.get_parameter_names()
 
-    def solve(self, init_params, real_bounds=None, niter=100, seed=None, callback=True, method=None, debug=False, show_history=False):
+    def set_xr_only(self, xr_only):
+        self.xr_only = xr_only
+
+    def get_xr_only(self):
+        return self.xr_only
+
+    def solve(self, init_params, real_bounds=None, niter=100, seed=None, callback=True, method=None,
+              debug=False, show_history=False):
         t0 = time()
         self.logger.info("solve started with niter=%d, seed=%s", niter, str(seed))
         self.logger.info("init_params=%s", str(init_params))
@@ -255,6 +262,8 @@ class BasicOptimizer:
         self.fv_array_size = 0
         self.min_fv = None
         self.min_i = None
+        if self.xr_only:
+            self.prepare_for_xr_only_optimization(init_params)
 
         self.debug_fv = debug
         if callback:
@@ -265,8 +274,8 @@ class BasicOptimizer:
             from .OptimizerUtils import get_impl_method_name
             method = get_impl_method_name()
 
-        bounds = np.array([(0, 10)]*len(init_params))
         norm_params = self.to_norm_params(init_params)
+        bounds = np.array([(0, 10)]*len(norm_params))
 
         if method == "bh":
             from importlib import reload
@@ -690,10 +699,18 @@ class BasicOptimizer:
             conv_params[self.tj] = np.log(T)/np.log(K)
             conv_params[self.mpj] = mp/m
         nx = (conv_params - self.scale_shift)/self.scale_slope
-        return nx
+        if self.xr_only:
+            return nx[self.xr_params_indeces]
+        else:
+            return nx
 
     def to_real_params(self, norm_params):
         rx = self.scale_slope*norm_params + self.scale_shift
+        if self.xr_only:
+            rx_temp = self.init_params_copy.copy()
+            rx_temp[self.xr_params_indeces] = rx
+            rx = rx_temp
+            
         if self.use_K:
             K, m, p, q = rx[self.nj:]
             # N = K**(1 - p)
@@ -929,3 +946,15 @@ class BasicOptimizer:
     
     def is_stochastic(self):
         return False
+    
+    def prepare_for_xr_only_optimization(self, init_params):
+        self.xr_only = True
+        self.init_params_copy = init_params.copy()
+        separate_params = self.split_params_simple(init_params)
+        param_lengths = []
+        for params in separate_params[-4:]:
+            param_lengths.append(len(params))
+        uv_start = len(init_params) - sum(param_lengths)
+        uv_stop = uv_start + sum(param_lengths[0:2])
+        self.xr_params_indeces = np.concatenate((np.arange(0, uv_start), np.arange(uv_stop, len(init_params))), dtype=int)
+        print("xr_params_indeces=", self.xr_params_indeces)

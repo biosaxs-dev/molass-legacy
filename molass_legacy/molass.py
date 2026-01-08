@@ -200,10 +200,12 @@ if __name__ == '__main__':
     import sys
     import os
     this_dir = os.path.dirname(os.path.abspath(__file__))
-    legacy_dir = os.path.join(this_dir, "..")
-    molass_dir = os.path.join(legacy_dir, "..", "molass-library")
-    sys.path.insert(0, legacy_dir)
-    sys.path.insert(0, molass_dir)
+    legacy_path = os.path.abspath(os.path.join(this_dir, ".."))
+    library_path = os.path.abspath(os.path.join(legacy_path, "..", "molass-library"))
+    sys.path.insert(0, legacy_path)
+    sys.path.insert(0, library_path)
+    python_path = os.pathsep.join([library_path, legacy_path])
+    os.environ['PYTHONPATH'] = python_path
     from molass_legacy import get_version
     print(f'MOLASS Legacy {get_version()}')
     from molass import get_version
