@@ -262,8 +262,6 @@ class BasicOptimizer:
         self.fv_array_size = 0
         self.min_fv = None
         self.min_i = None
-        if self.xr_only:
-            self.prepare_for_xr_only_optimization(init_params)
 
         self.debug_fv = debug
         if callback:
@@ -351,6 +349,8 @@ class BasicOptimizer:
             self.real_bounds = real_bounds
             from_arg= True
         self.logger.info("from_arg=%s, real bounds=%s", from_arg, str(self.real_bounds))
+        if self.xr_only:
+            self.prepare_for_xr_only_optimization(init_params)
         self.set_params_scale(self.real_bounds)
         self.bounds_mask = self.params_type.make_bounds_mask()
         self.update_bounds(self.init_params)
@@ -656,8 +656,12 @@ class BasicOptimizer:
         return 5
 
     def set_params_scale(self, real_bounds, debug=False):
-        lower = real_bounds[:,0]
-        upper = real_bounds[:,1]
+        if self.xr_only:
+            real_bounds_ = real_bounds[self.xr_params_indeces]
+        else:
+            real_bounds_ = real_bounds
+        lower = real_bounds_[:,0]
+        upper = real_bounds_[:,1]
         self.scale_shift = lower
         self.scale_slope = (upper - lower)/PARAMS_SCALE
         size = len(real_bounds)
@@ -698,11 +702,11 @@ class BasicOptimizer:
             conv_params[self.mej] = m
             conv_params[self.tj] = np.log(T)/np.log(K)
             conv_params[self.mpj] = mp/m
-        nx = (conv_params - self.scale_shift)/self.scale_slope
         if self.xr_only:
-            return nx[self.xr_params_indeces]
+            nx = (conv_params[self.xr_params_indeces] - self.scale_shift)/self.scale_slope
         else:
-            return nx
+            nx = (conv_params - self.scale_shift)/self.scale_slope
+        return nx
 
     def to_real_params(self, norm_params):
         rx = self.scale_slope*norm_params + self.scale_shift
@@ -737,7 +741,7 @@ class BasicOptimizer:
         if self.shm is not None:
             self.shm.array[0] = self.callback_counter
 
-        self.update_at_minima(x, f, accept)
+        self.update_at_minima(real_params, f, accept)
 
         if IMMEDIATE_KNOWN_BEST:
             if self.min_fv is None or f < self.min_fv:
@@ -750,6 +754,7 @@ class BasicOptimizer:
         return False
 
     def update_at_minima(self, x, f, accept):
+        # x is in real_params
         self.update_minima_props(x)
 
     def update_bounds(self, x, debug=False):
@@ -803,7 +808,12 @@ class BasicOptimizer:
 
     def uv_baseline(self, x, uv_baseparams, y_, cy_list):
         # note: update also ComplementaryView
-        return self.uv_base_curve(x, uv_baseparams, y_, cy_list)
+        if self.xr_only:
+            # in xr_only mode, leading part of uv_baseparams is xr_baseparams
+            # and the same x is supposed to be given 
+            return self.xr_base_curve(x, uv_baseparams[0:2], y_, cy_list)
+        else:
+            return self.uv_base_curve(x, uv_baseparams, y_, cy_list)
 
     def get_name(self):
         import re
@@ -948,7 +958,7 @@ class BasicOptimizer:
         return False
     
     def prepare_for_xr_only_optimization(self, init_params):
-        self.xr_only = True
+        self.logger.info("Preparing for XR-only optimization.")
         self.init_params_copy = init_params.copy()
         separate_params = self.split_params_simple(init_params)
         param_lengths = []
@@ -957,4 +967,6 @@ class BasicOptimizer:
         uv_start = len(init_params) - sum(param_lengths)
         uv_stop = uv_start + sum(param_lengths[0:2])
         self.xr_params_indeces = np.concatenate((np.arange(0, uv_start), np.arange(uv_stop, len(init_params))), dtype=int)
-        print("xr_params_indeces=", self.xr_params_indeces)
+        self.logger.info("param_lengths=%s", str(param_lengths))
+        self.logger.info("len(init_params)=%d, uv_start=%d, uv_stop=%d", len(init_params), uv_start, uv_stop)
+        self.logger.info("xr_params_indeces=%s", str(self.xr_params_indeces))

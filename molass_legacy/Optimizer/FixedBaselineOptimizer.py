@@ -16,10 +16,10 @@ class FixedBaselineOptimizer:
 
     def prepare(self, init_params, real_bounds=None):
         self.optimizer.prepare_for_optimization(init_params, real_bounds=real_bounds)
+
+        self.temp_params = self.optimizer.to_norm_params(init_params) 
         nc = self.optimizer.num_pure_components
-
         model_name = self.optimizer.get_model_name()
-
         if model_name == "EGH":
             xr_start = nc*5
         elif model_name == "SDM":
@@ -31,11 +31,16 @@ class FixedBaselineOptimizer:
 
         xr_stop = xr_start + 2
         xr_indeces = np.arange(xr_start, xr_stop)
-        uv_start = xr_stop + nc
-        uv_indeces = np.arange(uv_start, uv_start+7)
-        baseline_indeces = np.concatenate([xr_indeces, uv_indeces])
-        self.indeces = np.setdiff1d(np.arange(len(self.optimizer.init_params)), baseline_indeces)
-        self.logger.info("%s prepared with model=%s, indeces=%s", LOG_IDENTIFICATION, model_name, str(list(self.indeces)))
+        xr_only = self.optimizer.get_xr_only()
+        norm_params_len = len(self.temp_params)
+        if xr_only:
+            baseline_indeces = xr_indeces
+        else:
+            uv_start = xr_stop + nc
+            uv_indeces = np.arange(uv_start, uv_start+7)
+            baseline_indeces = np.concatenate([xr_indeces, uv_indeces])
+        self.indeces = np.setdiff1d(np.arange(norm_params_len), baseline_indeces)
+        self.logger.info("%s prepared with model=%s, indeces=%s", LOG_IDENTIFICATION, model_name, str(self.indeces))
 
     def solve(self, init_params, real_bounds=None, niter=100, seed=None, open_mode="w", debug=False):
         self.logger.info("FixedBaseline solve started with init_params=%s", str(init_params))
@@ -44,8 +49,6 @@ class FixedBaselineOptimizer:
         self.cb_fh = open("callback.txt", open_mode)
         self.optimizer.cb_fh = self.cb_fh
         self.optimizer.write_init_callback_txt(init_params)
-
-        self.temp_params = self.optimizer.to_norm_params(init_params)
 
         bounds = [(0, 10)]*len(self.indeces)
         minimizer_kwargs = dict(method='Nelder-Mead', bounds=bounds)
