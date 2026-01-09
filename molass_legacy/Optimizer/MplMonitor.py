@@ -149,6 +149,8 @@ class MplMonitor:
         self.func_code = function_code
         self.process_id = None  # Will be set when process starts
         self.instance_id = id(self)
+        self.watch_thread = None  # Will be set when watching starts
+        self.stop_watch_event = threading.Event()  # For graceful thread shutdown
         
         # Check for existing active monitors and warn user
         if _ACTIVE_MONITORS:
@@ -179,7 +181,8 @@ class MplMonitor:
         self.space_label1 = widgets.Label(value="　　　　")
         self.skip_button = widgets.Button(description="Skip Job", button_style='warning', disabled=True)
         self.space_label2 = widgets.Label(value="　　　　")
-        self.terminate_event = threading.Event()
+        if not hasattr(self, 'terminate_event'):
+            self.terminate_event = threading.Event()
         self.terminate_button = widgets.Button(description="Terminate Job", button_style='danger')
         self.terminate_button.on_click(self.trigger_terminate)
         self.space_label3 = widgets.Label(value="　　　　")
@@ -307,64 +310,128 @@ class MplMonitor:
                 print(msg)
 
     def watch_progress(self, interval=1.0):
-        while True:
-            exit_loop = False
-            has_ended = False
-            ret = self.runner.poll()
+        """Main watching loop that monitors subprocess and updates dashboard.
+        
+        This runs in a background thread and can be stopped gracefully via stop_watch_event.
+        """
+        self.logger.info(f"Watch thread started for monitor {self.instance_id}")
+        try:
+            while True:
+                # Check for graceful shutdown request
+                if self.stop_watch_event.is_set():
+                    self.logger.info("Watch thread shutdown requested")
+                    break
+                
+                exit_loop = False
+                has_ended = False
+                ret = self.runner.poll()
 
-            if ret is not None:
-                exit_loop = True
-                has_ended = True
-            # self.logger.info("self.terminate=%s, id(self)=%d", str(self.terminate_event.is_set()), id(self))
-            if self.terminate_event.is_set():
-                self.logger.info("Terminating optimization job.")
-                self.runner.terminate()
-                exit_loop = True
+                if ret is not None:
+                    exit_loop = True
+                    has_ended = True
+                # self.logger.info("self.terminate=%s, id(self)=%d", str(self.terminate_event.is_set()), id(self))
+                if self.terminate_event.is_set():
+                    self.logger.info("Terminating optimization job.")
+                    self.runner.terminate()
+                    exit_loop = True
 
-            resume_loop = False
-            if exit_loop:
-                if has_ended:
-                    self.logger.info("Optimization job ended normally.")
-                    self.status_label.value = "Status: Completed"
-                    set_label_color(self.status_label, "blue")
-                    if self.num_trials < self.max_trials:
-                        self.logger.info("Starting a new optimization trial (%d/%d).", self.num_trials, self.max_trials)
-                        best_params = self.get_best_params()
-                        self.run_impl(self.optimizer, best_params, niter=self.nitrer, seed=self.seed, work_folder=None, dummy=False, debug=False)
-                        self.status_label.value = "Status: Running"
-                        set_label_color(self.status_label, "green")
-                        resume_loop = True
+                resume_loop = False
+                if exit_loop:
+                    if has_ended:
+                        self.logger.info("Optimization job ended normally.")
+                        self.status_label.value = "Status: Completed"
+                        set_label_color(self.status_label, "blue")
+                        if self.num_trials < self.max_trials:
+                            self.logger.info("Starting a new optimization trial (%d/%d).", self.num_trials, self.max_trials)
+                            best_params = self.get_best_params()
+                            self.run_impl(self.optimizer, best_params, niter=self.nitrer, seed=self.seed, work_folder=None, dummy=False, debug=False)
+                            self.status_label.value = "Status: Running"
+                            set_label_color(self.status_label, "green")
+                            resume_loop = True
+                        else:
+                            self.status_label.value = "Status: Max Trials Reached"
+                            set_label_color(self.status_label, "gray")
+                            self.terminate_button.disabled = True
                     else:
-                        self.status_label.value = "Status: Max Trials Reached"
+                        self.logger.info("Optimization job terminated by user.")
+                        self.status_label.value = "Status: Terminated"
                         set_label_color(self.status_label, "gray")
                         self.terminate_button.disabled = True
-                else:
-                    self.logger.info("Optimization job terminated by user.")
-                    self.status_label.value = "Status: Terminated"
-                    set_label_color(self.status_label, "gray")
-                    self.terminate_button.disabled = True
 
-                self.save_the_result_figure()
-                self.num_trials += 1
+                    self.save_the_result_figure()
+                    self.num_trials += 1
 
-                with self.plot_output:
-                    clear_output(wait=True)  # Remove any possibly remaining plot
-                if not resume_loop:
-                    # Remove from registry when fully done
-                    self._remove_from_registry()
-                    break
+                    with self.plot_output:
+                        clear_output(wait=True)  # Remove any possibly remaining plot
+                    if not resume_loop:
+                        # Remove from registry when fully done
+                        self._remove_from_registry()
+                        break
 
-            self.job_state.update()
-            if self.job_state.has_changed():
-                self.update_plot()
-                # clear_output(wait=True)
-                # display(self.dashboard)
-            time.sleep(interval)
+                self.job_state.update()
+                if self.job_state.has_changed():
+                    self.update_plot()
+                    # clear_output(wait=True)
+                    # display(self.dashboard)
+                time.sleep(interval)
+        finally:
+            self.watch_thread = None
+            self.logger.info(f"Watch thread ended for monitor {self.instance_id}")
 
     def start_watching(self):
+        """Start the background thread that monitors optimization progress.
+        
+        Only one watch thread can be active per monitor instance. If a thread is
+        already running, this method will log a warning and return without starting
+        a new thread.
+        """
+        # Check if thread is already running
+        if self.watch_thread is not None and self.watch_thread.is_alive():
+            self.logger.warning(f"Watch thread already running for monitor {self.instance_id}")
+            print("⚠ Warning: Watch thread is already running for this monitor.")
+            return
+        
+        # Clear stop event in case it was set previously
+        self.stop_watch_event.clear()
+        
         # Avoid Blocking the Main Thread:
         # Never run a long or infinite loop in the main thread in Jupyter if you want widget interactivity.
-        threading.Thread(target=self.watch_progress, daemon=True).start()
+        self.watch_thread = threading.Thread(target=self.watch_progress, daemon=True)
+        self.watch_thread.start()
+        self.logger.info(f"Started watch thread for monitor {self.instance_id}")
+    
+    def stop_watching(self, timeout=5.0):
+        """Stop the background watch thread gracefully.
+        
+        Args:
+            timeout: Maximum time in seconds to wait for thread to stop.
+        
+        Returns:
+            bool: True if thread stopped successfully, False if timeout occurred.
+        """
+        if self.watch_thread is None or not self.watch_thread.is_alive():
+            self.logger.info("No active watch thread to stop")
+            return True
+        
+        self.logger.info(f"Stopping watch thread for monitor {self.instance_id}")
+        self.stop_watch_event.set()
+        self.watch_thread.join(timeout=timeout)
+        
+        if self.watch_thread.is_alive():
+            self.logger.warning(f"Watch thread did not stop within {timeout}s")
+            return False
+        else:
+            self.logger.info("Watch thread stopped successfully")
+            self.watch_thread = None
+            return True
+    
+    def is_watching(self):
+        """Check if the watch thread is currently active.
+        
+        Returns:
+            bool: True if watch thread is running, False otherwise.
+        """
+        return self.watch_thread is not None and self.watch_thread.is_alive()
     
     def get_best_params(self, plot_info=None):
         if plot_info is None:
@@ -510,6 +577,13 @@ class MplMonitor:
             if hasattr(monitor, 'process_id') and monitor.process_id:
                 print(f"  Process ID: {monitor.process_id}")
             
+            # Thread info
+            if hasattr(monitor, 'watch_thread'):
+                if monitor.watch_thread is not None and monitor.watch_thread.is_alive():
+                    print(f"  Watch Thread: ACTIVE (ID: {monitor.watch_thread.ident})")
+                else:
+                    print(f"  Watch Thread: NOT RUNNING")
+            
             # Working folder
             if hasattr(monitor, 'runner') and hasattr(monitor.runner, 'working_folder'):
                 print(f"  Working folder: {monitor.runner.working_folder}")
@@ -523,6 +597,46 @@ class MplMonitor:
         print("To redisplay a dashboard:")
         print("  monitor = MplMonitor.get_active_monitor()")
         print("  monitor.redisplay_dashboard()")
+    
+    @classmethod
+    def cleanup_orphaned_threads(cls):
+        """Stop watch threads for monitors that are no longer needed.
+        
+        This method identifies and stops watch threads that are still running
+        for monitors that may have lost their dashboard. Useful for cleaning up
+        after accidentally clearing notebook outputs multiple times.
+        
+        Example:
+            MplMonitor.cleanup_orphaned_threads()
+        """
+        if not _ACTIVE_MONITORS:
+            print("No active monitors found.")
+            return
+        
+        orphaned_count = 0
+        stopped_count = 0
+        
+        for instance_id, monitor in _ACTIVE_MONITORS.items():
+            if hasattr(monitor, 'watch_thread') and monitor.watch_thread is not None:
+                if monitor.watch_thread.is_alive():
+                    orphaned_count += 1
+                    print(f"Monitor {instance_id}: Watch thread is running")
+                    
+                    # Check if we should stop it
+                    response = input("  Stop this watch thread? (y/n): ").strip().lower()
+                    if response == 'y':
+                        print("  Stopping thread...")
+                        success = monitor.stop_watching(timeout=5.0)
+                        if success:
+                            print("  Thread stopped successfully.")
+                            stopped_count += 1
+                        else:
+                            print("  Warning: Thread did not stop cleanly.")
+        
+        if orphaned_count == 0:
+            print("No active watch threads found.")
+        else:
+            print(f"\nStopped {stopped_count} of {orphaned_count} watch thread(s).")
 
     # ===== Process Registry Management =====
     
@@ -773,6 +887,17 @@ class MplMonitor:
     
     def __del__(self):
         """Cleanup when object is destroyed."""
+        # Stop watch thread gracefully
+        try:
+            if hasattr(self, 'watch_thread') and self.watch_thread is not None:
+                if self.watch_thread.is_alive():
+                    if hasattr(self, 'logger'):
+                        self.logger.info(f"Stopping watch thread in __del__ for {self.instance_id}")
+                    self.stop_watch_event.set()
+                    self.watch_thread.join(timeout=2.0)
+        except Exception:
+            pass  # Ignore errors during cleanup
+        
         try:
             self._remove_from_registry()
         except Exception:
