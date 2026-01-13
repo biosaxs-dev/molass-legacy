@@ -2,5 +2,6 @@
     "python.REPL.enableREPLSmartSend": false,
     "python-envs.defaultEnvManager": "ms-python.python:system",
     "python-envs.pythonProjects": [],
-    "python.analysis.aiHoverSummaries": false
+    "python.analysis.aiHoverSummaries": false,
+    "r.lsp.promptToInstall": false
 }

@@ -225,3 +225,12 @@ class StandardProcedure:
                 min_ret = ret
 
         return min_ret
+
+def create_corrected_sd(in_folder, debug=False):
+    from molass_legacy.Baseline.BaselineUtils import get_corrected_sd_impl
+    sp = StandardProcedure()
+    sd = sp.load_old_way(in_folder)
+    pre_recog = PreliminaryRecognition(sd)
+    sd_copy = sd.get_copy()
+    corrected_sd = get_corrected_sd_impl(sd_copy, sd, pre_recog)
+    return corrected_sd

@@ -24,8 +24,8 @@ class BoundedLrfSolver:
         self.D = D
         self.i = i
         if C is None:
-            cy = np.average(D_[max(0, i-5):i+6,:], axis=0)      # i=3 with 20200304_1
-            self.Cinit = np.array([cy, cy**2])
+            cy = np.average(D[max(0, i-5):i+6,:], axis=0)   # i=3 with 20200304_1
+            self.Cinit = C = np.array([cy, cy**2])
         else:
             cy = C[0,:]
             self.Cinit = C
