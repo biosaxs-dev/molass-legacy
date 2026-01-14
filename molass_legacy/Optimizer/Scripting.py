@@ -161,6 +161,7 @@ def run_optimizer(optimizer, init_params, niter=20, clear_jobs=True, dummy=False
         monitor.terminate_job(None)
     else:
         monitor.start_watching()
+    return monitor
 
 def get_params(job_result_folder, index=None, debug=False):
     from .StateSequence import read_callback_txt_impl
