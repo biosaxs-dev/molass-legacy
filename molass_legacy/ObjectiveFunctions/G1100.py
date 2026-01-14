@@ -39,6 +39,9 @@ class G1100(BasicOptimizer):
         self.eval_counter += 1
         xr_params, xr_baseparams, rg_params, (a, b), uv_params, uv_baseparams, (c, d), sdmcol_params = self.split_params_simple(p)
 
+        if self.xr_only:
+            uv_params = xr_params
+
         x = self.xr_curve.x
         y = self.xr_curve.y
         # rg = self.rg
