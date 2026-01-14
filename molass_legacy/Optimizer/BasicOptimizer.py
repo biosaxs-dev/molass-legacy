@@ -211,6 +211,7 @@ class BasicOptimizer:
         # self.rg_weights = self.rg_curve.get_weights()
         self.exports_bounds = False
         self.vc = ValidComponents(self.num_pure_components)
+        self.xr_only = False    # required for backward compatibility
 
     def get_function_code(self):
         return self.__class__.__name__
