@@ -40,6 +40,7 @@ def optimizer_main(in_folder, trimming_txt=None, n_components=3,
                    nnn=0,
                    legacy=True,
                    xr_only=False,
+                   optimizer_test=False,
                    debug=True):
 
     optimizer = create_optimizer_from_job(in_folder=in_folder,
@@ -48,6 +49,11 @@ def optimizer_main(in_folder, trimming_txt=None, n_components=3,
                                           trimming_txt=trimming_txt,
                                           shared_memory=shared_memory)
     optimizer.set_xr_only(xr_only)
+
+    if optimizer_test:
+        from molass_legacy.Optimizer.Compatibility import test_optimizer_compatibility
+        test_optimizer_compatibility(optimizer, init_params)
+        return
 
     if seed is None:
         seed = np.random.randint(100000, 999999)

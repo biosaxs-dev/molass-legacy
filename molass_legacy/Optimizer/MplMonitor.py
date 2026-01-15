@@ -141,9 +141,9 @@ class MplMonitor:
         self.logger = logging.getLogger(__name__)
         self.logger.setLevel(logging.INFO)
         self.logger.addHandler(self.fileh)
-        self.runner = BackRunner(xr_only=xr_only)
         self.logger.info("MplMonitor initialized.")
         self.logger.info(f"Optimizer job folder: {self.runner.optjob_folder}")
+        self.runner = BackRunner(xr_only=xr_only)
         self.result_list = []
         self.suptitle = None
         self.func_code = function_code
@@ -209,10 +209,12 @@ class MplMonitor:
         self.seed = seed
         self.num_trials = 0
         self.max_trials = max_trials
+        self.work_folder = work_folder
         self.x_shifts = x_shifts
         self.run_impl(optimizer, init_params, niter=niter, seed=seed, work_folder=work_folder, dummy=dummy, debug=debug, devel=devel)
 
-    def run_impl(self, optimizer, init_params, niter=20, seed=1234, work_folder=None, dummy=False, debug=False, devel=False):
+    def run_impl(self, optimizer, init_params, niter=20, seed=1234, work_folder=None, dummy=False,
+                 optimizer_test=False, debug=False, devel=False):
         from importlib import reload
         import molass_legacy.Optimizer.JobState
         reload(molass_legacy.Optimizer.JobState)
@@ -220,14 +222,22 @@ class MplMonitor:
 
         optimizer.prepare_for_optimization(init_params)
 
-        self.runner.run(optimizer, init_params, niter=niter, seed=seed, work_folder=work_folder, dummy=dummy, x_shifts=self.x_shifts, debug=debug, devel=devel)
+        self.runner.run(optimizer, init_params, niter=niter, seed=seed, work_folder=work_folder, dummy=dummy, x_shifts=self.x_shifts,
+                        optimizer_test=optimizer_test, debug=debug, devel=devel)
         abs_working_folder = os.path.abspath(self.runner.working_folder)
         cb_file = os.path.join(abs_working_folder, 'callback.txt')
         self.job_state = JobState(cb_file, niter)
-        self.logger.info("Starting optimization job in folder: %s", abs_working_folder)
+        self.logger.info("Starting optimization job in folder: %s with optimizer_test=%s", abs_working_folder, optimizer_test)
         self.curr_index = None
         # Register this process in the registry
         self._add_to_registry(abs_working_folder)
+
+    def test_subprocess_optimizer(self):
+        from importlib import reload
+        import molass_legacy.Optimizer.Compatibility
+        reload(molass_legacy.Optimizer.Compatibility)
+        from molass_legacy.Optimizer.Compatibility import test_subprocess_optimizer_impl
+        test_subprocess_optimizer_impl(self)
 
     def trigger_terminate(self, b):
         from molass_legacy.KekLib.IpyUtils import ask_user

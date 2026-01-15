@@ -145,6 +145,32 @@ def estimate_init_params(batch, optimizer, developing=False, debug=False):
     return init_params
 
 def run_optimizer(optimizer, init_params, niter=20, clear_jobs=True, dummy=False, x_shifts=None, debug=True):
+    """ Run the optimizer with a monitoring dashboard.
+
+    Parameters
+    ----------
+    optimizer : Optimizer
+        The optimizer instance to run.
+    init_params : array-like
+        Initial parameters for the optimization.
+    niter : int, optional
+        Number of iterations to run. Default is 20.
+    clear_jobs : bool, optional
+        Whether to clear previous jobs. Default is True.
+    dummy : bool, optional
+        If True, runs in dummy mode without actual optimization. Default is False.
+    x_shifts : array-like, optional
+        Shifts to apply to the parameters. Default is None.
+        x_shifts can be obtained from dsets.get_x_shifts().
+        See also OptDataSets.get_x_shifts().
+    debug : bool, optional
+        If True, enables debug mode. Default is True.
+
+    Returns
+    -------
+    monitor : MplMonitor
+        The monitoring dashboard instance.
+    """
     if debug:
         from importlib import reload
         import molass_legacy.Optimizer.MplMonitor

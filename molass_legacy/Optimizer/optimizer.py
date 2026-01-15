@@ -12,7 +12,7 @@ def main():
     root_dir = os.path.dirname(os.path.dirname( this_dir ))
     sys.path.insert(0, root_dir)
 
-    optlist, args = getopt.getopt(sys.argv[1:], 'c:w:f:n:i:b:d:m:s:r:t:p:T:M:S:L:P:X:')
+    optlist, args = getopt.getopt(sys.argv[1:], 'c:w:f:n:i:b:d:m:s:r:t:p:T:M:S:L:P:X:O:')
     print(optlist, args)
     optdict = dict(optlist)
     python_syspath = optdict.get('-P')
@@ -132,6 +132,7 @@ def main_impl(optdict, optlist):
                     nnn=nnn,
                     legacy=legacy,
                     xr_only=optdict.get('-X') == '1',
+                    optimizer_test=optdict.get('-O') == '1',
                     debug=False,
                     )
 

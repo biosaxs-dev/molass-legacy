@@ -5,6 +5,7 @@
 """
 import os
 import sys
+import logging
 import numpy as np
 import subprocess
 from molass_legacy._MOLASS.SerialSettings import get_setting, set_setting
@@ -18,6 +19,7 @@ MAX_NUM_JOBS = 1000
 
 class BackRunner:
     def __init__(self, xr_only=False):
+        self.logger = logging.getLogger(__name__)
         self.optjob_folder = get_optjob_folder_impl()
         self.np_shm = get_shm_singleton()
         self.process = None
@@ -53,8 +55,10 @@ class BackRunner:
         self.working_folder = folder
 
     def run(self, optimizer, init_params, niter=100, seed=1234, work_folder=None, dummy=False, x_shifts=None, legacy=True,
-            debug=False, devel=False):
+            optimizer_test=False, debug=False, devel=False):
         from .FullOptResult import FILES
+
+        self.logger.info("Running optimizer: %s with optimizer_test=%s", optimizer.__class__.__name__, optimizer_test)
 
         n_components = optimizer.n_components
         class_code = optimizer.__class__.__name__
@@ -70,7 +74,10 @@ class BackRunner:
             folder = work_folder
         if debug:
             print("BackRunner: work_folder =", folder)
-        self.working_folder = folder
+        if optimizer_test:
+            pass
+        else:
+            self.working_folder = folder
         set_setting("optjob_folder", folder)
         set_setting("optworking_folder", folder)    # unifiy these setting items
         init_params_txt = FILES[2]
@@ -128,6 +135,7 @@ class BackRunner:
                 '-L', 'legacy' if legacy else 'library',
                 '-P', python_syspath,
                 '-X', '1' if self.xr_only else '0',
+                '-O', '1' if optimizer_test else '0',
                 ])
 
     def poll(self):
