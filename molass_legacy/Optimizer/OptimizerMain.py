@@ -118,7 +118,9 @@ def main_impl(optdict, optlist):
 
         solver = optdict.get('-S')
         xr_only = optdict.get('-X') == '1'
-        optimizer_test = (optdict.get('-O') == '1' or os.environ.get("MOLASS_OPTIMIZER_TEST") == '1')   # workaround for -O not passed issue
+        MOLASS_OPTIMIZER_TEST = os.environ.get("MOLASS_OPTIMIZER_TEST")
+        logger.info("MOLASS_OPTIMIZER_TEST=%s", str(MOLASS_OPTIMIZER_TEST))
+        optimizer_test = (optdict.get('-O') == '1' or MOLASS_OPTIMIZER_TEST == '1')   # workaround for -O not passed issue
 
         if sleep_seconds is None:
             logger.info("optimizer started with class_code=%s, optlist=%s, shared_memory=%s, xr_only=%s, optimizer_test=%s",
