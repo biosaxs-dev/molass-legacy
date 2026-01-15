@@ -142,8 +142,8 @@ class MplMonitor:
         self.logger.setLevel(logging.INFO)
         self.logger.addHandler(self.fileh)
         self.logger.info("MplMonitor initialized.")
+        self.runner = BackRunner(xr_only=xr_only, shared_memory=False)
         self.logger.info(f"Optimizer job folder: {self.runner.optjob_folder}")
-        self.runner = BackRunner(xr_only=xr_only)
         self.result_list = []
         self.suptitle = None
         self.func_code = function_code
@@ -220,7 +220,10 @@ class MplMonitor:
         reload(molass_legacy.Optimizer.JobState)
         from molass_legacy.Optimizer.JobState import JobState
 
-        optimizer.prepare_for_optimization(init_params)
+        if optimizer_test:
+            pass
+        else:
+            optimizer.prepare_for_optimization(init_params)
 
         self.runner.run(optimizer, init_params, niter=niter, seed=seed, work_folder=work_folder, dummy=dummy, x_shifts=self.x_shifts,
                         optimizer_test=optimizer_test, debug=debug, devel=devel)

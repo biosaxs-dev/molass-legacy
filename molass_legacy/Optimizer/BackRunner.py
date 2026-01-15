@@ -12,16 +12,19 @@ from molass_legacy._MOLASS.SerialSettings import get_setting, set_setting
 from molass_legacy.KekLib.BasicUtils import mkdirs_with_retry, is_empty_dir
 from molass_legacy.Trimming import save_trimming_txt
 from .TheUtils import get_optjob_folder_impl
-from .NpSharedMemory import get_shm_singleton
 from .SettingsSerializer import serialize_for_optimizer
 
 MAX_NUM_JOBS = 1000
 
 class BackRunner:
-    def __init__(self, xr_only=False):
+    def __init__(self, xr_only=False, shared_memory=True):
         self.logger = logging.getLogger(__name__)
         self.optjob_folder = get_optjob_folder_impl()
-        self.np_shm = get_shm_singleton()
+        if shared_memory:
+            from .NpSharedMemory import get_shm_singleton
+            self.np_shm = get_shm_singleton()
+        else:
+            self.np_shm = None
         self.process = None
         self.solver = None
         self.xr_only = xr_only
@@ -72,8 +75,10 @@ class BackRunner:
         else:
             # i.e., caller has prepared the folder (may be by get_work_folder())
             folder = work_folder
+        opt_O = '1' if optimizer_test else '0'
+        os.environ["MOLASS_OPTIMIZER_TEST"] = opt_O
         if debug:
-            print("BackRunner: work_folder =", folder)
+            print("BackRunner: work_folder =", folder, "optimizer_test =", optimizer_test, "opt_O =", opt_O, "shared memory =", self.np_shm)
         if optimizer_test:
             pass
         else:
@@ -114,7 +119,6 @@ class BackRunner:
         from .OptimizerUtils import get_impl_method_name
         nnn = int(self.working_folder[-3:])
         self.solver = get_impl_method_name(nnn)
-        python_syspath = os.getenv('PYTHONPATH', '') if devel else ''
 
         self.process = subprocess.Popen([sys.executable, optimizer_py,
                 '-c', class_code,
@@ -133,9 +137,8 @@ class BackRunner:
                 '-M', np_shm_name,
                 '-S', self.solver,
                 '-L', 'legacy' if legacy else 'library',
-                '-P', python_syspath,
                 '-X', '1' if self.xr_only else '0',
-                '-O', '1' if optimizer_test else '0',
+                '-O', opt_O,
                 ])
 
     def poll(self):
