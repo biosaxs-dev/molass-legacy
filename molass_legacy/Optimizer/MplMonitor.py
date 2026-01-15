@@ -227,14 +227,17 @@ class MplMonitor:
 
         self.runner.run(optimizer, init_params, niter=niter, seed=seed, work_folder=work_folder, dummy=dummy, x_shifts=self.x_shifts,
                         optimizer_test=optimizer_test, debug=debug, devel=devel)
-        abs_working_folder = os.path.abspath(self.runner.working_folder)
-        cb_file = os.path.join(abs_working_folder, 'callback.txt')
-        self.job_state = JobState(cb_file, niter)
+        if optimizer_test:
+            abs_working_folder = os.path.abspath(work_folder)
+        else:
+            abs_working_folder = os.path.abspath(self.runner.working_folder)
+            cb_file = os.path.join(abs_working_folder, 'callback.txt')
+            self.job_state = JobState(cb_file, niter)
+            # Register this process in the registry
+            self._add_to_registry(abs_working_folder)
+            self.curr_index = None
         self.logger.info("Starting optimization job in folder: %s with optimizer_test=%s", abs_working_folder, optimizer_test)
-        self.curr_index = None
-        # Register this process in the registry
-        self._add_to_registry(abs_working_folder)
-
+        
     def test_subprocess_optimizer(self):
         from importlib import reload
         import molass_legacy.Optimizer.Compatibility
