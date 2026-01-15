@@ -247,6 +247,12 @@ class BasicOptimizer:
 
     def set_xr_only(self, xr_only):
         self.xr_only = xr_only
+        if xr_only:
+            # Temporarily fix to the inconsistency issue.
+            # This should be handled properly in OptDataSets.
+            self.uv_curve = self.xr_curve
+            self.uvD = self.xrD
+            self.logger.info("XR-only optimization mode is set.")
 
     def get_xr_only(self):
         return self.xr_only
