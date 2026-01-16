@@ -151,6 +151,7 @@ class MplMonitor:
         self.instance_id = id(self)
         self.watch_thread = None  # Will be set when watching starts
         self.stop_watch_event = threading.Event()  # For graceful thread shutdown
+        self.is_monitoring = False  # Flag to track active monitoring state
         
         # Check for existing active monitors and warn user
         if _ACTIVE_MONITORS:
@@ -165,6 +166,19 @@ class MplMonitor:
         
         # Clean up any orphaned processes from previous sessions
         self._cleanup_orphaned_processes()
+    
+    def __del__(self):
+        """Destructor to ensure watch thread is stopped when monitor is destroyed."""
+        try:
+            if hasattr(self, 'watch_thread') and self.watch_thread is not None:
+                if self.watch_thread.is_alive():
+                    self.stop_watching(timeout=2.0)
+            
+            # Clean up from global registry
+            if hasattr(self, 'instance_id') and self.instance_id in _ACTIVE_MONITORS:
+                del _ACTIVE_MONITORS[self.instance_id]
+        except Exception:
+            pass  # Suppress errors during cleanup
 
     def clear_jobs(self):
         folder = self.optimizer_folder
@@ -331,6 +345,7 @@ class MplMonitor:
         This runs in a background thread and can be stopped gracefully via stop_watch_event.
         """
         self.logger.info(f"Watch thread started for monitor {self.instance_id}")
+        self.is_monitoring = True
         try:
             while True:
                 # Check for graceful shutdown request
@@ -340,15 +355,26 @@ class MplMonitor:
                 
                 exit_loop = False
                 has_ended = False
-                ret = self.runner.poll()
-
-                if ret is not None:
+                
+                # Check subprocess status with error handling
+                try:
+                    ret = self.runner.poll()
+                    if ret is not None:
+                        exit_loop = True
+                        has_ended = True
+                except Exception as e:
+                    self.logger.error(f"Error polling subprocess: {e}")
+                    # Assume subprocess died if we can't poll it
                     exit_loop = True
-                    has_ended = True
+                    has_ended = False
+                
                 # self.logger.info("self.terminate=%s, id(self)=%d", str(self.terminate_event.is_set()), id(self))
                 if self.terminate_event.is_set():
                     self.logger.info("Terminating optimization job.")
-                    self.runner.terminate()
+                    try:
+                        self.runner.terminate()
+                    except Exception as e:
+                        self.logger.error(f"Error terminating subprocess: {e}")
                     exit_loop = True
 
                 resume_loop = False
@@ -377,20 +403,30 @@ class MplMonitor:
                     self.save_the_result_figure()
                     self.num_trials += 1
 
-                    with self.plot_output:
-                        clear_output(wait=True)  # Remove any possibly remaining plot
                     if not resume_loop:
                         # Remove from registry when fully done
                         self._remove_from_registry()
+                        # Stop monitoring to prevent further updates
+                        self.is_monitoring = False
+                        self.logger.info("Monitoring stopped - job fully completed")
                         break
 
-                self.job_state.update()
-                if self.job_state.has_changed():
-                    self.update_plot()
-                    # clear_output(wait=True)
-                    # display(self.dashboard)
+                # Only update if we have a valid job_state and monitoring is active
+                if self.is_monitoring and hasattr(self, 'job_state') and self.job_state is not None:
+                    try:
+                        self.job_state.update()
+                        if self.job_state.has_changed():
+                            self.update_plot()
+                    except Exception as e:
+                        self.logger.error(f"Error updating job state: {e}")
+                        # If we can't update job state, assume job is dead
+                        self.is_monitoring = False
+                        self.logger.info("Stopping monitoring due to job state error")
+                        break
+                        
                 time.sleep(interval)
         finally:
+            self.is_monitoring = False
             self.watch_thread = None
             self.logger.info(f"Watch thread ended for monitor {self.instance_id}")
 
@@ -430,6 +466,7 @@ class MplMonitor:
             return True
         
         self.logger.info(f"Stopping watch thread for monitor {self.instance_id}")
+        self.is_monitoring = False  # Stop monitoring immediately
         self.stop_watch_event.set()
         self.watch_thread.join(timeout=timeout)
         
@@ -653,6 +690,47 @@ class MplMonitor:
             print("No active watch threads found.")
         else:
             print(f"\nStopped {stopped_count} of {orphaned_count} watch thread(s).")
+    
+    @classmethod
+    def stop_all_threads(cls, force=False):
+        """Stop all watch threads immediately without asking.
+        
+        Use this to quickly stop all monitoring threads, for example when
+        experiencing periodic screen blackouts after killing processes.
+        
+        Args:
+            force: If True, doesn't wait for graceful shutdown
+        
+        Example:
+            # Quick fix for blackout issue
+            MplMonitor.stop_all_threads()
+        """
+        if not _ACTIVE_MONITORS:
+            print("No active monitors found.")
+            return
+        
+        stopped_count = 0
+        failed_count = 0
+        
+        for instance_id, monitor in list(_ACTIVE_MONITORS.items()):
+            if hasattr(monitor, 'watch_thread') and monitor.watch_thread is not None:
+                if monitor.watch_thread.is_alive():
+                    print(f"Stopping watch thread for monitor {instance_id}...")
+                    timeout = 0.5 if force else 5.0
+                    success = monitor.stop_watching(timeout=timeout)
+                    if success:
+                        stopped_count += 1
+                    else:
+                        failed_count += 1
+                        print(f"  Warning: Thread {instance_id} did not stop cleanly.")
+        
+        total = stopped_count + failed_count
+        if total == 0:
+            print("No active watch threads found.")
+        else:
+            print(f"\nStopped {stopped_count} of {total} watch thread(s).")
+            if failed_count > 0:
+                print(f"⚠ {failed_count} thread(s) did not stop cleanly. Consider restarting the kernel.")
 
     # ===== Process Registry Management =====
     
