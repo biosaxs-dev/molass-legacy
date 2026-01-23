@@ -13,9 +13,8 @@ from molass_legacy.KekLib.OurTkinter import Tk, Dialog
 from molass_legacy.KekLib.TkSupplements import tk_set_icon_portable
 import molass_legacy.KekLib.DebugPlot as dplt
 from molass_legacy.KekLib.OurMatplotlib import get_color
-from OurMatplotlib3D import plot_parallelepiped, plot_sphere
-from ModeledData import ModeledData
-from MatrixData import simple_plot_3d
+from molass_legacy.KekLib.OurMatplotlib3D import plot_parallelepiped, plot_sphere
+from molass_legacy.DataStructure.MatrixData import simple_plot_3d
 from .SvdPrecision import plot_text
 
 FONTSIZE = 200
