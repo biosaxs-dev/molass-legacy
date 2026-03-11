@@ -19,6 +19,7 @@ class PnoScdMap:
         """
         self.logger = logging.getLogger(__name__)
         peak_top_x, scd_colors = get_setting('mapper_cd_color_info')
+        peak_top_x = np.asarray(peak_top_x)
         pno_map = []
         ecurve = sd.get_xray_curve()
         main_y = None

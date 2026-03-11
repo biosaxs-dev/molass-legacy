@@ -10,7 +10,7 @@ import logging
 from bisect import bisect_right
 from molass_legacy.KekLib.NumpyUtils import np_loadtxt_robust
 from molass_legacy.KekLib.OurCurvature import curvature_curve
-from SimpleGuinierScore import ( MIN_GUINIER_SIZE, ZERO_SCORE_VECTOR, END_GUINIER_SIZE,
+from molass_legacy.GuinierAnalyzer.SimpleGuinierScore import ( MIN_GUINIER_SIZE, ZERO_SCORE_VECTOR, END_GUINIER_SIZE,
                                     QUALITY_BOUNDARY_HIGH, USE_GUINIER_PLOT_LENGTH,
                                     compute_rg,
                                     compute_expected_size,
