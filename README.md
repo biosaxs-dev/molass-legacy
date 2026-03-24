@@ -23,5 +23,6 @@ For more information, see:
 See also:
 
 - **Molass Library Repository:** https://github.com/biosaxs-dev/molass-library
+- **Beginner Onboarding:** https://github.com/biosaxs-dev/molass-beginner
 
 <br>
