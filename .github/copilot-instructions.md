@@ -1,11 +1,12 @@
-<!-- Moved: AI Context Standard v0.7 -->
-# Moved
+<!-- AI Context Standard: v0.7 - Adopted: 2026-03-24 -->
+# AI Assistant Initialization Guide — molass-legacy
 
-This file has been migrated to [`.github/copilot-instructions.md`](.github/copilot-instructions.md) (AI Context Standard v0.7).
+**Purpose**: Initialize AI context for navigating this repository  
+**Created**: February 19, 2026
 
 > **Note**: This is a legacy codebase. Active development happens in `molass-library`.  
 > This repo is a **runtime dependency** of `molass-library` (see `pyproject.toml` there).  
-> For the main AI context file, see `molass-library/COPILOT-INIT.md`.
+> For the main AI context file, see `molass-library/.github/copilot-instructions.md`.
 
 ---
 
@@ -93,7 +94,7 @@ pytest tests/ -v
 
 ## Multi-Root Workspace Context
 
-This repo is part of the 7-repo VS Code workspace. See `molass-library/COPILOT-INIT.md` Section "Multi-Root Workspace Context" for the full ecosystem map.
+This repo is part of the 7-repo VS Code workspace. See `molass-library/.github/copilot-instructions.md` Section "Multi-Root Workspace Context" for the full ecosystem map.
 
 ---
 
