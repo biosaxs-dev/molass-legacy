@@ -1,4 +1,4 @@
-<!-- AI Context Standard: v0.7 - Adopted: 2026-03-24 -->
+<!-- AI Context Standard v0.8 - Adopted: 2026-03-25 -->
 # AI Assistant Initialization Guide — molass-legacy
 
 **Purpose**: Initialize AI context for navigating this repository  
@@ -103,6 +103,7 @@ This repo is part of the 7-repo VS Code workspace. See `molass-library/.github/c
 | Date | What was learned / added |
 |------|--------------------------|
 | Feb 19, 2026 | Initial file created. Documented `recognize_peaks` algorithm and known P1+ overlap failure mode. Listed packages most relevant to molass-library cross-repo calls. |
+| Mar 25, 2026 | Updated to AI Context Standard v0.8; added `init.prompt.md` and `vscode-version.txt` |
 
 **Principle**: *Never leave this codebase harder to navigate than you found it.*
 
