@@ -201,11 +201,13 @@ def optimizer_main(in_folder, trimming_txt=None, n_components=3,
                                           shared_memory=shared_memory)
     optimizer.set_xr_only(xr_only)
 
-    if optimizer_test:
-        from molass_legacy.Optimizer.Compatibility import test_optimizer_compatibility
-        test_optimizer_compatibility(optimizer, init_params)
-        return
-
+    # Load frozen_components if saved by the parent process
+    frozen_file = 'frozen_components.txt'  # CWD is the job folder (set by main_impl)
+    if os.path.exists(frozen_file):
+        frozen_components = np.loadtxt(frozen_file, dtype=int).tolist()
+        if isinstance(frozen_components, int):
+            frozen_components = [frozen_components]
+        optimizer.set_frozen_components(frozen_components)
     if seed is None:
         seed = np.random.randint(100000, 999999)
     strategy = optimizer.get_strategy()

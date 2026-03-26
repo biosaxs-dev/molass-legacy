@@ -470,7 +470,8 @@ class MplMonitor:
         self.stop_watch_event.set()
         self.watch_thread.join(timeout=timeout)
         
-        if self.watch_thread.is_alive():
+        # After join: check if it actually stopped
+        if self.watch_thread is not None and self.watch_thread.is_alive():
             self.logger.warning(f"Watch thread did not stop within {timeout}s")
             return False
         else:

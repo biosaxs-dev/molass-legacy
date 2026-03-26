@@ -109,6 +109,11 @@ class BackRunner:
             x_shifts_file = os.path.join(folder, x_shifts_txt)
             np.savetxt(x_shifts_file, x_shifts, fmt="%d")
 
+        # Save frozen_components if set on the optimizer
+        if hasattr(optimizer, 'frozen_components') and optimizer.frozen_components is not None:
+            frozen_file = os.path.join(folder, 'frozen_components.txt')
+            np.savetxt(frozen_file, optimizer.frozen_components, fmt="%d")
+
         # test_pattern = str(get_setting("test_pattern"))
         test_pattern = "0"      # always set it to "0" to suppress execution-blocking messages
 

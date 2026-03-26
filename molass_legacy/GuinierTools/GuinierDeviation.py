@@ -135,7 +135,7 @@ class GuinierDeviation:
                 if not ret:
                     return
 
-        regions = [self.qv[[gslice.start, gslice.stop]] for gslice in self.gslices]
+        regions = [self.qv[[gslice.start, min(gslice.stop, len(self.qv) - 1)]] for gslice in self.gslices]
         self.logger.info("updated regions=%s", str(regions))
         if P is not None:
             self.logger.info("updated rgs=%s", str(self.rgs))

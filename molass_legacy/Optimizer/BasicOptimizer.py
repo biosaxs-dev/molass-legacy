@@ -212,6 +212,9 @@ class BasicOptimizer:
         self.exports_bounds = False
         self.vc = ValidComponents(self.num_pure_components)
         self.xr_only = False    # required for backward compatibility
+        self.frozen_components = None   # list of component indices to freeze
+        self.init_params_copy = None    # full param array for subset reconstruction
+        self.xr_params_indeces = None   # indices of free (optimized) params
 
     def get_function_code(self):
         return self.__class__.__name__
@@ -256,6 +259,20 @@ class BasicOptimizer:
 
     def get_xr_only(self):
         return self.xr_only
+
+    def set_frozen_components(self, frozen_components):
+        """Set component indices to freeze during optimization.
+
+        Parameters
+        ----------
+        frozen_components : list of int
+            0-based indices of protein components to freeze.
+            Their XR params, Rg, and UV scale will be held constant.
+        """
+        if frozen_components is not None and len(frozen_components) == 0:
+            frozen_components = None
+        self.frozen_components = frozen_components
+        self.logger.info("Frozen components set: %s", str(frozen_components))
 
     def solve(self, init_params, real_bounds=None, niter=100, seed=None, callback=True, method=None,
               debug=False, show_history=False):
@@ -358,6 +375,8 @@ class BasicOptimizer:
         self.logger.info("from_arg=%s, real bounds=%s", from_arg, str(self.real_bounds))
         if self.xr_only:
             self.prepare_for_xr_only_optimization(init_params)
+        if self.frozen_components is not None:
+            self.prepare_for_frozen_optimization(init_params)
         self.set_params_scale(self.real_bounds)
         self.bounds_mask = self.params_type.make_bounds_mask()
         self.update_bounds(self.init_params)
@@ -663,7 +682,7 @@ class BasicOptimizer:
         return 5
 
     def set_params_scale(self, real_bounds, debug=False):
-        if self.xr_only:
+        if self.xr_params_indeces is not None:
             real_bounds_ = real_bounds[self.xr_params_indeces]
         else:
             real_bounds_ = real_bounds
@@ -709,7 +728,7 @@ class BasicOptimizer:
             conv_params[self.mej] = m
             conv_params[self.tj] = np.log(T)/np.log(K)
             conv_params[self.mpj] = mp/m
-        if self.xr_only:
+        if self.xr_params_indeces is not None:
             nx = (conv_params[self.xr_params_indeces] - self.scale_shift)/self.scale_slope
         else:
             nx = (conv_params - self.scale_shift)/self.scale_slope
@@ -717,7 +736,7 @@ class BasicOptimizer:
 
     def to_real_params(self, norm_params):
         rx = self.scale_slope*norm_params + self.scale_shift
-        if self.xr_only:
+        if self.xr_params_indeces is not None:
             rx_temp = self.init_params_copy.copy()
             rx_temp[self.xr_params_indeces] = rx
             rx = rx_temp
@@ -977,3 +996,42 @@ class BasicOptimizer:
         self.logger.info("param_lengths=%s", str(param_lengths))
         self.logger.info("len(init_params)=%d, uv_start=%d, uv_stop=%d", len(init_params), uv_start, uv_stop)
         self.logger.info("xr_params_indeces=%s", str(self.xr_params_indeces))
+
+    def prepare_for_frozen_optimization(self, init_params):
+        """Restrict optimized params by freezing specified components.
+
+        For each frozen component k (0-based protein component index),
+        the following parameter indices are held constant:
+          - XR shape:  4*k .. 4*k+3  (H, mu, sigma, tau)
+          - Rg:        4*n + k
+          - UV scale:  5*n + 2 + k
+        where n = n_components (including baseline).
+        """
+        self.logger.info("Preparing for frozen-component optimization.")
+        n = self.params_type.n_components
+
+        frozen_set = set()
+        for k in self.frozen_components:
+            if k < 0 or k >= n - 1:
+                raise ValueError("frozen component index %d out of range [0, %d)" % (k, n - 1))
+            # XR params: 4 per component
+            for i in range(4):
+                frozen_set.add(4 * k + i)
+            # Rg
+            frozen_set.add(4 * n + k)
+            # UV scale
+            frozen_set.add(5 * n + 2 + k)
+
+        if self.xr_params_indeces is not None:
+            # xr_only already set a subset — further restrict it
+            self.xr_params_indeces = np.array(
+                [i for i in self.xr_params_indeces if i not in frozen_set], dtype=int)
+        else:
+            # Create subset from scratch
+            self.init_params_copy = init_params.copy()
+            all_indices = np.arange(len(init_params))
+            self.xr_params_indeces = np.array(
+                [i for i in all_indices if i not in frozen_set], dtype=int)
+
+        self.logger.info("Frozen component indices: %s", str(sorted(frozen_set)))
+        self.logger.info("Free params: %d / %d", len(self.xr_params_indeces), len(init_params))
