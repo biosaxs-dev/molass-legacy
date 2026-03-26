@@ -485,7 +485,27 @@ class MplMonitor:
             bool: True if watch thread is running, False otherwise.
         """
         return self.watch_thread is not None and self.watch_thread.is_alive()
-    
+
+    def terminate(self, timeout=5.0):
+        """Terminate the optimization run and clean up.
+
+        This is the recommended way to stop an optimization from code
+        (e.g. in a notebook cell after ``get_current_decomposition``).
+
+        It sets the termination flag, stops the watch thread, and removes
+        the process from the registry.
+
+        Args:
+            timeout: Maximum seconds to wait for the watch thread to stop.
+
+        Returns:
+            bool: True if shutdown completed within the timeout.
+        """
+        self.terminate_event.set()
+        result = self.stop_watching(timeout=timeout)
+        self._remove_from_registry()
+        return result
+
     def get_best_params(self, plot_info=None):
         if plot_info is None:
             plot_info = self.job_state.get_plot_info()
