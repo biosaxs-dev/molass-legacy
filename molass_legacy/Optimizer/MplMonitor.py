@@ -193,7 +193,8 @@ class MplMonitor:
 
         self.status_label = widgets.Label(value="Status: Running")
         self.space_label1 = widgets.Label(value="　　　　")
-        self.skip_button = widgets.Button(description="Skip Job", button_style='warning', disabled=True)
+        self.resume_button = widgets.Button(description="Resume Job", button_style='warning', disabled=True)
+        self.resume_button.on_click(self.trigger_resume)
         self.space_label2 = widgets.Label(value="　　　　")
         if not hasattr(self, 'terminate_event'):
             self.terminate_event = threading.Event()
@@ -204,7 +205,7 @@ class MplMonitor:
         self.export_button.on_click(self.export_data)
         self.controls = widgets.HBox([self.status_label,
                                       self.space_label1,
-                                      self.skip_button,
+                                      self.resume_button,
                                       self.space_label2,
                                       self.terminate_button,
                                       self.space_label3,
@@ -258,6 +259,45 @@ class MplMonitor:
         reload(molass_legacy.Optimizer.Compatibility)
         from molass_legacy.Optimizer.Compatibility import test_subprocess_optimizer_impl
         test_subprocess_optimizer_impl(self)
+
+    def trigger_resume(self, b):
+        """Resume optimization from the best parameters of the completed job.
+
+        Called when the user clicks the 'Resume Job' button. Reads the best
+        parameters from the latest callback.txt, launches a new subprocess,
+        and restarts the watch thread.
+        """
+        self.resume_button.disabled = True
+        self.export_button.disabled = True
+        self.logger.info("Resume requested by user")
+
+        try:
+            # Get best params from the completed job
+            best_params = self.get_best_params()
+            self.init_params = best_params
+
+            # Reset termination flag
+            self.terminate_event.clear()
+
+            # Launch a new job (preserving previous job folders)
+            self.run_impl(self.optimizer, best_params, niter=self.nitrer,
+                          seed=self.seed, work_folder=None, dummy=False, debug=False)
+
+            self.status_label.value = "Status: Running"
+            set_label_color(self.status_label, "green")
+            self.terminate_button.disabled = False
+
+            # Restart the watch thread
+            self.start_watching()
+            self.logger.info("Resumed optimization successfully")
+        except Exception as e:
+            self.logger.error(f"Resume failed: {e}")
+            self.status_label.value = f"Status: Resume failed"
+            set_label_color(self.status_label, "red")
+            self.resume_button.disabled = False
+            with self.message_output:
+                clear_output(wait=True)
+                print(f"Resume failed: {e}")
 
     def trigger_terminate(self, b):
         from molass_legacy.KekLib.IpyUtils import ask_user
@@ -404,6 +444,9 @@ class MplMonitor:
                     self.num_trials += 1
 
                     if not resume_loop:
+                        # Enable Resume and Export buttons for user interaction
+                        self.resume_button.disabled = False
+                        self.export_button.disabled = False
                         # Remove from registry when fully done
                         self._remove_from_registry()
                         # Stop monitoring to prevent further updates
