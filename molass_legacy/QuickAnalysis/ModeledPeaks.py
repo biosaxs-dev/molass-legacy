@@ -25,7 +25,7 @@ def gaussian(x, h, m, s):
 def gaussian_integral(x, h, m, s):
     return np.sqrt(np.pi) * h * s * erf((x-m)/s) / 2
 
-def get_a_peak(x, y, refine=True, model=None, affine=False, debug=False):
+def get_a_peak(x, y, refine=True, model=None, affine=False, allow_negative=False, debug=False):
     if model is None:
         from molass_legacy.Models.ElutionCurveModels import EGH, EGHA
         model = EGHA() if affine else EGH()
@@ -64,13 +64,16 @@ def get_a_peak(x, y, refine=True, model=None, affine=False, debug=False):
     max_width = tx_lim - fx_lim
 
     bnds = ((0, max_y*1.5), (x[0], x[-1]), (0, max_width), (0, max_width))
+    if allow_negative:
+        bnds = ((-max_y*1.5, max_y*1.5), (x[0], x[-1]), (0, max_width), (0, max_width))
     y_for_opt = y.copy()
     width = int(s_init*2)
     left = max(0, pt-width)
     right = min(len(x), pt+width)
     y_for_opt[0:left] = 0
     y_for_opt[right:] = 0
-    y_for_opt[y_for_opt < 0] = 0
+    if not allow_negative:
+        y_for_opt[y_for_opt < 0] = 0
 
     if debug:
         with plt.Dp():
@@ -127,7 +130,7 @@ def get_a_peak(x, y, refine=True, model=None, affine=False, debug=False):
 
     return ret.x
 
-def recognize_peaks(x, y, num_peaks=5, exact_num_peaks=None, affine=False, model=None, min_area_prop=None, correct=True, debug=False):
+def recognize_peaks(x, y, num_peaks=5, exact_num_peaks=None, affine=False, model=None, min_area_prop=None, correct=True, allow_negative=False, debug=False):
     """
     moved here due to 
     ImportError: cannot import name 'get_corrected' from partially initialized module 'LPM' (most likely due to a circular import) (.../DataStructure/LPM.py)
@@ -167,7 +170,7 @@ def recognize_peaks(x, y, num_peaks=5, exact_num_peaks=None, affine=False, model
     if decide_num_peaks:
         total_area = np.sum(y_copy)
     for k in range(max_num_peaks):
-        params = get_a_peak(x, y_copy, refine=k == 0, model=model, affine=affine, debug=debug)
+        params = get_a_peak(x, y_copy, refine=k == 0, model=model, affine=affine, allow_negative=allow_negative, debug=debug)
         if decide_num_peaks:
             y_model = model(x, params)
             area = np.sum(y_model)
