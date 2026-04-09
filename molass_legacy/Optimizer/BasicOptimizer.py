@@ -66,6 +66,7 @@ USE_COMPOSED_UV_COMPONENTS = False
 COERCE_BOUNDED_BQ = True
 USE_RGCURVE_DEVIATION = True
 ADJUST_2D_TARGET = 1
+FLOOR_PENALTY_SCALE = 1e4
 
 class BasicOptimizer:
     def __init__(self, dsets, n_components, params_type, kwargs):
@@ -86,6 +87,7 @@ class BasicOptimizer:
             # as used in test_6690_BasinHopping.py
             return
 
+        self.basic_floor = kwargs.pop("basic_floor", None)
         self.uv_base_curve = kwargs.pop("uv_base_curve", None)
         self.xr_base_curve = kwargs.pop("xr_base_curve", None)
         self.qvector = kwargs.pop("qvector", None)
@@ -519,8 +521,28 @@ class BasicOptimizer:
             if self.sf_bounds is not None:
                 Pxr[:,-1] = self.sf_bounds.compute_bounded_bq(Pxr)
 
+        # UV/XR channel consistency penalty (issue #78)
+        # Compare area fractions of component curves (excluding baseline = last row)
+        # Only penalize when max fraction difference exceeds CONSISTENCY_ALLOWANCE;
+        # small differences are normal due to different contrast mechanisms.
+        CONSISTENCY_ALLOWANCE = 0.2
+        n = self.n_components
+        xr_areas = np.array([np.sum(scaled_xr_cy_array[k]) for k in range(n)])
+        uv_areas = np.array([np.sum(scaled_uv_cy_array[k]) for k in range(n)])
+        xr_total = np.sum(np.abs(xr_areas))
+        uv_total = np.sum(np.abs(uv_areas))
+        if xr_total > 0 and uv_total > 0 and n > 1:
+            xr_frac = xr_areas / xr_total
+            uv_frac = uv_areas / uv_total
+            max_diff = np.max(np.abs(xr_frac - uv_frac))
+            excess = max(0.0, max_diff - CONSISTENCY_ALLOWANCE)
+            consistency_penalty = PENALTY_SCALE * excess ** 2
+        else:
+            consistency_penalty = 0.0
+
         return OptLrfInfo(Pxr, Cxr, Puv, Cuv, mapped_UvD,
-                    self.qvector, self.xrD, self.xrE, x, y, xr_ty, scaled_xr_cy_array, uv_x, uv_y, uv_ty, scaled_uv_cy_array, self.composite)
+                    self.qvector, self.xrD, self.xrE, x, y, xr_ty, scaled_xr_cy_array, uv_x, uv_y, uv_ty, scaled_uv_cy_array, self.composite,
+                    consistency_penalty=consistency_penalty)
 
     def create_lrf_info_for_debug(self, x, y, xr_ty, xr_cy_list, uv_x, uv_y, uv_ty, uv_cy_list):
         from importlib import reload
@@ -612,6 +634,9 @@ class BasicOptimizer:
                             )
         penalties.append(control_penalty)
 
+        # UV/XR channel consistency penalty (issue #78)
+        penalties.append(lrf_info.consistency_penalty)
+
         discreteness = 0
         if self.apply_rg_discreteness:
             discreteness += compute_rg_discreteness(rg_params, unit=self.rg_discreteness_unit)
@@ -624,6 +649,25 @@ class BasicOptimizer:
 
         score_array = np.array(score_list)
         fv = synthesize(score_array, positive_elevate=3) + np.sum(penalties)
+
+        # Pipeline monotonicity: penalize regression below quick-result floor
+        if self.basic_floor is not None:
+            floor = self.basic_floor
+            floor_penalty = 0
+            # P-matrix negativity: current negative norm must not exceed quick result's
+            for P in [Pxr, Puv]:
+                P_ = P[:,:-1]
+                neg_norm = np.linalg.norm(P_[P_ < 0])
+                channel = "xr" if P is Pxr else "uv"
+                floor_key = f"p_neg_norm_{channel}"
+                if floor_key in floor:
+                    floor_penalty += max(0, neg_norm - floor[floor_key])**2
+            # 1D fitting: must not get worse than quick result
+            if "xr_1d_fitting" in floor:
+                floor_penalty += max(0, XR_2D_fitting - floor["xr_1d_fitting"])**2
+            if "uv_1d_fitting" in floor:
+                floor_penalty += max(0, UV_2D_fitting - floor["uv_1d_fitting"])**2
+            fv += FLOOR_PENALTY_SCALE * floor_penalty
 
         if np.isnan(fv):
             # NaN is not allowed in scipy.optimize.basinhopping
@@ -649,6 +693,7 @@ class BasicOptimizer:
                     "Guinier_deviation", "Kratky_smoothness", "SEC_conformance",
                     "mapping_penalty", "negative_penalty", "baseline_penalty",
                     "outofbounds_penalty", "order_penalty", "control_penalty",
+                    "consistency_penalty",
                     ]
                 )
         if major_only:

@@ -150,6 +150,7 @@ class MplMonitor:
         self.process_id = None  # Will be set when process starts
         self.instance_id = id(self)
         self.watch_thread = None  # Will be set when watching starts
+        self.dsets = None  # Set via run() caller or export_data(); see issue #7
         self.stop_watch_event = threading.Event()  # For graceful thread shutdown
         self.is_monitoring = False  # Flag to track active monitoring state
         
@@ -167,19 +168,6 @@ class MplMonitor:
         # Clean up any orphaned processes from previous sessions
         self._cleanup_orphaned_processes()
     
-    def __del__(self):
-        """Destructor to ensure watch thread is stopped when monitor is destroyed."""
-        try:
-            if hasattr(self, 'watch_thread') and self.watch_thread is not None:
-                if self.watch_thread.is_alive():
-                    self.stop_watching(timeout=2.0)
-            
-            # Clean up from global registry
-            if hasattr(self, 'instance_id') and self.instance_id in _ACTIVE_MONITORS:
-                del _ACTIVE_MONITORS[self.instance_id]
-        except Exception:
-            pass  # Suppress errors during cleanup
-
     def clear_jobs(self):
         folder = self.optimizer_folder
         for sub in os.listdir(folder):
@@ -187,6 +175,13 @@ class MplMonitor:
             if os.path.isdir(subpath):
                 shutil.rmtree(subpath)
                 os.makedirs(subpath, exist_ok=True)
+
+    @property
+    def working_folder(self):
+        """Path to the current optimizer working folder, or None."""
+        if hasattr(self, 'runner') and hasattr(self.runner, 'working_folder'):
+            return self.runner.working_folder
+        return None
 
     def create_dashboard(self):
         self.plot_output = widgets.Output()
@@ -220,7 +215,7 @@ class MplMonitor:
     def run(self, optimizer, init_params, niter=20, seed=1234, max_trials=30, work_folder=None, dummy=False, x_shifts=None, debug=False, devel=True):
         self.optimizer = optimizer
         self.init_params = init_params
-        self.nitrer = niter
+        self.niter = niter
         self.seed = seed
         self.num_trials = 0
         self.max_trials = max_trials
@@ -280,7 +275,7 @@ class MplMonitor:
             self.terminate_event.clear()
 
             # Launch a new job (preserving previous job folders)
-            self.run_impl(self.optimizer, best_params, niter=self.nitrer,
+            self.run_impl(self.optimizer, best_params, niter=self.niter,
                           seed=self.seed, work_folder=None, dummy=False, debug=False)
 
             self.status_label.value = "Status: Running"
@@ -329,26 +324,24 @@ class MplMonitor:
         plot_info = self.job_state.get_plot_info()
         params = self.get_best_params(plot_info=plot_info)
 
-        # Prepare to capture warnings and prints
-        buf_out = io.StringIO()
-        buf_err = io.StringIO()
+        # Capture warnings only — do NOT redirect sys.stdout/sys.stderr here.
+        # This method runs on a background thread. Any redirect_stdout/sys.stdout
+        # modification races with the main notebook thread (e.g. load_rigorous_result
+        # also uses redirect_stdout), causing TOCTOU corruption of sys.stdout.
+        # The ipywidgets.Output context (self.plot_output) captures any prints
+        # from plot_job_state() naturally.
         with warnings.catch_warnings(record=True) as wlist:
             warnings.simplefilter("always")
-            old_stdout, old_stderr = sys.stdout, sys.stderr
-            sys.stdout = buf_out
-            sys.stderr = buf_err
-            try:
-                with self.plot_output:
-                    clear_output(wait=True)
-                    plot_job_state(self, params, plot_info=plot_info, niter=self.nitrer)
-                    display(self.fig)
-                    plt.close(self.fig)
-            finally:
-                # Restore stdout/stderr
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
+            with self.plot_output:
+                clear_output(wait=True)
+                plot_job_state(self, params, plot_info=plot_info, niter=self.niter)
+                # Close before display to remove from inline backend's auto-show list,
+                # preventing a duplicate render. display() still works on a closed Figure.
+                plt.close(self.fig)
+                display(self.fig)
 
-        # Unique warning messages and counts
+        # Collect warning messages
+        messages = []
         messages_counts = {}
         for w in wlist:
             msg = str(w.message)
@@ -356,28 +349,18 @@ class MplMonitor:
                 messages_counts[msg] += 1
             else:
                 messages_counts[msg] = 1
-
-        # Collect all messages
-        messages = []
-        # Warnings
         for msg, count in messages_counts.items():
             if count > 1:
                 messages.append(f"Warning: {msg} (x {count})")
             else:
                 messages.append(f"Warning: {msg}")
-        # Print output and errors
-        out_str = buf_out.getvalue()
-        err_str = buf_err.getvalue()
-        if out_str.strip():
-            messages.append(out_str.strip())
-        if err_str.strip():
-            messages.append(err_str.strip())
 
-        # Display all messages in message_output
-        with self.message_output:
-            clear_output(wait=True)
-            for msg in messages:
-                print(msg)
+        # Display warning messages in message_output
+        if messages:
+            with self.message_output:
+                clear_output(wait=True)
+                for msg in messages:
+                    print(msg)
 
     def watch_progress(self, interval=1.0):
         """Main watching loop that monitors subprocess and updates dashboard.
@@ -426,7 +409,7 @@ class MplMonitor:
                         if self.num_trials < self.max_trials:
                             self.logger.info("Starting a new optimization trial (%d/%d).", self.num_trials, self.max_trials)
                             best_params = self.get_best_params()
-                            self.run_impl(self.optimizer, best_params, niter=self.nitrer, seed=self.seed, work_folder=None, dummy=False, debug=False)
+                            self.run_impl(self.optimizer, best_params, niter=self.niter, seed=self.seed, work_folder=None, dummy=False, debug=False)
                             self.status_label.value = "Status: Running"
                             set_label_color(self.status_label, "green")
                             resume_loop = True
@@ -566,6 +549,96 @@ class MplMonitor:
         best_params = x_array[k]
         return best_params
 
+    def get_progress_info(self):
+        """Return current optimization progress as a dictionary.
+
+        This method exposes the same timing and score information that is
+        rendered visually in the matplotlib progress chart, making it
+        accessible to AI agents and programmatic callers.
+
+        Returns
+        -------
+        dict
+            Keys:
+            - ``status`` (str): Current status label text.
+            - ``trial`` (int): Current trial number (0-based).
+            - ``max_trials`` (int): Maximum number of trials.
+            - ``num_evals`` (int): Number of function evaluations so far.
+            - ``best_fv`` (float or None): Best objective function value.
+            - ``starting_time`` (str): When the job started (HH:MM format).
+            - ``time_elapsed`` (str): Time since start (H.MM format).
+            - ``ending_time`` (str): Estimated completion time (HH:MM format).
+            - ``time_ahead`` (str): Estimated remaining time (H.MM format).
+            - ``is_running`` (bool): Whether the subprocess is still alive.
+        """
+        from molass_legacy.Optimizer.ProgressChart import (
+            get_time_started, get_time_elapsed, guess_ending_time,
+            get_remaining_time,
+        )
+
+        raw_status = getattr(self, 'status_label', None) and self.status_label.value or 'unknown'
+        # Strip the "Status: " prefix used by the widget display
+        clean_status = raw_status.replace('Status: ', '', 1) if isinstance(raw_status, str) else raw_status
+
+        info = {
+            'status': clean_status,
+            'trial': getattr(self, 'num_trials', 0),
+            'max_trials': getattr(self, 'max_trials', 0),
+            'num_evals': 0,
+            'best_fv': None,
+            'starting_time': '',
+            'time_elapsed': '',
+            'ending_time': '',
+            'time_ahead': '',
+            'is_running': self.is_watching(),
+        }
+
+        if not hasattr(self, 'job_state'):
+            return info
+
+        plot_info = self.job_state.get_plot_info()
+        fv = plot_info[0]
+
+        if fv is None or len(fv) == 0:
+            return info
+
+        info['num_evals'] = int(fv[-1, 0])
+        info['best_fv'] = float(np.min(fv[:, 1]))
+        info['starting_time'] = get_time_started(fv)
+        info['time_elapsed'] = get_time_elapsed(fv)
+        ending_str, finish_time = guess_ending_time(fv, niter=self.niter)
+        info['ending_time'] = ending_str
+        info['time_ahead'] = get_remaining_time(fv, finish_time)
+
+        return info
+
+    def get_status_summary(self):
+        """Print a concise one-line progress summary.
+
+        Intended for AI agents and programmatic callers who cannot see the
+        matplotlib widget.  Returns the summary string as well.
+
+        Returns
+        -------
+        str
+            A single-line summary of the current optimization state.
+        """
+        info = self.get_progress_info()
+        parts = [f"Status: {info['status']}"]
+        parts.append(f"Trial {info['trial']}/{info['max_trials']}")
+        if info['best_fv'] is not None:
+            parts.append(f"best_fv={info['best_fv']:.6f}")
+        parts.append(f"evals={info['num_evals']}")
+        if info['time_elapsed']:
+            parts.append(f"elapsed={info['time_elapsed'].strip()}")
+        if info['ending_time']:
+            parts.append(f"ETA={info['ending_time'].strip()}")
+        if info['time_ahead']:
+            parts.append(f"ahead={info['time_ahead'].strip()}")
+        summary = " | ".join(parts)
+        print(summary)
+        return summary
+
     def save_the_result_figure(self, fig_file=None):
         if fig_file is None:
             figs_folder = os.path.join(self.optimizer_folder, "figs")
@@ -577,12 +650,15 @@ class MplMonitor:
     def export_data(self, b, debug=True):
         if debug:
             from importlib import reload
-            import Optimizer.LrfExporter
-            reload(Optimizer.LrfExporter)
+            import molass_legacy.Optimizer.LrfExporter
+            reload(molass_legacy.Optimizer.LrfExporter)
         from .LrfExporter import LrfExporter
 
         params = self.optimizer.init_params
         try:
+            if self.dsets is None:
+                print("Error: dsets not set. Cannot export.")
+                return
             exporter = LrfExporter(self.optimizer, params, self.dsets)
             folder = exporter.export()
             fig_file = os.path.join(folder, "result_fig.jpg")

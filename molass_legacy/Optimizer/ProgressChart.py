@@ -40,10 +40,6 @@ def get_time_elapsed(fv_array):
         time = ""
     return time
 
-def guess_ending_time(fv_array):
-    ending_time = ""
-    return ending_time
-
 def guess_ending_time(fv_array, niter=20):
     finish_time = None
     time = ""

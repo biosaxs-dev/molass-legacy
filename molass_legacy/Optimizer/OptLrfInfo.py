@@ -25,7 +25,8 @@ class OptLrfInfo:
                     qv, xrD, xrE,
                     x, y, xr_ty, scaled_xr_cy_array,
                     uv_x, uv_y, uv_ty, scaled_uv_cy_array,
-                    composite):
+                    composite,
+                    consistency_penalty=0.0):
         self.matrices = (Pxr, Cxr, Puv, Cuv, mapped_UvD)
         self.qv = qv
         self.xrD = xrD
@@ -39,6 +40,7 @@ class OptLrfInfo:
         self.uv_ty = uv_ty
         self.scaled_uv_cy_array = scaled_uv_cy_array
         self.composite = composite
+        self.consistency_penalty = consistency_penalty
 
     def get_num_substantial_components(self):
         return self.composite.get_num_substantial_components()
