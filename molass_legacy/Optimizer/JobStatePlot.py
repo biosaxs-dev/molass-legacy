@@ -5,6 +5,26 @@ Job status plot for optimization GUI.
 import numpy as np
 import matplotlib.pyplot as plt
 
+
+def _draw_monitor_anomaly_bands(monitor):
+    """Draw anomaly bands on UV (axes[0]) and XR (axes[1]) panels if available."""
+    jv = getattr(monitor, 'anomaly_jv', None)
+    mask = getattr(monitor, 'anomaly_mask', None)
+    if jv is None or mask is None or not np.any(mask):
+        return
+
+    color, alpha = 'red', 0.08
+    idx = np.where(mask)[0]
+    if len(idx) == 0:
+        return
+    breaks = np.where(np.diff(idx) > 1)[0] + 1
+    for group in np.split(idx, breaks):
+        lo, hi = jv[group[0]], jv[group[-1]]
+        # axes[1] = XR decomposition panel
+        monitor.axes[1].axvspan(lo, hi, color=color, alpha=alpha, zorder=0)
+        # axes[0] = UV decomposition panel (same frame range — approximate)
+        monitor.axes[0].axvspan(lo, hi, color=color, alpha=alpha, zorder=0)
+
 def draw_suptitle(self):
     from molass_legacy.SerialAnalyzer.DataUtils import get_in_folder
     from molass_legacy.KekLib.BasicUtils import ordinal_str
@@ -55,6 +75,9 @@ def plot_job_state(self, params, plot_info=None, niter=20):
 
     draw_suptitle(self)
     plot_objective_func(self.optimizer, params, axis_info=(self.fig, self.axes))
+
+    # Anomaly exclusion bands — consistent with plot_compact() and plot_components()
+    _draw_monitor_anomaly_bands(self)
 
     if plot_info is not None:
         draw_progress(self, plot_info, niter=niter)
