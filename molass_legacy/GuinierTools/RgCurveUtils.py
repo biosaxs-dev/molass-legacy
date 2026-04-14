@@ -12,7 +12,9 @@ VALID_QUIALTY_LIMIT = 0.01
 VALID_BASE_QUALITY = 0.3
 
 def convert_to_milder_qualities(qualities):
-    # task: this is a temporary fix. deeper improvement is required. 
+    # task: this is a temporary fix. deeper improvement is required.
+    # NOTE: this function is kept for backward compatibility but is no longer
+    # used for Guinier_deviation weights. Raw qualities are used directly.
     ret_qualities = qualities.copy()
     valid = qualities > VALID_QUIALTY_LIMIT
     ret_qualities[valid] = VALID_BASE_QUALITY + (1 - VALID_BASE_QUALITY)*qualities[valid]
@@ -66,9 +68,10 @@ def get_connected_curve_info(rg_curve, debug=False):
 def get_reconstructed_curve(size, valid_bools, Cxr, rg_params):
     valid_bool_all, valid_bool_seg = valid_bools
     ty_ = np.sum(Cxr, axis=0)[valid_bool_all]
+    ones = np.ones(size)
     rrgv = np.zeros(size)
     for cy, rg in zip(Cxr[:-1], rg_params):
-        rrgv += cy[valid_bool_all]/ty_*rg
+        rrgv += safe_ratios(ones, cy[valid_bool_all], ty_, debug=False) * rg
     return rrgv
 
 def compute_rg_curves(x, xr_weights, rg_params, xr_cy_list, xr_ty, rg_curve, debug=False):

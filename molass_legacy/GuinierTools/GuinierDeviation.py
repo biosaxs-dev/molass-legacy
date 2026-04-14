@@ -40,7 +40,8 @@ class GuinierDeviation:
         self.rgv = rgv[valid_bool_seg]  # valid_bools[1] : valid_bool_seg
         self.mqualities = convert_to_milder_qualities(qualities)
         self.max_mask = self.mqualities > VALID_BASE_QUALITY
-        self.weights = self.mqualities[valid_bool_seg]
+        self.raw_qualities = qualities[valid_bool_seg]  # raw qualities: tail frames get ~0 weight
+        self.weights = self.raw_qualities  # use raw qualities directly (no floor-raise)
         self.valid_bools = valid_bools
         self.valid_size = len(np.where(valid_bool_seg)[0])
 

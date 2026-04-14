@@ -32,7 +32,10 @@ class G2010(BasicOptimizer):
 
         params_type = EdmParams(n_components)
         BasicOptimizer.__init__(self, dsets, n_components, params_type, kwargs)
-        params_type.set_x(self.xr_curve.x)
+        # BasicOptimizer.__init__ may return early (when for_split_only=True) before
+        # setting self.xr_curve.  Extract x directly from dsets to avoid AttributeError.
+        (xr_curve_for_x, _), _, _ = dsets
+        params_type.set_x(xr_curve_for_x.x)
 
     def objective_func(self, p, plot=False, debug=False, fig_info=None, axis_info=None, return_full=False, return_lrf_info=False):
         self.eval_counter += 1

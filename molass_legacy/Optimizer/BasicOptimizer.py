@@ -526,7 +526,7 @@ class BasicOptimizer:
         # Only penalize when max fraction difference exceeds CONSISTENCY_ALLOWANCE;
         # small differences are normal due to different contrast mechanisms.
         CONSISTENCY_ALLOWANCE = 0.2
-        n = self.n_components
+        n = self.num_pure_components
         xr_areas = np.array([np.sum(scaled_xr_cy_array[k]) for k in range(n)])
         uv_areas = np.array([np.sum(scaled_uv_cy_array[k]) for k in range(n)])
         xr_total = np.sum(np.abs(xr_areas))

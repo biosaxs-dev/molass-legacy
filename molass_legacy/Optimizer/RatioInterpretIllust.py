@@ -8,6 +8,7 @@ from molass_legacy.SerialAnalyzer.DataUtils import get_in_folder
 
 MODEL_NAME_DICT = {
     "G0346": "EGH",
+    "G0367": "EGH",
     "G1100": "SDM",
     "G2010": "EDM",
 }
