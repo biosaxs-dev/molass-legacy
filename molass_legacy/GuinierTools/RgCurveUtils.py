@@ -4,17 +4,32 @@
     Copyright (c) 2024, SAXS Team, KEK-PF
 """
 import numpy as np
+from collections import namedtuple
 import molass_legacy.KekLib.DebugPlot as plt
 from molass_legacy.Optimizer.NumericalUtils import safe_ratios
+
+# Two boolean masks used throughout Guinier code:
+#   all_frames: mask over the full frame range of rg_curve.x
+#   segment:    mask over concatenated curve segments only (shorter)
+ValidBools = namedtuple('ValidBools', ['all_frames', 'segment'])
 # from molass_legacy.Trimming.Sigmoid import sigmoid
 
 VALID_QUIALTY_LIMIT = 0.01
 VALID_BASE_QUALITY = 0.3
 
 def convert_to_milder_qualities(qualities):
-    # task: this is a temporary fix. deeper improvement is required.
-    # NOTE: this function is kept for backward compatibility but is no longer
-    # used for Guinier_deviation weights. Raw qualities are used directly.
+    """Raise the quality floor so that low-quality frames still get some weight.
+
+    Maps raw qualities (0–1) to a compressed range (VALID_BASE_QUALITY–1):
+        out[i] = 0.3 + 0.7 * qualities[i]   for qualities[i] > 0.01
+    This means the minimum weight for any "valid" frame becomes 0.3 (30%),
+    regardless of how poor the Guinier fit actually was.
+
+    .. deprecated::
+        No longer used for Guinier_deviation weights (see issue #11).
+        Raw qualities are now used directly in ``GuinierDeviation``.
+        Kept for backward compatibility (e.g. ``max_mask`` threshold).
+    """
     ret_qualities = qualities.copy()
     valid = qualities > VALID_QUIALTY_LIMIT
     ret_qualities[valid] = VALID_BASE_QUALITY + (1 - VALID_BASE_QUALITY)*qualities[valid]
@@ -63,15 +78,14 @@ def get_connected_curve_info(rg_curve, debug=False):
             fig.tight_layout()
             plt.show()
 
-    return x_, y_, rgv, qualities, (valid_bool_all, valid_bool_seg)
+    return x_, y_, rgv, qualities, ValidBools(valid_bool_all, valid_bool_seg)
 
 def get_reconstructed_curve(size, valid_bools, Cxr, rg_params):
-    valid_bool_all, valid_bool_seg = valid_bools
-    ty_ = np.sum(Cxr, axis=0)[valid_bool_all]
+    ty_ = np.sum(Cxr, axis=0)[valid_bools.all_frames]
     ones = np.ones(size)
     rrgv = np.zeros(size)
     for cy, rg in zip(Cxr[:-1], rg_params):
-        rrgv += safe_ratios(ones, cy[valid_bool_all], ty_, debug=False) * rg
+        rrgv += safe_ratios(ones, cy[valid_bools.all_frames], ty_, debug=False) * rg
     return rrgv
 
 def compute_rg_curves(x, xr_weights, rg_params, xr_cy_list, xr_ty, rg_curve, debug=False):

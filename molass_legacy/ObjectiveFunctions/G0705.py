@@ -1,5 +1,9 @@
 """
-    G0705.py
+    G0705.py — 7-score EMG objective function (RT variant)
+
+    Elution model: EMG with rate-theory parameters (RtEmgParams)
+    Scores: same 7 as G0346
+    Uses SEC column theory constants (Ti, Np bounds).
 
     Copyright (c) 2022-2025, SAXS Team, KEK-PF
 """

@@ -1,5 +1,9 @@
 """
-    G0665.py
+    G0665.py — 7-score EMG objective function (FD variant)
+
+    Elution model: EMG (Exponential Modified Gaussian) with FD parameters
+    Scores: same 7 as G0346
+    Uses SEC column theory constants (Ti, Np bounds).
 
     Copyright (c) 2022-2025, SAXS Team, KEK-PF
 """

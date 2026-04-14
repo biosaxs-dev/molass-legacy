@@ -1,5 +1,9 @@
 """
-    G0525.py
+    G0525.py — 7-score EGH objective function (LJ variant)
+
+    Elution model: EGH with Lennard-Jones parameters (LjEghParams)
+    Scores: same 7 as G0346
+    Variant of G0346 with additional LJ interaction modeling.
 
     Copyright (c) 2022-2025, SAXS Team, KEK-PF
 """

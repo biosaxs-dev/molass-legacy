@@ -1,5 +1,9 @@
 """
-    G1200.py
+    G1200.py — 7-score SDM objective function (gamma monopore variant)
+
+    Elution model: SDM with gamma-distribution monopore PDF
+    Scores: same 7 as G0346
+    Variant of G1100 using sdm_monopore_gamma_pdf from molass.SEC.Models.
 
     Copyright (c) 2026-2026, SAXS Team, KEK-PF
 """

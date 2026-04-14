@@ -1,5 +1,10 @@
 """
-    G0346.py
+    G0346.py — 7-score EGH objective function
+
+    Elution model: EGH (Exponential-Gaussian Hybrid)
+    Scores: XR_2D_fitting, XR_LRF_residual, UV_2D_fitting, UV_LRF_residual,
+            Guinier_deviation, Kratky_smoothness, SEC_conformance
+    Used by: ``optimize_rigorously(method='BH')`` with EGH model (default)
 
     Copyright (c) 2021-2025, SAXS Team, KEK-PF
 """

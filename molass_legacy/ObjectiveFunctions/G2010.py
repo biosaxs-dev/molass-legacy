@@ -1,5 +1,10 @@
 """
-    G2010.py
+    G2010.py — 7-score EDM objective function
+
+    Elution model: EDM (Equilibrium Dispersive Model)
+    Scores: XR_2D_fitting, XR_LRF_residual, UV_2D_fitting, UV_LRF_residual,
+            Guinier_deviation, Kratky_smoothness, SEC_conformance
+    Uses EdmParams for rate-theory-based column modeling.
 
     Copyright (c) 2023-2024, SAXS Team, KEK-PF
 """

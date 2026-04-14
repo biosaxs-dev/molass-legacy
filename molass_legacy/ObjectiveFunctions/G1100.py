@@ -1,5 +1,9 @@
 """
-    G1100.py
+    G1100.py — 7-score SDM objective function (dispersive monopore)
+
+    Elution model: SDM (Stochastic Dispersive Model) with monopore PDF
+    Scores: same 7 as G0346
+    Uses SdmParams and SdmStrategy for SEC column modeling.
 
     Copyright (c) 2024-2025, SAXS Team, KEK-PF
 """
