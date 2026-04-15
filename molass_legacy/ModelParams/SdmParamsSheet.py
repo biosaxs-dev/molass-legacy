@@ -24,7 +24,7 @@ class SdmParamsSheet(ParamsSheetBase):
         body_frame.pack()
 
         xr_params, xr_baseparams, rgs, mapping, uv_params, uv_baseparams, mappable_range, sdmcol_params = optimizer.split_params_simple(params)
-        N, K, t0, rp, N0, tI = sdmcol_params
+        N, K, t0, rp, N0, tI = sdmcol_params[:6]
         T = K/N
         me = 1.5
         mp = 1.5

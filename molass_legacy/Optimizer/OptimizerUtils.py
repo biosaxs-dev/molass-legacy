@@ -6,7 +6,8 @@
 MODEL_NAME_DICT = {
     "G0346" : "EGH",
     "G0367" : "EGH",
-    "G1100" : "SDM",
+    "G1100" : "SDM(exp)",
+    "G1200" : "SDM(gamma)",
     "G2010" : "EDM",
 }
 

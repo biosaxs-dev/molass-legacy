@@ -295,7 +295,15 @@ class MplMonitor:
                 print(f"Resume failed: {e}")
 
     def trigger_terminate(self, b):
-        from molass_legacy.KekLib.IpyUtils import ask_user
+        try:
+            from molass_legacy.KekLib.IpyUtils import ask_user
+        except (ModuleNotFoundError, ImportError):
+            # Fallback: terminate immediately without confirmation dialog
+            self.terminate_event.set()
+            self.status_label.value = "Status: Terminating"
+            set_label_color(self.status_label, "yellow")
+            self.logger.info("Terminate job requested (no dialog). id(self)=%d", id(self))
+            return
 
         def handle_response(answer):
             print("Callback received:", answer)

@@ -24,9 +24,10 @@ def get_common_parameter_names(nc):
     return xr_names, rg_names, mapping_names, uv_names, mr_names, seccol_names
 
 class SdmParams:
-    def __init__(self, n_components):
+    def __init__(self, n_components, num_col_params=None):
         self.logger = logging.getLogger(__name__)
         self.n_components = n_components
+        self.num_col_params = num_col_params if num_col_params is not None else NUM_COL_PARAMS
         self.num_baseparams = get_num_baseparams()
         self.integral_baseline = self.num_baseparams == 3
         self.t0_upper_bound = get_setting("t0_upper_bound")
@@ -98,9 +99,9 @@ class SdmParams:
             decomp_params = params
             seccol_params = None
         else:
-            assert r == NUM_COL_PARAMS
-            decomp_params = params[:-NUM_COL_PARAMS]
-            seccol_params = params[-NUM_COL_PARAMS:]
+            assert r == self.num_col_params
+            decomp_params = params[:-self.num_col_params]
+            seccol_params = params[-self.num_col_params:]
 
         self.separate_params = self.split_params(self.n_components, decomp_params) + [seccol_params]
         return self.separate_params
@@ -147,20 +148,27 @@ class SdmParams:
         range_bounds = [(f-dx, f+dx), (t-dx, t+dx)]
 
         # colparam_bounds
-        # N, K, x0, poresize, tI
+        # N, K, x0, poresize, tI  (+ k for gamma variant)
         if real_bounds is None:
             colparam_bounds = self.get_colparam_bounds()
+            # Estimator provides 6 bounds (N, K, x0, poresize, N0, tI).
+            # Append bounds for extra col params (e.g. k) if needed.
+            if len(colparam_bounds) < self.num_col_params:
+                sdmcol = self.split_params_simple(params)[-1]
+                for j in range(len(colparam_bounds), self.num_col_params):
+                    v = sdmcol[j]
+                    colparam_bounds.append((max(0.5, v * 0.3), max(10.0, v * 3.0)))
             self.logger.info("got colparam_bounds=%s from the estimator", str(colparam_bounds))
         else:
             # self.estimator may be None in this case
-            colparam_bounds = list(real_bounds[-NUM_COL_PARAMS:])
+            colparam_bounds = list(real_bounds[-self.num_col_params:])
             self.logger.info("got colparam_bounds=%s from real_bounds", str(colparam_bounds))
 
         self.bounds_lengths = [len(b) for b in [xr_bounds, rg_bounds, mapping_bounds, uv_bounds, range_bounds, colparam_bounds]]
         return xr_bounds + rg_bounds + mapping_bounds + uv_bounds + range_bounds + colparam_bounds
 
     def make_bounds_mask(self):
-        bounds_mask = np.zeros(self.num_params + NUM_COL_PARAMS, dtype=bool)
+        bounds_mask = np.zeros(self.num_params + self.num_col_params, dtype=bool)
         n = self.n_components
         nc = n - 1
         bounds_mask[0:nc] = True            # xr_params
@@ -182,6 +190,8 @@ class SdmParams:
 
     def get_parameter_names(self):
         xr_names, rg_names, mapping_names, uv_names, mr_names, seccol_names = get_common_parameter_names(self.n_components - 1)
+        if self.num_col_params > 6:
+            seccol_names = seccol_names + ["$k$"]
         xr_basenames = ["$xb_a$", "$xb_b$"]
         if self.num_baseparams == 3:
             xr_basenames += ["$xb_r$"]
@@ -212,7 +222,7 @@ class SdmParams:
         pos_array_list = []
         for params in x_array:
             rg_params = params[gr_start:gr_start+nc]
-            N, K, x0, poresize, N0, tI  = params[-NUM_COL_PARAMS:]
+            N, K, x0, poresize, N0, tI  = params[-self.num_col_params:][:6]
             T = K/N
             rho = rg_params/poresize
             rho[rho > 1] = 1

@@ -25,7 +25,7 @@ def plot_objective_state(score_list_pair, fv, xm,
         pass
     else:
         xr_params, xr_baseparams, rg_params_not_used, (a, b), uv_params, uv_baseparams, (c, d), sec_params = func.split_params_simple(params)
-        t0, rp, N, me, T, mp = sec_params
+        t0, rp, N, me, T, mp = sec_params[:6]
         rho = rg_params/rp
         rho[rho > 1] = 1
         model_trs = t0 + N*T*(1 - rho)**(me + mp)

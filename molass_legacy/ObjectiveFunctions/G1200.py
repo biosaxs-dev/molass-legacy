@@ -23,9 +23,9 @@ LRF_RESIDUAL_FAKED = 10
 XR_VALID = 0.001
 RG_FITTING_NAN_REPLACE = 100
 
-class G1100(BasicOptimizer):
+class G1200(BasicOptimizer):
     """
-    Stochastic Dispersive Model
+    Stochastic Dispersive Model — Gamma-distributed pore residence times
     """
     def __init__(self, dsets, n_components, **kwargs):
         self.elutionmodel_func = elutionmodel_func
@@ -35,7 +35,7 @@ class G1100(BasicOptimizer):
             reload(molass_legacy.ModelParams.SdmParams)
         from molass_legacy.ModelParams.SdmParams import SdmParams
 
-        params_type = SdmParams(n_components)
+        params_type = SdmParams(n_components, num_col_params=7)
         BasicOptimizer.__init__(self, dsets, n_components, params_type, kwargs)
         self.exports_bounds = True
 
@@ -47,7 +47,7 @@ class G1100(BasicOptimizer):
         y = self.xr_curve.y
         # rg = self.rg
 
-        N, K, x0, poresize, N0, tI = sdmcol_params
+        N, K, x0, poresize, N0, tI, k_gamma = sdmcol_params
         me = 1.5
         mp = 1.5
         T = K/N
@@ -75,14 +75,14 @@ class G1100(BasicOptimizer):
         uv_ty = np.zeros(len(uv_x))
         negative_penalty = min(0, T)**2
         T_ = abs(T)
-        k = 0
         x_ = x - tI
         t0 = x0 - tI
         for xr_w, r_, uv_w in zip(xr_params, rho, uv_params):
             negative_penalty += min(0, xr_w)**2 + min(0, uv_w)**2
             np_ = N*(1 - r_)**me
             tp_ = T_*(1 - r_)**mp
-            pd_cy = elutionmodel_func(x_, np_, tp_, N0, t0)
+            theta_ = tp_ / k_gamma
+            pd_cy = elutionmodel_func(x_, np_, k_gamma, theta_, N0, t0)
             xr_cy = xr_w * pd_cy
             uv_cy = uv_w * pd_cy
 
@@ -90,7 +90,6 @@ class G1100(BasicOptimizer):
             xr_cy_list.append(xr_cy)
             uv_ty += uv_cy
             uv_cy_list.append(uv_cy)
-            k += 1
 
         xr_cy = self.xr_baseline(x, xr_baseparams, xr_ty, xr_cy_list)
         uv_cy = self.uv_baseline(uv_x, uv_baseparams, uv_ty, uv_cy_list)
