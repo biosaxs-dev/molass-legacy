@@ -428,7 +428,7 @@ def get_curve_xy_impl(sd, baseline_type=1, return_details=False, debug=False):
                         baseline_params=baseline_params
                         )
 
-            if debug:
+            if False:
                 with plt.Dp():
                     fig, axes = plt.subplots(ncols=2, figsize=(12,5))
                     fig.suptitle("get_curve_xy_impl return_details")

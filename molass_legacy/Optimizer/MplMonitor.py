@@ -527,8 +527,8 @@ class MplMonitor:
         This is the recommended way to stop an optimization from code
         (e.g. in a notebook cell after ``get_current_decomposition``).
 
-        It sets the termination flag, stops the watch thread, and removes
-        the process from the registry.
+        It kills the subprocess directly, stops the watch thread, and
+        removes the process from the registry.
 
         Args:
             timeout: Maximum seconds to wait for the watch thread to stop.
@@ -537,6 +537,12 @@ class MplMonitor:
             bool: True if shutdown completed within the timeout.
         """
         self.terminate_event.set()
+        # Kill the subprocess directly — do not rely on the watch thread,
+        # which may exit before reaching the terminate_event check.
+        try:
+            self.runner.terminate()
+        except Exception as e:
+            self.logger.error(f"Error terminating subprocess: {e}")
         result = self.stop_watching(timeout=timeout)
         self._remove_from_registry()
         return result

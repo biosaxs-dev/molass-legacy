@@ -190,7 +190,9 @@ class SdmParams:
 
     def get_parameter_names(self):
         xr_names, rg_names, mapping_names, uv_names, mr_names, seccol_names = get_common_parameter_names(self.n_components - 1)
-        if self.num_col_params > 6:
+        if self.num_col_params == 8:
+            seccol_names = ["$N$", "$K$", "$t_0$", "$\\mu$", "$\\sigma$", "$N_0$", "$t_I$", "$k$"]
+        elif self.num_col_params > 6:
             seccol_names = seccol_names + ["$k$"]
         xr_basenames = ["$xb_a$", "$xb_b$"]
         if self.num_baseparams == 3:
