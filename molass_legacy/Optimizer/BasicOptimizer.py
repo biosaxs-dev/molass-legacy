@@ -43,6 +43,7 @@ USE_BOUNDS = True
 AVOID_VANISHING_RATIO = 0.02    # minimum scale ratio against the max scale
 
 PENALTY_SCALE = 1e3
+CONSISTENCY_PENALTY_SCALE = 10      # soft preference — UV/XR area fractions can legitimately differ
 UV_XR_RATIO_ALLOW = 0.5
 UV_XR_RATIO_SCALE = 100
 WEAK_PENALTY_SCALE = 0.01
@@ -536,7 +537,7 @@ class BasicOptimizer:
             uv_frac = uv_areas / uv_total
             max_diff = np.max(np.abs(xr_frac - uv_frac))
             excess = max(0.0, max_diff - CONSISTENCY_ALLOWANCE)
-            consistency_penalty = PENALTY_SCALE * excess ** 2
+            consistency_penalty = CONSISTENCY_PENALTY_SCALE * excess ** 2
         else:
             consistency_penalty = 0.0
 

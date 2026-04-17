@@ -20,6 +20,7 @@ STDEV_WEIGHT = 0.2
 def synthesize(values, positive_elevate=0):
     value_weights = VALUE_WEIGHTS7 if len(values) == 7 else VALUE_WEIGHTS8
     values = np.asarray(values)+ positive_elevate
+    values = np.maximum(values, 0)      # clamp: negative scores must not reduce fv
     stds = np.std(values, axis=0)
     return MEAN_WEIGHT*np.sqrt(np.sum(value_weights * values**2)) + STDEV_WEIGHT*stds - positive_elevate
 

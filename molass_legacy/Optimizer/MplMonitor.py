@@ -208,7 +208,12 @@ class MplMonitor:
 
         self.message_output = widgets.Output(layout=widgets.Layout(border='1px solid gray', background_color='gray', padding='10px'))
 
-        self.dashboard = widgets.VBox([self.plot_output, self.controls, self.message_output])
+        # Fix cursor on disabled buttons (VS Code ipywidgets renderer doesn't enforce this)
+        self._button_css = widgets.HTML(
+            '<style>.widget-button:disabled { cursor: not-allowed !important; opacity: 0.5; }</style>'
+        )
+
+        self.dashboard = widgets.VBox([self._button_css, self.plot_output, self.controls, self.message_output])
         self.dashboard_output = widgets.Output()
         self.dialog_output = widgets.Output()
 
@@ -262,8 +267,9 @@ class MplMonitor:
         parameters from the latest callback.txt, launches a new subprocess,
         and restarts the watch thread.
         """
+        if self.resume_button.disabled:
+            return
         self.resume_button.disabled = True
-        self.export_button.disabled = True
         self.logger.info("Resume requested by user")
 
         try:
@@ -295,6 +301,8 @@ class MplMonitor:
                 print(f"Resume failed: {e}")
 
     def trigger_terminate(self, b):
+        if self.terminate_button.disabled:
+            return
         try:
             from molass_legacy.KekLib.IpyUtils import ask_user
         except (ModuleNotFoundError, ImportError):
@@ -451,6 +459,9 @@ class MplMonitor:
                         self.job_state.update()
                         if self.job_state.has_changed():
                             self.update_plot()
+                            # Enable Export as soon as there's data to export
+                            if self.export_button.disabled and self.dsets is not None:
+                                self.export_button.disabled = False
                     except Exception as e:
                         self.logger.error(f"Error updating job state: {e}")
                         # If we can't update job state, assume job is dead
@@ -662,13 +673,15 @@ class MplMonitor:
         self.fig.savefig(fig_file)
 
     def export_data(self, b, debug=True):
+        if self.export_button.disabled:
+            return
         if debug:
             from importlib import reload
             import molass_legacy.Optimizer.LrfExporter
             reload(molass_legacy.Optimizer.LrfExporter)
         from .LrfExporter import LrfExporter
 
-        params = self.optimizer.init_params
+        params = self.get_best_params()
         try:
             if self.dsets is None:
                 print("Error: dsets not set. Cannot export.")
