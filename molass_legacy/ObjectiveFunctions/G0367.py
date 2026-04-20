@@ -11,7 +11,7 @@
 import numpy as np
 from .G0346 import G0346
 from molass_legacy.Optimizer.BasicOptimizer import (
-    WEAK_PENALTY_SCALE, PENALTY_SCALE, FLOOR_PENALTY_SCALE,
+    WEAK_PENALTY_SCALE, PENALTY_SCALE,
     USE_NORMALIZED_RMSD,
 )
 
@@ -87,23 +87,6 @@ class G0367(G0346):
         # --- synthesize ---
         score_array = np.array(score_list)
         fv = synthesize4(score_array, positive_elevate=3) + np.sum(penalties)
-
-        # Pipeline monotonicity floor
-        if self.basic_floor is not None:
-            floor = self.basic_floor
-            floor_penalty = 0
-            for P in [Pxr, Puv]:
-                P_ = P[:, :-1]
-                neg_norm = np.linalg.norm(P_[P_ < 0])
-                channel = "xr" if P is Pxr else "uv"
-                floor_key = f"p_neg_norm_{channel}"
-                if floor_key in floor:
-                    floor_penalty += max(0, neg_norm - floor[floor_key]) ** 2
-            if "xr_1d_fitting" in floor:
-                floor_penalty += max(0, XR_2D_fitting - floor["xr_1d_fitting"]) ** 2
-            if "uv_1d_fitting" in floor:
-                floor_penalty += max(0, UV_2D_fitting - floor["uv_1d_fitting"]) ** 2
-            fv += FLOOR_PENALTY_SCALE * floor_penalty
 
         if np.isnan(fv):
             if not self.isnan_logged:

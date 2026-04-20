@@ -84,6 +84,7 @@ def plot_job_state(self, params, plot_info=None, niter=20):
 
 def plot_objective_func(optimizer, params, axis_info=None):
     from .FvScoreConverter import convert_score
+
     fv_ = optimizer.objective_func(params)
     sv = convert_score(fv_)
 

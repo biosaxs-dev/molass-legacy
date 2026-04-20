@@ -67,8 +67,6 @@ USE_COMPOSED_UV_COMPONENTS = False
 COERCE_BOUNDED_BQ = True
 USE_RGCURVE_DEVIATION = True
 ADJUST_2D_TARGET = 1
-FLOOR_PENALTY_SCALE = 1e4
-
 class BasicOptimizer:
     def __init__(self, dsets, n_components, params_type, kwargs):
         self.NUM_MAJOR_SCORES = get_setting("NUM_MAJOR_SCORES")
@@ -88,7 +86,7 @@ class BasicOptimizer:
             # as used in test_6690_BasinHopping.py
             return
 
-        self.basic_floor = kwargs.pop("basic_floor", None)
+        kwargs.pop("basic_floor", None)  # removed: was dead code (issue #106)
         self.uv_base_curve = kwargs.pop("uv_base_curve", None)
         self.xr_base_curve = kwargs.pop("xr_base_curve", None)
         self.qvector = kwargs.pop("qvector", None)
@@ -650,25 +648,6 @@ class BasicOptimizer:
 
         score_array = np.array(score_list)
         fv = synthesize(score_array, positive_elevate=3) + np.sum(penalties)
-
-        # Pipeline monotonicity: penalize regression below quick-result floor
-        if self.basic_floor is not None:
-            floor = self.basic_floor
-            floor_penalty = 0
-            # P-matrix negativity: current negative norm must not exceed quick result's
-            for P in [Pxr, Puv]:
-                P_ = P[:,:-1]
-                neg_norm = np.linalg.norm(P_[P_ < 0])
-                channel = "xr" if P is Pxr else "uv"
-                floor_key = f"p_neg_norm_{channel}"
-                if floor_key in floor:
-                    floor_penalty += max(0, neg_norm - floor[floor_key])**2
-            # 1D fitting: must not get worse than quick result
-            if "xr_1d_fitting" in floor:
-                floor_penalty += max(0, XR_2D_fitting - floor["xr_1d_fitting"])**2
-            if "uv_1d_fitting" in floor:
-                floor_penalty += max(0, UV_2D_fitting - floor["uv_1d_fitting"])**2
-            fv += FLOOR_PENALTY_SCALE * floor_penalty
 
         if np.isnan(fv):
             # NaN is not allowed in scipy.optimize.basinhopping
