@@ -42,6 +42,25 @@ elif USE_JSD:
 USE_BOUNDS = True
 AVOID_VANISHING_RATIO = 0.02    # minimum scale ratio against the max scale
 
+
+def _robust_pinv(M):
+    """np.linalg.pinv with scipy fallback on SVD non-convergence.
+
+    np.linalg.pinv uses LAPACK *gesdd* (fast but can fail to converge on
+    ill-conditioned / nearly-rank-deficient matrices, e.g. when two C-matrix
+    rows are near-duplicate). On LinAlgError, retry with scipy.linalg.pinv
+    which uses *gelsd* — slower but far more robust.
+    """
+    try:
+        return np.linalg.pinv(M)
+    except np.linalg.LinAlgError:
+        from scipy.linalg import pinv as _scipy_pinv
+        # check_finite=False — input may contain non-finite values from a
+        # previous failed evaluation; we still want a best-effort pinv rather
+        # than another exception.
+        return _scipy_pinv(M, check_finite=False)
+
+
 PENALTY_SCALE = 1e3
 CONSISTENCY_PENALTY_SCALE = 10      # soft preference — UV/XR area fractions can legitimately differ
 UV_XR_RATIO_ALLOW = 0.5
@@ -445,13 +464,13 @@ class BasicOptimizer:
 
     def compute_LRF_matrices(self, x, y, xr_cy_list, xr_ty, uv_x, uv_y, uv_cy_list, uv_ty, debug=False):
         Cxr = self.composite.compute_C_matrix(y, xr_cy_list, eoii=True, ratio_interpretation=self.ratio_interpretation)
-        Pxr = (self.xrDw @ np.linalg.pinv(Cxr*self.vw))/self.uw
+        Pxr = (self.xrDw @ _robust_pinv(Cxr*self.vw))/self.uw
         Cuv = self.composite.compute_C_matrix(uv_y, uv_cy_list, ratio_interpretation=self.ratio_interpretation)
         if USE_COLUMN_INTERP:
             mapped_UvD = self.uv_interp(uv_x)
         else:
             mapped_UvD = self.uv_interp(self.uv_i, uv_x).reshape(self.uv_shape)
-        Puv = mapped_UvD @ np.linalg.pinv(Cuv)
+        Puv = mapped_UvD @ _robust_pinv(Cuv)
 
         if debug:
             from molass_legacy.DataStructure.MatrixData import simple_plot_3d

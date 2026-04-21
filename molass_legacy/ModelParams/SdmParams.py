@@ -152,12 +152,34 @@ class SdmParams:
         if real_bounds is None:
             colparam_bounds = self.get_colparam_bounds()
             # Estimator provides 6 bounds (N, K, x0, poresize, N0, tI).
-            # Append bounds for extra col params (e.g. k) if needed.
+            # Extend to match self.num_col_params depending on variant:
+            #   - 7 params (G1200, mono-pore gamma): append k bound
+            #   - 8 params (G1300, lognormal-gamma): replace poresize bound
+            #     with mu bound, insert sigma bound, then append k bound.
+            #     Without this, the lognormal layout
+            #     [N, K, x0, mu, sigma, N0, tI, k] gets bounds for
+            #     [N, K, x0, poresize, N0, tI, dummy, dummy] which makes
+            #     mu/sigma/N0/tI all out of bounds and NS samples
+            #     numerically invalid params (issue #112).
             if len(colparam_bounds) < self.num_col_params:
                 sdmcol = self.split_params_simple(params)[-1]
-                for j in range(len(colparam_bounds), self.num_col_params):
-                    v = sdmcol[j]
-                    colparam_bounds.append((max(0.5, v * 0.3), max(10.0, v * 3.0)))
+                if self.num_col_params == 8:
+                    # G1300 lognormal-gamma:
+                    # sdmcol layout: [N, K, x0, mu, sigma, N0, tI, k]
+                    _, _, _, mu, sigma, _, _, k = sdmcol
+                    mu_bound = (mu - 1.0, mu + 1.0)                  # log-pore-size space
+                    sigma_bound = (max(0.05, sigma*0.3), max(1.0, sigma*3))
+                    k_bound = (max(0.1, k*0.3), max(10.0, k*3.0))
+                    colparam_bounds = (
+                        list(colparam_bounds[0:3])      # N, K, x0
+                        + [mu_bound, sigma_bound]       # mu, sigma (replace poresize)
+                        + list(colparam_bounds[4:6])    # N0, tI
+                        + [k_bound]                     # k
+                    )
+                else:
+                    for j in range(len(colparam_bounds), self.num_col_params):
+                        v = sdmcol[j]
+                        colparam_bounds.append((max(0.5, v * 0.3), max(10.0, v * 3.0)))
             self.logger.info("got colparam_bounds=%s from the estimator", str(colparam_bounds))
         else:
             # self.estimator may be None in this case

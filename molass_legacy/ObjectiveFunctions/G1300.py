@@ -129,7 +129,10 @@ class G1300(BasicOptimizer):
             lrf_info = self.create_lrf_info_for_debug(x, y, xr_ty, xr_cy_list, uv_x, uv_y, uv_ty, uv_cy_list)
             if return_lrf_info:
                 return lrf_info
-            fv = np.inf
+            # Finite (not inf) penalty so stochastic samplers (NS / UltraNest)
+            # can still rank-order failed proposals; np.inf would terminate
+            # the run after a single iteration.
+            fv = 1e8
             penalties = [0] * 6     # above penalties + [control_penalty]
             score_list = [0] * self.get_num_scores([])      # score_list does not include penalties here
 
