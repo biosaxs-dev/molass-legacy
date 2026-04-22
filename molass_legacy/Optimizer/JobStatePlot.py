@@ -39,7 +39,7 @@ def draw_suptitle(self):
     else:
         self.suptitle.set_text(text)
 
-def plot_job_state(self, params, plot_info=None, niter=20):
+def plot_job_state(self, params, plot_info=None, niter=20, display_optimizer=None):
     from matplotlib.gridspec import GridSpec
     import seaborn
     seaborn.set_theme()
@@ -74,7 +74,11 @@ def plot_job_state(self, params, plot_info=None, niter=20):
         ax.text(-0.3, 0.5, title, fontsize=16)
 
     draw_suptitle(self)
-    plot_objective_func(self.optimizer, params, axis_info=(self.fig, self.axes))
+    # Use display_optimizer (subprocess-equivalent) for the objective re-eval
+    # so on-screen SV matches callback.txt SV (issue #118). Other panels
+    # (peak positions, Rg history, mapping) still read parent state.
+    plot_objective_func(display_optimizer if display_optimizer is not None else self.optimizer,
+                        params, axis_info=(self.fig, self.axes))
 
     # Anomaly exclusion bands — consistent with plot_compact() and plot_components()
     _draw_monitor_anomaly_bands(self)

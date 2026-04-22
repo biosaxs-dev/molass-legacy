@@ -167,14 +167,16 @@ def create_optimizer_from_job(in_folder=None, n_components=None, class_code=None
     from molass.Bridge.OptimizerInput import OptimizerInput
     fullopt_input = OptimizerInput(in_folder=in_folder, trimming_txt=trimming_txt, legacy=True)
     dsets = fullopt_input.get_dsets()
+    uv_base_curve = fullopt_input.get_base_curve()      # uv_base_curve comes from FullOptInput.get_sd_from_folder()
+    xr_base_curve = create_xr_baseline_object()
+    qvector, wvector = fullopt_input.get_spectral_vectors()
+
     x_shifts_file = trimming_txt.replace('trimming.txt', 'x_shifts.txt')
     if os.path.exists(x_shifts_file):
         x_shifts = np.loadtxt(x_shifts_file, dtype=int)
         dsets.apply_x_shifts(x_shifts)
+
     fullopt_class = import_objective_function(class_code)
-    uv_base_curve = fullopt_input.get_base_curve()      # uv_base_curve comes from FullOptInput.get_sd_from_folder()
-    xr_base_curve = create_xr_baseline_object()
-    qvector, wvector = fullopt_input.get_spectral_vectors()
     optimizer = fullopt_class(dsets, n_components,
                 uv_base_curve=uv_base_curve,
                 xr_base_curve=xr_base_curve,

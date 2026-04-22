@@ -151,6 +151,10 @@ class MplMonitor:
         self.instance_id = id(self)
         self.watch_thread = None  # Will be set when watching starts
         self.dsets = None  # Set via run() caller or export_data(); see issue #7
+        # Optional subprocess-equivalent optimizer for on-screen objective
+        # re-evaluation, so MplMonitor SV matches callback.txt SV (issue #118).
+        # If None, the plot path falls back to self.optimizer.
+        self.monitor_optimizer = None
         self.stop_watch_event = threading.Event()  # For graceful thread shutdown
         self.is_monitoring = False  # Flag to track active monitoring state
         
@@ -350,7 +354,12 @@ class MplMonitor:
             warnings.simplefilter("always")
             with self.plot_output:
                 clear_output(wait=True)
-                plot_job_state(self, params, plot_info=plot_info, niter=self.niter)
+                # Use monitor_optimizer (subprocess-equivalent) for objective
+                # re-evaluation if available; fall back to self.optimizer.
+                # See issue #118.
+                display_optimizer = self.monitor_optimizer or self.optimizer
+                plot_job_state(self, params, plot_info=plot_info, niter=self.niter,
+                               display_optimizer=display_optimizer)
                 # Close before display to remove from inline backend's auto-show list,
                 # preventing a duplicate render. display() still works on a closed Figure.
                 plt.close(self.fig)

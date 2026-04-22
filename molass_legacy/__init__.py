@@ -1,6 +1,15 @@
 # 
 import os
 
+# Defensive shim for NumPy 2.x: np.trapz was removed in favor of np.trapezoid.
+# Some legacy code paths (and any stale .pyc) may still reference np.trapz.
+# See https://github.com/biosaxs-dev/molass-library/issues/114
+import numpy as _np
+if not hasattr(_np, "trapz"):
+    _np.trapz = _np.trapezoid
+del _np
+
+
 def get_version(toml_only=False):
     """
     Retrieve the version of the package from pyproject.toml or importlib.metadata.
