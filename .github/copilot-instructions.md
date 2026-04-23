@@ -98,6 +98,12 @@ This repo is part of the 7-repo VS Code workspace. See `molass-library/.github/c
 
 ---
 
+## Response language
+
+**Response language**: English
+
+---
+
 ## 🔄 Updates (AI-Readiness Trail)
 
 | Date | What was learned / added |
