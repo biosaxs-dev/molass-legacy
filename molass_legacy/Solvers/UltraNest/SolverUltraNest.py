@@ -9,6 +9,7 @@ from ultranest import ReactiveNestedSampler
 from ultranest.stepsampler import SliceSampler, generate_mixture_random_direction
 from molass_legacy.Optimizer.OptimizerUtils import OptimizerResult
 from molass_legacy.Optimizer.StateSequence import save_opt_params
+from molass_legacy.Solvers.UltraNest.SamplerCallback import _running_in_jupyter_kernel
 
 NARROW_BIND_ALLOW = 1.0
 
@@ -56,8 +57,9 @@ class SolverUltraNest:
         sampler.logger.setLevel(logging.INFO)       # to suppress debug log
         sampler_callback = SamplerCallback(self, sampler)
 
+        _show_status = not _running_in_jupyter_kernel()
         self.logger.info("running without any step sampler")
-        result1 = sampler.run(min_num_live_points=400, max_ncalls=10000, viz_callback=sampler_callback)
+        result1 = sampler.run(min_num_live_points=400, max_ncalls=10000, viz_callback=sampler_callback, show_status=_show_status)
 
         self.logger.info("running with a step sampler: SliceSampler")
         # add a step sampler: from the "Higher-dimensional fitting" tutorial
@@ -71,7 +73,7 @@ class SolverUltraNest:
         )
 
         max_ncalls = get_max_ncalls(niter)
-        result2 = sampler.run(min_num_live_points=400, max_ncalls=max_ncalls, viz_callback=sampler_callback)
+        result2 = sampler.run(min_num_live_points=400, max_ncalls=max_ncalls, viz_callback=sampler_callback, show_status=_show_status)
 
         opt_params = result2['maximum_likelihood']['point']
 
