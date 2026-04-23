@@ -24,6 +24,147 @@ from molass_legacy.KekLib.IpyLabelUtils import inject_label_color_css, set_label
 # Global registry of active monitor instances
 _ACTIVE_MONITORS = {}
 
+
+def _safe_range(arr):
+    """Return [min, max, len] of an array-like, or None on failure."""
+    try:
+        a = np.asarray(arr)
+        if a.size == 0:
+            return None
+        return [float(np.nanmin(a)), float(np.nanmax(a)), int(a.size)]
+    except Exception:
+        return None
+
+
+def _summarize_axes(fig):
+    """Extract per-axis line summaries from a matplotlib Figure for the JSON sidecar.
+
+    Issue #22: lets AI assistants see what was actually plotted (xlim, ylim, line
+    colors, ranges) without having to OCR the PNG.
+    """
+    out = []
+    for ax in fig.get_axes():
+        try:
+            lines = []
+            for ln in ax.get_lines():
+                xd = ln.get_xdata()
+                yd = ln.get_ydata()
+                lines.append({
+                    "label": str(ln.get_label()),
+                    "color": str(ln.get_color()),
+                    "linestyle": str(ln.get_linestyle()),
+                    "marker": str(ln.get_marker()),
+                    "n_points": int(np.size(xd)),
+                    "x_range": _safe_range(xd),
+                    "y_range": _safe_range(yd),
+                })
+            out.append({
+                "title": ax.get_title(),
+                "xlim": [float(v) for v in ax.get_xlim()],
+                "ylim": [float(v) for v in ax.get_ylim()],
+                "n_lines": len(lines),
+                "lines": lines,
+            })
+        except Exception as e:
+            out.append({"error": str(e)})
+    return out
+
+
+def _coord_provenance(opt, label):
+    """Snapshot the data-coordinate domains of an optimizer's curves.
+
+    Issue #22: makes 'data references diverged' bugs (e.g. #21) instantly visible
+    without spelunking through the optimizer object.
+    """
+    info = {"label": label}
+    if opt is None:
+        info["present"] = False
+        return info
+    info["present"] = True
+    info["class"] = opt.__class__.__name__
+    for attr in ("xr_curve", "uv_curve"):
+        cur = getattr(opt, attr, None)
+        if cur is None:
+            info[attr] = None
+            continue
+        d = {"x_range": _safe_range(getattr(cur, "x", None))}
+        spline = getattr(cur, "spline", None)
+        # UnivariateSpline-like: get_knots() gives the data domain
+        if spline is not None and hasattr(spline, "get_knots"):
+            try:
+                k = spline.get_knots()
+                d["spline_domain"] = [float(k[0]), float(k[-1])]
+            except Exception:
+                pass
+        info[attr] = d
+    rg = getattr(opt, "rg_curve", None)
+    if rg is not None:
+        seg_x_ranges = []
+        for s in getattr(rg, "segments", []) or []:
+            try:
+                seg_x_ranges.append(_safe_range(s[0]))
+            except Exception:
+                pass
+        info["rg_curve"] = {
+            "x_range": _safe_range(getattr(rg, "x", None)),
+            "segments_x_ranges": seg_x_ranges,
+            "n_segments": len(seg_x_ranges),
+        }
+    return info
+
+
+def _build_monitor_snapshot_json(monitor, display_optimizer, params):
+    """Build the JSON sidecar payload for one MplMonitor.update_plot() call. (Issue #22)"""
+    snap = {
+        "schema_version": 1,
+        "timestamp": datetime.now().isoformat(),
+        "trial": int(getattr(monitor, "num_trials", 0)),
+        "curr_index": getattr(monitor, "curr_index", None),
+    }
+    # Optimization state from display_optimizer
+    try:
+        snap["eval_counter"] = int(getattr(display_optimizer, "eval_counter", -1))
+    except Exception:
+        pass
+    try:
+        fv = float(display_optimizer.objective_func(params))
+        snap["fv"] = fv
+        from molass_legacy.Optimizer.FvScoreConverter import convert_score
+        snap["sv"] = float(convert_score(fv))
+    except Exception as e:
+        snap["fv_error"] = str(e)
+    # Param breakdown
+    try:
+        sp = display_optimizer.split_params_simple(params)
+        xr_p, xr_bp, rg_p, ab, uv_p, uv_bp, cd, sec_p = sp[0:8]
+        snap["params"] = {
+            "xr_h": np.asarray(xr_p)[:, 0].tolist(),
+            "xr_m": np.asarray(xr_p)[:, 1].tolist(),
+            "xr_s": np.asarray(xr_p)[:, 2].tolist(),
+            "xr_t": np.asarray(xr_p)[:, 3].tolist(),
+            "rg":   np.asarray(rg_p).tolist(),
+            "ab_mapping": [float(ab[0]), float(ab[1])],
+            "uv_h":  np.asarray(uv_p).tolist(),
+            "xr_baseparams": np.asarray(xr_bp).tolist(),
+            "uv_baseparams": np.asarray(uv_bp).tolist(),
+            "cd": [float(cd[0]), float(cd[1])],
+            "seccol_params": np.asarray(sec_p).tolist(),
+        }
+    except Exception as e:
+        snap["params_error"] = str(e)
+    # Per-axis summary
+    try:
+        snap["axes"] = _summarize_axes(monitor.fig)
+    except Exception as e:
+        snap["axes_error"] = str(e)
+    # Coordinate provenance — the diagnostic gold for #21-class bugs
+    snap["data_provenance"] = {
+        "display": _coord_provenance(display_optimizer, "display_optimizer"),
+        "parent":  _coord_provenance(getattr(monitor, "optimizer", None), "self.optimizer"),
+    }
+    return snap
+
+
 class MplMonitor:
     """Interactive Jupyter notebook monitor for optimization processes with subprocess management.
     
@@ -368,10 +509,16 @@ class MplMonitor:
         # Issue #19 (AI-friendliness): opt-in disk snapshot of the dashboard.
         # The widget-rendered figure is not persisted in cell.outputs, so AI
         # tools and post-hoc reviewers cannot see the live dashboard. When
-        # MOLASS_MONITOR_SNAPSHOT=1, write a PNG to <work_folder>/figs/.
-        if os.environ.get("MOLASS_MONITOR_SNAPSHOT") == "1" and self.work_folder:
+        # MOLASS_MONITOR_SNAPSHOT=1, write a PNG to <optimizer_folder>/figs/.
+        # Issue #22: also write a structured JSON sidecar so AI assistants
+        # can inspect what was actually plotted (axis ranges, line summaries,
+        # data-coordinate provenance) without OCR'ing the PNG.
+        # Note: self.work_folder is the run()-time arg (often None); use
+        # self.optimizer_folder which is always set in __init__.
+        snap_root = self.work_folder or getattr(self, "optimizer_folder", None)
+        if os.environ.get("MOLASS_MONITOR_SNAPSHOT") == "1" and snap_root:
             try:
-                snap_dir = os.path.join(self.work_folder, "figs")
+                snap_dir = os.path.join(snap_root, "figs")
                 os.makedirs(snap_dir, exist_ok=True)
                 self.fig.savefig(
                     os.path.join(snap_dir, "mplmonitor_latest.png"),
@@ -379,6 +526,12 @@ class MplMonitor:
                 )
             except Exception as e:
                 self.logger.warning("MplMonitor snapshot failed: %s", e)
+            try:
+                sidecar = _build_monitor_snapshot_json(self, display_optimizer, params)
+                with open(os.path.join(snap_dir, "mplmonitor_latest.json"), "w") as fh:
+                    json.dump(sidecar, fh, indent=2, default=str)
+            except Exception as e:
+                self.logger.warning("MplMonitor JSON sidecar failed: %s", e)
 
         # Collect warning messages
         messages = []
