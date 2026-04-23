@@ -595,7 +595,14 @@ class MplMonitor:
         fv = plot_info[0]
         k = np.argmin(fv[:,1])
         self.curr_index = k
-        best_params = x_array[k]
+        # callback.txt stores NORMALIZED params (see BasicOptimizer.write_init_callback_txt
+        # and minima_callback). Convert back to real space so callers (update_plot,
+        # resume path's run_impl) receive raw params consistent with self.init_params.
+        # Without this, the first update used self.init_params (real) but subsequent
+        # updates passed normalized params to objective_func, collapsing the UV mapping
+        # (a*x+b ~ 0) and shifting UV/observed-Rg data to the left of the panels.
+        # See issue #21.
+        best_params = self.optimizer.to_real_params(x_array[k])
         return best_params
 
     def get_progress_info(self):
