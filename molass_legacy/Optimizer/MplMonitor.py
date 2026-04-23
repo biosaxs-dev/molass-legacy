@@ -365,6 +365,21 @@ class MplMonitor:
                 plt.close(self.fig)
                 display(self.fig)
 
+        # Issue #19 (AI-friendliness): opt-in disk snapshot of the dashboard.
+        # The widget-rendered figure is not persisted in cell.outputs, so AI
+        # tools and post-hoc reviewers cannot see the live dashboard. When
+        # MOLASS_MONITOR_SNAPSHOT=1, write a PNG to <work_folder>/figs/.
+        if os.environ.get("MOLASS_MONITOR_SNAPSHOT") == "1" and self.work_folder:
+            try:
+                snap_dir = os.path.join(self.work_folder, "figs")
+                os.makedirs(snap_dir, exist_ok=True)
+                self.fig.savefig(
+                    os.path.join(snap_dir, "mplmonitor_latest.png"),
+                    dpi=100, bbox_inches="tight",
+                )
+            except Exception as e:
+                self.logger.warning("MplMonitor snapshot failed: %s", e)
+
         # Collect warning messages
         messages = []
         messages_counts = {}
