@@ -235,15 +235,27 @@ def run_optimizer_in_process(optimizer, init_params, niter=20, seed=1234,
 
         # 4. Dispatch.  optimizer.solve() handles prepare_for_optimization,
         #    callback.txt open/close, and solver dispatch.
-        result = optimizer.solve(
-            init_params,
-            real_bounds=getattr(optimizer, 'real_bounds', None),
-            niter=niter,
-            seed=seed,
-            callback=True,
-            method=solver,
-            debug=debug,
-        )
+        #    Disable the GC cycle detector for the duration of the solve: the
+        #    optimizer's hot inner loop creates many short-lived arrays and the
+        #    cycle collector adds ~25% overhead (measured: 1.33× speedup from
+        #    gc.disable in bare fv timing tests).  Reference counting still
+        #    runs normally, so memory is freed promptly; only cyclic garbage is
+        #    deferred until gc.collect() below.
+        import gc as _gc
+        _gc.disable()
+        try:
+            result = optimizer.solve(
+                init_params,
+                real_bounds=getattr(optimizer, 'real_bounds', None),
+                niter=niter,
+                seed=seed,
+                callback=True,
+                method=solver,
+                debug=debug,
+            )
+        finally:
+            _gc.enable()
+            _gc.collect()
 
         job_logger.info("in-process optimizer finished")
     finally:
