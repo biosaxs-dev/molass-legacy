@@ -133,6 +133,18 @@ def _build_monitor_snapshot_json(monitor, display_optimizer, params):
         snap["sv"] = float(convert_score(fv))
     except Exception as e:
         snap["fv_error"] = str(e)
+    # Issue #AI-A: record best fv/sv seen across ALL update_plot() calls so that
+    # an AI tool reading this file gets the global minimum, not just the current
+    # live-point snapshot (which may be worse than the historical best).
+    try:
+        from molass_legacy.Optimizer.FvScoreConverter import convert_score as _cs
+        js = getattr(monitor, "job_state", None)
+        if js is not None and hasattr(js, "fv") and len(js.fv) > 0:
+            best_fv_hist = float(np.min(js.fv[:, 1]))
+            snap["best_fv"] = best_fv_hist
+            snap["best_sv"] = float(_cs(best_fv_hist))
+    except Exception:
+        pass
     # Param breakdown
     try:
         sp = display_optimizer.split_params_simple(params)
@@ -499,8 +511,17 @@ class MplMonitor:
                 # re-evaluation if available; fall back to self.optimizer.
                 # See issue #118.
                 display_optimizer = self.monitor_optimizer or self.optimizer
+                # Issue #128: compute best accepted SV for widget title.
+                _best_sv = None
+                try:
+                    from molass_legacy.Optimizer.FvScoreConverter import convert_score as _cs
+                    _js = getattr(self, 'job_state', None)
+                    if _js is not None and hasattr(_js, 'fv') and len(_js.fv) > 0:
+                        _best_sv = float(_cs(float(np.min(_js.fv[:, 1]))))
+                except Exception:
+                    pass
                 plot_job_state(self, params, plot_info=plot_info, niter=self.niter,
-                               display_optimizer=display_optimizer)
+                               display_optimizer=display_optimizer, best_sv=_best_sv)
                 # Close before display to remove from inline backend's auto-show list,
                 # preventing a duplicate render. display() still works on a closed Figure.
                 plt.close(self.fig)
@@ -616,7 +637,32 @@ class MplMonitor:
                         set_label_color(self.status_label, "gray")
                         self.terminate_button.disabled = True
 
+                    # Final redraw with the true best params so that the
+                    # mplmonitor_latest.png/json snapshot reflects the actual
+                    # best SV rather than the last mid-run update (timing lag).
+                    # Force a fresh read of callback.txt by clearing last_mod_time
+                    # (JobState.update() skips re-reading when mtime is unchanged,
+                    # so without this the final update_plot() sees the same stale
+                    # fv array as the last regular mid-run update).
+                    if has_ended and hasattr(self, 'job_state') and self.job_state is not None:
+                        try:
+                            self.job_state.last_mod_time = None  # force fresh read
+                            self.job_state.update()
+                            self.update_plot()
+                        except Exception as _fe:
+                            self.logger.warning("Final update_plot failed: %s", _fe)
+
                     self.save_the_result_figure()
+
+                    # Issue #AI-B: write run_complete.json so AI tools and
+                    # post-hoc notebook cells can read best_fv/best_sv without
+                    # parsing callback.txt or relying on the widget snapshot.
+                    if has_ended and not resume_loop:
+                        try:
+                            self._write_run_complete_json()
+                        except Exception as _rce:
+                            self.logger.warning("run_complete.json write failed: %s", _rce)
+
                     self.num_trials += 1
 
                     if not resume_loop:
@@ -848,6 +894,49 @@ class MplMonitor:
                 os.makedirs(figs_folder)
             fig_file = os.path.join(figs_folder, "fig-%03d.jpg" % self.num_trials)
         self.fig.savefig(fig_file)
+
+    def _write_run_complete_json(self):
+        """Write run_complete.json to <optimizer_folder>/figs/ on job completion.
+
+        This file is the canonical, zero-parse-required answer to
+        "what was the best result?" for AI tools and notebook cells in a new
+        session.  It is always written on normal completion regardless of
+        MOLASS_MONITOR_SNAPSHOT.  (Issue #AI-B)
+
+        Keys
+        ----
+        schema_version : int
+        completed_at   : ISO timestamp
+        best_fv        : float  — global minimum fv from callback.txt
+        best_sv        : float  — corresponding SV score
+        n_evals        : int    — total evaluations logged in callback.txt
+        n_accepted     : int    — accepted evaluations
+        analysis_folder : str  — absolute path to the analysis folder
+        """
+        from molass_legacy.Optimizer.FvScoreConverter import convert_score
+        payload = {
+            "schema_version": 1,
+            "completed_at": datetime.now().isoformat(),
+            "best_fv": None,
+            "best_sv": None,
+            "n_evals": 0,
+            "n_accepted": 0,
+            "analysis_folder": getattr(self, "work_folder", None) or self.optimizer_folder,
+        }
+        js = getattr(self, "job_state", None)
+        if js is not None and hasattr(js, "fv") and len(js.fv) > 0:
+            fv_arr = js.fv  # shape (N, 2) — [eval_counter, fv]
+            best_fv = float(np.min(fv_arr[:, 1]))
+            payload["best_fv"] = best_fv
+            payload["best_sv"] = float(convert_score(best_fv))
+            payload["n_evals"] = int(len(fv_arr))
+        figs_folder = os.path.join(self.optimizer_folder, "figs")
+        os.makedirs(figs_folder, exist_ok=True)
+        out_path = os.path.join(figs_folder, "run_complete.json")
+        with open(out_path, "w", encoding="utf-8") as fh:
+            json.dump(payload, fh, indent=2)
+        self.logger.info("run_complete.json written: %s", out_path)
+
 
     def export_data(self, b, debug=True):
         if self.export_button.disabled:

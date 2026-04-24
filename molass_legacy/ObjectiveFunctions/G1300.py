@@ -104,11 +104,11 @@ class G1300(BasicOptimizer):
             if return_lrf_info:
                 return lrf_info
 
-            m, s = xr_baseparams[0:2]   # how about r?
-
-            slope_penalty = max(self.slope_allowance, (m - self.init_slope)**2) - self.slope_allowance
-            intercept_penalty = max(self.intercept_allowance, (s - self.init_intercept)**2) - self.intercept_allowance
-            baseline_penalty = slope_penalty*self.slope_penalty_scale + intercept_penalty*self.intercept_penalt_scale
+            y1, y2 = xr_baseparams[0:2]
+            y1_penalty = max(self.y1_allowance, (y1 - self.init_y1)**2) - self.y1_allowance
+            y2_penalty = max(self.y2_allowance, (y2 - self.init_y2)**2) - self.y2_allowance
+            intercept_penalty = y1_penalty + y2_penalty  # bridge: used in negative_penalty below
+            baseline_penalty = y1_penalty*self.y1_penalty_scale + y2_penalty*self.y2_penalty_scale
             negative_penalty = PENALTY_SCALE * (negative_penalty + intercept_penalty)
             order_penalty = 0       # common order_penalty will be added in compute_fv
 

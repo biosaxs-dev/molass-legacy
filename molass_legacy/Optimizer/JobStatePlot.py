@@ -39,7 +39,7 @@ def draw_suptitle(self):
     else:
         self.suptitle.set_text(text)
 
-def plot_job_state(self, params, plot_info=None, niter=20, display_optimizer=None):
+def plot_job_state(self, params, plot_info=None, niter=20, display_optimizer=None, best_sv=None):
     from matplotlib.gridspec import GridSpec
     import seaborn
     seaborn.set_theme()
@@ -78,7 +78,7 @@ def plot_job_state(self, params, plot_info=None, niter=20, display_optimizer=Non
     # so on-screen SV matches callback.txt SV (issue #118). Other panels
     # (peak positions, Rg history, mapping) still read parent state.
     plot_objective_func(display_optimizer if display_optimizer is not None else self.optimizer,
-                        params, axis_info=(self.fig, self.axes))
+                        params, axis_info=(self.fig, self.axes), best_sv=best_sv)
 
     # Anomaly exclusion bands — consistent with plot_compact() and plot_components()
     _draw_monitor_anomaly_bands(self)
@@ -86,7 +86,7 @@ def plot_job_state(self, params, plot_info=None, niter=20, display_optimizer=Non
     if plot_info is not None:
         draw_progress(self, plot_info, niter=niter)
 
-def plot_objective_func(optimizer, params, axis_info=None):
+def plot_objective_func(optimizer, params, axis_info=None, best_sv=None):
     from .FvScoreConverter import convert_score
 
     fv_ = optimizer.objective_func(params)
@@ -104,5 +104,9 @@ def plot_objective_func(optimizer, params, axis_info=None):
 
     ax1.set_title("UV Decomposition", fontsize=16)
     ax2.set_title("Xray Decomposition", fontsize=16)
-    ax3.set_title("Objective Function Scores in SV=%.3g" % sv, fontsize=16)
+    # Issue #128: show best accepted SV only (current SV removed to avoid confusion).
+    if best_sv is not None:
+        ax3.set_title("best SV=%.3g" % best_sv, fontsize=16)
+    else:
+        ax3.set_title("Objective Function Scores in SV=%.3g" % sv, fontsize=16)
     optimizer.objective_func(params, plot=True, axis_info=axis_info)

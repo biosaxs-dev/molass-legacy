@@ -4,9 +4,7 @@
     Copyright (c) 2023, SAXS Team, KEK-PF
 """
 
-USE_END_PARAMS = False
-if not USE_END_PARAMS:
-    from .Constants import SLOPE_SCALE
+USE_END_PARAMS = True
 
 class LinearBaseline:
     def __init__(self, x=None, y=None, debug=False):
@@ -21,7 +19,7 @@ class LinearBaseline:
 
         yb, (a,b) = compute_baseline(y, x=x, return_params=True, debug=debug)
         self.yb = yb
-        self.params = [a*SLOPE_SCALE, b]
+        self.params = list(yb[[0,-1]])
         self.x1 = x[0]
         self.x2 = x[-1]
         self.end_params = yb[[0,-1]]
@@ -38,6 +36,9 @@ class LinearBaseline:
             (y - y1) = k*(x - x1)
             y = y1 + k*(x - x1)
             """
+            if not hasattr(self, 'x1'):
+                self.x1 = x[0]
+                self.x2 = x[-1]
             y1, y2 = params
             k = (y2 - y1)/(self.x2 - self.x1)
             return y1 + k*(x - self.x1)

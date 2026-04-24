@@ -11,7 +11,6 @@ import numpy as np
 from bisect import bisect_right
 from molass_legacy.KekLib.ExceptionTracebacker import log_exception
 import molass_legacy.KekLib.DebugPlot as plt
-from molass_legacy.Baseline.Constants import SLOPE_SCALE
 from molass_legacy.DataStructure.SvdDenoise import get_denoised_data
 from molass_legacy._MOLASS.SerialSettings import get_setting
 from .StateSequence import save_opt_params
@@ -67,8 +66,7 @@ UV_XR_RATIO_ALLOW = 0.5
 UV_XR_RATIO_SCALE = 100
 WEAK_PENALTY_SCALE = 0.01
 SUPERIOR_2D_LRF_ALLOW = 0.1
-SLOPE_ALLOWANCE = 0.05
-INTERCEPT_ALLOWANCE = 0.05
+BASELINE_ALLOWANCE = 0.05  # fractional allowance for baseline endpoints (as fraction of xr_curve.max_y)
 SCALE_MAX_RATIO = 1.5
 PARAMS_SCALE = 10
 IMMEDIATE_KNOWN_BEST = False
@@ -409,13 +407,14 @@ class BasicOptimizer:
         self.ones_nc = np.ones(xr_params.shape[0])
         self.init_xr_params = xr_params
         self.init_xr_baseparams = xr_baseparams
-        init_slope, init_intercept = xr_baseparams[0:2]     # how about r?
-        self.init_slope = init_slope
-        self.init_intercept = init_intercept
-        self.slope_allowance = (init_slope*SLOPE_ALLOWANCE)**2
-        self.intercept_allowance = (init_intercept*INTERCEPT_ALLOWANCE)**2
-        self.slope_penalty_scale = 1/max(1e-16, self.slope_allowance)
-        self.intercept_penalt_scale = 1/max(1e-16, self.intercept_allowance)
+        init_y1, init_y2 = xr_baseparams[0:2]
+        self.init_y1 = init_y1
+        self.init_y2 = init_y2
+        baseline_allowance = (BASELINE_ALLOWANCE * self.xr_curve.max_y) ** 2
+        self.y1_allowance = baseline_allowance
+        self.y2_allowance = baseline_allowance
+        self.y1_penalty_scale = 1.0 / baseline_allowance
+        self.y2_penalty_scale = 1.0 / baseline_allowance
 
         self.zeros_rg = np.zeros(len(self.init_separate_params[2]) - 1)
         if EVAL_PEAK_DEVIATION:

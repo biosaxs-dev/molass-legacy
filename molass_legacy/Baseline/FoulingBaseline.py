@@ -7,8 +7,6 @@ import numpy as np
 from scipy.optimize import minimize
 import molass_legacy.KekLib.DebugPlot as plt
 from .LinearBaseline import USE_END_PARAMS
-if not USE_END_PARAMS:
-    from .Constants import SLOPE_SCALE
 
 OPTIMIZE_AB = True
 
@@ -32,46 +30,47 @@ class FoulingBaseline:
 
         if OPTIMIZE_AB:
             y_ = y - yb
+            y1_init, y2_init = [a*px + b for px in x[[0,-1]]]
 
             def func(p):
-                a_, b_ = p
-                params = [a_*SLOPE_SCALE, b_, r]
-                yb_ = self.__call__(x, params, y_, [y_])
+                y1_, y2_ = p
+                yb_ = self.__call__(x, [y1_, y2_, r], y_, [y_])
                 return np.sum((yb_ - yb)**2)
 
-            ret = minimize(func, (a,b))
-            a_, b_ = ret.x
+            ret = minimize(func, (y1_init, y2_init))
+            y1, y2 = ret.x
         else:
-            a_, b_ = a, b
+            y1, y2 = [a*px + b for px in x[[0,-1]]]
 
-        self.params = [a_*SLOPE_SCALE, b_, r]
+        self.end_params = [y1, y2, r]
+        self.params = [y1, y2, r]
 
         if debug:
             yb_ = self.__call__(x, self.params, y_)
             with plt.Dp():
                 fig, ax = plt.subplots()
-                ax.set_title("IntegralBaseline.__init__")
+                ax.set_title("FoulingBaseline.__init__")
                 ax.plot(x, y)
                 ax.plot(x, yb, ":")
                 ax.plot(x, yb_, ":")
                 fig.tight_layout()
                 plt.show()
 
-        y1, y2 = [a_*px+ b_ for px in x[[0,-1]]]
-        self.end_params = [y1, y2, r]
-
     def __call__(self, x, params, y_, cy_list):
 
         if USE_END_PARAMS:
+            if not hasattr(self, 'x1'):
+                self.x1 = x[0]
+                self.x2 = x[-1]
             y1, y2, r = params
             k = (y2 - y1)/(self.x2 - self.x1)
             y_linear = y1 + k*(x - self.x1)
         else:
             a, b, r = params
             y_linear = x*a/SLOPE_SCALE + b
-            y_integral = np.zeros(len(x))
-            for cy in cy_list:
-                y_integral += r*np.cumsum(cy)
+        y_integral = np.zeros(len(x))
+        for cy in cy_list:
+            y_integral += r*np.cumsum(cy)
         return y_linear + y_integral
 
     def get_baseplane(self, D, j1, j2, debug=True):
