@@ -370,9 +370,9 @@ class MplMonitor:
             '<style>.widget-button:disabled { cursor: not-allowed !important; opacity: 0.5; }</style>'
         )
 
+        self.dialog_output = widgets.Output()
         self.dashboard = widgets.VBox([self._button_css, self.plot_output, self.controls, self.message_output, self.dialog_output])
         self.dashboard_output = widgets.Output()
-        self.dialog_output = widgets.Output()
 
     def run(self, optimizer, init_params, niter=20, seed=1234, max_trials=30, work_folder=None, dummy=False, x_shifts=None, debug=False, devel=True):
         self.optimizer = optimizer
