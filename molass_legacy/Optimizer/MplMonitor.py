@@ -370,7 +370,7 @@ class MplMonitor:
             '<style>.widget-button:disabled { cursor: not-allowed !important; opacity: 0.5; }</style>'
         )
 
-        self.dashboard = widgets.VBox([self._button_css, self.plot_output, self.controls, self.message_output])
+        self.dashboard = widgets.VBox([self._button_css, self.plot_output, self.controls, self.message_output, self.dialog_output])
         self.dashboard_output = widgets.Output()
         self.dialog_output = widgets.Output()
 
@@ -477,7 +477,6 @@ class MplMonitor:
                 self.status_label.value = "Status: Terminating"
                 set_label_color(self.status_label, "yellow")
                 self.logger.info("Terminate job requested. id(self)=%d", id(self))
-        display(self.dialog_output)
         ask_user("Do you really want to terminate?", callback=handle_response, output_widget=self.dialog_output)
 
     def show(self, debug=False):
