@@ -299,7 +299,29 @@ def run_optimizer_in_process(optimizer, init_params, niter=20, seed=1234,
 
         job_logger.info("in-process optimizer finished")
     finally:
-        # 5. Restore cwd unconditionally.
+        # 5. Explicitly remove Logger handlers from the root logger BEFORE
+        #    restoring cwd.  Logger.__init__() adds both a FileHandler
+        #    (optimizer.log) and a StreamHandler(sys.stderr) to the ROOT
+        #    logger.  If these handlers remain after the daemon thread exits,
+        #    Python's logging.shutdown() atexit handler will try to flush them
+        #    during kernel restart.  The StreamHandler flush calls
+        #    sys.stderr.flush() on ipykernel's OutStream; flushing an OutStream
+        #    while the asyncio event loop is shutting down can deadlock the
+        #    event loop and cause the kernel restart to hang indefinitely.
+        #    (Root cause of the molass-library#139 Phase 5 hang, April 2026.)
+        if job_logger is not None:
+            try:
+                import logging as _logging
+                _root = _logging.getLogger()
+                _root.removeHandler(job_logger.fileh)
+                _root.removeHandler(job_logger.ch)
+                try:
+                    job_logger.fileh.close()
+                except Exception:
+                    pass
+            except Exception:
+                pass
+        # 6. Restore cwd unconditionally.
         os.chdir(saved_cwd)
 
     parent_logger.info("in-process optimizer finished: work_folder=%s", work_folder)
