@@ -414,7 +414,7 @@ class MplMonitor:
                    clear_jobs=clear_jobs, xr_only=xr_only, debug=debug)
 
     @classmethod
-    def for_run_info(cls, run_info, *, function_code=None, clear_jobs=False):
+    def for_run_info(cls, run_info, *, niter=20, function_code=None, clear_jobs=False):
         """Create a MplMonitor that watches an in-process RunInfo.
 
         Use this after ``optimize_rigorously(in_process=True, async_=True)``
@@ -422,7 +422,7 @@ class MplMonitor:
 
             run_info = decomp.optimize_rigorously(rgcurve, method='BH',
                                                    niter=20, async_=True)
-            mon = MplMonitor.for_run_info(run_info)
+            mon = MplMonitor.for_run_info(run_info, niter=20)
             mon.create_dashboard()
             mon.show()
             mon.start_watching()
@@ -435,14 +435,28 @@ class MplMonitor:
         ----------
         run_info : molass.Rigorous.RunInfo.RunInfo
             The RunInfo object returned by ``optimize_rigorously(async_=True)``.
+        niter : int, default=20
+            Number of optimizer iterations — must match the value passed to
+            ``optimize_rigorously()``.  Used to scale the SV-history axis.
         function_code : str, optional
             Forwarded to ``__init__``.
         clear_jobs : bool, default=False
             Set ``True`` to clear existing job folders. Defaults to ``False``
             because an in-process run has already created its working folder.
         """
-        return cls(source=_RunInfoSource(run_info),
-                   function_code=function_code, clear_jobs=clear_jobs)
+        mon = cls(source=_RunInfoSource(run_info),
+                  function_code=function_code, clear_jobs=clear_jobs)
+        # Set attributes that watch_progress() and update_plot() expect.
+        # For the subprocess path these are set inside run() / run_impl();
+        # for the in-process path we initialize them here.
+        mon.niter = niter
+        mon.num_trials = 0
+        mon.max_trials = 1          # in-process runs cannot be auto-resumed
+        mon.optimizer = run_info.optimizer
+        mon.dsets = run_info.dsets
+        mon.job_state = None        # lazily set in watch_progress once work_folder is known
+        mon.curr_index = None
+        return mon
 
     def clear_jobs(self):
         folder = self.optimizer_folder
@@ -617,6 +631,10 @@ class MplMonitor:
         set_label_color(self.status_label, "green")
 
     def update_plot(self):
+        # No data yet — watcher will draw first frame once callback.txt appears.
+        if not hasattr(self, 'job_state') or self.job_state is None:
+            return
+
         from importlib import reload
         import molass_legacy.Optimizer.JobStatePlot
         reload(molass_legacy.Optimizer.JobStatePlot)
@@ -803,6 +821,20 @@ class MplMonitor:
                         self.is_monitoring = False
                         self.logger.info("Monitoring stopped - job fully completed")
                         break
+
+                # Lazy job_state initialization for in-process (_RunInfoSource) path.
+                # run_impl() is never called for in-process runs, so job_state is not
+                # set at monitor creation time.  Once the optimizer thread has written
+                # its work_folder, we can locate callback.txt and create JobState.
+                if self.is_monitoring and isinstance(self.source, _RunInfoSource) \
+                        and (not hasattr(self, 'job_state') or self.job_state is None):
+                    wf = self.source._ri.work_folder
+                    if wf is not None:
+                        cb_file = os.path.join(wf, 'callback.txt')
+                        from molass_legacy.Optimizer.JobState import JobState
+                        self.job_state = JobState(cb_file, self.niter)
+                        self._add_to_registry(os.path.abspath(wf))
+                        self.curr_index = None
 
                 # Only update if we have a valid job_state and monitoring is active
                 if self.is_monitoring and hasattr(self, 'job_state') and self.job_state is not None:
