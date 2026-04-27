@@ -177,6 +177,32 @@ def _build_monitor_snapshot_json(monitor, display_optimizer, params):
     return snap
 
 
+class _SubprocessSource:
+    """Wraps BackRunner to implement the ProgressSource protocol.
+
+    Concentrates the subprocess-specific surface so that MplMonitor can be
+    parameterised with alternative sources (e.g. _RunInfoSource for in-process
+    runs) without duplicating its widget/watcher code.  Added in Phase 1 of the
+    MplMonitor pluggable-source refactor (molass-library#139).
+    """
+
+    def __init__(self, runner):
+        self._runner = runner
+
+    def is_alive(self):
+        """True while the subprocess is still running."""
+        return self._runner.poll() is None
+
+    def terminate(self):
+        """Terminate the subprocess."""
+        self._runner.terminate()
+
+    @property
+    def working_folder(self):
+        """Path to the subprocess working folder."""
+        return self._runner.working_folder
+
+
 class MplMonitor:
     """Interactive Jupyter notebook monitor for optimization processes with subprocess management.
     
@@ -295,8 +321,8 @@ class MplMonitor:
         self.logger.setLevel(logging.INFO)
         self.logger.addHandler(self.fileh)
         self.logger.info("MplMonitor initialized.")
-        self.runner = BackRunner(xr_only=xr_only, shared_memory=False)
-        self.logger.info(f"Optimizer job folder: {self.runner.optjob_folder}")
+        self.source = _SubprocessSource(BackRunner(xr_only=xr_only, shared_memory=False))
+        self.logger.info(f"Optimizer job folder: {self.source._runner.optjob_folder}")
         self.result_list = []
         self.suptitle = None
         self.func_code = function_code
@@ -336,8 +362,8 @@ class MplMonitor:
     @property
     def working_folder(self):
         """Path to the current optimizer working folder, or None."""
-        if hasattr(self, 'runner') and hasattr(self.runner, 'working_folder'):
-            return self.runner.working_folder
+        if hasattr(self, 'source'):
+            return self.source.working_folder
         return None
 
     def create_dashboard(self):
@@ -397,12 +423,12 @@ class MplMonitor:
         else:
             optimizer.prepare_for_optimization(init_params)
 
-        self.runner.run(optimizer, init_params, niter=niter, seed=seed, work_folder=work_folder, dummy=dummy, x_shifts=self.x_shifts,
+        self.source._runner.run(optimizer, init_params, niter=niter, seed=seed, work_folder=work_folder, dummy=dummy, x_shifts=self.x_shifts,
                         optimizer_test=optimizer_test, debug=debug, devel=devel)
         if optimizer_test:
             abs_working_folder = os.path.abspath(work_folder)
         else:
-            abs_working_folder = os.path.abspath(self.runner.working_folder)
+            abs_working_folder = os.path.abspath(self.source.working_folder)
             cb_file = os.path.join(abs_working_folder, 'callback.txt')
             self.job_state = JobState(cb_file, niter)
             # Register this process in the registry
@@ -592,15 +618,14 @@ class MplMonitor:
                 exit_loop = False
                 has_ended = False
                 
-                # Check subprocess status with error handling
+                # Check source status with error handling
                 try:
-                    ret = self.runner.poll()
-                    if ret is not None:
+                    if not self.source.is_alive():
                         exit_loop = True
                         has_ended = True
                 except Exception as e:
-                    self.logger.error(f"Error polling subprocess: {e}")
-                    # Assume subprocess died if we can't poll it
+                    self.logger.error(f"Error polling source: {e}")
+                    # Assume source died if we can't poll it
                     exit_loop = True
                     has_ended = False
                 
@@ -608,9 +633,9 @@ class MplMonitor:
                 if self.terminate_event.is_set():
                     self.logger.info("Terminating optimization job.")
                     try:
-                        self.runner.terminate()
+                        self.source.terminate()
                     except Exception as e:
-                        self.logger.error(f"Error terminating subprocess: {e}")
+                        self.logger.error(f"Error terminating source: {e}")
                     exit_loop = True
 
                 resume_loop = False
@@ -770,12 +795,12 @@ class MplMonitor:
             bool: True if shutdown completed within the timeout.
         """
         self.terminate_event.set()
-        # Kill the subprocess directly — do not rely on the watch thread,
+        # Kill the source directly — do not rely on the watch thread,
         # which may exit before reaching the terminate_event check.
         try:
-            self.runner.terminate()
+            self.source.terminate()
         except Exception as e:
-            self.logger.error(f"Error terminating subprocess: {e}")
+            self.logger.error(f"Error terminating source: {e}")
         result = self.stop_watching(timeout=timeout)
         self._remove_from_registry()
         return result
@@ -1193,11 +1218,11 @@ class MplMonitor:
     
     def _add_to_registry(self, working_folder):
         """Add current process to the registry."""
-        if not hasattr(self.runner, 'process') or self.runner.process is None:
+        if not hasattr(self.source, '_runner') or not hasattr(self.source._runner, 'process') or self.source._runner.process is None:
             self.logger.warning("No process to register")
             return
         
-        pid = self.runner.process.pid
+        pid = self.source._runner.process.pid
         self.process_id = str(pid)
         registry = self._load_registry()
         registry[self.process_id] = {

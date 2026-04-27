@@ -22,8 +22,8 @@ def make_mock_monitor():
     mon.is_monitoring = False
     mon.instance_id = 0
     mon.logger = MagicMock()
-    mon.runner = MagicMock()
-    mon.runner.terminate = MagicMock()
+    mon.source = MagicMock()
+    mon.source.terminate = MagicMock()
     mon.process_id = "12345"
     mon.optimizer_folder = "fake_folder"
 
@@ -31,25 +31,25 @@ def make_mock_monitor():
 
 
 def test_terminate_calls_runner_terminate_directly():
-    """runner.terminate() must be called even if no watch thread is running."""
+    """source.terminate() must be called even if no watch thread is running."""
     mon = make_mock_monitor()
     mon.terminate()
-    mon.runner.terminate.assert_called_once()
+    mon.source.terminate.assert_called_once()
 
 
 def test_terminate_calls_runner_before_stop_watching():
-    """runner.terminate() must be called even when watch thread exits early."""
+    """source.terminate() must be called even when watch thread exits early."""
     mon = make_mock_monitor()
 
     # Simulate an active watch thread that exits immediately on stop_watch_event
     call_order = []
 
-    original_terminate = mon.runner.terminate
+    original_terminate = mon.source.terminate
     def record_runner_terminate():
         call_order.append("runner.terminate")
         original_terminate()
 
-    mon.runner.terminate = record_runner_terminate
+    mon.source.terminate = record_runner_terminate
 
     # Create a thread that blocks until stop_watch_event is set, then exits
     def fake_watch():
@@ -62,16 +62,16 @@ def test_terminate_calls_runner_before_stop_watching():
     mon.terminate(timeout=2.0)
 
     assert "runner.terminate" in call_order, (
-        "runner.terminate() was not called during terminate()"
+        "source.terminate() was not called during terminate()"
     )
 
 
 def test_terminate_survives_runner_exception():
-    """terminate() should not raise even if runner.terminate() fails."""
+    """terminate() should not raise even if source.terminate() fails."""
     mon = make_mock_monitor()
-    mon.runner.terminate.side_effect = OSError("process already dead")
+    mon.source.terminate.side_effect = OSError("process already dead")
 
     # Should not raise
     result = mon.terminate()
     assert result is True or result is False  # returns a bool either way
-    mon.runner.terminate.assert_called_once()
+    mon.source.terminate.assert_called_once()
