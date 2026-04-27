@@ -456,6 +456,7 @@ class MplMonitor:
         mon.dsets = run_info.dsets
         mon.job_state = None        # lazily set in watch_progress once work_folder is known
         mon.curr_index = None
+        mon.work_folder = None      # required by update_plot(); snapshot falls back to optimizer_folder
         return mon
 
     def clear_jobs(self):
