@@ -92,7 +92,8 @@ def _resolve_solver(method, nnn):
 
 def run_optimizer_in_process(optimizer, init_params, niter=20, seed=1234,
                              method=None, x_shifts=None, work_folder=None,
-                             clear_jobs=True, debug=False):
+                             clear_jobs=True, debug=False,
+                             work_folder_callback=None):
     """Run an already-prepared optimizer in this process.
 
     The optimizer is expected to be fully constructed by the caller
@@ -145,6 +146,12 @@ def run_optimizer_in_process(optimizer, init_params, niter=20, seed=1234,
         the next empty slot.
     debug : bool, optional
         If True, additional diagnostic prints from the optimizer.
+    work_folder_callback : callable or None, optional
+        If provided, called with the absolute work_folder path as soon as
+        it is allocated — before ``optimizer.solve()`` starts.  Use this
+        to notify an async caller (e.g. ``RunInfo``) of the folder path
+        without waiting for the full optimization to complete.
+        (molass-library issue #132)
 
     Returns
     -------
@@ -170,6 +177,16 @@ def run_optimizer_in_process(optimizer, init_params, niter=20, seed=1234,
     if work_folder is None:
         work_folder = _allocate_work_folder()
     work_folder = os.path.abspath(work_folder)
+
+    # Notify the caller of the work folder as soon as it is known so that
+    # async watchers (e.g. MplMonitor watch thread) can start polling
+    # callback.txt without waiting for the full optimization to finish.
+    # (molass-library issue #132)
+    if work_folder_callback is not None:
+        try:
+            work_folder_callback(work_folder)
+        except Exception:
+            pass
 
     set_setting("optjob_folder", work_folder)
     set_setting("optworking_folder", work_folder)
