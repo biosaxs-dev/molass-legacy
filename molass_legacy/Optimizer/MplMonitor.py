@@ -1109,19 +1109,33 @@ class MplMonitor:
         from .LrfExporter import LrfExporter
 
         params = self.get_best_params()
-        try:
-            if self.dsets is None:
-                print("Error: dsets not set. Cannot export.")
-                return
-            exporter = LrfExporter(self.optimizer, params, self.dsets)
-            folder = exporter.export()
-            fig_file = os.path.join(folder, "result_fig.jpg")
-            self.save_the_result_figure(fig_file=fig_file)
-            print(f"Exported to folder: {folder}")
-        except Exception as exc:
-            from molass_legacy.KekLib.ExceptionTracebacker import log_exception
-            log_exception(self.logger, "export: ")
-            print(f"Failed to export due to: {exc}")
+        # All output must go into self.message_output so it is visible in the
+        # dashboard.  Bare print() in a button callback is routed to a kernel
+        # stream that is not connected to any notebook cell output, making
+        # success/error messages completely invisible to the user.
+        with self.message_output:
+            from IPython.display import clear_output
+            clear_output(wait=True)
+            try:
+                if self.dsets is None:
+                    print("Error: dsets not set. Cannot export.")
+                    return
+                # Derive the export folder from work_folder (in-process path)
+                # so it lands next to the job folder rather than relying on
+                # get_setting('optimizer_folder') which may be unset.
+                export_folder = None
+                if self.work_folder is not None:
+                    export_folder = os.path.normpath(
+                        os.path.join(self.work_folder, '../../exported'))
+                exporter = LrfExporter(self.optimizer, params, self.dsets)
+                folder = exporter.export(folder=export_folder)
+                fig_file = os.path.join(folder, "result_fig.jpg")
+                self.save_the_result_figure(fig_file=fig_file)
+                print(f"Exported to folder: {folder}")
+            except Exception as exc:
+                from molass_legacy.KekLib.ExceptionTracebacker import log_exception
+                log_exception(self.logger, "export: ")
+                print(f"Failed to export due to: {exc}")
 
     # ===== Dashboard Recovery =====
     
