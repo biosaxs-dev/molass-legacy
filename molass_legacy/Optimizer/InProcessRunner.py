@@ -241,21 +241,61 @@ def run_optimizer_in_process(optimizer, init_params, niter=20, seed=1234,
         #    gc.disable in bare fv timing tests).  Reference counting still
         #    runs normally, so memory is freed promptly; only cyclic garbage is
         #    deferred until gc.collect() below.
+        #
+        # Run the solver in a daemon thread so the main thread stays
+        # interruptible.  VS Code's "Restart Kernel" sends a shutdown message
+        # to ipykernel's ZMQ socket (background thread), which then calls
+        # PyErr_SetInterrupt() to queue a KeyboardInterrupt in the main thread.
+        # That interrupt is only checked between Python bytecodes — but if the
+        # main thread is stuck deep inside sampler.run() with back-to-back
+        # numpy C calls that hold the GIL, the queued interrupt never gets
+        # delivered before VS Code's restart timeout fires, producing a
+        # hanging restart and duplicate kernels.
+        #
+        # By running solve() in a daemon thread and doing a tight join() loop
+        # here, the main thread blocks only for 50 ms at a time.  Each
+        # join(0.05) releases the GIL, giving Python a safe delivery point for
+        # the pending KeyboardInterrupt.  On restart:
+        #   - KeyboardInterrupt is raised in the main thread (in join())
+        #   - The finally block restores cwd and exits normally
+        #   - The daemon thread is killed when the kernel process exits
         import gc as _gc
-        _gc.disable()
+        import threading as _threading
+
+        _result_holder = [None]
+        _exc_holder = [None]
+
+        def _run_solve():
+            _gc.disable()
+            try:
+                _result_holder[0] = optimizer.solve(
+                    init_params,
+                    real_bounds=getattr(optimizer, 'real_bounds', None),
+                    niter=niter,
+                    seed=seed,
+                    callback=True,
+                    method=solver,
+                    debug=debug,
+                )
+            except Exception as _e:
+                _exc_holder[0] = _e
+            finally:
+                _gc.enable()
+                _gc.collect()
+
+        _t = _threading.Thread(target=_run_solve, daemon=True, name="InProcessOptimizer")
+        _t.start()
         try:
-            result = optimizer.solve(
-                init_params,
-                real_bounds=getattr(optimizer, 'real_bounds', None),
-                niter=niter,
-                seed=seed,
-                callback=True,
-                method=solver,
-                debug=debug,
-            )
-        finally:
-            _gc.enable()
-            _gc.collect()
+            while _t.is_alive():
+                _t.join(timeout=0.05)   # releases GIL → interrupt delivery point
+        except KeyboardInterrupt:
+            # Kernel restart or user interrupt — let the daemon thread be
+            # cleaned up when the process exits; re-raise so callers see it.
+            raise
+
+        if _exc_holder[0] is not None:
+            raise _exc_holder[0]
+        result = _result_holder[0]
 
         job_logger.info("in-process optimizer finished")
     finally:
