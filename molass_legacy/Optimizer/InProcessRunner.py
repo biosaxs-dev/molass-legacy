@@ -234,6 +234,22 @@ def run_optimizer_in_process(optimizer, init_params, niter=20, seed=1234,
     try:
         os.chdir(work_folder)
         job_logger = Logger("optimizer.log")
+        # Eagerly remove the StreamHandler(sys.stderr) that Logger.__init__
+        # adds to the ROOT logger.  During a kernel restart while the optimizer
+        # is still running, logging.shutdown() flushes all root handlers.
+        # Flushing the StreamHandler writes to ipykernel's OutStream, which
+        # tries to acquire an asyncio lock that is already held during shutdown
+        # → deadlock → kernel restart hangs indefinitely.
+        # The FileHandler (optimizer.log) is safe; only the StreamHandler
+        # causes the deadlock.  Removing it here (before the solve thread
+        # starts) prevents the deadlock regardless of whether the run
+        # finishes normally or is interrupted mid-run. (Phase 5b fix.)
+        try:
+            import logging as _log_mod
+            _log_mod.getLogger().removeHandler(job_logger.ch)
+            job_logger.ch.close()
+        except Exception:
+            pass
         try:
             from molass_legacy import get_version
             try:
