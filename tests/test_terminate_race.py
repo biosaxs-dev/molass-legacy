@@ -3,6 +3,8 @@
 Regression test for issue #17: terminate() used to rely on the watch
 thread to call runner.terminate(), but a race condition meant the
 watch thread could exit before reaching that call.
+
+Phase 2 (molass-library#139): tests for _RunInfoSource and factory classmethods.
 """
 import threading
 from unittest.mock import MagicMock, patch
@@ -75,3 +77,60 @@ def test_terminate_survives_runner_exception():
     result = mon.terminate()
     assert result is True or result is False  # returns a bool either way
     mon.source.terminate.assert_called_once()
+
+
+# ---------------------------------------------------------------------------
+# Phase 2: _RunInfoSource and factory classmethods
+# ---------------------------------------------------------------------------
+
+def test_run_info_source_is_alive_delegates_to_run_info():
+    """_RunInfoSource.is_alive() reads run_info.is_alive (property)."""
+    from molass_legacy.Optimizer.MplMonitor import _RunInfoSource
+
+    ri = MagicMock()
+    ri.is_alive = True
+    src = _RunInfoSource(ri)
+    assert src.is_alive() is True
+
+    ri.is_alive = False
+    assert src.is_alive() is False
+
+
+def test_run_info_source_working_folder():
+    """_RunInfoSource.working_folder reads run_info.work_folder."""
+    from molass_legacy.Optimizer.MplMonitor import _RunInfoSource
+
+    ri = MagicMock()
+    ri.work_folder = "/some/path"
+    src = _RunInfoSource(ri)
+    assert src.working_folder == "/some/path"
+
+
+def test_run_info_source_terminate_is_noop():
+    """_RunInfoSource.terminate() must not raise and must not call anything."""
+    from molass_legacy.Optimizer.MplMonitor import _RunInfoSource
+
+    ri = MagicMock()
+    src = _RunInfoSource(ri)
+    src.terminate()  # must not raise
+    ri.terminate.assert_not_called()
+
+
+def test_subprocess_source_wraps_back_runner():
+    """_SubprocessSource.is_alive() / working_folder / terminate() delegate to _runner."""
+    from molass_legacy.Optimizer.MplMonitor import _SubprocessSource
+
+    runner = MagicMock()
+    runner.poll.return_value = None  # subprocess alive
+    runner.working_folder = "/opt/folder"
+
+    src = _SubprocessSource(runner)
+    assert src.is_alive() is True
+
+    runner.poll.return_value = 0   # subprocess exited
+    assert src.is_alive() is False
+
+    assert src.working_folder == "/opt/folder"
+
+    src.terminate()
+    runner.terminate.assert_called_once()

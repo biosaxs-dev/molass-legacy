@@ -203,6 +203,36 @@ class _SubprocessSource:
         return self._runner.working_folder
 
 
+class _RunInfoSource:
+    """Wraps RunInfo to implement the ProgressSource protocol for in-process runs.
+
+    Used by ``MplMonitor.for_run_info()`` so the same widget/watcher machinery
+    serves both the subprocess and in-process paths.  Added in Phase 2 of the
+    MplMonitor pluggable-source refactor (molass-library#139).
+    """
+
+    def __init__(self, run_info):
+        self._ri = run_info
+
+    def is_alive(self):
+        """True while the in-process optimizer thread is running."""
+        return self._ri.is_alive
+
+    def terminate(self):
+        """No-op: cannot cleanly kill a Python thread.
+
+        The Terminate button is hidden when this source is used; this method
+        exists only so the protocol is complete.  A cooperative-flag mechanism
+        is tracked as a future enhancement.
+        """
+        pass
+
+    @property
+    def working_folder(self):
+        """Path to the in-process optimizer working folder."""
+        return self._ri.work_folder
+
+
 class MplMonitor:
     """Interactive Jupyter notebook monitor for optimization processes with subprocess management.
     
@@ -300,12 +330,25 @@ class MplMonitor:
     JobState : Tracks and parses optimization job state from callback files.
     
     """
-    def __init__(self, function_code=None, clear_jobs=True, xr_only=False, debug=True):
-        if debug:
-            from importlib import reload
-            import molass_legacy.Optimizer.BackRunner
-            reload(molass_legacy.Optimizer.BackRunner)
-        from molass_legacy.Optimizer.BackRunner import BackRunner
+    def __init__(self, source=None, function_code=None, clear_jobs=True, xr_only=False, debug=True):
+        """Initialise MplMonitor.
+
+        Parameters
+        ----------
+        source : _SubprocessSource or _RunInfoSource, optional
+            ProgressSource that determines who is alive/terminate/working_folder.
+            When ``None`` (default) a ``_SubprocessSource`` backed by a new
+            ``BackRunner`` is constructed — existing subprocess behaviour,
+            unchanged.
+        """
+        if source is None:
+            if debug:
+                from importlib import reload
+                import molass_legacy.Optimizer.BackRunner
+                reload(molass_legacy.Optimizer.BackRunner)
+            from molass_legacy.Optimizer.BackRunner import BackRunner
+            source = _SubprocessSource(BackRunner(xr_only=xr_only, shared_memory=False))
+        self.source = source
         analysis_folder = get_setting("analysis_folder")
         optimizer_folder = os.path.join(analysis_folder, "optimized")
         self.optimizer_folder = optimizer_folder
@@ -321,8 +364,8 @@ class MplMonitor:
         self.logger.setLevel(logging.INFO)
         self.logger.addHandler(self.fileh)
         self.logger.info("MplMonitor initialized.")
-        self.source = _SubprocessSource(BackRunner(xr_only=xr_only, shared_memory=False))
-        self.logger.info(f"Optimizer job folder: {self.source._runner.optjob_folder}")
+        if isinstance(source, _SubprocessSource):
+            self.logger.info(f"Optimizer job folder: {self.source._runner.optjob_folder}")
         self.result_list = []
         self.suptitle = None
         self.func_code = function_code
@@ -349,8 +392,58 @@ class MplMonitor:
         self.logger.info(f"Registered monitor instance {self.instance_id}")
         
         # Clean up any orphaned processes from previous sessions
-        self._cleanup_orphaned_processes()
-    
+        if isinstance(self.source, _SubprocessSource):
+            self._cleanup_orphaned_processes()
+
+    @classmethod
+    def for_subprocess(cls, *, xr_only=False, function_code=None, clear_jobs=True, debug=True):
+        """Create a MplMonitor backed by a new BackRunner subprocess.
+
+        This is the canonical way to create a subprocess-mode monitor.  It is
+        equivalent to the pre-Phase-2 ``MplMonitor()`` constructor and preserves
+        all existing behaviour byte-for-byte.
+
+        Parameters
+        ----------
+        xr_only : bool, default=False
+            Pass ``True`` for X-ray-only (no UV) optimization.
+        function_code, clear_jobs, debug
+            Forwarded to ``__init__``.
+        """
+        return cls(source=None, function_code=function_code,
+                   clear_jobs=clear_jobs, xr_only=xr_only, debug=debug)
+
+    @classmethod
+    def for_run_info(cls, run_info, *, function_code=None, clear_jobs=False):
+        """Create a MplMonitor that watches an in-process RunInfo.
+
+        Use this after ``optimize_rigorously(in_process=True, async_=True)``
+        to get a live dashboard without a subprocess::
+
+            run_info = decomp.optimize_rigorously(rgcurve, method='BH',
+                                                   niter=20, async_=True)
+            mon = MplMonitor.for_run_info(run_info)
+            mon.create_dashboard()
+            mon.show()
+            mon.start_watching()
+
+        The Resume and Terminate buttons are hidden automatically because
+        thread-based runs cannot be killed cleanly.  The Export button
+        remains available once the run completes.
+
+        Parameters
+        ----------
+        run_info : molass.Rigorous.RunInfo.RunInfo
+            The RunInfo object returned by ``optimize_rigorously(async_=True)``.
+        function_code : str, optional
+            Forwarded to ``__init__``.
+        clear_jobs : bool, default=False
+            Set ``True`` to clear existing job folders. Defaults to ``False``
+            because an in-process run has already created its working folder.
+        """
+        return cls(source=_RunInfoSource(run_info),
+                   function_code=function_code, clear_jobs=clear_jobs)
+
     def clear_jobs(self):
         folder = self.optimizer_folder
         for sub in os.listdir(folder):
@@ -369,6 +462,8 @@ class MplMonitor:
     def create_dashboard(self):
         self.plot_output = widgets.Output()
 
+        in_process = isinstance(self.source, _RunInfoSource)
+
         self.status_label = widgets.Label(value="Status: Running")
         self.space_label1 = widgets.Label(value="　　　　")
         self.resume_button = widgets.Button(description="Resume Job", button_style='warning', disabled=True)
@@ -381,13 +476,22 @@ class MplMonitor:
         self.space_label3 = widgets.Label(value="　　　　")
         self.export_button = widgets.Button(description="Export Data", button_style='success', disabled=True)
         self.export_button.on_click(self.export_data)
-        self.controls = widgets.HBox([self.status_label,
-                                      self.space_label1,
-                                      self.resume_button,
-                                      self.space_label2,
-                                      self.terminate_button,
-                                      self.space_label3,
-                                      self.export_button])
+
+        if in_process:
+            # Resume and Terminate are not meaningful for thread-based runs:
+            # niter is fixed and threads cannot be killed cleanly.
+            controls_children = [self.status_label,
+                                  self.space_label3,
+                                  self.export_button]
+        else:
+            controls_children = [self.status_label,
+                                  self.space_label1,
+                                  self.resume_button,
+                                  self.space_label2,
+                                  self.terminate_button,
+                                  self.space_label3,
+                                  self.export_button]
+        self.controls = widgets.HBox(controls_children)
 
         self.message_output = widgets.Output(layout=widgets.Layout(border='1px solid gray', background_color='gray', padding='10px'))
 
