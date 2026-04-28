@@ -25,6 +25,35 @@ class SolverUltraNest:
         self.callback_counter = 0
         self.logger = logging.getLogger(__name__)
 
+    def _get_mapping_norm_indeces(self):
+        """Return the norm-space indices of mapping params (mp_a, mp_b).
+
+        Mapping params (UV↔XR frame scale and offset) may have a wrong initial
+        estimate from the LRF decomposition.  Using a narrow NS prior centred on
+        a wrong estimate locks NS out of the true solution.  Callers use this
+        method to identify which normalised-param indices should receive wide
+        priors regardless of NARROW_BIND_ALLOW.
+
+        Returns None if the optimizer has no params_type with a pos attribute
+        (e.g. non-SDM models that don't have a mapping group).
+        """
+        opt = self.optimizer
+        params_type = getattr(opt, 'params_type', None)
+        if params_type is None or not hasattr(params_type, 'pos') or len(params_type.pos) < 4:
+            return None
+        real_start = params_type.pos[3]      # pos[3] = start of mapping group
+        real_indeces = np.array([real_start, real_start + 1])
+        if opt.xr_params_indeces is None:
+            return real_indeces
+        # When only a subset of params is optimised, find where the mapping
+        # real indices appear in the xr_params_indeces subset array.
+        norm_indeces = []
+        for ri in real_indeces:
+            positions = np.where(opt.xr_params_indeces == ri)[0]
+            if len(positions) > 0:
+                norm_indeces.append(int(positions[0]))
+        return np.array(norm_indeces) if norm_indeces else None
+
     def minimize(self, objective, init_params, niter=100, seed=1234, bounds=None, callback=None, narrow_bounds=True):
         from importlib import reload
         import Solvers.UltraNest.SamplerCallback
@@ -37,6 +66,16 @@ class SolverUltraNest:
         if narrow_bounds:
             lower = init_params - NARROW_BIND_ALLOW
             upper = init_params + NARROW_BIND_ALLOW
+            # Mapping params (mp_a, mp_b) may have a wrong initial estimate from
+            # LRF decomposition.  Override narrow prior with wide bounds so NS can
+            # reach the correct value even when the initial estimate is far off.
+            # (molass-legacy #32)
+            if bounds is not None:
+                mapping_idx = self._get_mapping_norm_indeces()
+                if mapping_idx is not None and len(mapping_idx) > 0:
+                    lower[mapping_idx] = bounds[mapping_idx, 0]
+                    upper[mapping_idx] = bounds[mapping_idx, 1]
+                    self.logger.info("NS wide prior applied to mapping params at norm indices %s", mapping_idx)
         else:
             lower = bounds[:,0]
             upper = bounds[:,1]
