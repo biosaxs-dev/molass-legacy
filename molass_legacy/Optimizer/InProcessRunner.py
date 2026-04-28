@@ -234,20 +234,34 @@ def run_optimizer_in_process(optimizer, init_params, niter=20, seed=1234,
     try:
         os.chdir(work_folder)
         job_logger = Logger("optimizer.log")
-        # Eagerly remove the StreamHandler(sys.stderr) that Logger.__init__
+        # Phase 5b: Eagerly remove the StreamHandler(sys.stderr) that Logger.__init__
         # adds to the ROOT logger.  During a kernel restart while the optimizer
         # is still running, logging.shutdown() flushes all root handlers.
         # Flushing the StreamHandler writes to ipykernel's OutStream, which
         # tries to acquire an asyncio lock that is already held during shutdown
-        # → deadlock → kernel restart hangs indefinitely.
-        # The FileHandler (optimizer.log) is safe; only the StreamHandler
-        # causes the deadlock.  Removing it here (before the solve thread
-        # starts) prevents the deadlock regardless of whether the run
-        # finishes normally or is interrupted mid-run. (Phase 5b fix.)
+        # → deadlock → kernel restart hangs indefinitely. (Phase 5b fix.)
+        #
+        # Phase 5c: Also register an atexit handler to close the FileHandler
+        # (optimizer.log) before logging.shutdown() iterates _handlerList.
+        # atexit runs LIFO, so registering here (after logging was imported)
+        # guarantees our cleanup fires FIRST, before logging.shutdown().
+        # Without this, logging.shutdown() calls fileh.acquire() while the
+        # optimizer daemon thread may hold that lock → deadlock and hang.
         try:
+            import atexit as _atexit_mod
             import logging as _log_mod
-            _log_mod.getLogger().removeHandler(job_logger.ch)
+            _root = _log_mod.getLogger()
+            _root.removeHandler(job_logger.ch)
             job_logger.ch.close()
+            # Phase 5c: schedule fileh cleanup via atexit
+            def _cleanup_fileh(_jl=job_logger, _r=_root):
+                try:
+                    _r.removeHandler(_jl.fileh)
+                    _jl.fileh.close()
+                except Exception:
+                    pass
+            _atexit_mod.register(_cleanup_fileh)
+            del _cleanup_fileh, _atexit_mod, _root, _log_mod
         except Exception:
             pass
         try:

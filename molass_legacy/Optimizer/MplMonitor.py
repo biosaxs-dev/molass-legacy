@@ -363,6 +363,20 @@ class MplMonitor:
         self.logger = logging.getLogger(__name__)
         self.logger.setLevel(logging.INFO)
         self.logger.addHandler(self.fileh)
+        # Phase 5c (mirror of InProcessRunner): register atexit to close
+        # self.fileh before logging.shutdown() iterates _handlerList.
+        # The watch_thread (daemon) holds self.fileh.lock during log calls;
+        # logging.shutdown() trying to acquire that lock → deadlock on restart.
+        # atexit runs LIFO so this fires before logging.shutdown().
+        import atexit as _atexit_monitor
+        def _cleanup_monitor_fileh(_fh=self.fileh, _log=self.logger):
+            try:
+                _log.removeHandler(_fh)
+                _fh.close()
+            except Exception:
+                pass
+        _atexit_monitor.register(_cleanup_monitor_fileh)
+        del _cleanup_monitor_fileh, _atexit_monitor
         self.logger.info("MplMonitor initialized.")
         if isinstance(source, _SubprocessSource):
             self.logger.info(f"Optimizer job folder: {self.source._runner.optjob_folder}")
@@ -450,8 +464,9 @@ class MplMonitor:
         # For the subprocess path these are set inside run() / run_impl();
         # for the in-process path we initialize them here.
         mon.niter = niter
+        mon.seed = 1234             # unused for in-process (no run_impl call), but watch_progress references it
         mon.num_trials = 0
-        mon.max_trials = 1          # in-process runs cannot be auto-resumed
+        mon.max_trials = 0          # in-process runs cannot be auto-resumed (0 means no resume allowed)
         mon.optimizer = run_info.optimizer
         mon.dsets = run_info.dsets
         mon.job_state = None        # lazily set in watch_progress once work_folder is known
@@ -1047,6 +1062,90 @@ class MplMonitor:
         summary = " | ".join(parts)
         print(summary)
         return summary
+
+    def get_current_curves(self):
+        """Return the data and model curves currently shown on the monitor.
+
+        This is the **monitor readability** API (molass-legacy issue #31): it
+        exposes as plain numpy arrays the same curves that are rendered in the
+        matplotlib dashboard, so that an AI agent can reason from the same
+        evidence as a human looking at the screen.
+
+        Returns
+        -------
+        dict with keys:
+
+        ``xr_frames``
+            1-D array — XR frame indices (x-axis for all XR panels).
+        ``xr_data``
+            1-D array — XR data elution curve (observed total intensity per frame).
+        ``xr_model``
+            1-D array — XR model total (sum of all components including baseline).
+        ``xr_components``
+            2-D array (n_components × n_frames) — individual XR component curves.
+        ``uv_frames``
+            1-D array — UV frame indices (mapped to XR frame scale via linear mapping a·x+b).
+        ``uv_data``
+            1-D array — UV data elution curve.
+        ``uv_model``
+            1-D array — UV model total.
+        ``uv_components``
+            2-D array (n_components × n_frames) — individual UV component curves.
+        ``sv_history``
+            1-D array — SV values at each accepted optimization evaluation.
+        ``best_sv``
+            float — best SV seen so far (None if not available).
+        ``params``
+            1-D array — current best optimizer parameters.
+
+        Returns None if the monitor has no data yet (job_state not initialised).
+
+        Example
+        -------
+        >>> state = monitor.get_current_curves()
+        >>> if state:
+        ...     peak_data  = state['uv_frames'][np.argmax(state['uv_data'])]
+        ...     peak_model = state['uv_frames'][np.argmax(state['uv_model'])]
+        ...     print(f"UV data peak: {peak_data}, model peak: {peak_model}, shift: {peak_model - peak_data:+.1f}")
+        """
+        if not hasattr(self, 'job_state') or self.job_state is None:
+            return None
+
+        from molass_legacy.Optimizer.FvScoreConverter import convert_score
+
+        plot_info = self.job_state.get_plot_info()
+        params = self.get_best_params(plot_info=plot_info)
+
+        # Re-evaluate the objective function to get the lrf_info data structure
+        # that holds both data and model curves on the same scale.
+        try:
+            optimizer = self.monitor_optimizer or self.optimizer
+            lrf_info = optimizer.objective_func(params, return_lrf_info=True)
+        except Exception:
+            return None
+
+        # SV history from callback
+        fv_array = plot_info[0]
+        if fv_array is not None and len(fv_array) > 0:
+            sv_history = np.array([convert_score(float(v)) for v in fv_array[:, 1]])
+            best_sv = float(np.max(sv_history))
+        else:
+            sv_history = np.array([])
+            best_sv = None
+
+        return {
+            'xr_frames':    lrf_info.x,
+            'xr_data':      lrf_info.y,
+            'xr_model':     lrf_info.xr_ty,
+            'xr_components': lrf_info.scaled_xr_cy_array,
+            'uv_frames':    lrf_info.uv_x,
+            'uv_data':      lrf_info.uv_y,
+            'uv_model':     lrf_info.uv_ty,
+            'uv_components': lrf_info.scaled_uv_cy_array,
+            'sv_history':   sv_history,
+            'best_sv':      best_sv,
+            'params':       params,
+        }
 
     def save_the_result_figure(self, fig_file=None):
         if fig_file is None:
