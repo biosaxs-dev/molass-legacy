@@ -347,7 +347,11 @@ class EghAdvansedParams(EghParamsBase):
         return bounds_mask
 
     def get_parameter_names(self):
-        xr_names, rg_names, mapping_names, uv_names, mr_names, seccol_names = get_common_parameter_names(self.n_components)
+        # Use the actual Rg count from pos to avoid off-by-one when
+        # baseline_rg=False (nc entries) vs baseline_rg=True (nc+1 entries).
+        # Without this, one extra Rg name shifts mp_a/mp_b/UV names by +1. (issue #33)
+        nc_rg = self.pos[3] - self.pos[2]
+        xr_names, rg_names, mapping_names, uv_names, mr_names, seccol_names = get_common_parameter_names(self.n_components, nc_rg=nc_rg)
         xr_basenames = ["$xb_a$", "$xb_b$"]
         if self.num_baseparams == 3:
             xr_basenames += ["$xb_r$"]
