@@ -155,6 +155,22 @@ class BasicOptimizer:
         self.xr_norm2 = np.linalg.norm(xrD)
         self.rg_curve = rg_curve
         self.uv_curve = uv_curve
+
+        # Fix (molass-legacy#34): the legacy loader builds uv_curve.spline with 0-based x,
+        # but the objective evaluates it at original frame positions (uv_x = a*xr_frame + b).
+        # At this point uv_curve.x already holds original frame numbers; if the spline domain
+        # still starts near 0, rebuild it so evaluation at original frames is correct.
+        if hasattr(uv_curve, 'spline') and hasattr(uv_curve, 'x') and len(uv_curve.x) > 0:
+            try:
+                from scipy.interpolate import InterpolatedUnivariateSpline
+                _knot0 = float(uv_curve.spline.get_knots()[0])
+                _x0 = float(uv_curve.x[0])
+                if abs(_x0 - _knot0) > 1.0:
+                    _sy = getattr(uv_curve, 'sy', uv_curve.y)
+                    uv_curve.spline = InterpolatedUnivariateSpline(uv_curve.x, _sy, ext=3)
+            except Exception:
+                pass  # spline rebuild is best-effort; wrong spline is no worse than before
+
         self.uvD = uvD
         self.uvD_ = get_denoised_data(uvD, rank=self.n_components)
 

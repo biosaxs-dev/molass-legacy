@@ -64,8 +64,56 @@ def get_dsets_impl(sd, corrected_sd, progress_cb=None, rg_folder=None, rg_info=T
         if rg_folder is None:
             rg_folder = get_current_rg_folder(compute_rg=compute_rg, possibly_relocated=possibly_relocated, current_folder=current_folder)
 
-        rg_folder_ok = check_rg_folder(rg_folder)
-        logger.info("rg_folder=%s status is %s", rg_folder, str(rg_folder_ok))
+        # If the parent process explicitly exported a LegacyRgCurve (molass-legacy#34 fix),
+        # it writes trust.txt into the rg-curve folder to bypass check_rg_folder entirely.
+        # This is the primary mechanism (file-based, no SerialSettings dependency).
+        # trust_rg_curve_folder in opt_settings.txt is kept as a belt-and-suspenders backup.
+        #
+        # Additionally, the parent exports to rg_curve_parent/ (a folder the subprocess
+        # never writes to), as a robust fallback when rg-curve/ is cleared by an unknown
+        # mechanism (molass-legacy#34 ongoing investigation).
+        optimizer_folder = os.path.dirname(rg_folder)
+        parent_rg_folder = os.path.join(optimizer_folder, "rg_curve_parent")
+        _rg_data_files = ['segments.txt', 'qualities.txt', 'slices.txt',
+                          'states.txt', 'baseline_type.txt']
+        parent_folder_ok = (os.path.exists(parent_rg_folder) and
+                            os.path.exists(os.path.join(parent_rg_folder, 'ok.stamp')) and
+                            all(os.path.exists(os.path.join(parent_rg_folder, f))
+                                for f in _rg_data_files))
+
+        trust_marker = os.path.join(rg_folder, 'trust.txt')
+        trust_by_file  = os.path.exists(trust_marker)
+        trust_by_setting = get_setting("trust_rg_curve_folder")
+        stamp_ok = os.path.exists(rg_folder) and os.path.exists(os.path.join(rg_folder, 'ok.stamp'))
+        # Fallback: check that RgCurveProxy's required data files are present
+        # even when ok.stamp is missing (e.g. cleared by an unknown mechanism,
+        # molass-legacy#34).  This makes the trust check robust to stamp_ok=False.
+        data_files_ok = (os.path.exists(rg_folder) and
+                         all(os.path.exists(os.path.join(rg_folder, f))
+                             for f in _rg_data_files))
+        if logger is not None:
+            logger.info("rg_folder=%s trust_by_file=%s trust_by_setting=%s "
+                        "stamp_ok=%s data_files_ok=%s parent_folder_ok=%s",
+                        rg_folder, trust_by_file, trust_by_setting,
+                        stamp_ok, data_files_ok, parent_folder_ok)
+
+        # Prefer rg_curve_parent/ when trust is set and it contains valid data
+        # (immune to subprocess clearing of rg-curve/).
+        if (trust_by_file or trust_by_setting) and parent_folder_ok:
+            rg_folder = parent_rg_folder   # redirect to parent-exclusive folder
+            rg_folder_ok = True
+            if logger is not None:
+                logger.info("rg_folder redirected to parent folder: %s", parent_rg_folder)
+        elif (trust_by_file or trust_by_setting) and (stamp_ok or data_files_ok):
+            rg_folder_ok = True
+            if logger is not None:
+                logger.info("rg_folder=%s forced OK (trust_by_file=%s, trust_by_setting=%s, "
+                            "stamp_ok=%s, data_files_ok=%s)",
+                            rg_folder, trust_by_file, trust_by_setting, stamp_ok, data_files_ok)
+        else:
+            rg_folder_ok = check_rg_folder(rg_folder)
+            if logger is not None:
+                logger.info("rg_folder=%s status is %s", rg_folder, str(rg_folder_ok))
 
         if not rg_folder_ok:
             previous_rg_folder = get_setting("rg_curve_folder")
@@ -80,22 +128,26 @@ def get_dsets_impl(sd, corrected_sd, progress_cb=None, rg_folder=None, rg_info=T
                         rmtree(rg_folder)
                     copytree(previous_rg_folder, rg_folder)
                     rg_folder_ok = check_rg_folder(rg_folder)
-                    logger.info("rg-curve has been copied from %s: check status %s", previous_rg_folder, str(rg_folder_ok))
+                    if logger is not None:
+                        logger.info("rg-curve has been copied from %s: check status %s", previous_rg_folder, str(rg_folder_ok))
 
         if rg_folder_ok:
             rg_curve = RgCurveProxy(xr_curve, rg_folder, progress_cb=progress_cb)
-            trust_rg_curve_folder = get_setting("trust_rg_curve_folder")
-            if trust_rg_curve_folder:
-                logger.info("rg-curve proxy is trusted without trimming consistency check.")
+            if trust_by_file or trust_by_setting:
+                if logger is not None:
+                    logger.info("rg-curve proxy is trusted without trimming consistency check.")
             else:
                 xr_restrict_list = get_setting("xr_restrict_list")
                 current_rg_trimming = str(None if xr_restrict_list is None else xr_restrict_list[0])
                 proxy_rg_trimming = str(rg_curve.rg_trimming)
-                logger.info("trimmings are %s, %s", current_rg_trimming, proxy_rg_trimming)
+                if logger is not None:
+                    logger.info("trimmings are %s, %s", current_rg_trimming, proxy_rg_trimming)
                 if current_rg_trimming == proxy_rg_trimming:
-                    logger.info("rg-curve has been created as a proxy.")
+                    if logger is not None:
+                        logger.info("rg-curve has been created as a proxy.")
                 else:
-                    logger.info("the existing rg-curve will be discarded due to trimming inconsistency.")
+                    if logger is not None:
+                        logger.info("the existing rg-curve will be discarded due to trimming inconsistency.")
                     rg_folder_ok = False
 
         if not rg_folder_ok:
@@ -112,6 +164,23 @@ def get_dsets_impl(sd, corrected_sd, progress_cb=None, rg_folder=None, rg_info=T
         rg_curve = None
 
     U, _, wlvec, uv_curve = sd.get_uv_data_separate_ly()
+
+    # Fix (molass-legacy#34): the legacy loader builds uv_curve.spline with 0-based x,
+    # but objective_func evaluates it at original frame positions (uv_x = a*xr_frame + b).
+    # When uv_x values exceed the 0-based range, the spline extrapolates flat → wrong uv_y.
+    # Rebuild the spline using the stored original frame numbers (uv_curve.x).
+    if hasattr(uv_curve, 'spline') and hasattr(uv_curve, 'x'):
+        from scipy.interpolate import InterpolatedUnivariateSpline
+        _spline_knots = uv_curve.spline.get_knots()
+        if abs(float(_spline_knots[0]) - float(uv_curve.x[0])) > 1.0:
+            # Spline domain differs from uv_curve.x — rebuild with original frame numbers
+            _sy = getattr(uv_curve, 'sy', uv_curve.y)
+            uv_curve.spline = InterpolatedUnivariateSpline(uv_curve.x, _sy, ext=3)
+            if logger is not None:
+                logger.info("uv_curve.spline rebuilt with original frame numbers "
+                            "[%.1f, %.1f] (was 0-based [%.1f, %.1f])",
+                            float(uv_curve.x[0]), float(uv_curve.x[-1]),
+                            float(_spline_knots[0]), float(_spline_knots[-1]))
 
     if False:
         with plt.Dp():

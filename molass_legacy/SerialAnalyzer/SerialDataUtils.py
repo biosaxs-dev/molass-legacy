@@ -253,6 +253,9 @@ def load_xray_files(datafiles_, return_lacking_info=False, qv=None, uniform_qv=T
         return np.array( data_list ), comments
 
 def convert_to_the_least_shape(data_list, size_list=None, qv=None):
+    if not data_list:
+        raise ValueError("No XR data files were successfully loaded. "
+                         "Check that the data folder contains valid .dat files.")
     if size_list is None:
         size_list = [ data.shape[0] for data in data_list ]
     size_array = np.array(size_list)
