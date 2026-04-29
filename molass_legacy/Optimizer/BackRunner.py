@@ -100,6 +100,11 @@ class BackRunner:
         if in_folder is None:
             in_folder = 'IN_FOLDER_NOT_SET'
 
+        # Save in_folder so DsetsDebug.reconstruct_subprocess_dsets() can
+        # reconstruct the subprocess datasets without live SerialSettings.
+        with open(os.path.join(folder, 'in_folder.txt'), 'w') as _fh:
+            _fh.write(in_folder)
+
         trimming_txt = FILES[6]
         trimming_file = os.path.join(folder, trimming_txt)
         save_trimming_txt(trimming_file)

@@ -168,6 +168,21 @@ def create_optimizer_from_job(in_folder=None, n_components=None, class_code=None
     fullopt_input = OptimizerInput(in_folder=in_folder, trimming_txt=trimming_txt, legacy=True)
     dsets = fullopt_input.get_dsets()
     uv_base_curve = fullopt_input.get_base_curve()      # uv_base_curve comes from FullOptInput.get_sd_from_folder()
+
+    # Inject parent's UV diff_spline to match parent optimizer exactly
+    # (molass-legacy#34: subprocess re-derives diff_spline from full raw data,
+    # which differs from parent's spline built on already-trimmed SSD).
+    from molass_legacy._MOLASS.SerialSettings import get_setting as _gs
+    _opt_folder = _gs('optimizer_folder')
+    if uv_base_curve is not None and _opt_folder is not None:
+        _ds_x_file = os.path.join(_opt_folder, 'uv_diff_spline_x.npy')
+        _ds_y_file = os.path.join(_opt_folder, 'uv_diff_spline_y.npy')
+        if os.path.exists(_ds_x_file) and os.path.exists(_ds_y_file):
+            from scipy.interpolate import UnivariateSpline
+            _ds_x = np.load(_ds_x_file)
+            _ds_y = np.load(_ds_y_file)
+            uv_base_curve.diff_spline = UnivariateSpline(_ds_x, _ds_y, s=0, ext=3)
+
     xr_base_curve = create_xr_baseline_object()
     qvector, wvector = fullopt_input.get_spectral_vectors()
 

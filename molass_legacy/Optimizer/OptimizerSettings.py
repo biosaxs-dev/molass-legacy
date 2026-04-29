@@ -44,6 +44,7 @@ def delayed_settings_init():
         ("mw_integer_ratios", None),
         ("avoid_peak_fronting", 0),
         ("optimization_method", 0),
+        ("trust_rg_curve_folder", False),   # set True by parent when LegacyRgCurve is exported (molass-legacy#34)
         # SEC parameters
         ("exclusion_limit", default_columntype.excl_limit),
         ("poresize", poresize),
