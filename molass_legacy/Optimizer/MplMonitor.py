@@ -219,13 +219,56 @@ class _RunInfoSource:
         return self._ri.is_alive
 
     def terminate(self):
-        """No-op: cannot cleanly kill a Python thread.
+        """Request cooperative termination of the in-process optimizer thread.
 
-        The Terminate button is hidden when this source is used; this method
-        exists only so the protocol is complete.  A cooperative-flag mechanism
-        is tracked as a future enhancement.
+        Delegates to ``run_info.request_stop()``, which sets a
+        ``threading.Event`` that ``InProcessRunner`` checks between solver
+        iterations.  A ``KeyboardInterrupt`` is then injected into the
+        solver thread via ctypes, causing it to exit at the next Python
+        bytecode boundary (~50 ms).  This is best-effort: if ctypes
+        injection fails the thread runs to completion normally.
         """
-        pass
+        if hasattr(self._ri, 'request_stop'):
+            self._ri.request_stop()
+
+    def run(self, optimizer, init_params, niter=20, seed=1234, work_folder=None,
+             dummy=False, x_shifts=None, **kwargs):
+        """Start a new in-process optimizer thread (used by Resume path).
+
+        Mirrors the ``BackRunner.run()`` signature so that ``run_impl()``
+        can delegate to this method for in-process sources without knowing
+        which source type it holds.
+        """
+        import threading as _threading
+        from molass_legacy.Optimizer.InProcessRunner import run_optimizer_in_process
+
+        # Fresh stop event so the new run is independently terminable.
+        new_stop_event = _threading.Event()
+        self._ri._stop_event = new_stop_event
+        # Reset work_folder so watch_progress lazy-init picks up the new folder.
+        self._ri.work_folder = None
+
+        _x_shifts = x_shifts
+        if _x_shifts is None and self._ri.dsets is not None:
+            try:
+                _x_shifts = self._ri.dsets.get_x_shifts()
+            except Exception:
+                _x_shifts = []
+
+        def _resume_thread():
+            _result, _work_folder = run_optimizer_in_process(
+                optimizer, init_params, niter=niter, seed=seed,
+                x_shifts=_x_shifts,
+                clear_jobs=False,   # resume: preserve previous job folders
+                stop_event=new_stop_event,
+            )
+            self._ri.in_process_result = _result
+            self._ri.work_folder = _work_folder
+
+        t = _threading.Thread(target=_resume_thread, daemon=True,
+                              name="InProcessOptimizer")
+        self._ri._async_thread = t
+        t.start()
 
     @property
     def working_folder(self):
@@ -363,16 +406,35 @@ class MplMonitor:
         self.logger = logging.getLogger(__name__)
         self.logger.setLevel(logging.INFO)
         self.logger.addHandler(self.fileh)
-        # Phase 5c (mirror of InProcessRunner): register atexit to close
+        # Phase 5c (mirror of InProcessRunner): register atexit to detach
         # self.fileh before logging.shutdown() iterates _handlerList.
         # The watch_thread (daemon) holds self.fileh.lock during log calls;
-        # logging.shutdown() trying to acquire that lock → deadlock on restart.
-        # atexit runs LIFO so this fires before logging.shutdown().
+        # logging.shutdown() (and the original _fh.close()) acquire that
+        # same lock → deadlock on kernel restart.
+        #
+        # Fix: do NOT call _fh.close() in atexit — it calls _fh.acquire()
+        # and deadlocks if the daemon thread holds the lock.  Instead:
+        #   1. Remove _fh from the logger (no lock needed).
+        #   2. Remove _fh from logging._handlerList so logging.shutdown()
+        #      never sees it (avoids the lock-acquire in shutdown()).
+        #   3. Close the underlying stream directly (no lock needed).
         import atexit as _atexit_monitor
         def _cleanup_monitor_fileh(_fh=self.fileh, _log=self.logger):
             try:
                 _log.removeHandler(_fh)
-                _fh.close()
+            except Exception:
+                pass
+            try:
+                import logging as _logging
+                _logging._handlerList[:] = [
+                    w for w in _logging._handlerList if w() is not _fh
+                ]
+            except Exception:
+                pass
+            try:
+                if hasattr(_fh, 'stream') and _fh.stream is not None:
+                    _fh.stream.close()
+                    _fh.stream = None
             except Exception:
                 pass
         _atexit_monitor.register(_cleanup_monitor_fileh)
@@ -441,9 +503,12 @@ class MplMonitor:
             mon.show()
             mon.start_watching()
 
-        The Resume and Terminate buttons are hidden automatically because
-        thread-based runs cannot be killed cleanly.  The Export button
-        remains available once the run completes.
+        Both the Resume and Terminate buttons are shown.
+        Resume re-runs from the best accepted parameters via a new in-process
+        thread (uses ``_RunInfoSource.run()``).
+        Terminate triggers cooperative stop via ``request_stop()`` →
+        ctypes ``KeyboardInterrupt`` injection into the solver thread.
+        The Export button remains available once the run completes.
 
         Parameters
         ----------
@@ -458,25 +523,46 @@ class MplMonitor:
             Set ``True`` to clear existing job folders. Defaults to ``False``
             because an in-process run has already created its working folder.
         """
+        # Auto-detect function_code from the optimizer when not supplied.
+        # detect_function_code() returns None for EGH (non-SDM) models;
+        # construct_legacy_optimizer() resolves it internally but does not
+        # return the resolved value, so the caller sees None.  Fall back to
+        # the optimizer's own get_function_code() which always knows the truth.
+        if function_code is None and run_info.optimizer is not None:
+            try:
+                function_code = run_info.optimizer.get_function_code()
+            except Exception:
+                pass
         mon = cls(source=_RunInfoSource(run_info),
                   function_code=function_code, clear_jobs=clear_jobs)
         # Set attributes that watch_progress() and update_plot() expect.
         # For the subprocess path these are set inside run() / run_impl();
         # for the in-process path we initialize them here.
         mon.niter = niter
-        mon.seed = 1234             # unused for in-process (no run_impl call), but watch_progress references it
+        mon.seed = 1234             # unused for initial run; used by run_impl on Resume
         mon.num_trials = 0
-        mon.max_trials = 0          # in-process runs cannot be auto-resumed (0 means no resume allowed)
+        mon.max_trials = 0          # no auto-resume; manual Resume via button is supported
         mon.optimizer = run_info.optimizer
         mon.dsets = run_info.dsets
         mon.job_state = None        # lazily set in watch_progress once work_folder is known
         mon.curr_index = None
         mon.work_folder = None      # required by update_plot(); snapshot falls back to optimizer_folder
+        # x_shifts needed by run_impl when user clicks Resume.
+        try:
+            mon.x_shifts = run_info.dsets.get_x_shifts() if run_info.dsets is not None else []
+        except Exception:
+            mon.x_shifts = []
         return mon
+
+    # Directories in optimizer_folder that contain parent-exported data
+    # and must NOT be cleared when resetting job outputs.
+    _PRESERVED_SUBDIRS = frozenset(["rg-curve", "rg_curve_parent"])
 
     def clear_jobs(self):
         folder = self.optimizer_folder
         for sub in os.listdir(folder):
+            if sub in self._PRESERVED_SUBDIRS:
+                continue   # molass-legacy#34: never wipe parent-exported rg data
             subpath =  os.path.join(folder, sub)
             if os.path.isdir(subpath):
                 shutil.rmtree(subpath)
@@ -489,12 +575,17 @@ class MplMonitor:
             return self.source.working_folder
         return None
 
+    def _running_status(self):
+        """Return the 'Status: Running' label with path annotation (in-process vs subprocess)."""
+        suffix = '(in-process)' if isinstance(self.source, _RunInfoSource) else '(subprocess)'
+        return f'Status: Running {suffix}'
+
     def create_dashboard(self):
         self.plot_output = widgets.Output()
 
         in_process = isinstance(self.source, _RunInfoSource)
 
-        self.status_label = widgets.Label(value="Status: Running")
+        self.status_label = widgets.Label(value=self._running_status())
         self.space_label1 = widgets.Label(value="　　　　")
         self.resume_button = widgets.Button(description="Resume Job", button_style='warning', disabled=True)
         self.resume_button.on_click(self.trigger_resume)
@@ -508,9 +599,13 @@ class MplMonitor:
         self.export_button.on_click(self.export_data)
 
         if in_process:
-            # Resume and Terminate are not meaningful for thread-based runs:
-            # niter is fixed and threads cannot be killed cleanly.
+            # Resume: re-runs from best params via _RunInfoSource.run() + run_impl().
+            # Terminate: cooperative stop via request_stop() + ctypes injection.
             controls_children = [self.status_label,
+                                  self.space_label1,
+                                  self.resume_button,
+                                  self.space_label2,
+                                  self.terminate_button,
                                   self.space_label3,
                                   self.export_button]
         else:
@@ -557,6 +652,18 @@ class MplMonitor:
         else:
             optimizer.prepare_for_optimization(init_params)
 
+        if isinstance(self.source, _RunInfoSource):
+            # In-process Resume path: fire a new thread via _RunInfoSource.run().
+            # job_state init is deferred — watch_progress() picks it up lazily
+            # once the new thread sets run_info.work_folder.
+            self.source.run(optimizer, init_params, niter=niter, seed=seed,
+                            work_folder=work_folder,
+                            x_shifts=getattr(self, 'x_shifts', None))
+            self.job_state = None   # reset; lazily re-initialized in watch_progress
+            self.curr_index = None
+            self.logger.info("Starting in-process optimizer resume")
+            return
+
         self.source._runner.run(optimizer, init_params, niter=niter, seed=seed, work_folder=work_folder, dummy=dummy, x_shifts=self.x_shifts,
                         optimizer_test=optimizer_test, debug=debug, devel=devel)
         if optimizer_test:
@@ -601,7 +708,7 @@ class MplMonitor:
             self.run_impl(self.optimizer, best_params, niter=self.niter,
                           seed=self.seed, work_folder=None, dummy=False, debug=False)
 
-            self.status_label.value = "Status: Running"
+            self.status_label.value = self._running_status()
             set_label_color(self.status_label, "green")
             self.terminate_button.disabled = False
 
@@ -786,7 +893,7 @@ class MplMonitor:
                             self.logger.info("Starting a new optimization trial (%d/%d).", self.num_trials, self.max_trials)
                             best_params = self.get_best_params()
                             self.run_impl(self.optimizer, best_params, niter=self.niter, seed=self.seed, work_folder=None, dummy=False, debug=False)
-                            self.status_label.value = "Status: Running"
+                            self.status_label.value = self._running_status()
                             set_label_color(self.status_label, "green")
                             resume_loop = True
                         else:

@@ -369,15 +369,19 @@ def get_curve_xy_impl(sd, baseline_type=1, return_details=False, debug=False):
             if baseline_type == 0:
                 assert False
             else:
+                # UvPreRecog is used for all baseline types below;
+                # import it here so it is always in scope regardless of branch.
+                if debug:
+                    from importlib import reload
+                    import molass_legacy.UV.UvPreRecog
+                    reload(molass_legacy.UV.UvPreRecog)
+                from molass_legacy.UV.UvPreRecog import UvPreRecog
                 if baseline_type == 1:
                     if debug:
                         from importlib import reload
                         import molass_legacy.Baseline.LinearBaseline
                         reload(molass_legacy.Baseline.LinearBaseline)
-                        import molass_legacy.UV.UvPreRecog
-                        reload(molass_legacy.UV.UvPreRecog)
                     from molass_legacy.Baseline.LinearBaseline import LinearBaseline as XrBaselineClass
-                    from molass_legacy.UV.UvPreRecog import UvPreRecog
                 elif baseline_type == 2:
                     if debug:
                         from importlib import reload

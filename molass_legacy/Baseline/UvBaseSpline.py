@@ -290,7 +290,8 @@ class UvBaseSpline:
         y = compute_baseline_impl(x, params[0:k], self.diff_spline)
         if len(params) == 8:
             if cy_list is None:
-                y += params[k]*np.cumsum(ty)
+                if ty is not None:
+                    y += params[k]*np.cumsum(ty)
             else:
                 for cy in cy_list:
                     y += params[k]*np.cumsum(cy)

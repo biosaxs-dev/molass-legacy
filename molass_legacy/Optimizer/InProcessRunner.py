@@ -93,7 +93,8 @@ def _resolve_solver(method, nnn):
 def run_optimizer_in_process(optimizer, init_params, niter=20, seed=1234,
                              method=None, x_shifts=None, work_folder=None,
                              clear_jobs=True, debug=False,
-                             work_folder_callback=None):
+                             work_folder_callback=None,
+                             stop_event=None):
     """Run an already-prepared optimizer in this process.
 
     The optimizer is expected to be fully constructed by the caller
@@ -204,6 +205,12 @@ def run_optimizer_in_process(optimizer, init_params, niter=20, seed=1234,
     trimming_txt = FILES[6]
     save_trimming_txt(os.path.join(work_folder, trimming_txt))
 
+    # Save in_folder so DsetsDebug.reconstruct_subprocess_dsets() can
+    # reconstruct the subprocess datasets without live SerialSettings.
+    _in_folder = get_setting('in_folder') or ''
+    with open(os.path.join(work_folder, 'in_folder.txt'), 'w') as _fh:
+        _fh.write(_in_folder)
+
     if x_shifts is not None:
         x_shifts_txt = FILES[8]
         np.savetxt(os.path.join(work_folder, x_shifts_txt), x_shifts, fmt="%d")
@@ -253,11 +260,25 @@ def run_optimizer_in_process(optimizer, init_params, niter=20, seed=1234,
             _root = _log_mod.getLogger()
             _root.removeHandler(job_logger.ch)
             job_logger.ch.close()
-            # Phase 5c: schedule fileh cleanup via atexit
-            def _cleanup_fileh(_jl=job_logger, _r=_root):
+            # Phase 5c: schedule fileh cleanup via atexit.
+            # Do NOT call _fh.close() here — it acquires the handler lock,
+            # which the daemon optimizer thread may be holding → deadlock.
+            # Instead: remove from _handlerList (no lock) + close stream directly.
+            def _cleanup_fileh(_jl=job_logger, _r=_root, _lm=_log_mod):
                 try:
                     _r.removeHandler(_jl.fileh)
-                    _jl.fileh.close()
+                except Exception:
+                    pass
+                try:
+                    _lm._handlerList[:] = [
+                        w for w in _lm._handlerList if w() is not _jl.fileh
+                    ]
+                except Exception:
+                    pass
+                try:
+                    if hasattr(_jl.fileh, 'stream') and _jl.fileh.stream is not None:
+                        _jl.fileh.stream.close()
+                        _jl.fileh.stream = None
                 except Exception:
                     pass
             _atexit_mod.register(_cleanup_fileh)
@@ -332,9 +353,25 @@ def run_optimizer_in_process(optimizer, init_params, niter=20, seed=1234,
 
         _t = _threading.Thread(target=_run_solve, daemon=True, name="InProcessOptimizer")
         _t.start()
+        _stop_injected = False
         try:
             while _t.is_alive():
                 _t.join(timeout=0.05)   # releases GIL → interrupt delivery point
+                if (stop_event is not None and stop_event.is_set()
+                        and _t.is_alive() and not _stop_injected):
+                    # Inject KeyboardInterrupt into the solver thread so it
+                    # exits at the next Python bytecode boundary (~50 ms).
+                    # Best-effort: if ctypes is unavailable the flag is set
+                    # but the thread runs to completion naturally.
+                    try:
+                        import ctypes as _ctypes
+                        _ctypes.pythonapi.PyThreadState_SetAsyncExc(
+                            _ctypes.c_ulong(_t.ident),
+                            _ctypes.py_object(KeyboardInterrupt),
+                        )
+                    except Exception:
+                        pass
+                    _stop_injected = True
         except KeyboardInterrupt:
             # Kernel restart or user interrupt — let the daemon thread be
             # cleaned up when the process exits; re-raise so callers see it.
@@ -362,8 +399,22 @@ def run_optimizer_in_process(optimizer, init_params, niter=20, seed=1234,
                 _root = _logging.getLogger()
                 _root.removeHandler(job_logger.fileh)
                 _root.removeHandler(job_logger.ch)
+                # Do NOT call job_logger.fileh.close() here — it acquires
+                # the handler lock, but this finally block runs from the
+                # optimizer daemon thread which may already hold that lock.
+                # Close the underlying stream directly instead.
                 try:
-                    job_logger.fileh.close()
+                    import logging as _logging_fin
+                    _logging_fin._handlerList[:] = [
+                        w for w in _logging_fin._handlerList
+                        if w() is not job_logger.fileh
+                    ]
+                except Exception:
+                    pass
+                try:
+                    if hasattr(job_logger.fileh, 'stream') and job_logger.fileh.stream is not None:
+                        job_logger.fileh.stream.close()
+                        job_logger.fileh.stream = None
                 except Exception:
                     pass
             except Exception:
