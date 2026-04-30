@@ -7,7 +7,7 @@ import numpy as np
 from scipy.optimize import minimize
 import ruptures as rpt
 import molass_legacy.KekLib.DebugPlot as plt
-from GuinierTools.CpdDecompUtils import compute_end_points
+from molass_legacy.GuinierTools.CpdDecompUtils import compute_end_points
 
 VERY_LARGE_VALUE = 1e8
 MAX_TAU_RARIO = 1.0

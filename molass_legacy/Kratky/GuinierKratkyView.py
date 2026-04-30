@@ -11,7 +11,7 @@ from matplotlib.gridspec import GridSpec
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from molass_legacy.KekLib.OurTkinter import Tk, Dialog
 from molass_legacy.KekLib.OurMatplotlib import NavigationToolbar
-from GuinierTools.RgCurveUtils import plot_rg_curves
+from molass_legacy.GuinierTools.RgCurveUtils import plot_rg_curves
 from molass_legacy._MOLASS.SerialSettings import get_setting
 
 PLOT_EOII_IN_GUINIER = False

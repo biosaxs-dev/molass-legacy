@@ -113,7 +113,7 @@ class GraphicResult:
         self.rg_curve = rg_curve
 
     def export(self, folder):
-        from GuinierTools.RgCurveUtils import compute_rg_curves
+        from molass_legacy.GuinierTools.RgCurveUtils import compute_rg_curves
 
         xr_curve = self.xr_result.xr_curve
         xr_x = xr_curve.x

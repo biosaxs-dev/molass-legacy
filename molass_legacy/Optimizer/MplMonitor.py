@@ -256,11 +256,23 @@ class _RunInfoSource:
                 _x_shifts = []
 
         def _resume_thread():
+            def _wf_callback(wf):
+                # Called by run_optimizer_in_process as soon as the job folder
+                # is allocated (before solve() starts) so that watch_progress
+                # lazy-init can pick up callback.txt without waiting for the
+                # full run to finish.  Same mechanism as the initial run.
+                self._ri.work_folder = wf
+                # Update RUN_MANIFEST.json so live_status() reports the correct
+                # work_folder and phase='running' for the new trial (#148).
+                if hasattr(self._ri, 'update_manifest_on_resume'):
+                    self._ri.update_manifest_on_resume(wf)
+
             _result, _work_folder = run_optimizer_in_process(
                 optimizer, init_params, niter=niter, seed=seed,
                 x_shifts=_x_shifts,
                 clear_jobs=False,   # resume: preserve previous job folders
                 stop_event=new_stop_event,
+                work_folder_callback=_wf_callback,
             )
             self._ri.in_process_result = _result
             self._ri.work_folder = _work_folder
@@ -490,7 +502,7 @@ class MplMonitor:
                    clear_jobs=clear_jobs, xr_only=xr_only, debug=debug)
 
     @classmethod
-    def for_run_info(cls, run_info, *, niter=20, function_code=None, clear_jobs=False):
+    def for_run_info(cls, run_info, *, niter=20, max_trials=0, function_code=None, clear_jobs=False):
         """Create a MplMonitor that watches an in-process RunInfo.
 
         Use this after ``optimize_rigorously(in_process=True, async_=True)``
@@ -517,6 +529,22 @@ class MplMonitor:
         niter : int, default=20
             Number of optimizer iterations — must match the value passed to
             ``optimize_rigorously()``.  Used to scale the SV-history axis.
+        max_trials : int, default=0
+            Maximum number of automatic sequential re-trials after each
+            trial completes.  Default ``0`` means no automatic re-start —
+            the user decides manually via the Resume button.
+
+            **Why the default differs from the subprocess path** (which
+            defaults to 30): the subprocess runs detached and needs to
+            loop autonomously, while the in-process path runs inside the
+            notebook where the user is watching.  Pausing after each trial
+            lets the user inspect the SV and curves before deciding to
+            continue.  The technical limitation that once prevented
+            auto-resume (threads could not be killed or restarted) was
+            lifted in v0.6.0 (``_RunInfoSource.run()`` + cooperative stop).
+            The default of ``0`` is now a deliberate UX choice, not a
+            technical constraint.  Set ``max_trials=30`` to match the
+            subprocess default for unattended runs.
         function_code : str, optional
             Forwarded to ``__init__``.
         clear_jobs : bool, default=False
@@ -541,7 +569,7 @@ class MplMonitor:
         mon.niter = niter
         mon.seed = 1234             # unused for initial run; used by run_impl on Resume
         mon.num_trials = 0
-        mon.max_trials = 0          # no auto-resume; manual Resume via button is supported
+        mon.max_trials = max_trials  # 0 = no auto-resume (default); >0 = auto-loop (see docstring)
         mon.optimizer = run_info.optimizer
         mon.dsets = run_info.dsets
         mon.job_state = None        # lazily set in watch_progress once work_folder is known
