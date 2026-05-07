@@ -235,12 +235,11 @@ def optimizer_main(in_folder, trimming_txt=None, n_components=3,
     if seed is None:
         seed = np.random.randint(100000, 999999)
     strategy = optimizer.get_strategy()
-    if strategy.trust_initial_baseline():
-        baseline_fixed = True
-        from molass_legacy.Optimizer.FixedBaselineOptimizer import FixedBaselineOptimizer
-        fb_optimizer = FixedBaselineOptimizer(optimizer)
-        result = fb_optimizer.solve(init_params, real_bounds=real_bounds, niter=niter, seed=seed, debug=debug)
-    else:
+    # NOTE: FixedBaselineOptimizer is intentionally NOT used here.
+    # Both in-process (InProcessRunner) and subprocess paths must solve the same
+    # unconstrained objective. FixedBaselineOptimizer is kept for explicit future use.
+    # See molass-legacy#42.
+    if True:
         baseline_fixed = False
         if strategy.baseline_first():
             if nnn == 0:
