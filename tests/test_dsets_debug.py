@@ -169,7 +169,8 @@ class TestGetDsetsImplElCurveOverride(unittest.TestCase):
     exist in the optimizer_folder.
     """
 
-    def _run_with_override(self, tmpdir, override_xr=True, override_uv=True):
+    def _run_with_override(self, tmpdir, override_xr=True, override_uv=True,
+                            override_D=False, override_U=False):
         """Run get_dsets_impl with mocked sd and rg_folder, return dsets tuple."""
         from molass_legacy.Optimizer.OptDataSets import get_dsets_impl
         from scipy.interpolate import InterpolatedUnivariateSpline
@@ -200,6 +201,8 @@ class TestGetDsetsImplElCurveOverride(unittest.TestCase):
 
         D = np.ones((50, n_xr))
         U = np.ones((40, n_uv))
+        D_parent = np.random.default_rng(99).uniform(0.01, 1.0, size=(50, n_xr))
+        U_parent = np.random.default_rng(77).uniform(0.0, 0.5, size=(40, n_uv))
 
         # sd returns the legacy curves
         sd = MagicMock()
@@ -227,35 +230,57 @@ class TestGetDsetsImplElCurveOverride(unittest.TestCase):
                 np.save(os.path.join(tmpdir, "ip_xr_elcurve_y.npy"), xr_y_parent)
             if override_uv:
                 np.save(os.path.join(tmpdir, "ip_uv_elcurve_y.npy"), uv_y_parent)
+            if override_D:
+                np.save(os.path.join(tmpdir, "ip_xr_D.npy"), D_parent)
+            if override_U:
+                np.save(os.path.join(tmpdir, "ip_uv_U.npy"), U_parent)
 
             result = get_dsets_impl(sd, MagicMock(), rg_folder=rg_folder)
 
-        return result, xr_y_parent, uv_y_parent, xr_y_legacy, uv_y_legacy
+        return result, xr_y_parent, uv_y_parent, xr_y_legacy, uv_y_legacy, D_parent, U_parent, D, U
 
     def test_xr_curve_y_overridden_when_npy_exists(self):
         with tempfile.TemporaryDirectory() as tmpdir:
-            result, xr_y_parent, _, _, _ = self._run_with_override(tmpdir, override_xr=True, override_uv=False)
+            result, xr_y_parent, _, _, _, _, _, _, _ = self._run_with_override(tmpdir, override_xr=True, override_uv=False)
             np.testing.assert_array_almost_equal(result[0][0].y, xr_y_parent)
 
     def test_xr_curve_y_unchanged_when_no_npy(self):
         with tempfile.TemporaryDirectory() as tmpdir:
-            result, _, _, xr_y_legacy, _ = self._run_with_override(tmpdir, override_xr=False, override_uv=False)
+            result, _, _, xr_y_legacy, _, _, _, _, _ = self._run_with_override(tmpdir, override_xr=False, override_uv=False)
             np.testing.assert_array_almost_equal(result[0][0].y, xr_y_legacy)
 
     def test_uv_curve_y_overridden_when_npy_exists(self):
         with tempfile.TemporaryDirectory() as tmpdir:
-            result, _, uv_y_parent, _, _ = self._run_with_override(tmpdir, override_xr=False, override_uv=True)
+            result, _, uv_y_parent, _, _, _, _, _, _ = self._run_with_override(tmpdir, override_xr=False, override_uv=True)
             np.testing.assert_array_almost_equal(result[2][0].y, uv_y_parent)
 
     def test_uv_curve_spline_rebuilt_with_new_y(self):
         """After override, uv_curve.spline must interpolate the new (parent) y values."""
         with tempfile.TemporaryDirectory() as tmpdir:
-            result, _, uv_y_parent, _, uv_y_legacy = self._run_with_override(tmpdir, override_xr=False, override_uv=True)
+            result, _, uv_y_parent, _, uv_y_legacy, _, _, _, _ = self._run_with_override(tmpdir, override_xr=False, override_uv=True)
             uv_curve = result[2][0]
             uv_x = uv_curve.x
             # Spline should match new y at interior points, not old y
             spline_vals = uv_curve.spline(uv_x[10:-10])
             np.testing.assert_array_almost_equal(spline_vals, uv_y_parent[10:-10], decimal=5)
+
+    def test_xr_D_overridden_when_npy_exists(self):
+        """D matrix must be replaced with parent's corrected matrix (molass-legacy#39)."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            result, _, _, _, _, D_parent, _, D_legacy, _ = self._run_with_override(
+                tmpdir, override_xr=False, override_uv=False, override_D=True, override_U=False)
+            np.testing.assert_array_equal(result[0][1], D_parent)
+            # Confirm D_legacy and D_parent are genuinely different
+            self.assertFalse(np.allclose(D_legacy, D_parent))
+
+    def test_uv_U_overridden_when_npy_exists(self):
+        """U matrix must be replaced with parent's corrected matrix (molass-legacy#39)."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            result, _, _, _, _, _, U_parent, _, U_legacy = self._run_with_override(
+                tmpdir, override_xr=False, override_uv=False, override_D=False, override_U=True)
+            np.testing.assert_array_equal(result[2][1], U_parent)
+            # Confirm U_legacy and U_parent are genuinely different
+            self.assertFalse(np.allclose(U_legacy, U_parent))
 
 
 # ---------------------------------------------------------------------------

@@ -59,7 +59,7 @@ def get_dsets_impl(sd, corrected_sd, progress_cb=None, rg_folder=None, rg_info=T
 
     D, E, qv, xr_curve = sd.get_xr_data_separate_ly()
     xr_curve_ = None
-    optimizer_folder = None  # set inside if rg_info block; used for molass-legacy#38 overrides
+    optimizer_folder = None  # set inside if rg_info block; used for molass-legacy#38/#39 overrides
 
     if rg_info:
         if rg_folder is None:
@@ -83,6 +83,17 @@ def get_dsets_impl(sd, corrected_sd, progress_cb=None, rg_folder=None, rg_info=T
             xr_curve.y = np.load(_ip_xr_path)
             if logger is not None:
                 logger.info("xr_curve.y overridden from parent's EGH-fitted curve (molass-legacy#38)")
+
+        # Override D with parent's corrected XR data matrix if exported (molass-legacy#39).
+        # The subprocess loads D via sd.get_xr_data_separate_ly() (legacy correction), which
+        # differs from the molass-library baseline-corrected ssd.xr.M used by in-process.
+        # Different D causes different xrD_ in BasicOptimizer → different objective landscape
+        # → systematic ~3 SV gap even when init_params and elcurves are identical.
+        _ip_D_path = os.path.join(optimizer_folder, 'ip_xr_D.npy')
+        if os.path.exists(_ip_D_path):
+            D = np.load(_ip_D_path)
+            if logger is not None:
+                logger.info("D matrix overridden from parent's corrected XR data (molass-legacy#39)")
 
         parent_rg_folder = os.path.join(optimizer_folder, "rg_curve_parent")
         _rg_data_files = ['segments.txt', 'qualities.txt', 'slices.txt',
@@ -205,6 +216,13 @@ def get_dsets_impl(sd, corrected_sd, progress_cb=None, rg_folder=None, rg_info=T
             uv_curve.spline = InterpolatedUnivariateSpline(uv_curve.x, _new_uv_y, ext=3)
             if logger is not None:
                 logger.info("uv_curve.y and spline overridden from parent's EGH-fitted curve (molass-legacy#38)")
+
+        # Override U with parent's corrected UV data matrix if exported (molass-legacy#39).
+        _ip_U_path = os.path.join(optimizer_folder, 'ip_uv_U.npy')
+        if os.path.exists(_ip_U_path):
+            U = np.load(_ip_U_path)
+            if logger is not None:
+                logger.info("U matrix overridden from parent's corrected UV data (molass-legacy#39)")
 
     if False:
         with plt.Dp():
