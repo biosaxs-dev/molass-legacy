@@ -59,6 +59,7 @@ def get_dsets_impl(sd, corrected_sd, progress_cb=None, rg_folder=None, rg_info=T
 
     D, E, qv, xr_curve = sd.get_xr_data_separate_ly()
     xr_curve_ = None
+    optimizer_folder = None  # set inside if rg_info block; used for molass-legacy#38 overrides
 
     if rg_info:
         if rg_folder is None:
@@ -73,6 +74,16 @@ def get_dsets_impl(sd, corrected_sd, progress_cb=None, rg_folder=None, rg_info=T
         # never writes to), as a robust fallback when rg-curve/ is cleared by an unknown
         # mechanism (molass-legacy#34 ongoing investigation).
         optimizer_folder = os.path.dirname(rg_folder)
+
+        # Override xr_curve.y with parent's in-process ElCurve if exported (molass-legacy#38).
+        # The parent writes ip_xr_elcurve_y.npy to optimizer_folder in prepare_rigorous_folders.
+        # This ensures subprocess uses the EGH-fitted curve, not the legacy-smoothed one.
+        _ip_xr_path = os.path.join(optimizer_folder, 'ip_xr_elcurve_y.npy')
+        if os.path.exists(_ip_xr_path):
+            xr_curve.y = np.load(_ip_xr_path)
+            if logger is not None:
+                logger.info("xr_curve.y overridden from parent's EGH-fitted curve (molass-legacy#38)")
+
         parent_rg_folder = os.path.join(optimizer_folder, "rg_curve_parent")
         _rg_data_files = ['segments.txt', 'qualities.txt', 'slices.txt',
                           'states.txt', 'baseline_type.txt']
@@ -181,6 +192,19 @@ def get_dsets_impl(sd, corrected_sd, progress_cb=None, rg_folder=None, rg_info=T
                             "[%.1f, %.1f] (was 0-based [%.1f, %.1f])",
                             float(uv_curve.x[0]), float(uv_curve.x[-1]),
                             float(_spline_knots[0]), float(_spline_knots[-1]))
+
+    # Override uv_curve.y with parent's in-process ElCurve if exported (molass-legacy#38).
+    # Done AFTER the molass-legacy#34 spline fix so we rebuild with the correct y values.
+    if optimizer_folder is not None:
+        _ip_uv_path = os.path.join(optimizer_folder, 'ip_uv_elcurve_y.npy')
+        if os.path.exists(_ip_uv_path):
+            from scipy.interpolate import InterpolatedUnivariateSpline
+            _new_uv_y = np.load(_ip_uv_path)
+            uv_curve.y = _new_uv_y
+            # Rebuild spline with the corrected y values (overrides molass-legacy#34 spline or legacy spline)
+            uv_curve.spline = InterpolatedUnivariateSpline(uv_curve.x, _new_uv_y, ext=3)
+            if logger is not None:
+                logger.info("uv_curve.y and spline overridden from parent's EGH-fitted curve (molass-legacy#38)")
 
     if False:
         with plt.Dp():

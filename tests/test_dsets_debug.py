@@ -158,6 +158,107 @@ class TestSweepMpB(unittest.TestCase):
 
 
 # ---------------------------------------------------------------------------
+# Test get_dsets_impl ElCurve override (molass-legacy#38)
+# ---------------------------------------------------------------------------
+
+class TestGetDsetsImplElCurveOverride(unittest.TestCase):
+    """Unit tests for the molass-legacy#38 fix.
+
+    Verify that get_dsets_impl replaces xr_curve.y and uv_curve.y with the
+    parent's EGH-fitted values when ip_xr_elcurve_y.npy / ip_uv_elcurve_y.npy
+    exist in the optimizer_folder.
+    """
+
+    def _run_with_override(self, tmpdir, override_xr=True, override_uv=True):
+        """Run get_dsets_impl with mocked sd and rg_folder, return dsets tuple."""
+        from molass_legacy.Optimizer.OptDataSets import get_dsets_impl
+        from scipy.interpolate import InterpolatedUnivariateSpline
+
+        n_xr, n_uv = 200, 300
+        xr_x = np.arange(500, 500 + n_xr, dtype=float)
+        uv_x = np.arange(400, 400 + n_uv, dtype=float)
+
+        # "legacy-smoothed" curves returned by sd (wrong values)
+        xr_y_legacy = np.ones(n_xr) * 0.5
+        uv_y_legacy = np.ones(n_uv) * 0.8
+
+        # Parent's EGH-fitted curves (correct values, Gaussian-shaped)
+        xr_y_parent = np.exp(-0.5 * ((xr_x - 600) / 30) ** 2)
+        uv_y_parent = np.exp(-0.5 * ((uv_x - 550) / 40) ** 2)
+
+        # Build mock xr_curve and uv_curve
+        xr_curve = MagicMock()
+        xr_curve.x = xr_x
+        xr_curve.y = xr_y_legacy.copy()
+
+        uv_curve = MagicMock()
+        uv_curve.x = uv_x
+        uv_curve.y = uv_y_legacy.copy()
+        # Spline built with 0-based domain (triggers molass-legacy#34 branch)
+        uv_curve.spline = InterpolatedUnivariateSpline(np.arange(n_uv, dtype=float), uv_y_legacy, ext=3)
+        uv_curve.sy = uv_y_legacy  # legacy has sy attribute
+
+        D = np.ones((50, n_xr))
+        U = np.ones((40, n_uv))
+
+        # sd returns the legacy curves
+        sd = MagicMock()
+        sd.get_xr_data_separate_ly.return_value = (D, np.ones_like(D) * 0.01, np.linspace(0.01, 0.3, 50), xr_curve)
+        sd.get_uv_data_separate_ly.return_value = (U, None, np.linspace(200, 600, 40), uv_curve)
+
+        # rg-curve setup: write trust.txt and required files so rg branch is satisfied
+        rg_folder = os.path.join(tmpdir, "rg-curve")
+        os.makedirs(rg_folder)
+        open(os.path.join(rg_folder, "trust.txt"), "w").close()
+        for fname in ["segments.txt", "qualities.txt", "slices.txt", "states.txt", "baseline_type.txt"]:
+            open(os.path.join(rg_folder, fname), "w").close()
+        open(os.path.join(rg_folder, "ok.stamp"), "w").close()
+
+        # RgCurveProxy mock
+        with patch("molass_legacy.Optimizer.OptDataSets.get_setting") as mock_get, \
+             patch("molass_legacy.Optimizer.OptDataSets.set_setting"), \
+             patch("molass_legacy.RgProcess.RgCurve.check_rg_folder", return_value=True), \
+             patch("molass_legacy.RgProcess.RgCurveProxy.RgCurveProxy") as mock_proxy:
+            mock_get.return_value = True  # trust_rg_curve_folder=True
+            mock_proxy.return_value = MagicMock()
+
+            # Write parent npy files to optimizer_folder
+            if override_xr:
+                np.save(os.path.join(tmpdir, "ip_xr_elcurve_y.npy"), xr_y_parent)
+            if override_uv:
+                np.save(os.path.join(tmpdir, "ip_uv_elcurve_y.npy"), uv_y_parent)
+
+            result = get_dsets_impl(sd, MagicMock(), rg_folder=rg_folder)
+
+        return result, xr_y_parent, uv_y_parent, xr_y_legacy, uv_y_legacy
+
+    def test_xr_curve_y_overridden_when_npy_exists(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            result, xr_y_parent, _, _, _ = self._run_with_override(tmpdir, override_xr=True, override_uv=False)
+            np.testing.assert_array_almost_equal(result[0][0].y, xr_y_parent)
+
+    def test_xr_curve_y_unchanged_when_no_npy(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            result, _, _, xr_y_legacy, _ = self._run_with_override(tmpdir, override_xr=False, override_uv=False)
+            np.testing.assert_array_almost_equal(result[0][0].y, xr_y_legacy)
+
+    def test_uv_curve_y_overridden_when_npy_exists(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            result, _, uv_y_parent, _, _ = self._run_with_override(tmpdir, override_xr=False, override_uv=True)
+            np.testing.assert_array_almost_equal(result[2][0].y, uv_y_parent)
+
+    def test_uv_curve_spline_rebuilt_with_new_y(self):
+        """After override, uv_curve.spline must interpolate the new (parent) y values."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            result, _, uv_y_parent, _, uv_y_legacy = self._run_with_override(tmpdir, override_xr=False, override_uv=True)
+            uv_curve = result[2][0]
+            uv_x = uv_curve.x
+            # Spline should match new y at interior points, not old y
+            spline_vals = uv_curve.spline(uv_x[10:-10])
+            np.testing.assert_array_almost_equal(spline_vals, uv_y_parent[10:-10], decimal=5)
+
+
+# ---------------------------------------------------------------------------
 # Test reconstruct_subprocess_dsets (mocked)
 # ---------------------------------------------------------------------------
 
