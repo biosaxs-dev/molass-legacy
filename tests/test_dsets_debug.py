@@ -340,6 +340,94 @@ class TestReconstructSubprocessDsets(unittest.TestCase):
             with self.assertRaises(FileNotFoundError):
                 reconstruct_subprocess_dsets(tmpdir)
 
+
+# ---------------------------------------------------------------------------
+# Test qvector override in create_optimizer_from_job (molass-legacy#41)
+# ---------------------------------------------------------------------------
+
+class TestQvectorOverride(unittest.TestCase):
+    """Unit tests for the molass-legacy#41 fix.
+
+    Verify that create_optimizer_from_job replaces the subprocess qvector
+    (loaded from raw data, 972 elements) with the parent's trimmed qvector
+    (966 elements) when ip_xr_qvector.npy exists in the optimizer_folder.
+    """
+
+    def test_qvector_overridden_when_npy_exists(self):
+        """qvector passed to fullopt_class must be parent's trimmed values."""
+        from molass_legacy.Optimizer.OptimizerMain import create_optimizer_from_job
+        import tempfile
+
+        n_q_legacy = 972
+        n_q_parent = 966
+        qvec_legacy = np.linspace(0.013, 0.42, n_q_legacy)
+        qvec_parent = np.linspace(0.0157, 0.4146, n_q_parent)
+
+        captured = {}
+
+        def mock_fullopt_class(dsets, n_comp, **kwargs):
+            captured['qvector'] = kwargs.get('qvector')
+            return MagicMock()
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            np.save(os.path.join(tmpdir, 'ip_xr_qvector.npy'), qvec_parent)
+            # write a dummy trimming.txt path (file doesn't need to exist)
+            fake_trimming = os.path.join(tmpdir, 'trimming.txt')
+
+            with patch('molass.Bridge.OptimizerInput.OptimizerInput') as mock_input_cls, \
+                 patch('molass_legacy.Optimizer.OptimizerMain.import_objective_function', return_value=mock_fullopt_class), \
+                 patch('molass_legacy.Optimizer.OptimizerMain.create_xr_baseline_object', return_value=MagicMock()), \
+                 patch('molass_legacy._MOLASS.SerialSettings.get_setting', return_value=tmpdir):
+
+                mock_input = MagicMock()
+                mock_input.get_dsets.return_value = MagicMock()
+                mock_input.get_base_curve.return_value = None
+                mock_input.get_spectral_vectors.return_value = (qvec_legacy, np.linspace(250, 650, 400))
+                mock_input_cls.return_value = mock_input
+
+                create_optimizer_from_job(in_folder='/fake/data', n_components=2,
+                                          class_code='F0000', trimming_txt=fake_trimming)
+
+        self.assertIn('qvector', captured)
+        np.testing.assert_array_equal(captured['qvector'], qvec_parent)
+        self.assertNotEqual(len(captured['qvector']), n_q_legacy)
+
+    def test_qvector_unchanged_when_no_npy(self):
+        """Without ip_xr_qvector.npy, the legacy qvector is used unchanged."""
+        from molass_legacy.Optimizer.OptimizerMain import create_optimizer_from_job
+        import tempfile
+
+        n_q_legacy = 972
+        qvec_legacy = np.linspace(0.013, 0.42, n_q_legacy)
+        captured = {}
+
+        def mock_fullopt_class(dsets, n_comp, **kwargs):
+            captured['qvector'] = kwargs.get('qvector')
+            return MagicMock()
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            # No ip_xr_qvector.npy written
+            fake_trimming = os.path.join(tmpdir, 'trimming.txt')
+
+            with patch('molass.Bridge.OptimizerInput.OptimizerInput') as mock_input_cls, \
+                 patch('molass_legacy.Optimizer.OptimizerMain.import_objective_function', return_value=mock_fullopt_class), \
+                 patch('molass_legacy.Optimizer.OptimizerMain.create_xr_baseline_object', return_value=MagicMock()), \
+                 patch('molass_legacy._MOLASS.SerialSettings.get_setting', return_value=tmpdir):
+
+                mock_input = MagicMock()
+                mock_input.get_dsets.return_value = MagicMock()
+                mock_input.get_base_curve.return_value = None
+                mock_input.get_spectral_vectors.return_value = (qvec_legacy, np.linspace(250, 650, 400))
+                mock_input_cls.return_value = mock_input
+
+                create_optimizer_from_job(in_folder='/fake/data', n_components=2,
+                                          class_code='F0000', trimming_txt=fake_trimming)
+
+        self.assertIn('qvector', captured)
+        np.testing.assert_array_equal(captured['qvector'], qvec_legacy)
+
+
+
     def test_reads_in_folder_from_file(self):
         """When in_folder.txt is present, it is used without consulting settings."""
         from molass_legacy.Optimizer.DsetsDebug import _get_in_folder_from_work_folder

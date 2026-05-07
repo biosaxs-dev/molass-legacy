@@ -186,6 +186,13 @@ def create_optimizer_from_job(in_folder=None, n_components=None, class_code=None
     xr_base_curve = create_xr_baseline_object()
     qvector, wvector = fullopt_input.get_spectral_vectors()
 
+    # Override qvector with parent's trimmed q-values if exported (molass-legacy#41).
+    # subprocess sd.qvector has 972 elements (full raw data); parent has 966 (trimmed SSD).
+    # Difference shifts GuinierDeviation xr_index bisection → divergent fv at identical params.
+    _qvec_file = os.path.join(_opt_folder, 'ip_xr_qvector.npy') if _opt_folder is not None else None
+    if _qvec_file is not None and os.path.exists(_qvec_file):
+        qvector = np.load(_qvec_file)
+
     x_shifts_file = trimming_txt.replace('trimming.txt', 'x_shifts.txt')
     if os.path.exists(x_shifts_file):
         x_shifts = np.loadtxt(x_shifts_file, dtype=int)
