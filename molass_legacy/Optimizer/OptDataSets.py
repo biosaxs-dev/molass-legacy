@@ -53,7 +53,8 @@ def get_current_rg_folder(compute_rg=False, possibly_relocated=True, current_fol
     return relocated_folder
 
 def get_dsets_impl(sd, corrected_sd, progress_cb=None, rg_folder=None, rg_info=True, logger=None,
-                    compute_rg=False, possibly_relocated=True, current_folder=None):
+                    compute_rg=False, possibly_relocated=True, current_folder=None,
+                    return_e_override=False):
     if logger is not None:
         logger = logging.getLogger(__name__)
 
@@ -235,6 +236,20 @@ def get_dsets_impl(sd, corrected_sd, progress_cb=None, rg_folder=None, rg_info=T
             fig.tight_layout()
             plt.show()
 
+    # Load E matrix override if exported by parent (molass-legacy#39).
+    # The subprocess derives E from sd.intensity_array[:,:,2].T (legacy source); the parent
+    # uses ssd.xr.E (molass-library). Different E causes different W_ in compute_weight_info
+    # → different xrDw → different objective landscape even with identical D/U.
+    E_override = None
+    if optimizer_folder is not None:
+        _ip_E_path = os.path.join(optimizer_folder, 'ip_xr_E.npy')
+        if os.path.exists(_ip_E_path):
+            E_override = np.load(_ip_E_path)
+            if logger is not None:
+                logger.info("E matrix overridden from parent's error data (molass-legacy#39)")
+
+    if return_e_override:
+        return ((xr_curve, D), rg_curve, (uv_curve, U)), E_override
     return ((xr_curve, D), rg_curve, (uv_curve, U))
 
 class OptDataSets:
@@ -242,15 +257,22 @@ class OptDataSets:
                  progress_cb=None, compute_rg=False, possibly_relocated=True, current_folder=None):
         self.logger = logging.getLogger(__name__)
         if dsets is None:
-            dsets = get_dsets_impl(sd, corrected_sd, progress_cb=progress_cb, rg_folder=rg_folder, logger=self.logger,
-                                    compute_rg=compute_rg, possibly_relocated=possibly_relocated, current_folder=current_folder)
+            dsets, _E_override = get_dsets_impl(sd, corrected_sd, progress_cb=progress_cb, rg_folder=rg_folder, logger=self.logger,
+                                    compute_rg=compute_rg, possibly_relocated=possibly_relocated, current_folder=current_folder,
+                                    return_e_override=True)
+        else:
+            _E_override = None
         self.dsets = dsets
         D = dsets[0][1]
         if E is None:
-            try:                
-                E = sd.intensity_array[:,:,2].T
-            except:
-                D, E, qv, curve = sd.get_xr_data_separate_ly()
+            if _E_override is not None:
+                # Use parent's E matrix so weight_info matches in-process exactly (molass-legacy#39).
+                E = _E_override
+            else:
+                try:                
+                    E = sd.intensity_array[:,:,2].T
+                except:
+                    D, E, qv, curve = sd.get_xr_data_separate_ly()
         self.E = E
 
         try:
