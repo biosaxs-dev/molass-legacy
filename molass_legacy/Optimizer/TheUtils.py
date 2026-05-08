@@ -108,6 +108,17 @@ def convert_to_peak_significances(xr_curve, xr_params_list):
     return score_array/np.sum(score_array)
 
 def get_sd_from_folder_impl(in_folder, logger, ver_date=None):
+    """Load and preprocess a DataSet from in_folder.
+
+    Returns
+    -------
+    sd : DataSet
+        Legacy-trimmed dataset. UV absorbance in sd.uv_array (wl, frames).
+    corrected_sd : DataSet
+        Baseline-corrected dataset. XR intensity in corrected_sd.xr_array
+        (frames, q, 3) where index 1 = D (intensity), index 2 = E (error).
+    treat : DataTreatment
+    """  # (#47)
     from molass_legacy.SerialAnalyzer.AnalyzerUtil import compute_conc_factor_util
     from molass_legacy.Batch.StandardProcedure import StandardProcedure
     from molass_legacy.Trimming.PreliminaryRecognition import PreliminaryRecognition

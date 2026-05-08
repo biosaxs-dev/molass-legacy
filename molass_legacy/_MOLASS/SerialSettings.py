@@ -179,8 +179,8 @@ ITEM_DEFAULTS = {
 
     'measurement_date'      : None,
     'sangler_version'       : None,
-    'uv_restrict_list'      : None,
-    'xr_restrict_list'      : None,
+    'uv_restrict_list'      : None,  # [TrimmingInfo(j=frames), TrimmingInfo(i=wl)]  (#46)
+    'xr_restrict_list'      : None,  # [TrimmingInfo(j=frames), TrimmingInfo(i=q)]   (#46)
     'manually_trimmed'      : False,
     'uv_restrict_copy'      : None,
     'xr_restrict_copy'    : None,

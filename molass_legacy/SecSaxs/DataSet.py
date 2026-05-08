@@ -17,6 +17,8 @@ from .ElCurve import ElCurve
 class DataSet:
     def __init__(self, xr_array, xr_ex, xr_qv, uv_array, uv_ex, uv_wv, xr_ey=None, uv_ey=None, sd=None, pre_recog=None):
         self.logger = logging.getLogger(__name__)
+        # xr_array: shape (frames, q, 3) — index 1=D (intensity), index 2=E (error).
+        # Transposed vs molass-library xr.M which is (q, frames); use .T to convert. (#48)
         self.xr_array = xr_array
         self.intensity_array = xr_array     # for compatibility with SerialData such as in OptDataSets.__init__
         self.xr_ex = xr_ex

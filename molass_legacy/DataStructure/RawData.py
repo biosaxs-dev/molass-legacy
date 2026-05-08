@@ -37,7 +37,7 @@ class RawXray(RawMatrix):
             e_slice = slice(None)
             j0 = 0
         else:
-            elution_info, angular_info = xr_restrict_list
+            elution_info, angular_info = xr_restrict_list  # [0]=j(frames), [1]=i(q)  (#46)
             a_slice = slice(None) if angular_info is None else slice(angular_info.start, angular_info.stop)
             e_slice = slice(None) if elution_info is None else slice(elution_info.start, elution_info.stop)
             j0 = 0 if elution_info is None else elution_info.start
