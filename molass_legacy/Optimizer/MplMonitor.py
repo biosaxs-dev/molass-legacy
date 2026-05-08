@@ -5,6 +5,7 @@ migration of FullOptDialog to Jupyter Notebook
 """
 import sys
 import io
+import base64
 import warnings
 import os
 import logging
@@ -857,23 +858,36 @@ class MplMonitor:
         try:
             with warnings.catch_warnings(record=True) as wlist:
                 warnings.simplefilter("always")
+                # Issue #128: compute best accepted SV for widget title.
+                _best_sv = None
+                try:
+                    from molass_legacy.Optimizer.FvScoreConverter import convert_score as _cs
+                    _js = getattr(self, 'job_state', None)
+                    if _js is not None and hasattr(_js, 'fv') and len(_js.fv) > 0:
+                        _best_sv = float(_cs(float(np.min(_js.fv[:, 1]))))
+                except Exception:
+                    pass
+                # Wrap in plot_output context to capture any prints from plot_job_state.
+                # Do NOT call display(self.fig) inside this context: background thread
+                # display() during active cell execution is double-routed by IPython —
+                # it goes to both the cell's raw output and the Output widget.
+                # Instead, render to PNG and set plot_output.outputs directly (trait
+                # assignment bypasses IPython routing entirely).
                 with self.plot_output:
-                    clear_output(wait=True)
-                    # Issue #128: compute best accepted SV for widget title.
-                    _best_sv = None
-                    try:
-                        from molass_legacy.Optimizer.FvScoreConverter import convert_score as _cs
-                        _js = getattr(self, 'job_state', None)
-                        if _js is not None and hasattr(_js, 'fv') and len(_js.fv) > 0:
-                            _best_sv = float(_cs(float(np.min(_js.fv[:, 1]))))
-                    except Exception:
-                        pass
                     plot_job_state(self, params, plot_info=plot_info, niter=self.niter,
                                    display_optimizer=display_optimizer, best_sv=_best_sv)
-                    # Close before display to remove from inline backend's auto-show list,
-                    # preventing a duplicate render. display() still works on a closed Figure.
-                    plt.close(self.fig)
-                    display(self.fig)
+                _buf = io.BytesIO()
+                self.fig.savefig(_buf, format='png', dpi=100, bbox_inches='tight')
+                _buf.seek(0)
+                _png_b64 = base64.b64encode(_buf.getvalue()).decode('ascii')
+                plt.close(self.fig)
+                # Replace widget contents with the new PNG (single render, no flash,
+                # no IPython routing involved).
+                self.plot_output.outputs = ({
+                    'output_type': 'display_data',
+                    'data': {'image/png': _png_b64},
+                    'metadata': {},
+                },)
 
             # Issue #19 (AI-friendliness): opt-in disk snapshot of the dashboard.
             # The widget-rendered figure is not persisted in cell.outputs, so AI
