@@ -240,17 +240,11 @@ def optimizer_main(in_folder, trimming_txt=None, n_components=3,
     # unconstrained objective. FixedBaselineOptimizer is kept for explicit future use.
     # See molass-legacy#42.
     if True:
-        baseline_fixed = False
         if strategy.baseline_first():
             # NOTE: BaselineOptimizer/get_baseline_indeces() path removed here.
             # It was dead code exposed by #42 (get_baseline_indeces does not exist).
             # Both nnn==0 and nnn>0 now call optimizer.solve() directly. See #43.
-            if nnn == 0:
-                result = optimizer.solve(init_params, real_bounds=real_bounds, niter=niter, seed=seed, callback=callback, method=solver, debug=debug)
-            else:
-                baseline_fixed = True
-                result = optimizer.solve(init_params, real_bounds=real_bounds, niter=niter, seed=seed, callback=callback, method=solver,
-                                        baseline_fixed=baseline_fixed, debug=debug)
+            result = optimizer.solve(init_params, real_bounds=real_bounds, niter=niter, seed=seed, callback=callback, method=solver, debug=debug)
         else:
             if strategy.is_strategic(nnn):
                 from molass_legacy.Optimizer.StrategicOptimizer import StrategicOptimizer
