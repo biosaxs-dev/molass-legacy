@@ -213,18 +213,17 @@ def get_dsets_impl(sd, corrected_sd, progress_cb=None, rg_folder=None, rg_info=T
             from scipy.interpolate import InterpolatedUnivariateSpline
             _new_uv_y = np.load(_ip_uv_path)
             uv_curve.y = _new_uv_y
+            # Also update sy (molass-legacy#43): ElCurve stores uv_curve.sy as the legacy-smoothed
+            # elution curve.  BasicOptimizer.__init__ rebuilds uv_curve.spline (molass-legacy#34
+            # guard) using `getattr(uv_curve, 'sy', uv_curve.y)` AFTER apply_x_shifts has run.
+            # Without this update, the spline gets rebuilt from stale legacy sy, overwriting the
+            # ip-correct spline → wrong uv_y in objective → systematic UV baseline deviation.
+            if hasattr(uv_curve, 'sy'):
+                uv_curve.sy = _new_uv_y
             # Rebuild spline with the corrected y values (overrides molass-legacy#34 spline or legacy spline)
             uv_curve.spline = InterpolatedUnivariateSpline(uv_curve.x, _new_uv_y, ext=3)
             if logger is not None:
-                logger.info("uv_curve.y and spline overridden from parent's EGH-fitted curve (molass-legacy#38)")
-
-        # Override U with parent's corrected UV data matrix if exported (molass-legacy#39).
-        _ip_U_path = os.path.join(optimizer_folder, 'ip_uv_U.npy')
-        if os.path.exists(_ip_U_path):
-            U = np.load(_ip_U_path)
-            if logger is not None:
-                logger.info("U matrix overridden from parent's corrected UV data (molass-legacy#39)")
-
+                logger.info("uv_curve.y, sy, and spline overridden from parent's EGH-fitted curve (molass-legacy#38/#43)")
     if False:
         with plt.Dp():
             fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(12,5))
