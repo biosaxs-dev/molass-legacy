@@ -127,4 +127,11 @@ def get_sd_from_folder_impl(in_folder, logger, ver_date=None):
         sd = treat.get_treated_sd(sd_raw, pre_recog)
         corrected_sd = sd
     sd.conc_factor = compute_conc_factor_util()
+
+    # Patch D/U/E with molass-library's correction pipeline (molass-legacy#45).
+    # restore_trimming_info_impl has already set xr_restrict_list / uv_restrict_list
+    # in SerialSettings, so the exact trim slices are available here.
+    from .MolassIntegration import try_patch_from_molass
+    try_patch_from_molass(in_folder, sd, corrected_sd, logger)
+
     return sd, corrected_sd, treat
