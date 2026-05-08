@@ -242,11 +242,11 @@ def optimizer_main(in_folder, trimming_txt=None, n_components=3,
     if True:
         baseline_fixed = False
         if strategy.baseline_first():
+            # NOTE: BaselineOptimizer/get_baseline_indeces() path removed here.
+            # It was dead code exposed by #42 (get_baseline_indeces does not exist).
+            # Both nnn==0 and nnn>0 now call optimizer.solve() directly. See #43.
             if nnn == 0:
-                from molass_legacy.Optimizer.BaselineOptimizer import BaselineOptimizer
-                baseline_optimizer = BaselineOptimizer(optimizer)
-                baseline_indeces = optimizer.get_baseline_indeces()
-                result = baseline_optimizer.solve(init_params, baseline_indeces)
+                result = optimizer.solve(init_params, real_bounds=real_bounds, niter=niter, seed=seed, callback=callback, method=solver, debug=debug)
             else:
                 baseline_fixed = True
                 result = optimizer.solve(init_params, real_bounds=real_bounds, niter=niter, seed=seed, callback=callback, method=solver,
