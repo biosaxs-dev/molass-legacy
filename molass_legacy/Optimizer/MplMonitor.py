@@ -122,17 +122,22 @@ def _build_monitor_snapshot_json(monitor, display_optimizer, params):
         "curr_index": getattr(monitor, "curr_index", None),
     }
     # Optimization state from display_optimizer
-    try:
-        snap["eval_counter"] = int(getattr(display_optimizer, "eval_counter", -1))
-    except Exception:
-        pass
-    try:
-        fv = float(display_optimizer.objective_func(params))
-        snap["fv"] = fv
-        from molass_legacy.Optimizer.FvScoreConverter import convert_score
-        snap["sv"] = float(convert_score(fv))
-    except Exception as e:
-        snap["fv_error"] = str(e)
+    # Issue #50: display_optimizer is None during live in-process runs to prevent
+    # concurrent objective_func calls that corrupt BH sub-minimizer state.
+    if display_optimizer is not None:
+        try:
+            snap["eval_counter"] = int(getattr(display_optimizer, "eval_counter", -1))
+        except Exception:
+            pass
+        try:
+            fv = float(display_optimizer.objective_func(params))
+            snap["fv"] = fv
+            from molass_legacy.Optimizer.FvScoreConverter import convert_score
+            snap["sv"] = float(convert_score(fv))
+        except Exception as e:
+            snap["fv_error"] = str(e)
+    else:
+        snap["fv_note"] = "skipped (live in-process run)"
     # Issue #AI-A: record best fv/sv seen across ALL update_plot() calls so that
     # an AI tool reading this file gets the global minimum, not just the current
     # live-point snapshot (which may be worse than the historical best).
@@ -839,6 +844,19 @@ class MplMonitor:
                 # re-evaluation if available; fall back to self.optimizer.
                 # See issue #118.
                 display_optimizer = self.monitor_optimizer or self.optimizer
+                # Issue #50: when using the live in-process optimizer directly,
+                # calling objective_func() races with _run_solve's BH sub-minimizer
+                # on the same thread-unsafe optimizer object, corrupting shared state
+                # (eval_counter, GuinierDeviation arrays) and causing scipy to hang.
+                # Skip the objective panels during live updates; they render correctly
+                # on trial completion once _run_solve has stopped.
+                if display_optimizer is self.optimizer \
+                        and isinstance(self.source, _RunInfoSource):
+                    try:
+                        if self.source.is_alive():
+                            display_optimizer = None
+                    except Exception:
+                        pass
                 # Issue #128: compute best accepted SV for widget title.
                 _best_sv = None
                 try:

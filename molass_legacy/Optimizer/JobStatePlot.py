@@ -77,8 +77,22 @@ def plot_job_state(self, params, plot_info=None, niter=20, display_optimizer=Non
     # Use display_optimizer (subprocess-equivalent) for the objective re-eval
     # so on-screen SV matches callback.txt SV (issue #118). Other panels
     # (peak positions, Rg history, mapping) still read parent state.
-    plot_objective_func(display_optimizer if display_optimizer is not None else self.optimizer,
-                        params, axis_info=(self.fig, self.axes), best_sv=best_sv)
+    # Issue #50: display_optimizer is None during live in-process runs to prevent
+    # concurrent access to the BH optimizer. Show a placeholder instead.
+    if display_optimizer is not None:
+        plot_objective_func(display_optimizer,
+                            params, axis_info=(self.fig, self.axes), best_sv=best_sv)
+    else:
+        # Live in-process run: skip objective_func re-evaluation to avoid racing
+        # with _run_solve's BH sub-minimizer.  Fill panels with placeholder text.
+        _panel_titles = ["UV Decomposition", "XR Decomposition", "Decomposition SV"]
+        for ax, title in zip(self.axes[:3], _panel_titles):
+            ax.set_title(title, fontsize=16)
+            ax.text(0.5, 0.5, "(updating at trial completion)",
+                    transform=ax.transAxes, ha='center', va='center',
+                    fontsize=11, color='gray', style='italic')
+        if best_sv is not None:
+            self.axes[2].set_title("best SV=%.3g" % best_sv, fontsize=16)
 
     # Anomaly exclusion bands — consistent with plot_compact() and plot_components()
     _draw_monitor_anomaly_bands(self)
