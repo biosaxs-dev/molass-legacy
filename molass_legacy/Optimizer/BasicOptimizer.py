@@ -4,6 +4,7 @@
     Copyright (c) 2021-2026, SAXS Team, KEK-PF
 """
 import logging
+import threading
 import numpy as np
 from bisect import bisect_right
 from time import time
@@ -99,6 +100,9 @@ class BasicOptimizer:
             self.nj, self.mej, self.tj, self.mpj = params_type.get_trans_indeces()
 
         for_split_only = kwargs.pop("for_split_only", False)
+        # Issue #50: lock held by objective_func_wrapper during each BH evaluation,
+        # allowing MplMonitor.update_plot() to acquire it safely between evaluations.
+        self._objective_lock = threading.Lock()
         if for_split_only:
             # as used in test_6690_BasinHopping.py
             return
@@ -700,7 +704,11 @@ class BasicOptimizer:
         return self.objective_func(self.to_real_params(norm_params), plot=plot, **kwargs)
 
     def objective_func_wrapper(self, norm_params, **kwargs):
-        return self.objective_func(self.to_real_params(norm_params), **kwargs)
+        # Issue #50: hold _objective_lock for the duration of each BH evaluation.
+        # MplMonitor.update_plot() acquires the same lock to get a safe window
+        # between evaluations for its objective_func re-evaluation (display only).
+        with self._objective_lock:
+            return self.objective_func(self.to_real_params(norm_params), **kwargs)
 
     def get_score_names(self, major_only=False):
         names = ([  "XR_2D_fitting", "XR_LRF_residual", "UV_2D_fitting", "UV_LRF_residual",

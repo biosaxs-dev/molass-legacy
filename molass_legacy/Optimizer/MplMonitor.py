@@ -836,91 +836,96 @@ class MplMonitor:
         # also uses redirect_stdout), causing TOCTOU corruption of sys.stdout.
         # The ipywidgets.Output context (self.plot_output) captures any prints
         # from plot_job_state() naturally.
-        with warnings.catch_warnings(record=True) as wlist:
-            warnings.simplefilter("always")
-            with self.plot_output:
-                clear_output(wait=True)
-                # Use monitor_optimizer (subprocess-equivalent) for objective
-                # re-evaluation if available; fall back to self.optimizer.
-                # See issue #118.
-                display_optimizer = self.monitor_optimizer or self.optimizer
-                # Issue #50: when using the live in-process optimizer directly,
-                # calling objective_func() races with _run_solve's BH sub-minimizer
-                # on the same thread-unsafe optimizer object, corrupting shared state
-                # (eval_counter, GuinierDeviation arrays) and causing scipy to hang.
-                # Skip the objective panels during live updates; they render correctly
-                # on trial completion once _run_solve has stopped.
-                if display_optimizer is self.optimizer \
-                        and isinstance(self.source, _RunInfoSource):
+        # Issue #50: prevent concurrent objective_func access when using the live
+        # in-process optimizer.  objective_func_wrapper (called by scipy BH) holds
+        # _objective_lock for the duration of each evaluation and releases it between
+        # evaluations.  update_plot() acquires that same lock here, slipping in between
+        # BH steps (milliseconds apart, not minutes).  The lock is held through both
+        # plot_job_state() and _build_monitor_snapshot_json() since both call
+        # objective_func().  If we cannot acquire within 2 s (extremely unlikely),
+        # display_optimizer=None shows the placeholder for this one update only.
+        display_optimizer = self.monitor_optimizer or self.optimizer
+        _held_lock = None
+        if display_optimizer is self.optimizer \
+                and isinstance(self.source, _RunInfoSource):
+            _lock = getattr(self.optimizer, '_objective_lock', None)
+            if _lock is not None:
+                if _lock.acquire(blocking=True, timeout=2.0):
+                    _held_lock = _lock
+                else:
+                    display_optimizer = None  # timeout; show placeholder this update
+        try:
+            with warnings.catch_warnings(record=True) as wlist:
+                warnings.simplefilter("always")
+                with self.plot_output:
+                    clear_output(wait=True)
+                    # Issue #128: compute best accepted SV for widget title.
+                    _best_sv = None
                     try:
-                        if self.source.is_alive():
-                            display_optimizer = None
+                        from molass_legacy.Optimizer.FvScoreConverter import convert_score as _cs
+                        _js = getattr(self, 'job_state', None)
+                        if _js is not None and hasattr(_js, 'fv') and len(_js.fv) > 0:
+                            _best_sv = float(_cs(float(np.min(_js.fv[:, 1]))))
                     except Exception:
                         pass
-                # Issue #128: compute best accepted SV for widget title.
-                _best_sv = None
+                    plot_job_state(self, params, plot_info=plot_info, niter=self.niter,
+                                   display_optimizer=display_optimizer, best_sv=_best_sv)
+                    # Close before display to remove from inline backend's auto-show list,
+                    # preventing a duplicate render. display() still works on a closed Figure.
+                    plt.close(self.fig)
+                    display(self.fig)
+
+            # Issue #19 (AI-friendliness): opt-in disk snapshot of the dashboard.
+            # The widget-rendered figure is not persisted in cell.outputs, so AI
+            # tools and post-hoc reviewers cannot see the live dashboard. When
+            # MOLASS_MONITOR_SNAPSHOT=1, write a PNG to <optimizer_folder>/figs/.
+            # Issue #22: also write a structured JSON sidecar so AI assistants
+            # can inspect what was actually plotted (axis ranges, line summaries,
+            # data-coordinate provenance) without OCR'ing the PNG.
+            # Note: self.work_folder is the run()-time arg (often None); use
+            # self.optimizer_folder which is always set in __init__.
+            snap_root = self.work_folder or getattr(self, "optimizer_folder", None)
+            if os.environ.get("MOLASS_MONITOR_SNAPSHOT") == "1" and snap_root:
                 try:
-                    from molass_legacy.Optimizer.FvScoreConverter import convert_score as _cs
-                    _js = getattr(self, 'job_state', None)
-                    if _js is not None and hasattr(_js, 'fv') and len(_js.fv) > 0:
-                        _best_sv = float(_cs(float(np.min(_js.fv[:, 1]))))
-                except Exception:
-                    pass
-                plot_job_state(self, params, plot_info=plot_info, niter=self.niter,
-                               display_optimizer=display_optimizer, best_sv=_best_sv)
-                # Close before display to remove from inline backend's auto-show list,
-                # preventing a duplicate render. display() still works on a closed Figure.
-                plt.close(self.fig)
-                display(self.fig)
+                    snap_dir = os.path.join(snap_root, "figs")
+                    os.makedirs(snap_dir, exist_ok=True)
+                    self.fig.savefig(
+                        os.path.join(snap_dir, "mplmonitor_latest.png"),
+                        dpi=100, bbox_inches="tight",
+                    )
+                except Exception as e:
+                    self.logger.warning("MplMonitor snapshot failed: %s", e)
+                try:
+                    sidecar = _build_monitor_snapshot_json(self, display_optimizer, params)
+                    with open(os.path.join(snap_dir, "mplmonitor_latest.json"), "w") as fh:
+                        json.dump(sidecar, fh, indent=2, default=str)
+                except Exception as e:
+                    self.logger.warning("MplMonitor JSON sidecar failed: %s", e)
 
-        # Issue #19 (AI-friendliness): opt-in disk snapshot of the dashboard.
-        # The widget-rendered figure is not persisted in cell.outputs, so AI
-        # tools and post-hoc reviewers cannot see the live dashboard. When
-        # MOLASS_MONITOR_SNAPSHOT=1, write a PNG to <optimizer_folder>/figs/.
-        # Issue #22: also write a structured JSON sidecar so AI assistants
-        # can inspect what was actually plotted (axis ranges, line summaries,
-        # data-coordinate provenance) without OCR'ing the PNG.
-        # Note: self.work_folder is the run()-time arg (often None); use
-        # self.optimizer_folder which is always set in __init__.
-        snap_root = self.work_folder or getattr(self, "optimizer_folder", None)
-        if os.environ.get("MOLASS_MONITOR_SNAPSHOT") == "1" and snap_root:
-            try:
-                snap_dir = os.path.join(snap_root, "figs")
-                os.makedirs(snap_dir, exist_ok=True)
-                self.fig.savefig(
-                    os.path.join(snap_dir, "mplmonitor_latest.png"),
-                    dpi=100, bbox_inches="tight",
-                )
-            except Exception as e:
-                self.logger.warning("MplMonitor snapshot failed: %s", e)
-            try:
-                sidecar = _build_monitor_snapshot_json(self, display_optimizer, params)
-                with open(os.path.join(snap_dir, "mplmonitor_latest.json"), "w") as fh:
-                    json.dump(sidecar, fh, indent=2, default=str)
-            except Exception as e:
-                self.logger.warning("MplMonitor JSON sidecar failed: %s", e)
+            # Collect warning messages
+            messages = []
+            messages_counts = {}
+            for w in wlist:
+                msg = str(w.message)
+                if msg in messages_counts:
+                    messages_counts[msg] += 1
+                else:
+                    messages_counts[msg] = 1
+            for msg, count in messages_counts.items():
+                if count > 1:
+                    messages.append(f"Warning: {msg} (x {count})")
+                else:
+                    messages.append(f"Warning: {msg}")
 
-        # Collect warning messages
-        messages = []
-        messages_counts = {}
-        for w in wlist:
-            msg = str(w.message)
-            if msg in messages_counts:
-                messages_counts[msg] += 1
-            else:
-                messages_counts[msg] = 1
-        for msg, count in messages_counts.items():
-            if count > 1:
-                messages.append(f"Warning: {msg} (x {count})")
-            else:
-                messages.append(f"Warning: {msg}")
-
-        # Display warning messages in message_output
-        if messages:
-            with self.message_output:
-                clear_output(wait=True)
-                for msg in messages:
-                    print(msg)
+            # Display warning messages in message_output
+            if messages:
+                with self.message_output:
+                    clear_output(wait=True)
+                    for msg in messages:
+                        print(msg)
+        finally:
+            if _held_lock is not None:
+                _held_lock.release()
 
     def watch_progress(self, interval=1.0):
         """Main watching loop that monitors subprocess and updates dashboard.
