@@ -193,6 +193,14 @@ class _SubprocessSource:
         """True while the subprocess is still running."""
         return self._runner.poll() is None
 
+    def get_exit_code(self):
+        """Return the subprocess exit code once ended, or None if still running.
+
+        Returns 0 for a clean exit, non-zero for an error or crash.
+        Delegates to ``BackRunner.poll()`` which caches the returncode.
+        """
+        return self._runner.poll()
+
     def terminate(self):
         """Terminate the subprocess."""
         self._runner.terminate()
@@ -217,6 +225,28 @@ class _RunInfoSource:
     def is_alive(self):
         """True while the in-process optimizer thread is running."""
         return self._ri.is_alive
+
+    def get_exit_code(self):
+        """Return 0 on success, 1 on failure, None if still running.
+
+        Failure is detected when the optimizer thread exits without setting
+        ``run_info.in_process_result`` — this happens when the solver raises
+        an unhandled exception (silently swallowed by the daemon thread).
+        An explicitly stored ``_async_error`` is also treated as failure.
+        """
+        if self._ri.is_alive:
+            return None
+        # Explicit error stored by a future try/except wrapper.
+        if getattr(self._ri, '_async_error', None) is not None:
+            return 1
+        # No async thread means a synchronous call path — not expected in
+        # the monitor context, but treat as success to be safe.
+        if self._ri._async_thread is None:
+            return 0
+        # Thread exited without setting in_process_result → exception.
+        if self._ri.in_process_result is None:
+            return 1
+        return 0
 
     def terminate(self):
         """Request cooperative termination of the in-process optimizer thread.
@@ -901,7 +931,17 @@ class MplMonitor:
                     # Assume source died if we can't poll it
                     exit_loop = True
                     has_ended = False
-                
+
+                # Detect failure: non-zero exit code or in-process exception.
+                exit_code = None
+                has_failed = False
+                if has_ended:
+                    try:
+                        exit_code = self.source.get_exit_code()
+                        has_failed = exit_code is not None and exit_code != 0
+                    except (AttributeError, Exception):
+                        pass
+
                 # self.logger.info("self.terminate=%s, id(self)=%d", str(self.terminate_event.is_set()), id(self))
                 if self.terminate_event.is_set():
                     self.logger.info("Terminating optimization job.")
@@ -914,20 +954,36 @@ class MplMonitor:
                 resume_loop = False
                 if exit_loop:
                     if has_ended:
-                        self.logger.info("Optimization job ended normally.")
-                        self.status_label.value = "Status: Completed"
-                        set_label_color(self.status_label, "blue")
-                        if self.num_trials < self.max_trials:
-                            self.logger.info("Starting a new optimization trial (%d/%d).", self.num_trials, self.max_trials)
-                            best_params = self.get_best_params()
-                            self.run_impl(self.optimizer, best_params, niter=self.niter, seed=self.seed, work_folder=None, dummy=False, debug=False)
-                            self.status_label.value = self._running_status()
-                            set_label_color(self.status_label, "green")
-                            resume_loop = True
-                        else:
-                            self.status_label.value = "Status: Max Trials Reached"
-                            set_label_color(self.status_label, "gray")
+                        if has_failed:
+                            exit_str = str(exit_code) if exit_code is not None else "?"
+                            self.logger.error(
+                                "Optimization job failed (exit %s).", exit_str)
+                            self.status_label.value = f"Status: Failed (exit {exit_str})"
+                            set_label_color(self.status_label, "red")
                             self.terminate_button.disabled = True
+                            with self.message_output:
+                                clear_output(wait=True)
+                                print(
+                                    f"Optimization failed (exit {exit_str})."
+                                    " See optimizer.log for details."
+                                )
+                            # Fall through: final redraw, save, cleanup all run
+                            # normally; resume_loop stays False so the loop breaks.
+                        else:
+                            self.logger.info("Optimization job ended normally.")
+                            self.status_label.value = "Status: Completed"
+                            set_label_color(self.status_label, "blue")
+                            if self.num_trials < self.max_trials:
+                                self.logger.info("Starting a new optimization trial (%d/%d).", self.num_trials, self.max_trials)
+                                best_params = self.get_best_params()
+                                self.run_impl(self.optimizer, best_params, niter=self.niter, seed=self.seed, work_folder=None, dummy=False, debug=False)
+                                self.status_label.value = self._running_status()
+                                set_label_color(self.status_label, "green")
+                                resume_loop = True
+                            else:
+                                self.status_label.value = "Status: Max Trials Reached"
+                                set_label_color(self.status_label, "gray")
+                                self.terminate_button.disabled = True
                     else:
                         self.logger.info("Optimization job terminated by user.")
                         self.status_label.value = "Status: Terminated"
