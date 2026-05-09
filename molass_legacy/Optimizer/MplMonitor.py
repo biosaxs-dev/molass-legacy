@@ -611,6 +611,11 @@ class MplMonitor:
         mon.job_state = None        # lazily set in watch_progress once work_folder is known
         mon.curr_index = None
         mon.work_folder = None      # required by update_plot(); snapshot falls back to optimizer_folder
+        # init_params: used by get_best_params() when callback.txt is still empty
+        # (i.e. the first update_plot() call races with BH writing the first entry).
+        # Without this, get_best_params() raises AttributeError → watch thread exits
+        # → Terminate button stops working (molass-legacy#52 follow-up).
+        mon.init_params = run_info.init_params
         # x_shifts needed by run_impl when user clicks Resume.
         try:
             mon.x_shifts = run_info.dsets.get_x_shifts() if run_info.dsets is not None else []
@@ -867,27 +872,56 @@ class MplMonitor:
                         _best_sv = float(_cs(float(np.min(_js.fv[:, 1]))))
                 except Exception:
                     pass
-                # Wrap in plot_output context to capture any prints from plot_job_state.
-                # Do NOT call display(self.fig) inside this context: background thread
-                # display() during active cell execution is double-routed by IPython —
-                # it goes to both the cell's raw output and the Output widget.
-                # Instead, render to PNG and set plot_output.outputs directly (trait
-                # assignment bypasses IPython routing entirely).
-                with self.plot_output:
+                # Issue #52 follow-up: prevent duplicate/triplicate plot_output panels.
+                #
+                # Root cause: plt.figure() called inside `with self.plot_output:`
+                # causes IPython to route the figure to BOTH the cell's raw output AND
+                # the Output widget simultaneously (double-routing).  This happens with
+                # the widget/notebook matplotlib backend AND on some machines even with
+                # the inline backend when the launching cell is still executing.
+                #
+                # Fix (two parts):
+                #   1. plt.ioff() — prevents interactive backends (widget, notebook)
+                #      from auto-displaying the figure when plt.figure() is called.
+                #      Interactive mode is restored in the finally block.
+                #   2. No `with self.plot_output:` wrapper — removes the routing context
+                #      entirely so IPython cannot route any display event to the widget.
+                #      We write to the widget exclusively via the direct trait assignment
+                #      self.plot_output.outputs = ({...},) below.
+                _was_interactive = plt.isinteractive()
+                plt.ioff()
+                _png_b64 = None
+                try:
                     plot_job_state(self, params, plot_info=plot_info, niter=self.niter,
                                    display_optimizer=display_optimizer, best_sv=_best_sv)
-                _buf = io.BytesIO()
-                self.fig.savefig(_buf, format='png', dpi=100, bbox_inches='tight')
-                _buf.seek(0)
-                _png_b64 = base64.b64encode(_buf.getvalue()).decode('ascii')
-                plt.close(self.fig)
-                # Replace widget contents with the new PNG (single render, no flash,
-                # no IPython routing involved).
-                self.plot_output.outputs = ({
-                    'output_type': 'display_data',
-                    'data': {'image/png': _png_b64},
-                    'metadata': {},
-                },)
+                    _buf = io.BytesIO()
+                    self.fig.savefig(_buf, format='png', dpi=100, bbox_inches='tight')
+                    _buf.seek(0)
+                    _png_b64 = base64.b64encode(_buf.getvalue()).decode('ascii')
+                    plt.close(self.fig)
+                except Exception as _plot_exc:
+                    self.logger.warning("update_plot: plot_job_state failed: %s", _plot_exc)
+                    try:
+                        plt.close(self.fig)
+                    except Exception:
+                        pass
+                finally:
+                    if _was_interactive:
+                        plt.ion()
+                # Replace widget contents: use the rendered PNG, or a plain error
+                # message if rendering failed (so the watch thread stays alive).
+                if _png_b64 is not None:
+                    self.plot_output.outputs = ({
+                        'output_type': 'display_data',
+                        'data': {'image/png': _png_b64},
+                        'metadata': {},
+                    },)
+                else:
+                    self.plot_output.outputs = ({
+                        'output_type': 'stream',
+                        'name': 'stdout',
+                        'text': f'(plot update failed — see monitor.log)\n',
+                    },)
 
             # Issue #19 (AI-friendliness): opt-in disk snapshot of the dashboard.
             # The widget-rendered figure is not persisted in cell.outputs, so AI
@@ -899,14 +933,13 @@ class MplMonitor:
             # Note: self.work_folder is the run()-time arg (often None); use
             # self.optimizer_folder which is always set in __init__.
             snap_root = self.work_folder or getattr(self, "optimizer_folder", None)
-            if os.environ.get("MOLASS_MONITOR_SNAPSHOT") == "1" and snap_root:
+            if os.environ.get("MOLASS_MONITOR_SNAPSHOT") == "1" and snap_root and _png_b64 is not None:
                 try:
                     snap_dir = os.path.join(snap_root, "figs")
                     os.makedirs(snap_dir, exist_ok=True)
-                    self.fig.savefig(
-                        os.path.join(snap_dir, "mplmonitor_latest.png"),
-                        dpi=100, bbox_inches="tight",
-                    )
+                    # self.fig is already closed; write the PNG bytes we already rendered.
+                    with open(os.path.join(snap_dir, "mplmonitor_latest.png"), "wb") as _pf:
+                        _pf.write(_buf.getvalue())
                 except Exception as e:
                     self.logger.warning("MplMonitor snapshot failed: %s", e)
                 try:
