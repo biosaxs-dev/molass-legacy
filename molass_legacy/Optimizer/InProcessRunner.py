@@ -259,7 +259,25 @@ def run_optimizer_in_process(optimizer, init_params, niter=20, seed=1234,
             import logging as _log_mod
             _root = _log_mod.getLogger()
             _root.removeHandler(job_logger.ch)
-            job_logger.ch.close()
+            # Phase 5b (fixed): Handler.close() calls _removeHandlerRef(self) but
+            # _handlerList contains weakrefs, not handler objects, so the comparison
+            # 'handler in [weakref, ...]' is always False — the weakref stays in
+            # _handlerList. logging.shutdown() (atexit-registered by Python's own
+            # logging module) then dereferences the weakref, gets 'ch', and calls
+            # ch.flush() → sys.stderr.flush() → ipykernel OutStream → asyncio lock
+            # already held during shutdown → deadlock → kernel restart hangs.
+            # Fix: set stream=None FIRST (flush becomes a no-op), then splice
+            # _handlerList directly (same pattern as _cleanup_fileh for fileh).
+            try:
+                job_logger.ch.stream = None   # flush() is now a no-op
+            except Exception:
+                pass
+            try:
+                _log_mod._handlerList[:] = [
+                    w for w in _log_mod._handlerList if w() is not job_logger.ch
+                ]
+            except Exception:
+                pass
             # Phase 5c: schedule fileh cleanup via atexit.
             # Do NOT call _fh.close() here — it acquires the handler lock,
             # which the daemon optimizer thread may be holding → deadlock.
