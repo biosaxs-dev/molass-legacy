@@ -250,8 +250,15 @@ class _RunInfoSource:
         if self._ri._async_thread is None:
             return 0
         # Thread exited without setting in_process_result → exception.
+        # Issue #55: if the stop_event was set (user requested termination) and
+        # the result is None, the optimizer was killed by ctypes KeyboardInterrupt
+        # injection rather than finishing normally.  This is a clean user-requested
+        # exit, not a failure.
         if self._ri.in_process_result is None:
-            return 1
+            if (getattr(self._ri, '_stop_event', None) is not None
+                    and self._ri._stop_event.is_set()):
+                return 0  # user-terminated: clean exit
+            return 1  # unexpected: thread died without result
         return 0
 
     def terminate(self):
@@ -981,6 +988,7 @@ class MplMonitor:
         """
         self.logger.info(f"Watch thread started for monitor {self.instance_id}")
         self.is_monitoring = True
+        _stop_requested = False  # True after source.terminate() is called once
         try:
             while True:
                 # Check for graceful shutdown request
@@ -1014,12 +1022,25 @@ class MplMonitor:
 
                 # self.logger.info("self.terminate=%s, id(self)=%d", str(self.terminate_event.is_set()), id(self))
                 if self.terminate_event.is_set():
-                    self.logger.info("Terminating optimization job.")
-                    try:
-                        self.source.terminate()
-                    except Exception as e:
-                        self.logger.error(f"Error terminating source: {e}")
-                    exit_loop = True
+                    if not _stop_requested:
+                        # Issue #55: call terminate() only once; don't exit the
+                        # watch loop yet — the BH sub-minimizer (Nelder-Mead C
+                        # code) may hold the GIL for minutes before the ctypes
+                        # KeyboardInterrupt injection is delivered.  Exiting
+                        # immediately enables the Resume button while the
+                        # optimizer is still running as a zombie.
+                        self.logger.info("Terminating optimization job.")
+                        _stop_requested = True
+                        try:
+                            self.source.terminate()
+                        except Exception as e:
+                            self.logger.error(f"Error terminating source: {e}")
+                        self.status_label.value = "Status: Terminating..."
+                        set_label_color(self.status_label, "yellow")
+                        self.terminate_button.disabled = True
+                    # Do NOT set exit_loop = True here.  The exit is driven by
+                    # has_ended (source.is_alive() returning False), so the loop
+                    # continues monitoring until the thread actually stops.
 
                 resume_loop = False
                 if exit_loop:
@@ -1040,20 +1061,29 @@ class MplMonitor:
                             # Fall through: final redraw, save, cleanup all run
                             # normally; resume_loop stays False so the loop breaks.
                         else:
-                            self.logger.info("Optimization job ended normally.")
-                            self.status_label.value = "Status: Completed"
-                            set_label_color(self.status_label, "blue")
-                            if self.num_trials < self.max_trials:
-                                self.logger.info("Starting a new optimization trial (%d/%d).", self.num_trials, self.max_trials)
-                                best_params = self.get_best_params()
-                                self.run_impl(self.optimizer, best_params, niter=self.niter, seed=self.seed, work_folder=None, dummy=False, debug=False)
-                                self.status_label.value = self._running_status()
-                                set_label_color(self.status_label, "green")
-                                resume_loop = True
-                            else:
-                                self.status_label.value = "Status: Max Trials Reached"
+                            if self.terminate_event.is_set():
+                                # Issue #55: source died after user-requested
+                                # termination.  Show "Terminated" and do NOT
+                                # auto-resume — user explicitly stopped the run.
+                                self.logger.info("Optimization job terminated by user.")
+                                self.status_label.value = "Status: Terminated"
                                 set_label_color(self.status_label, "gray")
                                 self.terminate_button.disabled = True
+                            else:
+                                self.logger.info("Optimization job ended normally.")
+                                self.status_label.value = "Status: Completed"
+                                set_label_color(self.status_label, "blue")
+                                if self.num_trials < self.max_trials:
+                                    self.logger.info("Starting a new optimization trial (%d/%d).", self.num_trials, self.max_trials)
+                                    best_params = self.get_best_params()
+                                    self.run_impl(self.optimizer, best_params, niter=self.niter, seed=self.seed, work_folder=None, dummy=False, debug=False)
+                                    self.status_label.value = self._running_status()
+                                    set_label_color(self.status_label, "green")
+                                    resume_loop = True
+                                else:
+                                    self.status_label.value = "Status: Max Trials Reached"
+                                    set_label_color(self.status_label, "gray")
+                                    self.terminate_button.disabled = True
                     else:
                         self.logger.info("Optimization job terminated by user.")
                         self.status_label.value = "Status: Terminated"
