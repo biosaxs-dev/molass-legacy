@@ -611,18 +611,26 @@ class MplMonitor:
         # for the in-process path we initialize them here.
         mon.niter = niter
         mon.seed = 1234             # unused for initial run; used by run_impl on Resume
-        # When resuming (clear_jobs=False), start num_trials from the count of
-        # existing non-empty job folders so "Job NNN" in the dashboard continues
-        # from where the previous run left off instead of restarting from 000.
+        # When resuming (clear_jobs=False), derive num_trials from the job folder
+        # number that was just allocated by the daemon thread.  The daemon calls
+        # work_folder_callback (which sets run_info.work_folder) before writing
+        # any files, so the basename of the path gives the correct 0-based job
+        # index without any race condition from counting non-empty folders.
+        # e.g. work_folder=".../jobs/010" → num_trials=10 → label "Job 010".
         if not clear_jobs:
-            from molass_legacy.KekLib.BasicUtils import is_empty_dir
-            _jobs_dir = os.path.join(mon.optimizer_folder, 'jobs')
-            if os.path.isdir(_jobs_dir):
-                mon.num_trials = sum(
-                    1 for _e in os.listdir(_jobs_dir)
-                    if os.path.isdir(os.path.join(_jobs_dir, _e))
-                    and not is_empty_dir(os.path.join(_jobs_dir, _e))
-                )
+            _wf = getattr(run_info, 'work_folder', None)
+            if _wf is None:
+                # Daemon thread hasn't set work_folder yet; wait briefly.
+                import time as _time
+                _deadline = _time.monotonic() + 2.0
+                while run_info.work_folder is None and _time.monotonic() < _deadline:
+                    _time.sleep(0.01)
+                _wf = run_info.work_folder
+            if _wf is not None:
+                try:
+                    mon.num_trials = int(os.path.basename(_wf.rstrip('/\\')))
+                except (ValueError, TypeError):
+                    mon.num_trials = 0
             else:
                 mon.num_trials = 0
         else:
