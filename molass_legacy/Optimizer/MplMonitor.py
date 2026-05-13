@@ -834,6 +834,10 @@ class MplMonitor:
             self.status_label.value = "Status: Terminating"
             set_label_color(self.status_label, "yellow")
             self.logger.info("Terminate job requested (no dialog). id(self)=%d", id(self))
+            with self.message_output:
+                clear_output(wait=True)
+                print("Stop requested. Waiting for the current Nelder-Mead trial to finish "
+                      "before the optimizer exits — this may take up to ~30 seconds.")
             return
 
         def handle_response(answer):
@@ -843,6 +847,10 @@ class MplMonitor:
                 self.status_label.value = "Status: Terminating"
                 set_label_color(self.status_label, "yellow")
                 self.logger.info("Terminate job requested. id(self)=%d", id(self))
+                with self.message_output:
+                    clear_output(wait=True)
+                    print("Stop requested. Waiting for the current Nelder-Mead trial to finish "
+                          "before the optimizer exits — this may take up to ~30 seconds.")
         ask_user("Do you really want to terminate?", callback=handle_response, output_widget=self.dialog_output)
 
     def show(self, debug=False):
