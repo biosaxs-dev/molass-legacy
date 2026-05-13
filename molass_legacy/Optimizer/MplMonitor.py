@@ -611,7 +611,22 @@ class MplMonitor:
         # for the in-process path we initialize them here.
         mon.niter = niter
         mon.seed = 1234             # unused for initial run; used by run_impl on Resume
-        mon.num_trials = 0
+        # When resuming (clear_jobs=False), start num_trials from the count of
+        # existing non-empty job folders so "Job NNN" in the dashboard continues
+        # from where the previous run left off instead of restarting from 000.
+        if not clear_jobs:
+            from molass_legacy.KekLib.BasicUtils import is_empty_dir
+            _jobs_dir = os.path.join(mon.optimizer_folder, 'jobs')
+            if os.path.isdir(_jobs_dir):
+                mon.num_trials = sum(
+                    1 for _e in os.listdir(_jobs_dir)
+                    if os.path.isdir(os.path.join(_jobs_dir, _e))
+                    and not is_empty_dir(os.path.join(_jobs_dir, _e))
+                )
+            else:
+                mon.num_trials = 0
+        else:
+            mon.num_trials = 0
         mon.max_trials = max_trials  # 0 = no auto-resume (default); >0 = auto-loop (see docstring)
         mon.optimizer = run_info.optimizer
         mon.dsets = run_info.dsets

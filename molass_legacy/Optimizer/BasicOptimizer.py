@@ -844,6 +844,14 @@ class BasicOptimizer:
                 self.fv_array_size += 1
                 self.update_bounds(real_params)
 
+        # Issue #56: stop BH cleanly at the next inter-trial boundary when a
+        # stop has been requested.  Returning True here causes scipy BH to exit
+        # its outer loop after the current Nelder-Mead sub-minimization finishes
+        # — no need to wait for ctypes KI to penetrate C code.
+        if getattr(self, '_stop_event', None) is not None and self._stop_event.is_set():
+            self.logger.info("minima_callback: stop_event is set, returning True to stop BH")
+            return True
+
         return False
 
     def update_at_minima(self, x, f, accept):

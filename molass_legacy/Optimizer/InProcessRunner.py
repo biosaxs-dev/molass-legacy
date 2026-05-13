@@ -369,6 +369,12 @@ def run_optimizer_in_process(optimizer, init_params, niter=20, seed=1234,
                 _gc.enable()
                 _gc.collect()
 
+        # Issue #56: wire stop_event into the optimizer so that minima_callback
+        # can return True at the next inter-trial boundary — a cleaner stop than
+        # waiting for the ctypes KI to penetrate Nelder-Mead C code.
+        if stop_event is not None:
+            optimizer._stop_event = stop_event
+
         _t = _threading.Thread(target=_run_solve, daemon=True, name="InProcessOptimizer")
         _t.start()
         _stop_injected = False
