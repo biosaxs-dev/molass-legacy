@@ -30,7 +30,10 @@ def draw_suptitle(self):
     from molass_legacy.KekLib.BasicUtils import ordinal_str
     from molass_legacy.Optimizer.OptimizerUtils import get_model_name, get_method_name
     job_name = "%03d" % (self.num_trials,)
-    in_folder = get_in_folder()
+    # Prefer the original input data path stored by the in-process path over the
+    # global 'in_folder' setting, which may have been overwritten with the temp
+    # export directory (temp_in_folder) by prepare_rigorous_folders().
+    in_folder = getattr(self, 'input_folder', None) or get_in_folder()
     model_name = get_model_name(self.func_code)
     text = "Job %s State at %s local minimum on %s with model=%s method=%s" % (
         job_name, ordinal_str(self.curr_index), in_folder, model_name, get_method_name())
