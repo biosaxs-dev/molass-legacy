@@ -375,7 +375,7 @@ def run_optimizer_in_process(optimizer, init_params, niter=20, seed=1234,
         if stop_event is not None:
             optimizer._stop_event = stop_event
 
-        _t = _threading.Thread(target=_run_solve, daemon=True, name="InProcessOptimizer")
+        _t = _threading.Thread(target=_run_solve, daemon=True, name="aic-active-optimizer")
         _t.start()
         _stop_injected = False
         try:

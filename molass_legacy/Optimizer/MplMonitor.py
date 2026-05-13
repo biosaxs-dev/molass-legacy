@@ -321,7 +321,7 @@ class _RunInfoSource:
             self._ri.work_folder = _work_folder
 
         t = _threading.Thread(target=_resume_thread, daemon=True,
-                              name="InProcessOptimizer")
+                              name="aic-active-optimizer")
         self._ri._async_thread = t
         t.start()
 
@@ -1206,7 +1206,8 @@ class MplMonitor:
         
         # Avoid Blocking the Main Thread:
         # Never run a long or infinite loop in the main thread in Jupyter if you want widget interactivity.
-        self.watch_thread = threading.Thread(target=self.watch_progress, daemon=True)
+        self.watch_thread = threading.Thread(target=self.watch_progress, daemon=True,
+                                                  name="aic-active-watch")
         self.watch_thread.start()
         self.logger.info(f"Started watch thread for monitor {self.instance_id}")
     
