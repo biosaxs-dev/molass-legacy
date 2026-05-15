@@ -114,8 +114,8 @@ def set_optimizer_settings(num_components=3, model="EGH", method="BH", param_ini
         elution_model = 0
     elif model == "SDM":
         elution_model = 2
-    elif model == "EDM":
-        elution_model = 5
+    elif model in ("EDM", "CEDM"):
+        elution_model = 5   # G2000–G2999 range covers both EDM (G2010) and CEDM (G2020)
     else:
         assert False, f"Unknown model: {model}"
 

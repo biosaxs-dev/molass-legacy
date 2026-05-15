@@ -14,7 +14,7 @@ from .FullOptUtils import in_folder_consistency_ok
 def job_folder_checker(self):
     optjob_folder = self.folder.get()
     files_ok = True
-    for file in FILES[:-1]: # except "bounds.txt", which is optional
+    for file in FILES[:-2]: # except "bounds.txt" and "x_shifts.txt", which are optional
         path = os.path.join(optjob_folder, file)
         if not os.path.exists(path):
             files_ok = False

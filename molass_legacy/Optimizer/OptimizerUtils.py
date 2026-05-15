@@ -10,6 +10,7 @@ MODEL_NAME_DICT = {
     "G1200" : "SDM(gamma)",
     "G1300" : "SDM(lognormal)",
     "G2010" : "EDM",
+    "G2020" : "CEDM",
 }
 
 def get_model_name(class_code):

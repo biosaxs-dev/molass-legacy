@@ -463,8 +463,8 @@ class JobStateCanvas(Tk.Frame):
     def show_params(self, debug=True):
         if debug:
             from importlib import reload
-            import Optimizer.ParamsInspection
-            reload(Optimizer.ParamsInspection)
+            import molass_legacy.Optimizer.ParamsInspection
+            reload(molass_legacy.Optimizer.ParamsInspection)
         from .ParamsInspection import ParamsInspection
         self.dialog.grab_set()  # temporary fix to the grab_release problem
         params = self.get_current_params()
@@ -475,8 +475,8 @@ class JobStateCanvas(Tk.Frame):
     def show_complementary_view(self, debug=True):
         if debug or DEVELOP_MODE:
             from importlib import reload
-            import Optimizer.ComplementaryView
-            reload(Optimizer.ComplementaryView)
+            import molass_legacy.Optimizer.ComplementaryView
+            reload(molass_legacy.Optimizer.ComplementaryView)
         from molass_legacy.Optimizer.ComplementaryView import ComplementaryView
 
         self.dialog.grab_set()  # temporary fix to the grab_release problem
@@ -491,8 +491,8 @@ class JobStateCanvas(Tk.Frame):
     def show_2p_analysis(self, debug=True):
         if debug:
             from importlib import reload
-            import Optimizer.TwoParamAnalysis
-            reload(Optimizer.TwoParamAnalysis)
+            import molass_legacy.Optimizer.TwoParamAnalysis
+            reload(molass_legacy.Optimizer.TwoParamAnalysis)
         from .TwoParamAnalysis import TwoParamAnalysis
 
         self.dialog.grab_set()  # temporary fix to the grab_release problem
@@ -511,8 +511,8 @@ class JobStateCanvas(Tk.Frame):
     def show_boundary_view(self, debug=True):
         if debug:
             from importlib import reload
-            import Optimizer.BoundaryView
-            reload(Optimizer.BoundaryView)
+            import molass_legacy.Optimizer.BoundaryView
+            reload(molass_legacy.Optimizer.BoundaryView)
         from .BoundaryView import BoundaryView
         view = BoundaryView(self.dialog.parent, self.dialog, self)
         view.show()
@@ -520,8 +520,8 @@ class JobStateCanvas(Tk.Frame):
     def show_sec_conformance(self, debug=True):
         if debug:
             from importlib import reload
-            import Optimizer.SecConformance
-            reload(Optimizer.SecConformance)
+            import molass_legacy.Optimizer.SecConformance
+            reload(molass_legacy.Optimizer.SecConformance)
         from .SecConformance import SecConformance
         inspect = SecConformance(self.dialog.parent, self.dialog, self)
         inspect.show()
@@ -616,34 +616,34 @@ class JobStateCanvas(Tk.Frame):
 
     def show_rg_visible_figure(self, with_range=False, debug=True):
         if debug:
-            import Optimizer.RgVisibleFigure
+            import molass_legacy.Optimizer.RgVisibleFigure
             from importlib import reload
-            reload(Optimizer.RgVisibleFigure)
+            reload(molass_legacy.Optimizer.RgVisibleFigure)
         from molass_legacy.Optimizer.RgVisibleFigure import RgVisibleFigure
         dialog = RgVisibleFigure(self.parent, self, with_range=with_range)
         dialog.show()
 
     def show_simple_3d_view(self, debug=True):
         if debug:
-            import Tools.SimpleThreedView
+            import molass_legacy.Tools.SimpleThreedView
             from importlib import reload
-            reload(Tools.SimpleThreedView)
+            reload(molass_legacy.Tools.SimpleThreedView)
         from molass_legacy.Tools.SimpleThreedView import show_simple_3d_view
         show_simple_3d_view(self.optinit_info.sd)
 
     def show_asc_dsc_difference(self, debug=True):
         if debug:
-            import Optimizer.AscDscDifference
+            import molass_legacy.Optimizer.AscDscDifference
             from importlib import reload
-            reload(Optimizer.AscDscDifference)
+            reload(molass_legacy.Optimizer.AscDscDifference)
         from molass_legacy.Optimizer.AscDscDifference import show_asc_dsc_difference
         show_asc_dsc_difference(self)
 
     def draw_all_parameters(self, debug=False):
         if debug:
-            import Optimizer.AllParameters
+            import molass_legacy.Optimizer.AllParameters
             from importlib import reload
-            reload(Optimizer.AllParameters)
+            reload(molass_legacy.Optimizer.AllParameters)
         from molass_legacy.Optimizer.AllParameters import AllParameters
         fv, max_num_evals = self.get_fv_array()
         xmin, xmax = self.get_xlim_prog_axes()
@@ -652,45 +652,45 @@ class JobStateCanvas(Tk.Frame):
 
     def sec_inspection(self, debug=True):
         if debug:
-            import Optimizer.SecInspection
+            import molass_legacy.Optimizer.SecInspection
             from importlib import reload
-            reload(Optimizer.SecInspection)
+            reload(molass_legacy.Optimizer.SecInspection)
         from molass_legacy.Optimizer.SecInspection import SecInspection
         dialog = SecInspection(self.parent, self)
         dialog.show()
 
     def sec_conformance_demo(self, debug=True):
         if debug:
-            import SecTheory.ConformanceDemo
+            import molass_legacy.SecTheory.ConformanceDemo
             from importlib import reload
-            reload(SecTheory.ConformanceDemo)
-        from SecTheory.ConformanceDemo import ConformanceDemo
+            reload(molass_legacy.SecTheory.ConformanceDemo)
+        from molass_legacy.SecTheory.ConformanceDemo import ConformanceDemo
         dialog = ConformanceDemo(self.parent)
         dialog.show()
 
     def show_function_debugger(self, composite=None, debug=True):
         if debug:
-            import Optimizer.FunctionDebugger
+            import molass_legacy.Optimizer.FunctionDebugger
             from importlib import reload
-            reload(Optimizer.FunctionDebugger)
+            reload(molass_legacy.Optimizer.FunctionDebugger)
         from molass_legacy.Optimizer.FunctionDebugger import FunctionDebugger
         debugger = FunctionDebugger(self.parent, self.dialog, self, composite=composite)
         debugger.show()
 
     def show_fvscore_inspector(self, debug=True):
         if debug:
-            import Optimizer.FvScoreInspecor
+            import molass_legacy.Optimizer.FvScoreInspecor
             from importlib import reload
-            reload(Optimizer.FvScoreInspecor)
+            reload(molass_legacy.Optimizer.FvScoreInspecor)
         from molass_legacy.Optimizer.FvScoreInspecor import FvScoreInspecor
         designer = FvScoreInspecor(self.parent, self)
         designer.show()
 
     def inspect_score_transition(self, debug=True):
         if debug:
-            import Optimizer.ScoreTransition
+            import molass_legacy.Optimizer.ScoreTransition
             from importlib import reload
-            reload(Optimizer.ScoreTransition)
+            reload(molass_legacy.Optimizer.ScoreTransition)
         from molass_legacy.Optimizer.ScoreTransition import ScoreTransition
         fv, xmax = self.get_fv_array()
         compare = ScoreTransition(self.dialog, self, self.fullopt, self.demo_info[1], fv, self.best_index)
@@ -698,7 +698,7 @@ class JobStateCanvas(Tk.Frame):
 
     def show_score_details(self, debug=True):
         if debug:
-            import Optimizer.FvScoreDetails as details_module
+            import molass_legacy.Optimizer.FvScoreDetails as details_module
             from importlib import reload
             reload(details_module)
         from .FvScoreDetails import FvScoreDetails
@@ -708,52 +708,52 @@ class JobStateCanvas(Tk.Frame):
 
     def test_update_guinier_region(self, debug=True):
         if debug:
-            import GuinierTools.GuinierDeviationTester
+            import molass_legacy.GuinierTools.GuinierDeviationTester
             from importlib import reload
-            reload(GuinierTools.GuinierDeviationTester)
+            reload(molass_legacy.GuinierTools.GuinierDeviationTester)
         from ..GuinierTools.GuinierDeviationTester import test_update_guinier_region_impl
         test_update_guinier_region_impl(self)
 
     def show_guinier_deviation(self, debug=True):
         if debug:
-            import GuinierTools.GuinierDeviationTester
+            import molass_legacy.GuinierTools.GuinierDeviationTester
             from importlib import reload
-            reload(GuinierTools.GuinierDeviationTester)
+            reload(molass_legacy.GuinierTools.GuinierDeviationTester)
         from ..GuinierTools.GuinierDeviationTester import show_guinier_deviation
         show_guinier_deviation(self)
 
     def change_function(self, debug=False):
         if debug:
-            import Optimizer.FunctionChanger
+            import molass_legacy.Optimizer.FunctionChanger
             from importlib import reload
-            reload(Optimizer.FunctionChanger)
+            reload(molass_legacy.Optimizer.FunctionChanger)
         from molass_legacy.Optimizer.FunctionChanger import FunctionChanger
         dialog = FunctionChanger(self.parent, self)
         dialog.show()
 
     def show_vp_analysis(self, modelname, debug=True):
         if debug:
-            import V2PropOptimizer.VariedPropAnalysis
+            import molass_legacy.V2PropOptimizer.VariedPropAnalysis
             from importlib import reload
-            reload(V2PropOptimizer.VariedPropAnalysis)
-        from V2PropOptimizer.VariedPropAnalysis import VariedPropAnalysis
+            reload(molass_legacy.V2PropOptimizer.VariedPropAnalysis)
+        from molass_legacy.V2PropOptimizer.VariedPropAnalysis import VariedPropAnalysis
         dialog = VariedPropAnalysis(self.parent, self, modelname)
         dialog.show()
 
     def show_mw_integrity(self, debug=True):
         if debug:
-            import Optimizer.MwIntegrity
+            import molass_legacy.Optimizer.MwIntegrity
             from importlib import reload
-            reload(Optimizer.MwIntegrity)
+            reload(molass_legacy.Optimizer.MwIntegrity)
         from molass_legacy.Optimizer.MwIntegrity import MwIntegrityPlot
         dialog = MwIntegrityPlot(self.parent, self)
         dialog.show()
 
     def show_sdm_investigator(self, debug=True):
         if debug:
-            import Models.Stochastic.DispersiveUtils
+            import molass_legacy.Models.Stochastic.DispersiveUtils
             from importlib import reload
-            reload(Models.Stochastic.DispersiveUtils)
+            reload(molass_legacy.Models.Stochastic.DispersiveUtils)
         from molass_legacy.Models.Stochastic.DispersiveUtils import investigate_sdm_params_from_optimizer_params
         print("show_sdm_investigator")
         optimizer = self.fullopt
@@ -764,9 +764,9 @@ class JobStateCanvas(Tk.Frame):
 
     def show_sdm_lrf_investigator(self, debug=True):
         if debug:
-            import Models.Stochastic.DispersiveUtils
+            import molass_legacy.Models.Stochastic.DispersiveUtils
             from importlib import reload
-            reload(Models.Stochastic.DispersiveUtils)
+            reload(molass_legacy.Models.Stochastic.DispersiveUtils)
         from molass_legacy.Models.Stochastic.DispersiveUtils import investigate_sdm_lrf_params_from_optimizer_params
         print("show_sdm_lrf_investigator")
         optimizer = self.fullopt
@@ -777,9 +777,9 @@ class JobStateCanvas(Tk.Frame):
 
     def show_adhoc_figure(self, debug=True):
         if debug:
-            import Optimizer.AdhocFigure
+            import molass_legacy.Optimizer.AdhocFigure
             from importlib import reload
-            reload(Optimizer.AdhocFigure)
+            reload(molass_legacy.Optimizer.AdhocFigure)
         from molass_legacy.Optimizer.AdhocFigure import show_adhoc_figure_impl
         show_adhoc_figure_impl(self)
     
@@ -817,8 +817,8 @@ class JobStateCanvas(Tk.Frame):
     
     def show_this_figure(self):
         from importlib import reload
-        import Optimizer.XrStateFigure
-        reload(Optimizer.XrStateFigure)
+        import molass_legacy.Optimizer.XrStateFigure
+        reload(molass_legacy.Optimizer.XrStateFigure)
         from molass_legacy.Optimizer.XrStateFigure import show_this_figure_impl
         show_this_figure_impl(self)
 

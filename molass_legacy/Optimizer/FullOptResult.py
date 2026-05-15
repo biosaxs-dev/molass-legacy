@@ -111,7 +111,7 @@ class FullOptResult:
         fv_list, x_list, fv_array= self.load_callback_info()
         init_params = self.load_init_params()
 
-        if log_file.version_date < "2022-09-20":
+        if log_file.version_date is not None and log_file.version_date < "2022-09-20":
 
             if not debug:
                 import molass_legacy.KekLib.CustomMessageBox as MessageBox

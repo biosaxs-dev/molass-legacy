@@ -40,7 +40,7 @@ class OptLogFile:
 
         assert optlist is not None
 
-        self.version_date = "2022-09-16" if version_date is None else version_date
+        self.version_date = version_date  # None means modern version format (no date in version string)
         self.optdict = dict(optlist)
         self.class_code = self.optdict['-c']
         self.nc = int(self.optdict['-n'])
