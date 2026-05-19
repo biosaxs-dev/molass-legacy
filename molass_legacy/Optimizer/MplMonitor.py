@@ -826,6 +826,22 @@ class MplMonitor:
     def trigger_terminate(self, b):
         if self.terminate_button.disabled:
             return
+
+        # For in-process runs the kernel stays alive, so re-running is cheap.
+        # Skip the confirmation dialog — it renders at the bottom of the VBox
+        # (below the SV plot) and is invisible to the user, making the button
+        # appear broken.  Terminate immediately and show a status message.
+        if isinstance(self.source, _RunInfoSource):
+            self.terminate_event.set()
+            self.status_label.value = "Status: Terminating"
+            set_label_color(self.status_label, "yellow")
+            self.logger.info("Terminate job requested (in-process). id(self)=%d", id(self))
+            with self.message_output:
+                clear_output(wait=True)
+                print("Stop requested. Waiting for the current Nelder-Mead trial to finish "
+                      "before the optimizer exits — this may take up to ~30 seconds.")
+            return
+
         try:
             from molass_legacy.KekLib.IpyUtils import ask_user
         except (ModuleNotFoundError, ImportError):

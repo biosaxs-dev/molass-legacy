@@ -1,8 +1,8 @@
 """
 Phase 2 regression test for MplMonitor.create_dashboard() button visibility.
 
-Verifies that the Resume and Terminate buttons are hidden for in-process
-(_RunInfoSource) sources and shown for subprocess (_SubprocessSource) sources.
+Verifies that the Resume and Terminate buttons are shown for both in-process
+(_RunInfoSource) and subprocess (_SubprocessSource) sources.
 
 See: https://github.com/biosaxs-dev/molass-library/issues/139
 """
@@ -31,8 +31,8 @@ def _button_descriptions(mon):
 # In-process source (_RunInfoSource) — Resume + Terminate must be absent
 # ---------------------------------------------------------------------------
 
-def test_in_process_dashboard_hides_resume_button():
-    """Resume Job must not appear in controls for a _RunInfoSource."""
+def test_in_process_dashboard_shows_resume_button():
+    """Resume Job must appear in controls for a _RunInfoSource."""
     from molass_legacy.Optimizer.MplMonitor import _RunInfoSource
     ri = MagicMock()
     ri.is_alive = False
@@ -41,11 +41,11 @@ def test_in_process_dashboard_hides_resume_button():
     mon = _make_mon_with_source(_RunInfoSource(ri))
     mon.create_dashboard()
 
-    assert "Resume Job" not in _button_descriptions(mon)
+    assert "Resume Job" in _button_descriptions(mon)
 
 
-def test_in_process_dashboard_hides_terminate_button():
-    """Terminate Job must not appear in controls for a _RunInfoSource."""
+def test_in_process_dashboard_shows_terminate_button():
+    """Terminate Job must appear in controls for a _RunInfoSource."""
     from molass_legacy.Optimizer.MplMonitor import _RunInfoSource
     ri = MagicMock()
     ri.is_alive = False
@@ -54,7 +54,7 @@ def test_in_process_dashboard_hides_terminate_button():
     mon = _make_mon_with_source(_RunInfoSource(ri))
     mon.create_dashboard()
 
-    assert "Terminate Job" not in _button_descriptions(mon)
+    assert "Terminate Job" in _button_descriptions(mon)
 
 
 def test_in_process_dashboard_shows_export_button():

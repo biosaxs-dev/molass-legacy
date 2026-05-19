@@ -16,6 +16,36 @@ from scipy.optimize import minimize, basinhopping
 
 class Edm:
     def __init__(self, z=30, L=30, a=1.5, b=0.5, u=1.2, e=0.4, Dz=0.02, cinit=0, cinj=1.0, c0=0.0001, tinj=2.0):
+        """
+        Parameters
+        ----------
+        a : float
+            Henry coefficient = K_SEC × (Vp/V0), where K_SEC ∈ [0,1] is the
+            Ogston partition coefficient and Vp/V0 is the pore-to-void volume ratio.
+            For a fully accessible small molecule: a = 1 × (Vp/V0).
+            Determined from peak retention (gam2 ≈ a for small c0).
+        b : float
+            Langmuir nonlinearity.  b < 0 → fronting (aggregation in SEC);
+            b > 0 → tailing (secondary adsorption); b = 0 → linear isotherm.
+            Note: b = 0 causes ZeroDivisionError (lam = 0 → U = 2/(lam*Pe) fails).
+        e : float
+            Mobile-phase fraction of the *accessible* volume:
+                e = V0 / (V0 + Vp)
+            where V0 = interstitial void volume, Vp = pore volume.
+            Solid bead volume is entirely outside the EDM mass balance.
+            NOT the standard chromatographic total porosity ε_T = (V0+Vp)/V_column.
+            The phase ratio F = (1-e)/e = Vp/V0 directly.
+            Default e=0.4 → F=1.5.  In the 2D column simulation (ColumnSimulation.py,
+            rs=0.0381, ~42 grains) the measured volumes give Vp/V0 ≈ 0.88 → e ≈ 0.53.
+        u : float
+            Mobile-phase velocity (column lengths per time unit).
+        Dz : float
+            Axial dispersion coefficient.
+        cinj : float
+            Injected concentration.
+        c0 : float
+            Reference concentration for linearising the isotherm (keep small).
+        """
         self.a = a
         self.b = b
         self.e = e
