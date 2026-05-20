@@ -80,14 +80,13 @@ class Edm:
 
         U = 2/(self.lam*Pe)
         RPe = self.RPe
-        V = xi**2/(4*tau/RPe)
-        W = np.sqrt(np.pi*tau/RPe)
-        Y = xi/(2*np.sqrt(tau/RPe))
-
-        numerator = ( -U*np.exp(-V) + U*np.exp(self.Beta - V) )
-        denominator = ( W*np.exp(self.Beta)* erfc(-Y) + W*erfc(Y) )
-
-        ret_y = numerator / denominator
+        with np.errstate(divide='ignore', invalid='ignore'):
+            V = xi**2/(4*tau/RPe)
+            W = np.sqrt(np.pi*tau/RPe)
+            Y = xi/(2*np.sqrt(tau/RPe))
+            numerator = ( -U*np.exp(-V) + U*np.exp(self.Beta - V) )
+            denominator = ( W*np.exp(self.Beta)* erfc(-Y) + W*erfc(Y) )
+            ret_y = numerator / denominator
         ret_y[np.isnan(ret_y)] = 0
         return ret_y
 
@@ -143,6 +142,23 @@ def guess_multiple_edms(x, y, num_components, debug=False):
     return models
 
 def edm_func(t, u, a, b, e, Dz, cinj, cinit=0, c0=0.0001, tinj=2.0, L=30, z=30):
+    # Linear isotherm limit: b=0 → lam=0 → ZeroDivisionError in the main formula.
+    # Handled analytically: as lam→0, U*Beta → cinj*tau_inj and exp(Beta)→1,
+    # so the formula reduces to a Gaussian (advection-dispersion with linear isotherm).
+    if abs(b) < 1e-9:
+        _F = (1 - e)/e
+        _x = z/L
+        _R = 1 + a*_F
+        _RPe = _R*L*u/Dz
+        _tau_inj = u*tinj/L
+        _tau = u*t/L
+        _xi = _x - _tau/_R
+        with np.errstate(divide='ignore', invalid='ignore'):
+            _V = _xi**2 * _RPe / (4*_tau)
+            _W = np.sqrt(np.pi*_tau/_RPe)
+            ret_y = cinj * _tau_inj * np.exp(-_V) / (2*_W)
+        ret_y[np.isnan(ret_y)] = 0
+        return ret_y
     F = (1 - e)/e      # phase ratio
     x = z/L
     Pe = L*u/Dz   # 
@@ -160,16 +176,15 @@ def edm_func(t, u, a, b, e, Dz, cinj, cinit=0, c0=0.0001, tinj=2.0, L=30, z=30):
     xi = x - tau/R
 
     U = 2/(lam*Pe)
-    V = xi**2/(4*tau/RPe)
-    W = np.sqrt(np.pi*tau/RPe)
-    Y = xi/(2*np.sqrt(tau/RPe))
-
-    # numer = U*( -np.exp(-V) + np.exp(Beta - V) )
-    # denom = W*( np.exp(Beta)* erfc(-Y) + erfc(Y) )
-    expB = np.exp(Beta)
-    numer = U*(expB - 1)*np.exp(-V)
-    denom = W*( expB * erfc(-Y) + erfc(Y) )
-
-    ret_y = numer / denom
+    with np.errstate(divide='ignore', invalid='ignore'):
+        V = xi**2/(4*tau/RPe)
+        W = np.sqrt(np.pi*tau/RPe)
+        Y = xi/(2*np.sqrt(tau/RPe))
+        # numer = U*( -np.exp(-V) + np.exp(Beta - V) )
+        # denom = W*( np.exp(Beta)* erfc(-Y) + erfc(Y) )
+        expB = np.exp(Beta)
+        numer = U*(expB - 1)*np.exp(-V)
+        denom = W*( expB * erfc(-Y) + erfc(Y) )
+        ret_y = numer / denom
     ret_y[np.isnan(ret_y)] = 0
     return ret_y
