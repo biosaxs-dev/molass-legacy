@@ -108,6 +108,10 @@ def set_optimizer_settings(num_components=3, model="EGH", method="BH", param_ini
     from molass_legacy._MOLASS.SerialSettings import set_setting
     from .OptimizerSettings import OptimizerSettings
 
+    # ── Model registry ────────────────────────────────────────────────────────
+    # This is the canonical registration point for new elution models.
+    # Add a new elif branch here and assign an unused elution_model integer.
+    # Current assignments: EGH=0, SDM=2, LKM=4, EDM/CEDM=5
     elution_model = 0
     model = model.upper()
     if model == "EGH":
@@ -116,8 +120,14 @@ def set_optimizer_settings(num_components=3, model="EGH", method="BH", param_ini
         elution_model = 2
     elif model in ("EDM", "CEDM"):
         elution_model = 5   # G2000–G2999 range covers both EDM (G2010) and CEDM (G2020)
+    elif model == "LKM":
+        elution_model = 4   # G1400
     else:
-        assert False, f"Unknown model: {model}"
+        raise ValueError(
+            f"Unknown model: {model!r}. "
+            "Add it to set_optimizer_settings() in Optimizer/Scripting.py "
+            "and assign an unused elution_model integer."
+        )
 
     solver_name = method.upper()
     if solver_name == "BH":
@@ -125,7 +135,11 @@ def set_optimizer_settings(num_components=3, model="EGH", method="BH", param_ini
     elif solver_name == "NS":
         optimization_method = 1
     else:
-        assert False, f"Unknown method: {method}"
+        raise ValueError(
+            f"Unknown method: {method!r}. "
+            "Add it to set_optimizer_settings() in Optimizer/Scripting.py "
+            "and assign an unused optimization_method integer."
+        )
     set_setting("optimization_method", optimization_method)     # for backward compatibility
 
     separate_eoii_flags = [0] * num_components

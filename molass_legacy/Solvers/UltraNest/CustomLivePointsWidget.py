@@ -17,9 +17,9 @@ class CustomLivePointsWidget:
     
     def initialize(self, paramnames, width):
         from importlib import reload
-        import Solvers.UltraNest.GridspecLayoutMpl
-        reload(Solvers.UltraNest.GridspecLayoutMpl)
-        from Solvers.UltraNest.GridspecLayoutMpl import GridspecLayoutMpl
+        import molass_legacy.Solvers.UltraNest.GridspecLayoutMpl
+        reload(molass_legacy.Solvers.UltraNest.GridspecLayoutMpl)
+        from molass_legacy.Solvers.UltraNest.GridspecLayoutMpl import GridspecLayoutMpl
         self.grid = GridspecLayoutMpl(len(paramnames), width + 3)
         self.laststatus = []
         for a, paramname in enumerate(paramnames):

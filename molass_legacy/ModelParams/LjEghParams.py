@@ -19,7 +19,6 @@ class LjEghParams(EghParamsBase):
         self.n_components = n_components
         self.num_baseparams = get_num_baseparams()
         self.integral_baseline = self.num_baseparams == 3
-        self.use_K = False
         self.advanced = True
         self.poresize = None        # to be removed
         self.poreexponent = None    # to be removed

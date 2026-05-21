@@ -33,7 +33,6 @@ class EdmParams:
         self.num_baseparams = get_num_baseparams()
         self.integral_baseline = self.num_baseparams == 3
         self.t0_upper_bound = get_setting("t0_upper_bound")
-        self.use_K = False
 
         nc = n_components - 1
 

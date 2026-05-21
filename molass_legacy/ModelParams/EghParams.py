@@ -57,7 +57,6 @@ class EghParamsBase:
         # self.conf_method = sectype.conf_method
         self.estm_method = sectype.estm_method
         self.nump_adjust = sectype.nump_adjust
-        self.use_K = False
 
     def __str__(self):
         name = "Egh%sParams" % ("Advansed" if self.advanced else "")

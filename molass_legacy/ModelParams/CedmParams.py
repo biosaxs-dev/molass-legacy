@@ -38,7 +38,6 @@ class CedmParams:
         self.n_components = n_components
         self.num_baseparams = get_num_baseparams()
         self.integral_baseline = self.num_baseparams == 3
-        self.use_K = False
 
         nc = n_components - 1
 
