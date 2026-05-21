@@ -124,17 +124,19 @@ class SamplerCallback:
             print("SamplerCallback.__call__: points['u'][m]=", points['u'][m])
             print("SamplerCallback.__call__: points['p'][m]=", points['p'][m])
 
-        # Log best AND worst SV across the live points.  In NS the best live
-        # point can stay constant for a long time (especially when seeded with
-        # init_params).  The worst live point's logl is the threshold that
-        # rises each iteration, so logging it makes Phase 2 progress visible.
-        # (molass-legacy #65)
+        # Log best, median and worst SV across the live points.  Best stays
+        # constant when seeded with init_params; worst saturates at the SV
+        # floor (-100) while any Sobol-bad point survives; the median lifts
+        # monotonically as NS replaces live points, so it gives the clearest
+        # picture of Phase 1/2 progress.  (molass-legacy #65)
         logl_arr = points['logl']
         best_fv = -float(logl_arr[m])
         worst_fv = -float(logl_arr[np.argmin(logl_arr)])
+        med_fv = -float(np.median(logl_arr))
         self.logger.info(
-            "NS progress: best SV=%.2f, worst SV=%.2f (threshold)",
-            _fv_to_sv(best_fv), _fv_to_sv(worst_fv),
+            "NS progress: best SV=%.2f, p50 SV=%.2f, worst SV=%.2f (n_live=%d)",
+            _fv_to_sv(best_fv), _fv_to_sv(med_fv), _fv_to_sv(worst_fv),
+            len(logl_arr),
         )
 
         self.callback(points['p'][m], None, False)
