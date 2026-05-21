@@ -104,19 +104,26 @@ class SolverUltraNest:
         # call to return init_params we guarantee Phase 2 always starts from at
         # least init quality, regardless of normalisation scale.
         _seeded = [False]
+        _seeded_fv_logged = [False]
+        _fv_init = [objective(init_params)]   # evaluate once to record expected fv
+        self.logger.warning("[NS#65 DEBUG] fv_init=%.6f (should match c=0)", _fv_init[0])
         _init = init_params.copy()
 
         def my_prior_transform(cube):
             if not _seeded[0]:
                 _seeded[0] = True
+                self.logger.warning("[NS#65 DEBUG] seeding first live point: norm_init[:3]=%s", _init[:3])
                 return _init
             # transform location parameter: uniform prior
             params = cube * (upper - lower) + lower
             return params
 
         def my_likelihood(params):
-            # print("objective_func_wrapper: par=", par)
             fv = objective(params)
+            if not _seeded_fv_logged[0]:
+                _seeded_fv_logged[0] = True
+                self.logger.warning("[NS#65 DEBUG] first live point fv=%.6f (expected fv_init=%.6f, match=%s)",
+                                    fv, _fv_init[0], abs(fv - _fv_init[0]) < 1e-10)
             return -fv
 
         # logging.basicConfig(level=logging.INFO)     # to suppress debug log

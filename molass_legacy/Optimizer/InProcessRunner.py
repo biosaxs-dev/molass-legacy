@@ -94,7 +94,7 @@ def run_optimizer_in_process(optimizer, init_params, niter=20, seed=1234,
                              method=None, x_shifts=None, work_folder=None,
                              clear_jobs=True, debug=False,
                              work_folder_callback=None,
-                             stop_event=None):
+                             stop_event=None, ns_narrow_bounds=True):
     """Run an already-prepared optimizer in this process.
 
     The optimizer is expected to be fully constructed by the caller
@@ -362,6 +362,7 @@ def run_optimizer_in_process(optimizer, init_params, niter=20, seed=1234,
                     callback=True,
                     method=solver,
                     debug=debug,
+                    ns_narrow_bounds=ns_narrow_bounds,
                 )
             except Exception as _e:
                 _exc_holder[0] = _e
