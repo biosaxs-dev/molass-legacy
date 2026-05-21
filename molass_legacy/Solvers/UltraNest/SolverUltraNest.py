@@ -56,16 +56,32 @@ class SolverUltraNest:
 
     def minimize(self, objective, init_params, niter=100, seed=1234, bounds=None, callback=None, narrow_bounds=True):
         from importlib import reload
-        import Solvers.UltraNest.SamplerCallback
-        reload(Solvers.UltraNest.SamplerCallback)
-        from Solvers.UltraNest.SamplerCallback import SamplerCallback
+        import molass_legacy.Solvers.UltraNest.SamplerCallback
+        reload(molass_legacy.Solvers.UltraNest.SamplerCallback)
+        from molass_legacy.Solvers.UltraNest.SamplerCallback import SamplerCallback
 
         num_params = len(init_params)
         self.objective = objective
 
         if narrow_bounds:
-            lower = init_params - NARROW_BIND_ALLOW
-            upper = init_params + NARROW_BIND_ALLOW
+            if bounds is not None:
+                # Use a symmetric half-width so init_params is always at 50% of
+                # the prior range.  Plain max/min clamping (molass-legacy #63)
+                # keeps samples inside valid space but leaves params right at
+                # their lower bound at only ~4% of the prior, causing NS to waste
+                # ~96% of evaluations far from the high-likelihood region.
+                # Symmetric half_w = min(dist-to-lower, dist-to-upper, ALLOW)
+                # ensures BH result is centred regardless of boundary proximity.
+                # (molass-legacy #64)
+                half_w = np.minimum(
+                    np.minimum(init_params - bounds[:, 0], bounds[:, 1] - init_params),
+                    NARROW_BIND_ALLOW
+                )
+                lower = init_params - half_w
+                upper = init_params + half_w
+            else:
+                lower = init_params - NARROW_BIND_ALLOW
+                upper = init_params + NARROW_BIND_ALLOW
             # Mapping params (mp_a, mp_b) may have a wrong initial estimate from
             # LRF decomposition.  Override narrow prior with wide bounds so NS can
             # reach the correct value even when the initial estimate is far off.
