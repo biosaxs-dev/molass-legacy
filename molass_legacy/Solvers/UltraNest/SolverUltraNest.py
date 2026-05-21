@@ -95,7 +95,21 @@ class SolverUltraNest:
         else:
             lower = bounds[:,0]
             upper = bounds[:,1]
+        # molass-legacy #65: seed init_params as the first live point.
+        # In the molass-library path params are normalised to [0,10] so
+        # NARROW_BIND_ALLOW=1.0 is ±10% of the range — wide enough that Phase 1
+        # Sobol points scatter far from the good minimum.  In the legacy
+        # installed program params are in real units and ±1.0 is ~1%, so Phase 1
+        # always contains init_params.  By forcing the very first prior_transform
+        # call to return init_params we guarantee Phase 2 always starts from at
+        # least init quality, regardless of normalisation scale.
+        _seeded = [False]
+        _init = init_params.copy()
+
         def my_prior_transform(cube):
+            if not _seeded[0]:
+                _seeded[0] = True
+                return _init
             # transform location parameter: uniform prior
             params = cube * (upper - lower) + lower
             return params
