@@ -124,6 +124,12 @@ class SolverUltraNest:
                 _seeded_fv_logged[0] = True
                 self.logger.warning("[NS#65 DEBUG] first live point fv=%.6f (expected fv_init=%.6f, match=%s)",
                                     fv, _fv_init[0], abs(fv - _fv_init[0]) < 1e-10)
+                self.logger.warning("[NS#65 DEBUG] params[:3]=%s (norm_init[:3]=%s, same=%s)",
+                                    params[:3], _init[:3], np.allclose(params[:3], _init[:3]))
+                real_p = self.optimizer.to_real_params(params)
+                real_i = self.optimizer.to_real_params(_init)
+                self.logger.warning("[NS#65 DEBUG] real_params[:3]=%s real_init[:3]=%s same=%s",
+                                    real_p[:3], real_i[:3], np.allclose(real_p[:3], real_i[:3]))
             return -fv
 
         # logging.basicConfig(level=logging.INFO)     # to suppress debug log
