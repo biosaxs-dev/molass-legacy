@@ -3,10 +3,16 @@
 
     Copyright (c) 2024, SAXS Team, KEK-PF
 """
+import logging
+import math
 import numpy as np
 import sys
 from ultranest.viz import get_default_viz_callback
 from molass_legacy._MOLASS.Version import is_developing_version
+
+
+def _fv_to_sv(fv):
+    return -200.0 / (1.0 + math.exp(-1.5 * fv)) + 100.0
 
 # Set True to re-enable per-outer-iteration diagnostic prints in
 # `SamplerCallback.__call__` (was unconditional; silenced to keep the
@@ -45,9 +51,9 @@ def get_viz_callback():
         return _noop_viz_callback
 
     from importlib import reload
-    import Solvers.UltraNest.CustomLivePointsWidget
-    reload(Solvers.UltraNest.CustomLivePointsWidget)
-    from Solvers.UltraNest.CustomLivePointsWidget import CustomLivePointsWidget
+    import molass_legacy.Solvers.UltraNest.CustomLivePointsWidget
+    reload(molass_legacy.Solvers.UltraNest.CustomLivePointsWidget)
+    from molass_legacy.Solvers.UltraNest.CustomLivePointsWidget import CustomLivePointsWidget
 
     default_callback = get_default_viz_callback()
     if is_developing_version():
@@ -87,6 +93,7 @@ class SamplerCallback:
         self.callback = solver.callback
         self.sampler = sampler
         self.counter = 0
+        self.logger = logging.getLogger(__name__)
         if sys.stderr is None:
             sys.stderr = StderrWinmode()    # for sys.stderr.isatty() in ultranest.viz.py on Windows win-app
         if sys.stdout is None:
@@ -116,4 +123,18 @@ class SamplerCallback:
             print("SamplerCallback.__call__: m=", m)
             print("SamplerCallback.__call__: points['u'][m]=", points['u'][m])
             print("SamplerCallback.__call__: points['p'][m]=", points['p'][m])
+
+        # Log best AND worst SV across the live points.  In NS the best live
+        # point can stay constant for a long time (especially when seeded with
+        # init_params).  The worst live point's logl is the threshold that
+        # rises each iteration, so logging it makes Phase 2 progress visible.
+        # (molass-legacy #65)
+        logl_arr = points['logl']
+        best_fv = -float(logl_arr[m])
+        worst_fv = -float(logl_arr[np.argmin(logl_arr)])
+        self.logger.info(
+            "NS progress: best SV=%.2f, worst SV=%.2f (threshold)",
+            _fv_to_sv(best_fv), _fv_to_sv(worst_fv),
+        )
+
         self.callback(points['p'][m], None, False)

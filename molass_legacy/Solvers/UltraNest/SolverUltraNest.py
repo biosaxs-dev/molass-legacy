@@ -104,44 +104,26 @@ class SolverUltraNest:
         # call to return init_params we guarantee Phase 2 always starts from at
         # least init quality, regardless of normalisation scale.
         _seeded = [False]
-        _seeded_fv_logged = [False]
-        _fv_init = [objective(init_params)]   # evaluate once to record expected fv
-        self.logger.warning("[NS#65 DEBUG] fv_init=%.6f (should match c=0)", _fv_init[0])
         _init = init_params.copy()
 
         def my_prior_transform(cube):
             if not _seeded[0]:
                 _seeded[0] = True
-                self.logger.warning("[NS#65 DEBUG] seeding first live point: norm_init[:3]=%s", _init[:3])
                 return _init
             # transform location parameter: uniform prior
             params = cube * (upper - lower) + lower
             return params
 
         def my_likelihood(params):
-            fv = objective(params)
-            if not _seeded_fv_logged[0]:
-                _seeded_fv_logged[0] = True
-                self.logger.warning("[NS#65 DEBUG] first live point fv=%.6f (expected fv_init=%.6f, match=%s)",
-                                    fv, _fv_init[0], abs(fv - _fv_init[0]) < 1e-10)
-                self.logger.warning("[NS#65 DEBUG] params[:3]=%s (norm_init[:3]=%s, same=%s)",
-                                    params[:3], _init[:3], np.allclose(params[:3], _init[:3]))
-                real_p = self.optimizer.to_real_params(params)
-                real_i = self.optimizer.to_real_params(_init)
-                self.logger.warning("[NS#65 DEBUG] real_params[:3]=%s real_init[:3]=%s same=%s",
-                                    real_p[:3], real_i[:3], np.allclose(real_p[:3], real_i[:3]))
-            return -fv
-
-        # logging.basicConfig(level=logging.INFO)     # to suppress debug log
+            return -objective(params)
 
         param_names = ["p%02d" % i for i in range(num_params)]
         # ReactiveNestedSampler.__init__ calls my_prior_transform at least once
         # for internal dimensionality/validation, consuming the _seeded flag before
-        # run() starts.  Reset both flags after __init__ so the seed applies to
+        # run() starts.  Reset the flag after __init__ so the seed applies to
         # the FIRST real live point in run().  (molass-legacy #65)
         sampler = ReactiveNestedSampler(param_names, my_likelihood, my_prior_transform, num_test_samples=0)
         _seeded[0] = False        # reset: __init__ consumed the flag, run() will re-seed
-        _seeded_fv_logged[0] = False
         sampler.logger.setLevel(logging.INFO)       # to suppress debug log
         sampler_callback = SamplerCallback(self, sampler)
 
@@ -150,8 +132,15 @@ class SolverUltraNest:
         result1 = sampler.run(min_num_live_points=400, max_ncalls=10000, viz_callback=sampler_callback, show_status=_show_status)
 
         self.logger.info("running with a step sampler: SliceSampler")
-        # add a step sampler: from the "Higher-dimensional fitting" tutorial
-        nsteps = 2 * num_params
+        # nsteps controls slice-sampling steps per live-point replacement.
+        # The "higher-dimensional fitting" tutorial uses 2*num_params for
+        # rigorous mixing, but for our use case (already seeded with a good
+        # init, exploratory monitor-driven workflow) that makes each Phase 2
+        # callback fire only every ~12 minutes, leaving the user staring at
+        # an unchanging SV.  Cap at a modest value so callbacks fire more
+        # often and the user can see the live threshold rising.
+        # (molass-legacy #65)
+        nsteps = min(2 * num_params, 16)
         # create step sampler:
         sampler.stepsampler = SliceSampler(
             nsteps=nsteps,
