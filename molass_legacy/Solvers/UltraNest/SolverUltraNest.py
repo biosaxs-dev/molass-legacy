@@ -135,10 +135,13 @@ class SolverUltraNest:
         # logging.basicConfig(level=logging.INFO)     # to suppress debug log
 
         param_names = ["p%02d" % i for i in range(num_params)]
-        # num_test_samples=0: disable the 2 warmup calls ReactiveNestedSampler
-        # makes by default to validate prior_transform.  Those calls would consume
-        # the _seeded flag (molass-legacy #65) before the first real live point.
+        # ReactiveNestedSampler.__init__ calls my_prior_transform at least once
+        # for internal dimensionality/validation, consuming the _seeded flag before
+        # run() starts.  Reset both flags after __init__ so the seed applies to
+        # the FIRST real live point in run().  (molass-legacy #65)
         sampler = ReactiveNestedSampler(param_names, my_likelihood, my_prior_transform, num_test_samples=0)
+        _seeded[0] = False        # reset: __init__ consumed the flag, run() will re-seed
+        _seeded_fv_logged[0] = False
         sampler.logger.setLevel(logging.INFO)       # to suppress debug log
         sampler_callback = SamplerCallback(self, sampler)
 
