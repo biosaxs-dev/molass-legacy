@@ -61,7 +61,7 @@ class EdmParams:
         return "EdmParams(nc=%d)" % (self.n_components)
 
     def get_model_name(self):
-        return 'EDM'
+        return 'NEDM'
 
     def set_x(self, x):
         self.x = x
