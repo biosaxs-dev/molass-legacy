@@ -313,7 +313,7 @@ class BasicOptimizer:
         self.logger.info("Frozen components set: %s", str(frozen_components))
 
     def solve(self, init_params, real_bounds=None, niter=100, seed=None, callback=True, method=None,
-              debug=False, show_history=False, ns_narrow_bounds=True):
+              debug=False, show_history=False, ns_narrow_bounds=True, ns_adaptive_nsteps=False):
         t0 = time()
         self.logger.info("solve started with niter=%d, seed=%s", niter, str(seed))
         self.logger.info("init_params=%s", str(init_params))
@@ -351,7 +351,7 @@ class BasicOptimizer:
             reload(molass_legacy.Solvers.UltraNest.SolverUltraNest)
             from molass_legacy.Solvers.UltraNest.SolverUltraNest import SolverUltraNest
             ultranest = SolverUltraNest(self)
-            result = ultranest.minimize(self.objective_func_wrapper, norm_params, niter=niter, seed=seed, bounds=bounds, narrow_bounds=ns_narrow_bounds)
+            result = ultranest.minimize(self.objective_func_wrapper, norm_params, niter=niter, seed=seed, bounds=bounds, narrow_bounds=ns_narrow_bounds, adaptive_nsteps=ns_adaptive_nsteps)
  
         elif method == "emcee":
             from importlib import reload

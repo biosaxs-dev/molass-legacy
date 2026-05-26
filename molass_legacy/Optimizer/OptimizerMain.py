@@ -122,6 +122,13 @@ def main_impl(optdict, optlist):
         logger.info("MOLASS_OPTIMIZER_TEST=%s", str(MOLASS_OPTIMIZER_TEST))
         optimizer_test = (optdict.get('-O') == '1' or MOLASS_OPTIMIZER_TEST == '1')   # workaround for -O not passed issue
 
+        # Read NS-specific settings from opt_settings.txt (written by parent before
+        # launching subprocess).  This is the mechanism for passing ns_narrow_bounds
+        # and ns_adaptive_nsteps since BackRunner does not pass them as CLI args.
+        ns_narrow_bounds = settings.get('ns_narrow_bounds')    # True = narrow prior (default)
+        ns_adaptive_nsteps = settings.get('ns_adaptive_nsteps')  # False = fixed nsteps (default)
+        logger.info("ns_narrow_bounds=%s, ns_adaptive_nsteps=%s", ns_narrow_bounds, ns_adaptive_nsteps)
+
         if sleep_seconds is None:
             logger.info("optimizer started with class_code=%s, optlist=%s, shared_memory=%s, xr_only=%s, optimizer_test=%s",
                         class_code, str(optlist), shm_name, xr_only, optimizer_test)
@@ -140,6 +147,8 @@ def main_impl(optdict, optlist):
                     legacy=legacy,
                     xr_only=xr_only,
                     optimizer_test=optimizer_test,
+                    ns_narrow_bounds=ns_narrow_bounds,
+                    ns_adaptive_nsteps=ns_adaptive_nsteps,
                     debug=False,
                     )
 
@@ -216,6 +225,8 @@ def optimizer_main(in_folder, trimming_txt=None, n_components=3,
                    legacy=True,
                    xr_only=False,
                    optimizer_test=False,
+                   ns_narrow_bounds=True,
+                   ns_adaptive_nsteps=False,
                    debug=True):
 
     optimizer = create_optimizer_from_job(in_folder=in_folder,
@@ -244,7 +255,7 @@ def optimizer_main(in_folder, trimming_txt=None, n_components=3,
             # NOTE: BaselineOptimizer/get_baseline_indeces() path removed here.
             # It was dead code exposed by #42 (get_baseline_indeces does not exist).
             # Both nnn==0 and nnn>0 now call optimizer.solve() directly. See #43.
-            result = optimizer.solve(init_params, real_bounds=real_bounds, niter=niter, seed=seed, callback=callback, method=solver, debug=debug)
+            result = optimizer.solve(init_params, real_bounds=real_bounds, niter=niter, seed=seed, callback=callback, method=solver, ns_narrow_bounds=ns_narrow_bounds, ns_adaptive_nsteps=ns_adaptive_nsteps, debug=debug)
         else:
             if strategy.is_strategic(nnn):
                 from molass_legacy.Optimizer.StrategicOptimizer import StrategicOptimizer
@@ -259,7 +270,7 @@ def optimizer_main(in_folder, trimming_txt=None, n_components=3,
                     temp_params = result.x
                     open_mode = "a"
             else:
-                result = optimizer.solve(init_params, real_bounds=real_bounds, niter=niter, seed=seed, callback=callback, method=solver, debug=debug)
+                result = optimizer.solve(init_params, real_bounds=real_bounds, niter=niter, seed=seed, callback=callback, method=solver, ns_narrow_bounds=ns_narrow_bounds, ns_adaptive_nsteps=ns_adaptive_nsteps, debug=debug)
     fig_info = [in_folder, None, result]
     if debug:
         optimizer.objective_func(result.x, plot=True, fig_info=fig_info)

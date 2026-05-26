@@ -6,7 +6,7 @@
 import numpy as np
 from .BasinHopping import BasinHopping
 
-NARROW_BIND_ALLOW = 1.0
+NARROW_BOUNDS_ALLOW = 1.0
 
 class SolverBH:
     def __init__(self, optimizer):
@@ -16,8 +16,8 @@ class SolverBH:
     def minimize(self, objective, init_params, niter=100, seed=1234, bounds=None, narrow_bounds=False, show_history=False):
 
         if narrow_bounds:
-            lower = init_params - NARROW_BIND_ALLOW
-            upper = init_params + NARROW_BIND_ALLOW
+            lower = init_params - NARROW_BOUNDS_ALLOW
+            upper = init_params + NARROW_BOUNDS_ALLOW
             bounds = np.array([lower, upper]).T
 
         minimizer_kwargs = dict(method='Nelder-Mead', bounds=bounds)

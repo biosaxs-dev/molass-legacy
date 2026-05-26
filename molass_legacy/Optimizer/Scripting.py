@@ -104,7 +104,7 @@ def prepare_optimizer(batch, num_components=3, model="EGH", method="BH", functio
     batch.construct_optimizer(fullopt_class=function_class)
     return batch.optimizer
 
-def set_optimizer_settings(num_components=3, model="EGH", method="BH", param_init_type=1):
+def set_optimizer_settings(num_components=3, model="EGH", method="BH", param_init_type=1, ns_narrow_bounds=True, ns_adaptive_nsteps=False):
     from molass_legacy._MOLASS.SerialSettings import set_setting
     from .OptimizerSettings import OptimizerSettings
 
@@ -147,7 +147,9 @@ def set_optimizer_settings(num_components=3, model="EGH", method="BH", param_ini
     settings = OptimizerSettings(param_init_type=param_init_type,
                                  elution_model=elution_model,
                                  optimization_method=optimization_method,
-                                 separate_eoii_flags=separate_eoii_flags)
+                                 separate_eoii_flags=separate_eoii_flags,
+                                 ns_narrow_bounds=ns_narrow_bounds,
+                                 ns_adaptive_nsteps=ns_adaptive_nsteps)
     settings.save()
 
 def estimate_init_params(batch, optimizer, developing=False, debug=False):
