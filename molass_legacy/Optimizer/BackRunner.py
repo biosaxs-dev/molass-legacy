@@ -130,6 +130,8 @@ class BackRunner:
         nnn = int(self.working_folder[-3:])
         self.solver = get_impl_method_name(nnn)
 
+        stderr_path = os.path.join(folder, 'optimizer_stderr.txt')
+        self._stderr_file = open(stderr_path, 'w')
         self.process = subprocess.Popen([sys.executable, optimizer_py,
                 '-c', class_code,
                 '-w', folder,
@@ -149,7 +151,7 @@ class BackRunner:
                 '-L', 'legacy' if legacy else 'library',
                 '-X', '1' if self.xr_only else '0',
                 '-O', opt_O,
-                ])
+                ], stderr=self._stderr_file)
 
     def poll(self):
         return self.process.poll()
@@ -162,6 +164,9 @@ class BackRunner:
 
     def terminate(self):
         self.process.terminate()
+        if hasattr(self, '_stderr_file') and self._stderr_file:
+            self._stderr_file.close()
+            self._stderr_file = None
 
     def revive(self):
         # still working on this method as of 20210616

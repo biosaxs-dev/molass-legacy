@@ -416,6 +416,8 @@ ITEM_DEFAULTS = {
     'sf_bound_ratio'        : 1.0,
     'NUM_MAJOR_SCORES'      : 7,
     'trust_rg_curve_folder' : False,    # temporary fix to trimming inconsistency
+    'ns_narrow_bounds'      : True,     # NS prior width: True=narrow (init±1.0), False=wide ([0,10])
+    'ns_adaptive_nsteps'    : False,    # NS slice sampler: adaptively grow nsteps
 
     # See also Optimizer.OptimizerSettings.py on the items below
     't0_upper_bound'        : None,
@@ -446,6 +448,8 @@ V2_TEMPORARY_ITEMS = [
     'ignore_secconformance', 'try_model_composing', 'identification_allowance', 'apply_sf_bounds', 'sf_bound_ratio',
     'NUM_MAJOR_SCORES',
     'trust_rg_curve_folder',
+    'ns_narrow_bounds',
+    'ns_adaptive_nsteps',
     ]
 
 TEMPORARY_ITEMS = [
@@ -585,14 +589,20 @@ def restore_default_setting( item ):
     set_setting( item, ITEM_DEFAULTS.get( item ) )
 
 def set_setting( item, value ):
-    assert( item in ITEM_DEFAULTS )
+    assert item in ITEM_DEFAULTS, (
+        f"Unknown setting key: {item!r}. "
+        "Add it to ITEM_DEFAULTS (and V2_TEMPORARY_ITEMS if session-scoped) in SerialSettings.py."
+    )
     if settings_ is None:
         initialize_settings()
 
     settings_[ item ] = value
 
 def reset_setting( item ):
-    assert( item in ITEM_DEFAULTS )
+    assert item in ITEM_DEFAULTS, (
+        f"Unknown setting key: {item!r}. "
+        "Add it to ITEM_DEFAULTS in SerialSettings.py."
+    )
     settings_[item] = ITEM_DEFAULTS[item]
 
 def temporary_settings_begin():
