@@ -11,7 +11,7 @@ from molass_legacy.Optimizer.OptimizerUtils import OptimizerResult
 from molass_legacy.Optimizer.StateSequence import save_opt_params
 from molass_legacy.Solvers.UltraNest.SamplerCallback import _running_in_jupyter_kernel
 
-NARROW_BIND_ALLOW = 1.0
+NARROW_BOUNDS_ALLOW = 1.0
 
 def get_max_ncalls(niter):
     return niter*7000
@@ -32,7 +32,7 @@ class SolverUltraNest:
         estimate from the LRF decomposition.  Using a narrow NS prior centred on
         a wrong estimate locks NS out of the true solution.  Callers use this
         method to identify which normalised-param indices should receive wide
-        priors regardless of NARROW_BIND_ALLOW.
+        priors regardless of NARROW_BOUNDS_ALLOW.
 
         Returns None if the optimizer has no params_type with a pos attribute
         (e.g. non-SDM models that don't have a mapping group).
@@ -54,7 +54,7 @@ class SolverUltraNest:
                 norm_indeces.append(int(positions[0]))
         return np.array(norm_indeces) if norm_indeces else None
 
-    def minimize(self, objective, init_params, niter=100, seed=1234, bounds=None, callback=None, narrow_bounds=True):
+    def minimize(self, objective, init_params, niter=100, seed=1234, bounds=None, callback=None, narrow_bounds=True, adaptive_nsteps=False):
         from importlib import reload
         import molass_legacy.Solvers.UltraNest.SamplerCallback
         reload(molass_legacy.Solvers.UltraNest.SamplerCallback)
@@ -75,13 +75,13 @@ class SolverUltraNest:
                 # (molass-legacy #64)
                 half_w = np.minimum(
                     np.minimum(init_params - bounds[:, 0], bounds[:, 1] - init_params),
-                    NARROW_BIND_ALLOW
+                    NARROW_BOUNDS_ALLOW
                 )
                 lower = init_params - half_w
                 upper = init_params + half_w
             else:
-                lower = init_params - NARROW_BIND_ALLOW
-                upper = init_params + NARROW_BIND_ALLOW
+                lower = init_params - NARROW_BOUNDS_ALLOW
+                upper = init_params + NARROW_BOUNDS_ALLOW
             # Mapping params (mp_a, mp_b) may have a wrong initial estimate from
             # LRF decomposition.  Override narrow prior with wide bounds so NS can
             # reach the correct value even when the initial estimate is far off.
@@ -97,7 +97,7 @@ class SolverUltraNest:
             upper = bounds[:,1]
         # molass-legacy #65: seed init_params as the first live point.
         # In the molass-library path params are normalised to [0,10] so
-        # NARROW_BIND_ALLOW=1.0 is ±10% of the range — wide enough that Phase 1
+        # NARROW_BOUNDS_ALLOW=1.0 is ±10% of the range — wide enough that Phase 1
         # Sobol points scatter far from the good minimum.  In the legacy
         # installed program params are in real units and ±1.0 is ~1%, so Phase 1
         # always contains init_params.  By forcing the very first prior_transform
@@ -142,12 +142,21 @@ class SolverUltraNest:
         # (molass-legacy #65)
         nsteps = min(2 * num_params, 16)
         # create step sampler:
-        sampler.stepsampler = SliceSampler(
-            nsteps=nsteps,
-            generate_direction=generate_mixture_random_direction,
-            # adaptive_nsteps=False,
-            # max_nsteps=400
-        )
+        # When adaptive_nsteps=True, UltraNest grows nsteps until the jump
+        # distance reaches 1 (mixing criterion). max_nsteps caps the growth
+        # at 2*num_params (the UltraNest docs recommended value).
+        if adaptive_nsteps:
+            sampler.stepsampler = SliceSampler(
+                nsteps=nsteps,
+                generate_direction=generate_mixture_random_direction,
+                adaptive_nsteps='move-distance',
+                max_nsteps=2 * num_params,
+            )
+        else:
+            sampler.stepsampler = SliceSampler(
+                nsteps=nsteps,
+                generate_direction=generate_mixture_random_direction,
+            )
 
         max_ncalls = get_max_ncalls(niter)
         result2 = sampler.run(min_num_live_points=400, max_ncalls=max_ncalls, viz_callback=sampler_callback, show_status=_show_status)
