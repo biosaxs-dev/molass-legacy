@@ -59,10 +59,12 @@ class JobState:
         self.fv = np.array(fv_list)
         self.x = np.array(x_list)
 
-        if self.solver_name == "ultranest":
+        if self.solver_name in ("NS", "ultranest"):
+            # "NS" is what get_method_name() returns; "ultranest" kept as fallback.
+            # Total NS budget = Phase1 (always 10,000) + Phase2 (get_max_ncalls).
             from molass_legacy.Solvers.UltraNest.SolverUltraNest import get_max_ncalls
-            # task: unify this estimation
-            xmax = get_max_ncalls(self.niter)
+            NS_PHASE1_NCALLS = 10000
+            xmax = NS_PHASE1_NCALLS + get_max_ncalls(self.niter)
         else:
             xmax = self.estimate_xmax(fv_list)
 

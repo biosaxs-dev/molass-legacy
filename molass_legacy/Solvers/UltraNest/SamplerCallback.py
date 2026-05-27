@@ -50,6 +50,16 @@ def get_viz_callback():
     if _running_in_jupyter_kernel():
         return _noop_viz_callback
 
+    # In BackRunner subprocess context: skip CustomLivePointsWidget.
+    # CustomLivePointsWidget spawns a tkinter GUI subprocess (ProressCanvasClient)
+    # whose Queue.put() eventually BLOCKS when the GUI subprocess crashes or
+    # its pipe buffer fills up.  SamplerCallback already logs NS progress to
+    # optimizer.log, so no viz is needed here.  BackRunner sets this env var.
+    # (molass-legacy #67)
+    import os as _os
+    if _os.environ.get('MOLASS_NS_SUBPROCESS'):
+        return _noop_viz_callback
+
     from importlib import reload
     import molass_legacy.Solvers.UltraNest.CustomLivePointsWidget
     reload(molass_legacy.Solvers.UltraNest.CustomLivePointsWidget)
@@ -100,43 +110,56 @@ class SamplerCallback:
             sys.stdout = StdoutWinmode()    # for sys.stdout.write(...) in ultranest.integrator.py on Windows win-app
 
     def __call__(self, points, info, region, transformLayer, region_fresh=False):
-        self.default_callback(points, info, region, transformLayer, region_fresh=region_fresh)
-
-        if _DEBUG_CALLBACK:
-            print("SamplerCallback.__call__: info.keys()=", info.keys())
-            stepsampler_info = info['stepsampler_info']
-            if len(stepsampler_info) > 0:
-                print("SamplerCallback.__call__: stepsampler_info.keys()=", stepsampler_info.keys())
-
-            if self.sampler.results is not None:
-                print("SamplerCallback.__call__: results.keys()=", self.sampler.results.keys())
+        # Guard the entire body: if anything raises (e.g. UltraNest changes the
+        # `points` dict structure between Phase 1 and Phase 2, or the terminal
+        # viz throws in a subprocess with no tty), UltraNest catches the
+        # exception and permanently stops calling viz_callback — silencing all
+        # future callback.txt writes.  We therefore protect the minimum
+        # guaranteed write first, then attempt the optional parts.
+        try:
+            self.default_callback(points, info, region, transformLayer, region_fresh=region_fresh)
+        except Exception:
+            pass  # terminal/widget errors must not prevent the callback.txt write
 
         self.counter += 1
-        if _DEBUG_CALLBACK:
-            print("SamplerCallback.__call__: counter=", self.counter)
-            print("SamplerCallback.__call__: points.keys()=", points.keys())
-            print("SamplerCallback.__call__: points['u'].shape=", points['u'].shape)
-            print("SamplerCallback.__call__: points['p'].shape=", points['p'].shape)
-            print("SamplerCallback.__call__: points['logl'].shape=", points['logl'].shape)
-        m = np.argmax(points['logl'])
-        if _DEBUG_CALLBACK:
-            print("SamplerCallback.__call__: m=", m)
-            print("SamplerCallback.__call__: points['u'][m]=", points['u'][m])
-            print("SamplerCallback.__call__: points['p'][m]=", points['p'][m])
 
-        # Log best, median and worst SV across the live points.  Best stays
-        # constant when seeded with init_params; worst saturates at the SV
-        # floor (-100) while any Sobol-bad point survives; the median lifts
-        # monotonically as NS replaces live points, so it gives the clearest
-        # picture of Phase 1/2 progress.  (molass-legacy #65)
-        logl_arr = points['logl']
-        best_fv = -float(logl_arr[m])
-        worst_fv = -float(logl_arr[np.argmin(logl_arr)])
-        med_fv = -float(np.median(logl_arr))
-        self.logger.info(
-            "NS progress: best SV=%.2f, p50 SV=%.2f, worst SV=%.2f (n_live=%d)",
-            _fv_to_sv(best_fv), _fv_to_sv(med_fv), _fv_to_sv(worst_fv),
-            len(logl_arr),
-        )
+        # Determine the best live point.  Access 'p' and 'logl' defensively
+        # because the Phase-2 SliceSampler may pass a differently-shaped dict.
+        best_params = None
+        try:
+            logl_arr = points['logl']
+            m = np.argmax(logl_arr)
+            best_params = points['p'][m]
 
-        self.callback(points['p'][m], None, False)
+            best_fv = -float(logl_arr[m])
+            worst_fv = -float(logl_arr[np.argmin(logl_arr)])
+            med_fv = -float(np.median(logl_arr))
+            self.logger.info(
+                "NS progress: best SV=%.2f, p50 SV=%.2f, worst SV=%.2f (n_live=%d)",
+                _fv_to_sv(best_fv), _fv_to_sv(med_fv), _fv_to_sv(worst_fv),
+                len(logl_arr),
+            )
+        except Exception:
+            pass  # log failure must not prevent the callback.txt write
+
+        if _DEBUG_CALLBACK:
+            try:
+                print("SamplerCallback.__call__: counter=", self.counter)
+                print("SamplerCallback.__call__: info.keys()=", info.keys())
+                print("SamplerCallback.__call__: points.keys()=", points.keys())
+            except Exception:
+                pass
+
+        # Always write to callback.txt.  Wrap the write and the objective
+        # re-evaluation (inside self.callback) in a final try-except so that
+        # any error (numerical, I/O, …) cannot propagate out of __call__ and
+        # cause UltraNest to permanently disable viz_callback.
+        try:
+            if best_params is None:
+                self.logger.warning(
+                    "SamplerCallback: unexpected points structure; "
+                    "skipping callback.txt write for counter=%d", self.counter)
+            else:
+                self.callback(best_params, None, False)
+        except Exception:
+            pass  # never let __call__ raise

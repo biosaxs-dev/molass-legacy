@@ -251,6 +251,8 @@ class BasicOptimizer:
         self.vc = ValidComponents(self.num_pure_components)
         self.xr_only = False    # required for backward compatibility
         self.frozen_components = None   # list of component indices to freeze
+        self.frozen_param_groups = None # list of named param groups to freeze
+        self.free_param_indices = None  # explicit free-param index list (overrides frozen_* when set)
         self.init_params_copy = None    # full param array for subset reconstruction
         self.xr_params_indeces = None   # indices of free (optimized) params
 
@@ -298,7 +300,7 @@ class BasicOptimizer:
     def get_xr_only(self):
         return self.xr_only
 
-    def set_frozen_components(self, frozen_components):
+    def freeze_components(self, frozen_components):
         """Set component indices to freeze during optimization.
 
         Parameters
@@ -312,8 +314,38 @@ class BasicOptimizer:
         self.frozen_components = frozen_components
         self.logger.info("Frozen components set: %s", str(frozen_components))
 
+    def set_frozen_components(self, frozen_components):
+        """Deprecated alias for freeze_components()."""
+        self.freeze_components(frozen_components)
+
+    # Named param groups recognised by freeze_param_groups():
+    #   'xr_components'  — XR elution shape params (all components)
+    #   'xr_baseline'    — XR baseline params (y1, y2 [, r])
+    #   'rgs'            — Rg params (all components)
+    #   'mapping'        — UV/XR frame mapping (a, b)
+    #   'uv_components'  — UV elution scale params (all components)
+    #   'uv_baseline'    — UV baseline params (L, x0, k, b, s1, s2, diffratio [, r])
+    #   'mappable_range' — mappable frame range (start, end)
+    #   'seccol_params'  — SEC column params (model-specific, last group)
+    def freeze_param_groups(self, groups):
+        """Freeze named parameter groups during optimization.
+
+        Works with all solvers (BH, NS, MCMC, …) because it operates
+        through xr_params_indeces inside BasicOptimizer.solve().
+
+        Parameters
+        ----------
+        groups : list of str
+            Names of parameter groups to hold constant. See the comment
+            above for valid group names.
+        """
+        if groups is not None and len(groups) == 0:
+            groups = None
+        self.frozen_param_groups = groups
+        self.logger.info("Frozen param groups set: %s", str(groups))
+
     def solve(self, init_params, real_bounds=None, niter=100, seed=None, callback=True, method=None,
-              debug=False, show_history=False, ns_narrow_bounds=True, ns_adaptive_nsteps=False):
+              debug=False, show_history=False, ns_narrow_bounds=True, ns_adaptive_nsteps=False, ns_nsteps=None):
         t0 = time()
         self.logger.info("solve started with niter=%d, seed=%s", niter, str(seed))
         self.logger.info("init_params=%s", str(init_params))
@@ -351,7 +383,7 @@ class BasicOptimizer:
             reload(molass_legacy.Solvers.UltraNest.SolverUltraNest)
             from molass_legacy.Solvers.UltraNest.SolverUltraNest import SolverUltraNest
             ultranest = SolverUltraNest(self)
-            result = ultranest.minimize(self.objective_func_wrapper, norm_params, niter=niter, seed=seed, bounds=bounds, narrow_bounds=ns_narrow_bounds, adaptive_nsteps=ns_adaptive_nsteps)
+            result = ultranest.minimize(self.objective_func_wrapper, norm_params, niter=niter, seed=seed, bounds=bounds, narrow_bounds=ns_narrow_bounds, adaptive_nsteps=ns_adaptive_nsteps, nsteps=ns_nsteps)
  
         elif method == "emcee":
             from importlib import reload
@@ -415,6 +447,10 @@ class BasicOptimizer:
             self.prepare_for_xr_only_optimization(init_params)
         if self.frozen_components is not None:
             self.prepare_for_frozen_optimization(init_params)
+        if self.frozen_param_groups is not None:
+            self.prepare_for_frozen_groups(init_params)
+        if self.free_param_indices is not None:
+            self.prepare_for_free_indices(init_params)
         self.set_params_scale(self.real_bounds)
         self.bounds_mask = self.params_type.make_bounds_mask()
         self.update_bounds(self.init_params)
@@ -1109,4 +1145,92 @@ class BasicOptimizer:
                 [i for i in all_indices if i not in frozen_set], dtype=int)
 
         self.logger.info("Frozen component indices: %s", str(sorted(frozen_set)))
+        self.logger.info("Free params: %d / %d", len(self.xr_params_indeces), len(init_params))
+
+    def set_free_param_indices(self, indices):
+        """Directly specify the free (optimized) parameter indices.
+
+        Overrides any frozen_components / frozen_param_groups reduction.
+        Pass None to clear and restore the default (all params free).
+
+        Parameters
+        ----------
+        indices : array-like of int or None
+            Indices of the parameters to optimize. All others are held
+            at their init_params values.
+        """
+        self.free_param_indices = None if indices is None else list(indices)
+        self.logger.info("Free param indices set: %s",
+                         "(all)" if indices is None else str(self.free_param_indices))
+
+    def prepare_for_free_indices(self, init_params):
+        """Apply free_param_indices directly as xr_params_indeces.
+
+        Called last in prepare_for_optimization(); overrides any
+        frozen_components / frozen_param_groups reduction already applied.
+        """
+        self.logger.info("Applying explicit free_param_indices.")
+        if self.init_params_copy is None:
+            self.init_params_copy = init_params.copy()
+        self.xr_params_indeces = np.asarray(self.free_param_indices, dtype=int)
+        self.logger.info("Free params: %d / %d",
+                         len(self.xr_params_indeces), len(init_params))
+
+    def prepare_for_frozen_groups(self, init_params):
+        """Restrict optimized params by freezing named parameter groups.
+
+        Group names correspond to the elements returned by split_params_simple():
+          index 0 : xr_components
+          index 1 : xr_baseline
+          index 2 : rgs
+          index 3 : mapping
+          index 4 : uv_components
+          index 5 : uv_baseline
+          index 6 : mappable_range
+          index 7+ : seccol_params  (last element; may be None if no col params)
+
+        Works with all solvers (BH, NS, MCMC, …) because it operates through
+        xr_params_indeces, just like prepare_for_frozen_optimization().
+        """
+        self.logger.info("Preparing for frozen-group optimization.")
+        GROUP_ORDER = [
+            'xr_components', 'xr_baseline', 'rgs', 'mapping',
+            'uv_components', 'uv_baseline', 'mappable_range', 'seccol_params',
+        ]
+        # Validate requested group names
+        unknown = set(self.frozen_param_groups) - set(GROUP_ORDER)
+        if unknown:
+            raise ValueError("Unknown frozen_param_groups: %s. Valid names: %s"
+                             % (sorted(unknown), GROUP_ORDER))
+
+        separate = self.params_type.split_params_simple(init_params)
+
+        frozen_set = set()
+        cursor = 0
+        for idx, name in enumerate(GROUP_ORDER):
+            if idx >= len(separate):
+                break
+            group = separate[idx]
+            if group is None:
+                continue
+            # Use .size not len(): xr_components is 2D (nc,4) so len() would
+            # return nc instead of nc*4, shifting every subsequent group's
+            # cursor by 3*(n_components-1) and freezing entirely wrong indices.
+            group_len = np.asarray(group).size
+            if name in self.frozen_param_groups:
+                for i in range(cursor, cursor + group_len):
+                    frozen_set.add(i)
+            cursor += group_len
+
+        if self.xr_params_indeces is not None:
+            # chain after xr_only or frozen_components reduction
+            self.xr_params_indeces = np.array(
+                [i for i in self.xr_params_indeces if i not in frozen_set], dtype=int)
+        else:
+            self.init_params_copy = init_params.copy()
+            all_indices = np.arange(len(init_params))
+            self.xr_params_indeces = np.array(
+                [i for i in all_indices if i not in frozen_set], dtype=int)
+
+        self.logger.info("Frozen group indices: %s", str(sorted(frozen_set)))
         self.logger.info("Free params: %d / %d", len(self.xr_params_indeces), len(init_params))

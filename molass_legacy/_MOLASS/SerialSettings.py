@@ -418,6 +418,7 @@ ITEM_DEFAULTS = {
     'trust_rg_curve_folder' : False,    # temporary fix to trimming inconsistency
     'ns_narrow_bounds'      : True,     # NS prior width: True=narrow (init±1.0), False=wide ([0,10])
     'ns_adaptive_nsteps'    : False,    # NS slice sampler: adaptively grow nsteps
+    'ns_nsteps'             : None,     # NS slice sampler: override nsteps (None = auto min(2*ndim,16))
 
     # See also Optimizer.OptimizerSettings.py on the items below
     't0_upper_bound'        : None,
@@ -450,6 +451,7 @@ V2_TEMPORARY_ITEMS = [
     'trust_rg_curve_folder',
     'ns_narrow_bounds',
     'ns_adaptive_nsteps',
+    'ns_nsteps',
     ]
 
 TEMPORARY_ITEMS = [

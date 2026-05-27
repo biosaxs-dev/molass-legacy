@@ -95,7 +95,7 @@ def run_optimizer_in_process(optimizer, init_params, niter=20, seed=1234,
                              clear_jobs=True, debug=False,
                              work_folder_callback=None,
                              stop_event=None, ns_narrow_bounds=True,
-                             ns_adaptive_nsteps=False):
+                             ns_adaptive_nsteps=False, ns_nsteps=None):
     """Run an already-prepared optimizer in this process.
 
     The optimizer is expected to be fully constructed by the caller
@@ -119,7 +119,7 @@ def run_optimizer_in_process(optimizer, init_params, niter=20, seed=1234,
     ----------
     optimizer : BasicOptimizer
         Fully constructed optimizer (already wired with dsets / curves).
-        Must already have `set_xr_only`, `set_frozen_components`, etc.
+        Must already have `set_xr_only`, `freeze_components`, `freeze_param_groups`, etc.
         applied as desired by the caller. `prepare_for_optimization`
         does not need to be called in advance — `solve()` calls it.
     init_params : array-like
@@ -219,6 +219,11 @@ def run_optimizer_in_process(optimizer, init_params, niter=20, seed=1234,
     if getattr(optimizer, 'frozen_components', None) is not None:
         np.savetxt(os.path.join(work_folder, 'frozen_components.txt'),
                    optimizer.frozen_components, fmt="%d")
+
+    if getattr(optimizer, 'frozen_param_groups', None) is not None:
+        fpg_file = os.path.join(work_folder, 'frozen_param_groups.txt')
+        with open(fpg_file, 'w') as _fh:
+            _fh.write('\n'.join(optimizer.frozen_param_groups) + '\n')
 
     with open(os.path.join(work_folder, 'pid.txt'), 'w') as fh:
         fh.write("pid=%d\n" % os.getpid())
@@ -365,6 +370,7 @@ def run_optimizer_in_process(optimizer, init_params, niter=20, seed=1234,
                     debug=debug,
                     ns_narrow_bounds=ns_narrow_bounds,
                     ns_adaptive_nsteps=ns_adaptive_nsteps,
+                    ns_nsteps=ns_nsteps,
                 )
             except Exception as _e:
                 _exc_holder[0] = _e

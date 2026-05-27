@@ -47,6 +47,7 @@ def delayed_settings_init():
         ("trust_rg_curve_folder", False),   # set True by parent when LegacyRgCurve is exported (molass-legacy#34)
         ("ns_narrow_bounds", True),          # NS prior width: True=narrow (init±1.0), False=wide ([0,10])
         ("ns_adaptive_nsteps", False),       # NS slice sampler: adaptively grow nsteps to ≥1 jump distance
+        ("ns_nsteps", None),                 # NS slice sampler: override nsteps (None = auto min(2*ndim,16))
         # SEC parameters
         ("exclusion_limit", default_columntype.excl_limit),
         ("poresize", poresize),

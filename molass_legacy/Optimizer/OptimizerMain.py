@@ -123,11 +123,12 @@ def main_impl(optdict, optlist):
         optimizer_test = (optdict.get('-O') == '1' or MOLASS_OPTIMIZER_TEST == '1')   # workaround for -O not passed issue
 
         # Read NS-specific settings from opt_settings.txt (written by parent before
-        # launching subprocess).  This is the mechanism for passing ns_narrow_bounds
-        # and ns_adaptive_nsteps since BackRunner does not pass them as CLI args.
+        # launching subprocess).  This is the mechanism for passing ns_narrow_bounds,
+        # ns_adaptive_nsteps, and ns_nsteps since BackRunner does not pass them as CLI args.
         ns_narrow_bounds = settings.get('ns_narrow_bounds')    # True = narrow prior (default)
         ns_adaptive_nsteps = settings.get('ns_adaptive_nsteps')  # False = fixed nsteps (default)
-        logger.info("ns_narrow_bounds=%s, ns_adaptive_nsteps=%s", ns_narrow_bounds, ns_adaptive_nsteps)
+        ns_nsteps = settings.get('ns_nsteps')                    # None = auto min(2*ndim,16)
+        logger.info("ns_narrow_bounds=%s, ns_adaptive_nsteps=%s, ns_nsteps=%s", ns_narrow_bounds, ns_adaptive_nsteps, ns_nsteps)
 
         if sleep_seconds is None:
             logger.info("optimizer started with class_code=%s, optlist=%s, shared_memory=%s, xr_only=%s, optimizer_test=%s",
@@ -149,6 +150,7 @@ def main_impl(optdict, optlist):
                     optimizer_test=optimizer_test,
                     ns_narrow_bounds=ns_narrow_bounds,
                     ns_adaptive_nsteps=ns_adaptive_nsteps,
+                    ns_nsteps=ns_nsteps,
                     debug=False,
                     )
 
@@ -227,6 +229,7 @@ def optimizer_main(in_folder, trimming_txt=None, n_components=3,
                    optimizer_test=False,
                    ns_narrow_bounds=True,
                    ns_adaptive_nsteps=False,
+                   ns_nsteps=None,
                    debug=True):
 
     optimizer = create_optimizer_from_job(in_folder=in_folder,
@@ -242,35 +245,38 @@ def optimizer_main(in_folder, trimming_txt=None, n_components=3,
         frozen_components = np.loadtxt(frozen_file, dtype=int).tolist()
         if isinstance(frozen_components, int):
             frozen_components = [frozen_components]
-        optimizer.set_frozen_components(frozen_components)
+        optimizer.freeze_components(frozen_components)
+
+    # Load frozen_param_groups if saved by the parent process
+    fpg_file = 'frozen_param_groups.txt'  # CWD is the job folder (set by main_impl)
+    if os.path.exists(fpg_file):
+        with open(fpg_file) as _fh:
+            frozen_param_groups = [line.strip() for line in _fh if line.strip()]
+        optimizer.freeze_param_groups(frozen_param_groups)
     if seed is None:
         seed = np.random.randint(100000, 999999)
     strategy = optimizer.get_strategy()
-    # NOTE: FixedBaselineOptimizer is intentionally NOT used here.
-    # Both in-process (InProcessRunner) and subprocess paths must solve the same
-    # unconstrained objective. FixedBaselineOptimizer is kept for explicit future use.
+    # NOTE: FixedBaselineOptimizer / StrategicOptimizer removed (molass-legacy cleanup).
+    # Use optimizer.freeze_param_groups(['xr_baseline', 'uv_baseline']) for group-level
+    # freezing; it works with all solvers (BH, NS, MCMC, …) via xr_params_indeces.
     # See molass-legacy#42.
     if True:
         if strategy.baseline_first():
             # NOTE: BaselineOptimizer/get_baseline_indeces() path removed here.
             # It was dead code exposed by #42 (get_baseline_indeces does not exist).
             # Both nnn==0 and nnn>0 now call optimizer.solve() directly. See #43.
-            result = optimizer.solve(init_params, real_bounds=real_bounds, niter=niter, seed=seed, callback=callback, method=solver, ns_narrow_bounds=ns_narrow_bounds, ns_adaptive_nsteps=ns_adaptive_nsteps, debug=debug)
+            result = optimizer.solve(init_params, real_bounds=real_bounds, niter=niter, seed=seed, callback=callback, method=solver, ns_narrow_bounds=ns_narrow_bounds, ns_adaptive_nsteps=ns_adaptive_nsteps, ns_nsteps=ns_nsteps, debug=debug)
         else:
             if strategy.is_strategic(nnn):
-                from molass_legacy.Optimizer.StrategicOptimizer import StrategicOptimizer
-                temp_params = init_params
                 indeces_list = strategy.get_indeces_list(nnn)
                 assert len(indeces_list) == 1   # for now
-                open_mode = "w"                 # "callback.txt" open mode
                 for indeces in indeces_list:
-                    strategic_optimizer = StrategicOptimizer(optimizer, indeces)
+                    optimizer.set_free_param_indices(indeces)
                     # task: add method option
-                    result = strategic_optimizer.solve(temp_params, real_bounds=real_bounds, niter=niter, seed=seed, open_mode=open_mode, debug=debug)
-                    temp_params = result.x
-                    open_mode = "a"
-            else:
-                result = optimizer.solve(init_params, real_bounds=real_bounds, niter=niter, seed=seed, callback=callback, method=solver, ns_narrow_bounds=ns_narrow_bounds, ns_adaptive_nsteps=ns_adaptive_nsteps, debug=debug)
+                    result = optimizer.solve(init_params, real_bounds=real_bounds, niter=niter, seed=seed, callback=callback, method=solver, ns_narrow_bounds=ns_narrow_bounds, ns_adaptive_nsteps=ns_adaptive_nsteps, ns_nsteps=ns_nsteps, debug=debug)
+                    init_params = result.x
+                optimizer.set_free_param_indices(None)  # reset for subsequent full solve
+                result = optimizer.solve(init_params, real_bounds=real_bounds, niter=niter, seed=seed, callback=callback, method=solver, ns_narrow_bounds=ns_narrow_bounds, ns_adaptive_nsteps=ns_adaptive_nsteps, ns_nsteps=ns_nsteps, debug=debug)
     fig_info = [in_folder, None, result]
     if debug:
         optimizer.objective_func(result.x, plot=True, fig_info=fig_info)

@@ -54,7 +54,7 @@ class SolverUltraNest:
                 norm_indeces.append(int(positions[0]))
         return np.array(norm_indeces) if norm_indeces else None
 
-    def minimize(self, objective, init_params, niter=100, seed=1234, bounds=None, callback=None, narrow_bounds=True, adaptive_nsteps=False):
+    def minimize(self, objective, init_params, niter=100, seed=1234, bounds=None, callback=None, narrow_bounds=True, adaptive_nsteps=False, nsteps=None):
         from importlib import reload
         import molass_legacy.Solvers.UltraNest.SamplerCallback
         reload(molass_legacy.Solvers.UltraNest.SamplerCallback)
@@ -140,7 +140,9 @@ class SolverUltraNest:
         # an unchanging SV.  Cap at a modest value so callbacks fire more
         # often and the user can see the live threshold rising.
         # (molass-legacy #65)
-        nsteps = min(2 * num_params, 16)
+        # ns_nsteps lets the caller override nsteps explicitly (e.g. nsteps=4
+        # for ~4× more frequent callbacks in narrow posteriors). (molass-legacy #68)
+        nsteps = nsteps if nsteps is not None else min(2 * num_params, 16)
         # create step sampler:
         # When adaptive_nsteps=True, UltraNest grows nsteps until the jump
         # distance reaches 1 (mixing criterion). max_nsteps caps the growth
@@ -162,6 +164,10 @@ class SolverUltraNest:
         result2 = sampler.run(min_num_live_points=400, max_ncalls=max_ncalls, viz_callback=sampler_callback, show_status=_show_status)
 
         opt_params = result2['maximum_likelihood']['point']
+
+        # Always write the final best result as an accepted entry, even if Phase-2
+        # viz_callbacks were silenced (e.g. terminal-viz exception in subprocess).
+        self.callback(opt_params, None, True)
 
         return OptimizerResult(x=opt_params, nit=niter, nfev=self.optimizer.eval_counter)
 

@@ -119,6 +119,12 @@ class BackRunner:
             frozen_file = os.path.join(folder, 'frozen_components.txt')
             np.savetxt(frozen_file, optimizer.frozen_components, fmt="%d")
 
+        # Save frozen_param_groups if set on the optimizer
+        if getattr(optimizer, 'frozen_param_groups', None) is not None:
+            fpg_file = os.path.join(folder, 'frozen_param_groups.txt')
+            with open(fpg_file, 'w') as _fh:
+                _fh.write('\n'.join(optimizer.frozen_param_groups) + '\n')
+
         # test_pattern = str(get_setting("test_pattern"))
         test_pattern = "0"      # always set it to "0" to suppress execution-blocking messages
 
@@ -132,6 +138,11 @@ class BackRunner:
 
         stderr_path = os.path.join(folder, 'optimizer_stderr.txt')
         self._stderr_file = open(stderr_path, 'w')
+        # Pass MOLASS_NS_SUBPROCESS so SamplerCallback skips CustomLivePointsWidget,
+        # which spawns a tkinter GUI subprocess and blocks on Queue.put() when that
+        # subprocess crashes (molass-legacy#67).
+        _subprocess_env = os.environ.copy()
+        _subprocess_env['MOLASS_NS_SUBPROCESS'] = '1'
         self.process = subprocess.Popen([sys.executable, optimizer_py,
                 '-c', class_code,
                 '-w', folder,
@@ -151,7 +162,7 @@ class BackRunner:
                 '-L', 'legacy' if legacy else 'library',
                 '-X', '1' if self.xr_only else '0',
                 '-O', opt_O,
-                ], stderr=self._stderr_file)
+                ], stderr=self._stderr_file, env=_subprocess_env)
 
     def poll(self):
         return self.process.poll()
