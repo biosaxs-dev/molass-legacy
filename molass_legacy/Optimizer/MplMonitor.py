@@ -142,13 +142,17 @@ def _build_monitor_snapshot_json(monitor, display_optimizer, params):
     # Issue #AI-A: record best fv/sv seen across ALL update_plot() calls so that
     # an AI tool reading this file gets the global minimum, not just the current
     # live-point snapshot (which may be worse than the historical best).
+    # Issue #128 fix: use monitor._global_best_fv for cross-job best.
     try:
         from molass_legacy.Optimizer.FvScoreConverter import convert_score as _cs
-        js = getattr(monitor, "job_state", None)
-        if js is not None and hasattr(js, "fv") and len(js.fv) > 0:
-            best_fv_hist = float(np.min(js.fv[:, 1]))
-            snap["best_fv"] = best_fv_hist
-            snap["best_sv"] = float(_cs(best_fv_hist))
+        _gbf = getattr(monitor, '_global_best_fv', None)
+        if _gbf is None:
+            js = getattr(monitor, "job_state", None)
+            if js is not None and hasattr(js, "fv") and len(js.fv) > 0:
+                _gbf = float(np.min(js.fv[:, 1]))
+        if _gbf is not None:
+            snap["best_fv"] = _gbf
+            snap["best_sv"] = float(_cs(_gbf))
     except Exception:
         pass
     # Param breakdown
@@ -501,6 +505,7 @@ class MplMonitor:
         self.suptitle = None
         self.func_code = function_code
         self.process_id = None  # Will be set when process starts
+        self._global_best_fv = None  # Issue #128 fix: track cumulative best fv across all jobs
         self.instance_id = id(self)
         self.watch_thread = None  # Will be set when watching starts
         self.dsets = None  # Set via run() caller or export_data(); see issue #7
@@ -651,6 +656,24 @@ class MplMonitor:
             mon.x_shifts = run_info.dsets.get_x_shifts() if run_info.dsets is not None else []
         except Exception:
             mon.x_shifts = []
+        # Issue #128 fix: when resuming with prior jobs, pre-seed _global_best_fv
+        # from already-completed job folders so the dashboard immediately shows
+        # the correct cumulative best SV rather than None until the first update.
+        if not clear_jobs:
+            try:
+                from molass_legacy.Optimizer.StateSequence import read_callback_txt_impl as _rcti
+                jobs_dir = os.path.join(mon.optimizer_folder, "jobs")
+                if os.path.isdir(jobs_dir):
+                    for _job in os.listdir(jobs_dir):
+                        _cb = os.path.join(jobs_dir, _job, "callback.txt")
+                        if os.path.isfile(_cb):
+                            _fv_list, _ = _rcti(_cb)
+                            if _fv_list:
+                                _jbest = float(min(r[1] for r in _fv_list))
+                                if mon._global_best_fv is None or _jbest < mon._global_best_fv:
+                                    mon._global_best_fv = _jbest
+            except Exception:
+                pass
         return mon
 
     # Directories in optimizer_folder that contain parent-exported data
@@ -918,12 +941,18 @@ class MplMonitor:
             with warnings.catch_warnings(record=True) as wlist:
                 warnings.simplefilter("always")
                 # Issue #128: compute best accepted SV for widget title.
+                # Use self._global_best_fv to track the cumulative best across ALL jobs,
+                # not just the current job's callback.txt (which resets each new job).
                 _best_sv = None
                 try:
                     from molass_legacy.Optimizer.FvScoreConverter import convert_score as _cs
                     _js = getattr(self, 'job_state', None)
                     if _js is not None and hasattr(_js, 'fv') and len(_js.fv) > 0:
-                        _best_sv = float(_cs(float(np.min(_js.fv[:, 1]))))
+                        _cur_job_best = float(np.min(_js.fv[:, 1]))
+                        if self._global_best_fv is None or _cur_job_best < self._global_best_fv:
+                            self._global_best_fv = _cur_job_best
+                    if self._global_best_fv is not None:
+                        _best_sv = float(_cs(self._global_best_fv))
                 except Exception:
                     pass
                 # Issue #52 follow-up: prevent duplicate/triplicate plot_output panels.

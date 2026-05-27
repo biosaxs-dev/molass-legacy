@@ -34,10 +34,8 @@ def devel_test_impl(self):
         patch_and_restart_from_editor(self)
 
     def test_fixedbaseline_optimizer():
-        import molass_legacy.Optimizer.FixedBaselineOptimizer
-        reload(molass_legacy.Optimizer.FixedBaselineOptimizer)
-        from molass_legacy.Optimizer.FixedBaselineOptimizer import test_optimizer
-        test_optimizer(self)
+        # FixedBaselineOptimizer removed; use optimizer.freeze_param_groups(['xr_baseline', 'uv_baseline'])
+        raise NotImplementedError("FixedBaselineOptimizer has been removed. Use freeze_param_groups.")
 
     def debug_objective_function():
         import molass_legacy.Optimizer.SimpleDebugUtils
