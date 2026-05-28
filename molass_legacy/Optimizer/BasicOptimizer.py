@@ -409,7 +409,15 @@ class BasicOptimizer:
             smc = SolverPyMC(self)
             func = get_picklable_func(self)
             result = smc.minimize(func, norm_params, niter=niter, seed=seed, bounds=bounds)
- 
+
+        elif method == "cma":
+            from importlib import reload
+            import molass.Solvers.CMA.SolverCMA
+            reload(molass.Solvers.CMA.SolverCMA)
+            from molass.Solvers.CMA.SolverCMA import SolverCMA
+            cma_solver = SolverCMA(self)
+            result = cma_solver.minimize(self.objective_func_wrapper, norm_params, niter=niter, seed=seed, bounds=bounds)
+
         else:
             raise ValueError("Unknown method: %s" % method)
 

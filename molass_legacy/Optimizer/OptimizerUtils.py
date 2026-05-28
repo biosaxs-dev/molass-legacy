@@ -24,17 +24,19 @@ def get_function_code(model_name):
             return code
     return None
 
-METHOD_NAMES = ["BH", "NS", "MCMC", "SMC"]
+METHOD_NAMES = ["BH", "NS", "MCMC", "SMC", "PYMC", "CMA"]
 def get_method_name():
     from molass_legacy._MOLASS.SerialSettings import get_setting
     return METHOD_NAMES[get_setting("optimization_method")]
 
-IMPL_METHOD_NAMES = ["bh", "ultranest", "emcee", "pyabc", "pymc"]
+IMPL_METHOD_NAMES = ["bh", "ultranest", "emcee", "pyabc", "pymc", "cma"]
 def get_impl_method_name(nnn, method=None):
     if method is None:
         from molass_legacy._MOLASS.SerialSettings import get_setting
         method = get_setting("optimization_method")
-    if method >= 2:
+    if 2 <= method <= 3:
+        # MCMC (2) and SMC (3) alternate between sub-implementations
+        # based on the job index (nnn).  BH/NS/CMA map directly.
         r = method % 2
         method = (nnn + r) % 2
     return IMPL_METHOD_NAMES[method]

@@ -82,6 +82,11 @@ def _resolve_solver(method, nnn):
     if method in IMPL_METHOD_NAMES:
         return method
     if method in METHOD_NAMES:
+        # BH, NS, CMA have a direct 1:1 mapping to their impl names;
+        # only MCMC/SMC use the nnn-based alternating logic.
+        _direct = {'BH': 'bh', 'NS': 'ultranest', 'CMA': 'cma'}
+        if method in _direct:
+            return _direct[method]
         idx = METHOD_NAMES.index(method)
         return get_impl_method_name(nnn, method=idx)
     raise ValueError(

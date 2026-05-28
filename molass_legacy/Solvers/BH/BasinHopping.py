@@ -1,11 +1,14 @@
 """
-    Optimizer.BasinHopping.py
+    Solvers.BH.BasinHopping.py  — stub
 
-    overriding the original to investigate
+    Implementation moved to molass.Solvers.BH.BasinHopping.
 
-    Copyright (c) 2023-2024, SAXS Team, KEK-PF
+    Copyright (c) 2023-2026, SAXS Team, KEK-PF
 """
-import numpy as np
+from molass.Solvers.BH.BasinHopping import BasinHopping, CustomTakestep  # noqa: F401
+
+# Keep the scipy import visible so any direct `from ...BasinHopping import basinhopping`
+# calls in older code still resolve.
 from scipy.optimize import basinhopping
 from scipy.optimize._basinhopping import RandomDisplacement, AdaptiveStepsize
 from scipy._lib._util import check_random_state

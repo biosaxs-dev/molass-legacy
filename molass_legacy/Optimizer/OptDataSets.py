@@ -103,36 +103,18 @@ def get_dsets_impl(sd, corrected_sd, progress_cb=None, rg_folder=None, rg_info=T
                             os.path.exists(os.path.join(parent_rg_folder, 'ok.stamp')) and
                             all(os.path.exists(os.path.join(parent_rg_folder, f))
                                 for f in _rg_data_files))
-
-        trust_marker = os.path.join(rg_folder, 'trust.txt')
-        trust_by_file  = os.path.exists(trust_marker)
         trust_by_setting = get_setting("trust_rg_curve_folder")
-        stamp_ok = os.path.exists(rg_folder) and os.path.exists(os.path.join(rg_folder, 'ok.stamp'))
-        # Fallback: check that RgCurveProxy's required data files are present
-        # even when ok.stamp is missing (e.g. cleared by an unknown mechanism,
-        # molass-legacy#34).  This makes the trust check robust to stamp_ok=False.
-        data_files_ok = (os.path.exists(rg_folder) and
-                         all(os.path.exists(os.path.join(rg_folder, f))
-                             for f in _rg_data_files))
         if logger is not None:
-            logger.info("rg_folder=%s trust_by_file=%s trust_by_setting=%s "
-                        "stamp_ok=%s data_files_ok=%s parent_folder_ok=%s",
-                        rg_folder, trust_by_file, trust_by_setting,
-                        stamp_ok, data_files_ok, parent_folder_ok)
+            logger.info("rg_folder=%s trust_by_setting=%s parent_folder_ok=%s",
+                        rg_folder, trust_by_setting, parent_folder_ok)
 
-        # Prefer rg_curve_parent/ when trust is set and it contains valid data
-        # (immune to subprocess clearing of rg-curve/).
-        if (trust_by_file or trust_by_setting) and parent_folder_ok:
-            rg_folder = parent_rg_folder   # redirect to parent-exclusive folder
+        # Use rg_curve_parent/ when parent explicitly exported it.
+        # (molass-legacy#34 cleanup: rg-curve/ was a redundant second copy and has been removed.)
+        if trust_by_setting and parent_folder_ok:
+            rg_folder = parent_rg_folder
             rg_folder_ok = True
             if logger is not None:
                 logger.info("rg_folder redirected to parent folder: %s", parent_rg_folder)
-        elif (trust_by_file or trust_by_setting) and (stamp_ok or data_files_ok):
-            rg_folder_ok = True
-            if logger is not None:
-                logger.info("rg_folder=%s forced OK (trust_by_file=%s, trust_by_setting=%s, "
-                            "stamp_ok=%s, data_files_ok=%s)",
-                            rg_folder, trust_by_file, trust_by_setting, stamp_ok, data_files_ok)
         else:
             rg_folder_ok = check_rg_folder(rg_folder)
             if logger is not None:
@@ -156,7 +138,7 @@ def get_dsets_impl(sd, corrected_sd, progress_cb=None, rg_folder=None, rg_info=T
 
         if rg_folder_ok:
             rg_curve = RgCurveProxy(xr_curve, rg_folder, progress_cb=progress_cb)
-            if trust_by_file or trust_by_setting:
+            if trust_by_setting:
                 if logger is not None:
                     logger.info("rg-curve proxy is trusted without trimming consistency check.")
             else:

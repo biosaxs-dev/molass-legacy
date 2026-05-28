@@ -134,6 +134,8 @@ def set_optimizer_settings(num_components=3, model="EGH", method="BH", param_ini
         optimization_method = 0
     elif solver_name == "NS":
         optimization_method = 1
+    elif solver_name == "CMA":
+        optimization_method = 5  # IMPL_METHOD_NAMES[5] = 'cma'
     else:
         raise ValueError(
             f"Unknown method: {method!r}. "

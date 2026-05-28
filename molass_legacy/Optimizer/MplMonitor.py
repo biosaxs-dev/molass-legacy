@@ -678,7 +678,7 @@ class MplMonitor:
 
     # Directories in optimizer_folder that contain parent-exported data
     # and must NOT be cleared when resetting job outputs.
-    _PRESERVED_SUBDIRS = frozenset(["rg-curve", "rg_curve_parent"])
+    _PRESERVED_SUBDIRS = frozenset(["rg_curve_parent"])
 
     def clear_jobs(self):
         folder = self.optimizer_folder
