@@ -515,6 +515,12 @@ class MplMonitor:
         self.monitor_optimizer = None
         self.stop_watch_event = threading.Event()  # For graceful thread shutdown
         self.is_monitoring = False  # Flag to track active monitoring state
+        # Minimum seconds between successive dashboard redraws.
+        # BH accepts one point every ~10–30 s, so 5 s is no restriction.
+        # CMA-ES accepts many points per second; without this the widget
+        # blinks on every poll cycle (molass-legacy#65).
+        self.min_plot_interval = 5.0
+        self._last_plot_time = 0.0  # monotonic timestamp of last redraw
         
         # Check for existing active monitors and warn user
         if _ACTIVE_MONITORS:
@@ -1224,7 +1230,15 @@ class MplMonitor:
                     try:
                         self.job_state.update()
                         if self.job_state.has_changed():
-                            self.update_plot()
+                            # Throttle redraws to at most once per min_plot_interval seconds.
+                            # CMA-ES accepts many points per second, causing rapid successive
+                            # redraws that blink uncomfortably in the notebook widget.
+                            # BH accepts points every ~10–30 s, so it is unaffected.
+                            _now = time.monotonic()
+                            _elapsed = _now - getattr(self, '_last_plot_time', 0.0)
+                            if _elapsed >= self.min_plot_interval:
+                                self.update_plot()
+                                self._last_plot_time = _now
                             # Enable Export as soon as there's data to export
                             if self.export_button.disabled and self.dsets is not None:
                                 self.export_button.disabled = False
