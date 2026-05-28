@@ -37,6 +37,13 @@ def get_current_rg_folder(compute_rg=False, possibly_relocated=True, current_fol
         if compute_rg:
             return rg_folder
 
+    # Check for rg_curve_parent/ — the parent process exports the Rg curve here
+    # (molass-legacy#34 cleanup removed the redundant rg-curve/ copy).
+    # Return it early so get_dsets_impl can detect it via optimizer_folder.
+    parent_rg_folder = os.path.join(os.path.dirname(rg_folder), 'rg_curve_parent')
+    if os.path.exists(parent_rg_folder):
+        return parent_rg_folder
+
     relocated_root_folder = rg_folder + "s"
     assert os.path.exists(relocated_root_folder)
 
