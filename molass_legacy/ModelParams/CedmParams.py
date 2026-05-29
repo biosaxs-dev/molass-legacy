@@ -302,9 +302,13 @@ class CedmParams:
     # GUI stubs (not needed for in-process optimisation)
     # ------------------------------------------------------------------
 
-    def get_estimator(self, editor, debug=False):
-        """Stub — CEDM uses RigorousCedmParams for init, not a legacy estimator."""
-        return None
+    def get_estimator(self, editor, developing=False, debug=False):
+        if debug:
+            from importlib import reload
+            import molass_legacy.Estimators.CedmEstimator
+            reload(molass_legacy.Estimators.CedmEstimator)
+        from molass_legacy.Estimators.CedmEstimator import CedmEstimator
+        return CedmEstimator(editor, self.n_components)
 
     def get_adjuster(self, debug=True):
         from .StcAdjuster import StcAdjuster

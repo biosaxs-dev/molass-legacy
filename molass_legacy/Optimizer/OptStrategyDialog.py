@@ -26,24 +26,21 @@ SHOW_OPTIMIZATION_STRATEGY_OPTION = False
 DEFAULT_FUNC_ITEM = {
     0 : 'default_func_egh',
     1 : 'default_func_sdm',
-    2 : 'default_func_lj_egh',
-    3 : 'default_func_fd_emg',
-    4 : 'default_func_rt_egh',
     5 : 'default_func_edm',
+    6 : 'default_func_lkm',
     }
 
 MODEL_LIST = [  (0, "[%d] %s - EGH - Exponential-Gaussian Hybrid"),
-                (2, "[%d] %s - Constrained EGH (Plate Theory)"),
-                (3, "[%d] %s - Constrained EMG (Plate Theory)"),
-                # (4, "[%d] %s - Constrained EMG (Approximation from Rate Theory Moments)"),
-                (1, "[%d] %s - SDM - Stochastic DIspersive Model"),
+                (1, "[%d] %s - SDM - Stochastic Dispersive Model"),
                 (5, "[%d] %s - EDM - Equilibrium Dispersive Model"),
+                (6, "[%d] %s - LKM - Lumped Kinetic Model"),
                 ]
 
 MODEL_TO_FUNC = {
     0 : 'G0346',
     1 : 'G1100',
-    5 : 'G2010',
+    5 : 'G2020',
+    6 : 'G1400',
 }
 
 class OptStrategyDialog(Dialog):
@@ -241,36 +238,10 @@ class OptStrategyDialog(Dialog):
         self.number_of_plates = Tk.DoubleVar()
         self.number_of_plates.set(numplates_pm)
 
-        i = 0
-        if SHOW_FULL_OPTIONS:
-            model_list = MODEL_LIST
-        else:
-            model_list = [MODEL_LIST[0], MODEL_LIST[3], MODEL_LIST[4]]
-        for k, cname_fmt in model_list:
-            state = Tk.DISABLED if k == 4 else Tk.NORMAL
-            # state = Tk.NORMAL
+        for i, (k, cname_fmt) in enumerate(MODEL_LIST):
             cname = cname_fmt % (k, get_setting(DEFAULT_FUNC_ITEM[k]))
-            rb = Tk.Radiobutton(option_frame, text=cname, variable=self.elution_model_gui, value=k, state=state)
-            span = 3 if k == 4 else 2
-            rb.grid(row=i, column=0, columnspan=span, sticky=Tk.W )
-
-            i += 1
-
-        if SHOW_FULL_OPTIONS:
-            # Palte Number
-            space = Tk.Frame(option_frame, width=20)
-            space.grid(row=1, column=2)
-            brace = ClosingBrace(option_frame, width=20, height=50)
-            brace.grid(row=1, column=3, rowspan=2)
-
-            pn_frame = Tk.Frame(option_frame, width=20)
-            pn_frame.grid(row=1, column=4, rowspan=2)
-            label = Tk.Label(pn_frame, text="Number of Plates: ")
-            label.grid(row=0, column=0)
-            self.num_plates_entry = Tk.Entry(pn_frame, textvariable=self.number_of_plates, width=8, justify=Tk.CENTER)
-            self.num_plates_entry.grid(row=0, column=1)
-            percol = Tk.Label(pn_frame, text="/m")
-            percol.grid(row=0, column=2)
+            rb = Tk.Radiobutton(option_frame, text=cname, variable=self.elution_model_gui, value=k)
+            rb.grid(row=i, column=0, columnspan=2, sticky=Tk.W)
 
         # Trimming Strategy
         grid_row += 1
@@ -603,13 +574,8 @@ class OptStrategyDialog(Dialog):
     def elution_model_gui_tracer(self, *args):
         elution_model_gui = self.elution_model_gui.get()
 
-        if SHOW_FULL_OPTIONS:
-            state = Tk.NORMAL if elution_model_gui in [2, 3] else Tk.DISABLED
-            for w in [self.num_plates_entry]:
-                w.config(state=state)
-
         if self.avoid_peak_fronting_cb is not None:
-            if elution_model_gui in [0, 2, 3]:
+            if elution_model_gui == 0:
                 self.avoid_peak_fronting_cb.config(state=Tk.NORMAL)
             else:
                 self.avoid_peak_fronting.set(0)
@@ -774,8 +740,7 @@ class OptStrategyDialog(Dialog):
         set_setting("uv_basemodel", self.uv_basemodel.get())
         elution_model = self.elution_model_gui.get()
         set_setting("elution_model", elution_model)
-        item_name = DEFAULT_FUNC_ITEM[elution_model]
-        func_code = get_setting(item_name)
+        func_code = MODEL_TO_FUNC[elution_model]
         set_setting("default_objective_func", func_code)
 
         el_option = self.el_option.get()

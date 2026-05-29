@@ -58,19 +58,13 @@ def get_objective_function_info(logger=None, default_func_code=None, debug=False
                 if class_code >= "G0500":
                     continue
             elif elution_model == 1:
-                if class_code < "G1000":
-                    continue
-            elif elution_model == 2:
-                if class_code < "G0500" or class_code >= "G0600":
-                    continue
-            elif elution_model == 3:
-                if class_code < "G0600" or class_code >= "G0700":
-                    continue
-            elif elution_model == 4:
-                if class_code < "G0700" or class_code >= "G0800":
+                if not ("G1000" <= class_code < "G1400"):
                     continue
             elif elution_model == 5:
-                if class_code < "G2000" or class_code >= "G3000":
+                if class_code != "G2020":
+                    continue
+            elif elution_model == 6:
+                if class_code != "G1400":
                     continue
             else:
                 assert False
