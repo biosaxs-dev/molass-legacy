@@ -1158,7 +1158,12 @@ class MplMonitor:
                                 if self.num_trials < self.max_trials:
                                     self.logger.info("Starting a new optimization trial (%d/%d).", self.num_trials, self.max_trials)
                                     best_params = self.get_best_params()
-                                    self.run_impl(self.optimizer, best_params, niter=self.niter, seed=self.seed, work_folder=None, dummy=False, debug=False)
+                                    # Issue #71: increment seed per trial so each CMA run uses a
+                                    # different RNG trajectory.  num_trials is incremented *after*
+                                    # run_impl returns, so at this point it holds the count of
+                                    # already-completed trials → seeds are 1235, 1236, 1237, …
+                                    next_seed = self.seed + self.num_trials + 1
+                                    self.run_impl(self.optimizer, best_params, niter=self.niter, seed=next_seed, work_folder=None, dummy=False, debug=False)
                                     self.status_label.value = self._running_status()
                                     set_label_color(self.status_label, "green")
                                     resume_loop = True

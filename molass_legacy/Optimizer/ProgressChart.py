@@ -89,6 +89,9 @@ def draw_progress(self, plot_info, niter=20):
     prog_ax = self.prog_ax
 
     x_, y_ = fv[:,0:2].T
+    # Always include the running front — if actual evals exceed the estimate, expand.
+    if len(x_) > 0:
+        max_num_evals = max(max_num_evals, int(x_[-1]))
     prog_ax.plot(x_, convert_score(y_))
     prog_ax.set_xlim(-PROGRESS_X_MARGIN, max_num_evals + PROGRESS_X_MARGIN)
     ymin, ymax = prog_ax.get_ylim()
