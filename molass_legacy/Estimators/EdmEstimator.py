@@ -35,7 +35,13 @@ class EdmEstimator(EghEstimator):
         y = xr_curve.y
 
         xr_params = guess_multiple_impl(x, y, nc, debug=debug)
-        uv_w = np.array([uv_curve.max_y/xr_curve.max_y] * nc)
+
+        # Per-component UV weights via peak-lookup — same method as UvOptimizer.
+        # Evaluate each EDM component curve; look up UV value at mapped peak frame.
+        from .EghEstimator import estimate_uv_weights_from_peaks
+        model_curves = [edm_impl(x, *xr_params[k]) for k in range(nc)]
+        uv_w = estimate_uv_weights_from_peaks(
+            model_curves, x, init_mapping, uv_curve.x, uv_curve.y)
 
         progress += 1
         editor.pbar["value"] = progress

@@ -31,14 +31,14 @@ DEFAULT_FUNC_ITEM = {
     }
 
 MODEL_LIST = [  (0, "[%d] %s - EGH - Exponential-Gaussian Hybrid"),
-                (1, "[%d] %s - SDM - Stochastic Dispersive Model"),
+                (1, "SDM - Stochastic Dispersive Model"),
                 (5, "[%d] %s - EDM - Equilibrium Dispersive Model"),
                 (6, "[%d] %s - LKM - Lumped Kinetic Model"),
                 ]
 
 MODEL_TO_FUNC = {
     0 : 'G0346',
-    1 : 'G1100',
+    1 : 'G1200',   # default SDM; actual code set in apply() based on sdm_pore_dist
     5 : 'G2020',
     6 : 'G1400',
 }
@@ -238,10 +238,29 @@ class OptStrategyDialog(Dialog):
         self.number_of_plates = Tk.DoubleVar()
         self.number_of_plates.set(numplates_pm)
 
+        # SDM pore-distribution sub-selection
+        sdm_pore_dist_val = get_setting("sdm_pore_dist")
+        self.sdm_pore_dist = Tk.IntVar()
+        self.sdm_pore_dist.set(0 if sdm_pore_dist_val != 'lognormal' else 1)
+        self.sdm_pore_rbs = []
+
         for i, (k, cname_fmt) in enumerate(MODEL_LIST):
-            cname = cname_fmt % (k, get_setting(DEFAULT_FUNC_ITEM[k]))
-            rb = Tk.Radiobutton(option_frame, text=cname, variable=self.elution_model_gui, value=k)
-            rb.grid(row=i, column=0, columnspan=2, sticky=Tk.W)
+            if k == 1:  # SDM — no G-code in label; add pore-dist sub-selector
+                cname = cname_fmt
+                rb = Tk.Radiobutton(option_frame, text=cname, variable=self.elution_model_gui, value=k)
+                rb.grid(row=i, column=0, sticky=Tk.W)
+                sdm_pore_frame = Tk.Frame(option_frame)
+                sdm_pore_frame.grid(row=i, column=1, sticky=Tk.W, padx=10)
+                self.sdm_pore_frame = sdm_pore_frame
+                for j, (pore_name, pore_val) in enumerate([("Mono-pore", 0), ("Lognormal", 1)]):
+                    pore_rb = Tk.Radiobutton(sdm_pore_frame, text=pore_name,
+                                             variable=self.sdm_pore_dist, value=pore_val)
+                    pore_rb.pack(side=Tk.LEFT, padx=4)
+                    self.sdm_pore_rbs.append(pore_rb)
+            else:
+                cname = cname_fmt % (k, get_setting(DEFAULT_FUNC_ITEM[k]))
+                rb = Tk.Radiobutton(option_frame, text=cname, variable=self.elution_model_gui, value=k)
+                rb.grid(row=i, column=0, columnspan=2, sticky=Tk.W)
 
         # Trimming Strategy
         grid_row += 1
@@ -334,7 +353,7 @@ class OptStrategyDialog(Dialog):
                         # (3, "SMC (pyABC)"),
                         ]
         # activate = slice(None, None) if is_developing_version() else slice(0,2)
-        activate = slice(0,2)
+        activate = slice(0,1)   # NS disabled: not working well
         for k, cname in (option_specs[activate]):
             # method_frame.columnconfigure(k, weight=1)
             rb = Tk.Radiobutton(grid_frame, text=cname, variable=self.optimization_method, value=k)
@@ -547,7 +566,10 @@ class OptStrategyDialog(Dialog):
     def get_model_name(self):
         from molass_legacy.Optimizer.OptimizerUtils import get_model_name
         elution_model = self.elution_model_gui.get()
-        func = MODEL_TO_FUNC[elution_model]
+        if elution_model == 1:  # SDM — check pore_dist sub-selection
+            func = 'G1300' if self.sdm_pore_dist.get() == 1 else 'G1200'
+        else:
+            func = MODEL_TO_FUNC[elution_model]
         return get_model_name(func)
 
     def on_entry_rg_folder(self):
@@ -573,6 +595,12 @@ class OptStrategyDialog(Dialog):
 
     def elution_model_gui_tracer(self, *args):
         elution_model_gui = self.elution_model_gui.get()
+
+        # SDM pore-dist sub-row: enabled only when SDM is selected
+        if self.sdm_pore_rbs:
+            sdm_pore_state = Tk.NORMAL if elution_model_gui == 1 else Tk.DISABLED
+            for rb in self.sdm_pore_rbs:
+                rb.config(state=sdm_pore_state)
 
         if self.avoid_peak_fronting_cb is not None:
             if elution_model_gui == 0:
@@ -740,7 +768,13 @@ class OptStrategyDialog(Dialog):
         set_setting("uv_basemodel", self.uv_basemodel.get())
         elution_model = self.elution_model_gui.get()
         set_setting("elution_model", elution_model)
-        func_code = MODEL_TO_FUNC[elution_model]
+        if elution_model == 1:  # SDM — derive func_code from pore_dist sub-selection
+            pore_dist_idx = self.sdm_pore_dist.get()
+            func_code = 'G1300' if pore_dist_idx == 1 else 'G1200'
+            set_setting("sdm_pore_dist", 'lognormal' if pore_dist_idx == 1 else 'mono')
+            set_setting("default_func_sdm", func_code)
+        else:
+            func_code = MODEL_TO_FUNC[elution_model]
         set_setting("default_objective_func", func_code)
 
         el_option = self.el_option.get()

@@ -386,7 +386,8 @@ ITEM_DEFAULTS = {
 
     'rg_buffer_file'        : None,
     'default_func_egh'      : 'G0346',
-    'default_func_sdm'      : 'G1100',
+    'default_func_sdm'      : 'G1200',
+    'sdm_pore_dist'         : 'mono',       # 'mono' (G1200) or 'lognormal' (G1300)
     'default_func_lj_egh'   : 'G0525',
     'default_func_fd_emg'   : 'G0665',
     'default_func_rt_egh'   : 'G0705',

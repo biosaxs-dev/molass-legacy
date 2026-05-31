@@ -10,11 +10,42 @@ from molass_legacy.Peaks.PeProgressConstants import MAXNUM_STEPS, STOCH_INIT_STE
 from .BaseEstimator import BaseEstimator
 
 class SdmEstimator(BaseEstimator):
-    def __init__(self, editor, t0_upper_bound=None):
+    def __init__(self, editor, pore_dist='mono', t0_upper_bound=None):
         BaseEstimator.__init__(self, editor, t0_upper_bound=t0_upper_bound)
+        self.pore_dist = pore_dist
     
     def estimate_params(self, lrf_src=None, edm_available=False, debug=False):
-        return self.compute_sdm_init_params(self.nc, lrf_src=lrf_src, edm_available=edm_available, debug=debug)
+        if self.pore_dist == 'lognormal':
+            return self._estimate_lognormal(lrf_src=lrf_src, edm_available=edm_available, debug=debug)
+        else:
+            return self._estimate_mono(lrf_src=lrf_src, edm_available=edm_available, debug=debug)
+
+    def _estimate_mono(self, lrf_src=None, edm_available=False, debug=False):
+        """G1200 init: mono-pore + gamma — appends k_gamma=2.0 to the 6-element sdmcol."""
+        init_params = self.compute_sdm_init_params(self.nc, lrf_src=lrf_src,
+                                                   edm_available=edm_available, debug=debug)
+        if init_params is None:
+            return None
+        # Append k_gamma (gamma shape param for pore residence time); initial value 2.0
+        return np.append(init_params, 2.0)
+
+    def _estimate_lognormal(self, lrf_src=None, edm_available=False, debug=False):
+        """G1300 init: lognormal pore + gamma — converts poresize → (mu, sigma) and appends k_gamma."""
+        # Start from the 6-element mono sdmcol
+        init_params_6 = self.compute_sdm_init_params(self.nc, lrf_src=lrf_src,
+                                                     edm_available=edm_available, debug=debug)
+        if init_params_6 is None:
+            return None
+        # Extract sdmcol: [N, K, x0, poresize, N0, tI] (last 6 elements)
+        N, K, x0, poresize, N0, tI = init_params_6[-6:]
+        # Map poresize → lognormal log-pore-size params:
+        #   mu = ln(poresize)  (natural log; poresize in Angstrom)
+        #   sigma = 0.3        (moderate spread; optimizer will refine)
+        mu = np.log(max(float(poresize), 1.0))
+        sigma = 0.3
+        k_gamma = 2.0
+        sdmcol_8 = np.array([N, K, x0, mu, sigma, N0, tI, k_gamma])
+        return np.concatenate([init_params_6[:-6], sdmcol_8])
 
     def compute_sdm_init_params(self, nc_b, lrf_src=None, edm_available=False, debug=False):
         if debug:
@@ -117,12 +148,15 @@ class SdmEstimator(BaseEstimator):
         return est_col_bounds[0:4] + [(1600, 60000)] + est_col_bounds[4:]
 
     def get_colparam_bounds(self):
-        # temporary fix for bug
-        from molass_legacy.Models.Stochastic.ParamLimits import MNP_BOUNDS
-        # MNP_BOUNDS = [N_BOUND, KT_BOUND, T0_BOUND, PORESIZE_BOUNDS]
-        # N, K, x0, poresize, N0, tI = sdmcol_params
+        from molass_legacy.Models.Stochastic.ParamLimits import MNP_BOUNDS, LN_MU_BOUND, LN_SIGMA_BOUND
         mnp_bounds = MNP_BOUNDS.copy()
-        return mnp_bounds + [(1600, 60000), (-1000, 0)]
+        if self.pore_dist == 'lognormal':
+            # G1300: [N, K, x0, mu, sigma, N0, tI, k_gamma] (8 params)
+            return list(mnp_bounds[:3]) + [LN_MU_BOUND, LN_SIGMA_BOUND,
+                                           (1600, 60000), (-1000, 0), (0.5, 10.0)]
+        else:
+            # G1200: [N, K, x0, poresize, N0, tI, k_gamma] (7 params)
+            return mnp_bounds + [(1600, 60000), (-1000, 0), (0.5, 10.0)]
 
 def onthefly_test(editor):
     estimator = SdmEstimator(editor)

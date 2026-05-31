@@ -67,7 +67,12 @@ class SdmParams:
             reload(molass_legacy.Estimators.SdmEstimator)
         from molass_legacy.Estimators.SdmEstimator import SdmEstimator
 
-        estimator = SdmEstimator(editor, t0_upper_bound=t0_upper_bound)
+        # Derive pore_dist from num_col_params:
+        #   6 → G1100 (legacy exp, treated as mono here)
+        #   7 → G1200 (mono + gamma)
+        #   8 → G1300 (lognormal + gamma)
+        pore_dist = 'lognormal' if self.num_col_params >= 8 else 'mono'
+        estimator = SdmEstimator(editor, pore_dist=pore_dist, t0_upper_bound=t0_upper_bound)
         self.estimator = estimator
         return estimator
 

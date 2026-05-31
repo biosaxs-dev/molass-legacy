@@ -58,8 +58,12 @@ class EdmParamsSheet(ParamsSheetBase):
             xr_proportions = np.array(xr_proportions)/np.sum(xr_proportions)
             uv_proportions = np.array(uv_proportions)/np.sum(uv_proportions)
 
-        num_extended_rows = 2
+        num_extended_rows = 2  # 1 blank separator row + 1 Tz (edm_colparams) row
 
+        # Row budget: n xr_params + 1 header + n uv_params + 1 header
+        #             + 2 baseline rows (xr + uv) + 4 fixed rows (xr_bp header, uv_bp header, mapping header, mapping row)
+        #             + num_extended_rows (blank + Tz)
+        # Total: self.n*2 + 2 + 8 + num_extended_rows
         data_list = [["" for c in range(num_columns)] for r in range(self.n*2 + 2 + 8 + num_extended_rows)]
 
         row_offset = 0
@@ -77,6 +81,9 @@ class EdmParamsSheet(ParamsSheetBase):
             data_list[row_offset+i][0] = v
             for j in range(xr_col_size):
                 data_list[row_offset+i][j+1] = "%g" % xr_params[i,j]
+                # params_addr uses stride 5 (not xr_col_size=7) because only
+                # [t0, u, a, b, e] (5 params) are slider-active; Dz and cinj
+                # are excluded from the parameter slider index mapping.
                 k = i*5 + j
                 self.set_params_addr(xr_base+k, (row_offset+i, j+1))
 

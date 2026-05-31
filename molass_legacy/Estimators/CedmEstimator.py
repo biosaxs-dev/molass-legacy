@@ -13,16 +13,16 @@
         mappable_range  : (c, d)
         cedm_colparams  : [t0_sh, u_sh, e_sh, Dz_sh]  (shared, appended at end)
 
-    Strategy: delegate to molass-library's EdmEstimatorImpl.guess_multiple_impl
+    Strategy: delegate to molass-library's EdmEstimatorImpl.estimate_cedm_shared_params
     via a thin adapter.  This keeps the algorithm in a single place — any
     improvement to the library implementation is automatically inherited here.
 
       1. Get EGH component params from estimate_egh_params().
-      2. Wrap each EGH component as an _EghCurveAdapter (has get_y()).
-      3. Call molass.SEC.Models.EdmEstimatorImpl.guess_multiple_impl → (nc × 7)
-         [t0, u, a, b, e, Dz, cinj] per component, sorted by peak position.
-      4. Derive shared CEDM column params as mean of [t0, u, e, Dz].
-      5. Extract per-component [a, b, cinj].
+      2. Wrap each EGH component as an _EghCurveAdapter (.x, .y, get_y()).
+      3. Call molass.SEC.Models.EdmEstimatorImpl.estimate_cedm_shared_params
+         → (cedm_colparams [t0_sh, u_sh, e_sh, Dz_sh], abc_params [nc×3]).
+         This runs guess_multiple_impl (rough) then a shared-column L-BFGS-B
+         optimisation, producing physically varied b values per component.
 
     Copyright (c) 2025, SAXS Team, KEK-PF
 """
@@ -33,13 +33,19 @@ from .EghEstimator import EghEstimator
 
 
 class _EghCurveAdapter:
-    """Adapts EGH params to the get_y() interface used by EdmEstimatorImpl."""
+    """Adapts EGH params to the curve interface used by EdmEstimatorImpl.
+
+    Exposes .x and .y arrays (needed by optimize_edm_xr_decomposition for
+    EGH peak-frame detection) as well as the get_y() method (used by
+    guess_multiple_impl).
+    """
     def __init__(self, x, egh_params):
-        self._x = x
         self._params = egh_params
+        self.x = x
+        self.y = np.maximum(egh(x, *egh_params[:4]), 0.0)
 
     def get_y(self):
-        return np.maximum(egh(self._x, *self._params[:4]), 0.0)
+        return self.y
 
 
 class CedmEstimator(EghEstimator):
@@ -52,7 +58,7 @@ class CedmEstimator(EghEstimator):
             from importlib import reload
             import molass.SEC.Models.EdmEstimatorImpl
             reload(molass.SEC.Models.EdmEstimatorImpl)
-        from molass.SEC.Models.EdmEstimatorImpl import guess_multiple_impl
+        from molass.SEC.Models.EdmEstimatorImpl import estimate_cedm_shared_params
 
         (init_xr_params, init_xr_baseparams, temp_rgs, init_mapping,
          init_uv_heights, init_uv_baseparams, init_mappable_range,
@@ -68,25 +74,27 @@ class CedmEstimator(EghEstimator):
         x = xr_curve.x
         y = xr_curve.y
 
-        # Delegate to library: fit EDM per component then jointly optimise cinj.
-        # Returns (nc × 7) sorted by peak position: [t0, u, a, b, e, Dz, cinj].
+        # Delegate to library: rough EDM fit → shared-column L-BFGS-B optimisation.
+        # Returns cedm_colparams [t0_sh, u_sh, e_sh, Dz_sh] and abc_params (nc×3).
         adapters = [_EghCurveAdapter(x, init_xr_params[k]) for k in range(nc)]
-        edm_xr_params = guess_multiple_impl(x, y, adapters, debug=debug)
+        cedm_colparams, abc_params = estimate_cedm_shared_params(x, y, adapters, debug=debug)
 
         progress += 1
         editor.pbar["value"] = progress
         editor.update()
 
-        # Shared column params: mean of per-component [t0(0), u(1), e(4), Dz(5)]
-        t0_sh = float(np.mean(edm_xr_params[:, 0]))
-        u_sh  = float(np.mean(edm_xr_params[:, 1]))
-        e_sh  = float(np.mean(edm_xr_params[:, 4]))
-        Dz_sh = float(np.mean(edm_xr_params[:, 5]))
-        cedm_colparams = np.array([t0_sh, u_sh, e_sh, Dz_sh])
-
-        abc_params = edm_xr_params[:, [2, 3, 6]]   # nc × 3: [a, b, cinj]
-
-        uv_w = np.array([uv_curve.max_y / xr_curve.max_y] * nc)
+        # Per-component UV weights via peak-lookup — same method as UvOptimizer.
+        # Evaluate each CEDM component curve using shared column params.
+        from .EghEstimator import estimate_uv_weights_from_peaks
+        from molass_legacy.Models.RateTheory.EDM import edm_impl
+        t0_sh, u_sh, e_sh, Dz_sh = cedm_colparams
+        model_curves = [
+            edm_impl(x, t0_sh, u_sh, abc_params[k, 0], abc_params[k, 1],
+                     e_sh, Dz_sh, abc_params[k, 2])
+            for k in range(nc)
+        ]
+        uv_w = estimate_uv_weights_from_peaks(
+            model_curves, x, init_mapping, uv_curve.x, uv_curve.y)
 
         editor.update_status_bar("CEDM initial parameters are ready.")
 

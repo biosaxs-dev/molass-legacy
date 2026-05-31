@@ -31,7 +31,7 @@ def SDM_estimator_test_impl(editor):
     if init_params is None:
         return
 
-    class_code = 'G1100'
+    class_code = 'G1200'
     if edm_available:
         # create SDM optimizer
         from molass_legacy.Optimizer.FuncImporter import import_objective_function

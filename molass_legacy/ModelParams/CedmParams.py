@@ -315,10 +315,21 @@ class CedmParams:
         return StcAdjuster()
 
     def get_params_sheet(self, parent, params, dsets, optimizer, debug=True):
-        raise NotImplementedError("CedmParams GUI sheet not yet implemented")
+        if debug:
+            from importlib import reload
+            import molass_legacy.ModelParams.CedmParamsSheet
+            reload(molass_legacy.ModelParams.CedmParamsSheet)
+        from .CedmParamsSheet import CedmParamsSheet
+        return CedmParamsSheet(parent, params, dsets, optimizer)
 
     def get_paramslider_info(self, devel=True):
-        raise NotImplementedError("CedmParams slider info not yet implemented")
+        if devel:
+            from importlib import reload
+            import molass_legacy.ModelParams.CedmSliderInfo
+            reload(molass_legacy.ModelParams.CedmSliderInfo)
+        from .CedmSliderInfo import CedmSliderInfo
+        nc = self.n_components - 1
+        return CedmSliderInfo(nc=nc)
 
     def get_trans_indeces(self):
         raise NotImplementedError("CedmParams.get_trans_indeces is not supported (use_K=False)")

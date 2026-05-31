@@ -60,6 +60,44 @@ class EghEstimator(BaseEstimator):
 
         return init_params
 
+def estimate_uv_weights_from_peaks(model_curves, x, mapping, uv_x, uv_y):
+    """
+    Per-component UV scale: UV data value at each model component's peak
+    position divided by the XR model peak value.
+
+    This is the same approach used by molass.SEC.Models.UvOptimizer and
+    can be called from any model estimator (EDM, CEDM, LKM, ...).
+
+    Parameters
+    ----------
+    model_curves : list of 1-D array
+        Evaluated XR model curve for each component on grid ``x``.
+    x : 1-D array
+        XR frame positions.
+    mapping : (float, float)
+        (a_mp, b_mp) mapping XR frame → UV frame  (uv_frame = a*x + b).
+    uv_x, uv_y : 1-D array
+        UV elution curve x / y arrays.
+
+    Returns
+    -------
+    uv_w : 1-D array  (nc,)
+        UV scale per component, clipped to [1e-3, 1e3].
+    """
+    a_mp, b_mp = mapping
+    uv_w = []
+    for cy in model_curves:
+        peak_xr_idx   = int(np.argmax(cy))
+        peak_xr_val   = float(cy[peak_xr_idx])
+        peak_xr_frame = float(x[peak_xr_idx])
+        peak_uv_frame = a_mp * peak_xr_frame + b_mp
+        uv_idx  = int(np.argmin(np.abs(uv_x - peak_uv_frame)))
+        uv_val  = float(uv_y[uv_idx])
+        s0 = uv_val / peak_xr_val if peak_xr_val > 1e-15 else 1.0
+        uv_w.append(float(np.clip(s0, 1e-3, 1e3)))
+    return np.array(uv_w)
+
+
 def get_peak_params_advanced(editor, lrf_src=None, affine=False, debug=False):
     # note that this is called from the estimators
 

@@ -74,11 +74,25 @@ class LkmParams:
     def get_model_name(self):
         return 'LKM'
 
-    # ── Estimator (bounds derived from init params; no legacy estimator needed) ─
+    # ── Estimator ─────────────────────────────────────────────────────────────
 
     def get_estimator(self, editor, **kwargs):
-        """No-op: LKM bounds are derived directly from initial params."""
-        return None
+        """Return an LkmEstimator for this model."""
+        if True:
+            from importlib import reload
+            import molass_legacy.Estimators.LkmEstimator
+            reload(molass_legacy.Estimators.LkmEstimator)
+        from molass_legacy.Estimators.LkmEstimator import LkmEstimator
+        self.estimator = LkmEstimator(editor, self.n_components)
+        return self.estimator
+
+    def set_estimator(self, estimator):
+        """
+        Store an externally-created estimator (used by FullOptResult when
+        loading a previous result via the Result Viewer).
+        """
+        self.logger.info("setting estimator for result viewer")
+        self.estimator = estimator
 
     def get_colparam_bounds(self):
         """Return None; bounds are computed in get_param_bounds from init values."""
@@ -240,3 +254,24 @@ class LkmParams:
             trs     = np.array([t0 * lkmcol[2 + 2 * i] for i in range(nc)])
             pos_array_list.append(trs)
         return np.array(pos_array_list).T
+
+    # ── GUI inspection helpers ────────────────────────────────────────────────
+
+    def get_params_sheet(self, parent, params, dsets, optimizer, debug=True):
+        """Return the parameter inspection sheet for the GUI 'Show Parameters' button."""
+        if debug:
+            from importlib import reload
+            import molass_legacy.ModelParams.LkmParamsSheet
+            reload(molass_legacy.ModelParams.LkmParamsSheet)
+        from .LkmParamsSheet import LkmParamsSheet
+        return LkmParamsSheet(parent, params, dsets, optimizer)
+
+    def get_paramslider_info(self, devel=True):
+        """Return slider metadata for the GUI 'Parameter Slider' button."""
+        if devel:
+            from importlib import reload
+            import molass_legacy.ModelParams.LkmSliderInfo
+            reload(molass_legacy.ModelParams.LkmSliderInfo)
+        from .LkmSliderInfo import LkmSliderInfo
+        nc = self.n_components - 1
+        return LkmSliderInfo(nc=nc)
