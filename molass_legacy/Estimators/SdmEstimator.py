@@ -9,6 +9,28 @@ from molass_legacy.SecTheory.RetensionTime import estimate_init_rgs
 from molass_legacy.Peaks.PeProgressConstants import MAXNUM_STEPS, STOCH_INIT_STEPS
 from .BaseEstimator import BaseEstimator
 
+class _SdmProxyDecomp:
+    """Minimal Decomposition-like proxy for molass.SEC.Models.SdmEstimator.estimate_sdm_column_params.
+
+    Provides only ``get_rgs()`` and ``xr_ccurves`` (each with ``.get_xy()``).
+    Built from ``lrf_src`` data so that the library estimator operates on the
+    same x-axis scale as the legacy inner BH (``DispersiveMonopore``).
+    """
+    class _CurveProxy:
+        def __init__(self, x, y):
+            self._x = np.asarray(x)
+            self._y = np.asarray(y)
+        def get_xy(self):
+            return self._x, self._y
+
+    def __init__(self, xr_x, peaks, model, peak_rgs):
+        self._rgs = list(np.asarray(peak_rgs))
+        self.xr_ccurves = [self._CurveProxy(xr_x, model(xr_x, p)) for p in peaks]
+
+    def get_rgs(self):
+        return self._rgs
+
+
 class SdmEstimator(BaseEstimator):
     def __init__(self, editor, pore_dist='mono', t0_upper_bound=None):
         BaseEstimator.__init__(self, editor, t0_upper_bound=t0_upper_bound)
@@ -30,34 +52,42 @@ class SdmEstimator(BaseEstimator):
         return np.append(init_params, 2.0)
 
     def _estimate_lognormal(self, lrf_src=None, edm_available=False, debug=False):
-        """G1300 init: lognormal pore + gamma — converts poresize → (mu, sigma) and appends k_gamma."""
-        # Start from the 6-element mono sdmcol
+        """G1300 init: lognormal pore + gamma.
+
+        Uses molass-library ``estimate_sdm_column_params`` (multi-start NM,
+        poresize_bounds=(70, 300)) instead of the legacy inner BH
+        (``DispersiveMonopore.guess_params_using_moments``) so the initial
+        poresize is not constrained to the GUI's narrow poresize_bounds window.
+        Falls back to the legacy mono-pore poresize estimate on import errors.
+        """
+        # Run the full legacy mono-pore estimator first — we still need
+        # corrected_rgs, self.bounds, self._xr_* attrs, and the UV/baseline
+        # portion of init_params (indices 0..-6).
         init_params_6 = self.compute_sdm_init_params(self.nc, lrf_src=lrf_src,
                                                      edm_available=edm_available, debug=debug)
         if init_params_6 is None:
             return None
-        # Extract sdmcol: [N, K, x0, poresize, N0, tI] (last 6 elements)
+        # Legacy mono-pore column params: [N, K, x0, poresize, N0, tI]
         N, K, x0, poresize, N0, tI = init_params_6[-6:]
-        # Fix 1: K (timescale) comes from the inner moment-estimator BH which uses wider bounds;
-        # clamp to the main optimizer's KT_BOUND to avoid "Initial guess not within bounds" warning.
-        from molass_legacy.Models.Stochastic.ParamLimits import KT_BOUND
-        K = float(np.clip(K, KT_BOUND[0], KT_BOUND[1]))
-        # Fix 2: cap poresize to 2 × Rg_max (Rg-based safety limit).
-        # poresize > 2*Rg_max causes K_SEC compression → degenerate elution curves at the init point.
+
+        # Override (N, K, x0, poresize) with molass-library multi-start estimate.
+        # This uses wider poresize_bounds so BH can find the correct basin
+        # (e.g. poresize~97 Å for SAMPLE1) rather than being confined to the
+        # GUI's narrow window (e.g. 71–81 Å).
         try:
-            rg_max = float(np.nanmax(self.peak_rgs))
-            poresize_safe = 2.0 * rg_max
-            if poresize > poresize_safe:
-                self.logger.warning("poresize_init=%.2f > 2*Rg_max=%.2f; capping to avoid degenerate init.",
-                                    poresize, poresize_safe)
-                # Apply 0.05 log-unit safety margin (same as molass-library issue #196):
-                # exp(ln(poresize_safe) - 0.05) ≈ poresize_safe × 0.951
-                poresize = poresize_safe * np.exp(-0.05)
-        except Exception:
-            pass  # peak_rgs unavailable; leave poresize as-is
-        # Map poresize → lognormal log-pore-size params:
-        #   mu = ln(poresize)  (natural log; poresize in Angstrom)
-        #   sigma = 0.3        (moderate spread; optimizer will refine)
+            from molass.SEC.Models.SdmEstimator import estimate_sdm_column_params as lib_estimate
+            proxy = _SdmProxyDecomp(self._xr_x, self._xr_peaks, self._xr_model, self.peak_rgs)
+            N_lib, T_lib, _me, _mp, _N0, t0_lib, poresize_lib = lib_estimate(
+                proxy, poresize_bounds=(70, 300), N0=N0)
+            N, K = N_lib, N_lib * T_lib
+            x0 = t0_lib
+            poresize = poresize_lib
+            self.logger.info(
+                "Library SDM estimator: N=%g, K=%g, x0=%g, poresize=%g",
+                N, K, x0, poresize)
+        except Exception as e:
+            self.logger.warning("Library SDM estimator failed (%s); using legacy poresize.", e)
+
         mu = np.log(max(float(poresize), 1.0))
         sigma = 0.3
         k_gamma = 2.0
@@ -145,7 +175,10 @@ class SdmEstimator(BaseEstimator):
 
         sdm_params, corrected_rgs, bounds = ret
         self.bounds = bounds
-        self.peak_rgs = peak_rgs   # stored for _estimate_lognormal safety check
+        self.peak_rgs = peak_rgs   # stored for _estimate_lognormal
+        self._xr_x = x
+        self._xr_peaks = peaks
+        self._xr_model = lrf_src.model
 
         init_params = edit_to_full_sdmparams(editor, sdm_params, corrected_rgs, uv_curve, debug=debug)
         if init_params is None:
