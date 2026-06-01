@@ -22,6 +22,9 @@ class _CurveProxy:
     def get_xy(self):
         return self.x, self.y
 
+    def get_max_y(self):
+        return float(np.max(self.y))
+
 
 class _ProxyDecomposition:
     """Minimal Decomposition-like object for driving the library's 3-stage
