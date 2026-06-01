@@ -38,6 +38,23 @@ class SdmEstimator(BaseEstimator):
             return None
         # Extract sdmcol: [N, K, x0, poresize, N0, tI] (last 6 elements)
         N, K, x0, poresize, N0, tI = init_params_6[-6:]
+        # Fix 1: K (timescale) comes from the inner moment-estimator BH which uses wider bounds;
+        # clamp to the main optimizer's KT_BOUND to avoid "Initial guess not within bounds" warning.
+        from molass_legacy.Models.Stochastic.ParamLimits import KT_BOUND
+        K = float(np.clip(K, KT_BOUND[0], KT_BOUND[1]))
+        # Fix 2: cap poresize to 2 × Rg_max (Rg-based safety limit).
+        # poresize > 2*Rg_max causes K_SEC compression → degenerate elution curves at the init point.
+        try:
+            rg_max = float(np.nanmax(self.peak_rgs))
+            poresize_safe = 2.0 * rg_max
+            if poresize > poresize_safe:
+                self.logger.warning("poresize_init=%.2f > 2*Rg_max=%.2f; capping to avoid degenerate init.",
+                                    poresize, poresize_safe)
+                # Apply 0.05 log-unit safety margin (same as molass-library issue #196):
+                # exp(ln(poresize_safe) - 0.05) ≈ poresize_safe × 0.951
+                poresize = poresize_safe * np.exp(-0.05)
+        except Exception:
+            pass  # peak_rgs unavailable; leave poresize as-is
         # Map poresize → lognormal log-pore-size params:
         #   mu = ln(poresize)  (natural log; poresize in Angstrom)
         #   sigma = 0.3        (moderate spread; optimizer will refine)
@@ -128,6 +145,7 @@ class SdmEstimator(BaseEstimator):
 
         sdm_params, corrected_rgs, bounds = ret
         self.bounds = bounds
+        self.peak_rgs = peak_rgs   # stored for _estimate_lognormal safety check
 
         init_params = edit_to_full_sdmparams(editor, sdm_params, corrected_rgs, uv_curve, debug=debug)
         if init_params is None:
