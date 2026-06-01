@@ -101,8 +101,13 @@ class SdmEstimator(BaseEstimator):
             proxy = _ProxyDecomposition(
                 self._xr_x, self._xr_y, self._xr_peaks, self._xr_model, self.peak_rgs
             )
-            # Stage 1: multi-start mono-pore column param estimation
-            mono_env = estimate_sdm_column_params(proxy)
+            # Stage 1: multi-start mono-pore column param estimation.
+            # Pass the column-specific poresize_bounds from SerialSettings so
+            # the library estimator uses the same window as the optimizer
+            # (e.g. (71, 81) Å for Superdex 200) instead of the default (70, 300).
+            from molass_legacy._MOLASS.SerialSettings import get_setting
+            poresize_bounds = get_setting("poresize_bounds")
+            mono_env = estimate_sdm_column_params(proxy, poresize_bounds=poresize_bounds)
             # Stage 2: converged mono-pore SdmComponentCurves
             mono_ccurves = optimize_sdm_xr_decomposition(proxy, mono_env)
             # Stage 3: lognormal (mu, sigma, t0, k) refined by moment matching
@@ -110,14 +115,15 @@ class SdmEstimator(BaseEstimator):
                 mono_ccurves, proxy.xr_icurve, decomposition=proxy
             )
             N_lib, T_lib, _me, _mp, N0_lib, t0_lib, mu_lib, sigma_lib = ln_env
+            # Legacy K = N*T  (see DispersiveMonopore.py: "T_ = K_/N_")
+            K_lib = N_lib * T_lib
             self.logger.info(
-                "Library lognormal init: N=%g, T=%g, N0=%g, t0=%g, mu=%g (poresize=%g Å), sigma=%g",
-                N_lib, T_lib, N0_lib, t0_lib, mu_lib, np.exp(mu_lib), sigma_lib,
+                "Library lognormal init: N=%g, T=%g, K=%g, N0=%g, t0=%g, mu=%g (poresize=%g Å), sigma=%g",
+                N_lib, T_lib, K_lib, N0_lib, t0_lib, mu_lib, np.exp(mu_lib), sigma_lib,
             )
             # Map LognormalEnv → G1300 sdmcol_8: [N, K, x0, mu, sigma, N0, tI, k_gamma]
-            # Library's T ↔ legacy's K  (pore-residence time parameter)
-            # Library's t0 is used for both x0 and tI (consistent with upgrade())
-            sdmcol_8 = np.array([N_lib, T_lib, t0_lib, mu_lib, sigma_lib, N0_lib, t0_lib, 2.0])
+            # K = N*T;  t0 used for both x0 and tI (consistent with upgrade())
+            sdmcol_8 = np.array([N_lib, K_lib, t0_lib, mu_lib, sigma_lib, N0_lib, t0_lib, 2.0])
         except Exception as e:
             self.logger.warning(
                 "Library lognormal init failed (%s); falling back to legacy rough estimate.", e
