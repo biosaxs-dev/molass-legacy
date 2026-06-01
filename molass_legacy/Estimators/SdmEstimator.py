@@ -70,21 +70,22 @@ class SdmEstimator(BaseEstimator):
         # Legacy mono-pore column params: [N, K, x0, poresize, N0, tI]
         N, K, x0, poresize, N0, tI = init_params_6[-6:]
 
-        # Override (N, K, x0, poresize) with molass-library multi-start estimate.
-        # This uses wider poresize_bounds so BH can find the correct basin
-        # (e.g. poresize~97 Å for SAMPLE1) rather than being confined to the
-        # GUI's narrow window (e.g. 71–81 Å).
+        # Override poresize-only with molass-library multi-start estimate.
+        # The library uses wider poresize_bounds=(70, 300) so BH can find the
+        # correct basin (e.g. poresize~97 Å for SAMPLE1) rather than being
+        # confined to the GUI's narrow window (e.g. 71-81 Å).
+        # N, K, x0, tI stay from the legacy estimator — the library's t0 is
+        # in absolute frame units while lrf_src.xr_x is in index-space (0..n),
+        # so x0/tI cannot be taken from the library result directly.
         try:
             from molass.SEC.Models.SdmEstimator import estimate_sdm_column_params as lib_estimate
             proxy = _SdmProxyDecomp(self._xr_x, self._xr_peaks, self._xr_model, self.peak_rgs)
-            N_lib, T_lib, _me, _mp, _N0, t0_lib, poresize_lib = lib_estimate(
+            _N, _T, _me, _mp, _N0, _t0, poresize_lib = lib_estimate(
                 proxy, poresize_bounds=(70, 300), N0=N0)
-            N, K = N_lib, N_lib * T_lib
-            x0 = t0_lib
+            legacy_poresize = poresize
             poresize = poresize_lib
             self.logger.info(
-                "Library SDM estimator: N=%g, K=%g, x0=%g, poresize=%g",
-                N, K, x0, poresize)
+                "Library poresize: %g Å (legacy was %g Å)", poresize_lib, legacy_poresize)
         except Exception as e:
             self.logger.warning("Library SDM estimator failed (%s); using legacy poresize.", e)
 
