@@ -94,13 +94,11 @@ def guess_params_using_moments(x, y, egh_moments_list, peak_rgs, qualities, prop
     else:
         unreliable_indeces = exec_spec['unreliable_indeces']
         poresize_bounds = exec_spec['poresize_bounds']
-        # N0 = exec_spec['init_N0']
+        N0 = exec_spec.get('init_N0', 50000)  # restored: use GUI num_plates_pc (e.g. 14400)
         if fronting:
             # as in 20230303/HasA
             poresize_bounds = 75, 300
             N0 = 30000
-        else:
-            N0 = 50000
 
     if unreliable_indeces is None:
         unreliable_indeces = determine_unreliables(peak_rgs, qualities, props, trust_max_num=trust_max_num, debug=True)
