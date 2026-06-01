@@ -114,11 +114,14 @@ class SdmEstimator(BaseEstimator):
             ln_env = estimate_sdm_lognormal_from_monopore(
                 mono_ccurves, proxy.xr_icurve, decomposition=proxy
             )
-            # Stage 4: full NM on the lognormal model against the actual XR data
-            # — mirrors what upgrade() does; this is the stage that closes the
-            # gap between the moment-matched estimate and the converged result.
+            # Stage 4: partial NM on the lognormal model against the actual XR data.
+            # We use a reduced maxiter (3000) because this is an init pass — BH
+            # will do the full convergence afterwards. A few hundred NM steps are
+            # enough to move from the moment-matched estimate into the right basin.
             from molass.SEC.Models.SdmOptimizer import optimize_sdm_lognormal_xr_decomposition
-            ln_ccurves = optimize_sdm_lognormal_xr_decomposition(proxy, ln_env)
+            ln_ccurves = optimize_sdm_lognormal_xr_decomposition(
+                proxy, ln_env, model_params={'maxiter': 3000}
+            )
             col_p = ln_ccurves[0].column.get_params()
             # SdmLognormalColumnParams: (N, T, me, mp, x0, tI, N0, mu, sigma, k)
             N_lib, T_lib = col_p.N, col_p.T
