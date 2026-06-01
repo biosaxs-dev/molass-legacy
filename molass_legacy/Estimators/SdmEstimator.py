@@ -122,13 +122,16 @@ class SdmEstimator(BaseEstimator):
             N_lib, T_lib, _me, _mp, N0_lib, t0_lib, mu_lib, sigma_lib = ln_env
             # Legacy K = N*T  (see DispersiveMonopore.py: "T_ = K_/N_")
             K_lib = N_lib * T_lib
+            # Fix sigma to the library default (0.3) — consistent with optimize_sdm_lognormal_xr_decomposition
+            # default ln_pore_sigma=0.3. The stage-3 sigma estimate is unreliable for 2-component data.
+            _SIGMA_FIXED = 0.3
             self.logger.info(
-                "Library lognormal init (stage3): N=%g, T=%g, K=%g, N0=%g, t0=%g, mu=%g (poresize=%g Å), sigma=%g",
-                N_lib, T_lib, K_lib, N0_lib, t0_lib, mu_lib, np.exp(mu_lib), sigma_lib,
+                "Library lognormal init (stage3): N=%g, T=%g, K=%g, N0=%g, t0=%g, mu=%g (poresize=%g Å), sigma=%g (fixed to %g)",
+                N_lib, T_lib, K_lib, N0_lib, t0_lib, mu_lib, np.exp(mu_lib), sigma_lib, _SIGMA_FIXED,
             )
             # Map LognormalEnv → G1300 sdmcol_8: [N, K, x0, mu, sigma, N0, tI, k_gamma]
-            # t0 used for both x0 and tI; k_gamma default 2.0
-            sdmcol_8 = np.array([N_lib, K_lib, t0_lib, mu_lib, sigma_lib, N0_lib, t0_lib, 2.0])
+            # t0 used for both x0 and tI; k_gamma default 2.0; sigma fixed to 0.3
+            sdmcol_8 = np.array([N_lib, K_lib, t0_lib, mu_lib, _SIGMA_FIXED, N0_lib, t0_lib, 2.0])
         except Exception as e:
             self.logger.warning(
                 "Library lognormal init failed (%s); falling back to legacy rough estimate.", e
