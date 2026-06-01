@@ -114,27 +114,21 @@ class SdmEstimator(BaseEstimator):
             ln_env = estimate_sdm_lognormal_from_monopore(
                 mono_ccurves, proxy.xr_icurve, decomposition=proxy
             )
-            # Stage 4: partial NM on the lognormal model against the actual XR data.
-            # We use a reduced maxiter (3000) because this is an init pass — BH
-            # will do the full convergence afterwards. A few hundred NM steps are
-            # enough to move from the moment-matched estimate into the right basin.
-            from molass.SEC.Models.SdmOptimizer import optimize_sdm_lognormal_xr_decomposition
-            ln_ccurves = optimize_sdm_lognormal_xr_decomposition(
-                proxy, ln_env, model_params={'maxiter': 3000}
-            )
-            col_p = ln_ccurves[0].column.get_params()
-            # SdmLognormalColumnParams: (N, T, me, mp, x0, tI, N0, mu, sigma, k)
-            N_lib, T_lib = col_p.N, col_p.T
-            x0_lib, tI_lib = col_p.x0, col_p.tI
-            N0_lib, mu_lib, sigma_lib, k_lib = col_p.N0, col_p.mu, col_p.sigma, col_p.k
+            # Stage 3 output (moment-matched LognormalEnv) is the init for BH.
+            # No stage 4 here: upgrade()'s optimize_sdm_lognormal_xr_decomposition
+            # runs to convergence because it IS the final result in the library context,
+            # but here BH is the real convergence step — stage 3 (fv≈-0.76) is
+            # already inside the basin and sufficient as a starting point.
+            N_lib, T_lib, _me, _mp, N0_lib, t0_lib, mu_lib, sigma_lib = ln_env
             # Legacy K = N*T  (see DispersiveMonopore.py: "T_ = K_/N_")
             K_lib = N_lib * T_lib
             self.logger.info(
-                "Library lognormal init (stage4): N=%g, T=%g, K=%g, N0=%g, x0=%g, tI=%g, mu=%g (poresize=%g Å), sigma=%g, k=%g",
-                N_lib, T_lib, K_lib, N0_lib, x0_lib, tI_lib, mu_lib, np.exp(mu_lib), sigma_lib, k_lib,
+                "Library lognormal init (stage3): N=%g, T=%g, K=%g, N0=%g, t0=%g, mu=%g (poresize=%g Å), sigma=%g",
+                N_lib, T_lib, K_lib, N0_lib, t0_lib, mu_lib, np.exp(mu_lib), sigma_lib,
             )
-            # Map → G1300 sdmcol_8: [N, K, x0, mu, sigma, N0, tI, k_gamma]
-            sdmcol_8 = np.array([N_lib, K_lib, x0_lib, mu_lib, sigma_lib, N0_lib, tI_lib, k_lib])
+            # Map LognormalEnv → G1300 sdmcol_8: [N, K, x0, mu, sigma, N0, tI, k_gamma]
+            # t0 used for both x0 and tI; k_gamma default 2.0
+            sdmcol_8 = np.array([N_lib, K_lib, t0_lib, mu_lib, sigma_lib, N0_lib, t0_lib, 2.0])
         except Exception as e:
             self.logger.warning(
                 "Library lognormal init failed (%s); falling back to legacy rough estimate.", e
