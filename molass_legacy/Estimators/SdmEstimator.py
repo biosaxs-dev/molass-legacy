@@ -9,28 +9,6 @@ from molass_legacy.SecTheory.RetensionTime import estimate_init_rgs
 from molass_legacy.Peaks.PeProgressConstants import MAXNUM_STEPS, STOCH_INIT_STEPS
 from .BaseEstimator import BaseEstimator
 
-class _SdmProxyDecomp:
-    """Minimal Decomposition-like proxy for molass.SEC.Models.SdmEstimator.estimate_sdm_column_params.
-
-    Provides only ``get_rgs()`` and ``xr_ccurves`` (each with ``.get_xy()``).
-    Built from ``lrf_src`` data so that the library estimator operates on the
-    same x-axis scale as the legacy inner BH (``DispersiveMonopore``).
-    """
-    class _CurveProxy:
-        def __init__(self, x, y):
-            self._x = np.asarray(x)
-            self._y = np.asarray(y)
-        def get_xy(self):
-            return self._x, self._y
-
-    def __init__(self, xr_x, peaks, model, peak_rgs):
-        self._rgs = list(np.asarray(peak_rgs))
-        self.xr_ccurves = [self._CurveProxy(xr_x, model(xr_x, p)) for p in peaks]
-
-    def get_rgs(self):
-        return self._rgs
-
-
 class SdmEstimator(BaseEstimator):
     def __init__(self, editor, pore_dist='mono', t0_upper_bound=None):
         BaseEstimator.__init__(self, editor, t0_upper_bound=t0_upper_bound)
@@ -54,11 +32,14 @@ class SdmEstimator(BaseEstimator):
     def _estimate_lognormal(self, lrf_src=None, edm_available=False, debug=False):
         """G1300 init: lognormal pore + gamma.
 
-        Uses molass-library ``estimate_sdm_column_params`` (multi-start NM,
-        poresize_bounds=(70, 300)) instead of the legacy inner BH
-        (``DispersiveMonopore.guess_params_using_moments``) so the initial
-        poresize is not constrained to the GUI's narrow poresize_bounds window.
-        Falls back to the legacy mono-pore poresize estimate on import errors.
+        Uses the legacy mono-pore estimator for N, K, x0, poresize, tI.
+        N0 is hardcoded to 50000 — exec_spec['init_N0'] (e.g. 14400) is tuned
+        for the mono-pore model and gives a terrible initial fv for lognormal.
+        Analysis-006 (SV≈65) used poresize≈81 Å + N0=50000 and achieved
+        initial fv=0.911, which is the target starting condition.
+        NOTE: the library poresize estimate (~98 Å) is outside the optimizer's
+        own poresize_bounds=(71, 81) and is inconsistent with the legacy K
+        estimate, so it is not used here.
         """
         # Run the full legacy mono-pore estimator first — we still need
         # corrected_rgs, self.bounds, self._xr_* attrs, and the UV/baseline
@@ -70,24 +51,12 @@ class SdmEstimator(BaseEstimator):
         # Legacy mono-pore column params: [N, K, x0, poresize, N0, tI]
         N, K, x0, poresize, N0, tI = init_params_6[-6:]
 
-        # Override poresize-only with molass-library multi-start estimate.
-        # The library uses wider poresize_bounds=(70, 300) so BH can find the
-        # correct basin (e.g. poresize~97 Å for SAMPLE1) rather than being
-        # confined to the GUI's narrow window (e.g. 71-81 Å).
-        # N, K, x0, tI stay from the legacy estimator — the library's t0 is
-        # in absolute frame units while lrf_src.xr_x is in index-space (0..n),
-        # so x0/tI cannot be taken from the library result directly.
-        try:
-            from molass.SEC.Models.SdmEstimator import estimate_sdm_column_params as lib_estimate
-            proxy = _SdmProxyDecomp(self._xr_x, self._xr_peaks, self._xr_model, self.peak_rgs)
-            _N, _T, _me, _mp, _N0, _t0, poresize_lib = lib_estimate(
-                proxy, poresize_bounds=(70, 300), N0=N0)
-            legacy_poresize = poresize
-            poresize = poresize_lib
-            self.logger.info(
-                "Library poresize: %g Å (legacy was %g Å)", poresize_lib, legacy_poresize)
-        except Exception as e:
-            self.logger.warning("Library SDM estimator failed (%s); using legacy poresize.", e)
+        # exec_spec['init_N0'] is tuned for mono-pore (e.g. 14400 for SAMPLE1).
+        # For lognormal, N0=50000 gives a consistent starting point.
+        N0 = 50000.0
+        self.logger.info(
+            "G1300 lognormal init: poresize=%g Å (from legacy), N0=%.0f (hardcoded)",
+            poresize, N0)
 
         mu = np.log(max(float(poresize), 1.0))
         sigma = 0.3
