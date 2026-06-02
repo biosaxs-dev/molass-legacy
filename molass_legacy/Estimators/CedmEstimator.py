@@ -27,25 +27,8 @@
     Copyright (c) 2025, SAXS Team, KEK-PF
 """
 import numpy as np
-from molass_legacy.Peaks.ElutionModels import egh
 from molass_legacy.Peaks.PeProgressConstants import MAXNUM_STEPS, STOCH_INIT_STEPS
-from .EghEstimator import EghEstimator
-
-
-class _EghCurveAdapter:
-    """Adapts EGH params to the curve interface used by EdmEstimatorImpl.
-
-    Exposes .x and .y arrays (needed by optimize_edm_xr_decomposition for
-    EGH peak-frame detection) as well as the get_y() method (used by
-    guess_multiple_impl).
-    """
-    def __init__(self, x, egh_params):
-        self._params = egh_params
-        self.x = x
-        self.y = np.maximum(egh(x, *egh_params[:4]), 0.0)
-
-    def get_y(self):
-        return self.y
+from .EghEstimator import EghEstimator, _EghCurveAdapter
 
 
 class CedmEstimator(EghEstimator):

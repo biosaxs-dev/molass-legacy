@@ -15,11 +15,19 @@ class EdmEstimator(EghEstimator):
         EghEstimator.__init__(self, editor)
 
     def estimate_params(self, debug=False):
+        """G1800/non-CEDM EDM init.
+
+        Delegates per-component EDM fitting to the library's
+        guess_multiple_impl (EdmEstimatorImpl), which takes pre-built
+        component curves instead of re-running recognize_peaks.
+        Falls back to the legacy guess_multiple_impl on import failure.
+        """
         if debug:
             from importlib import reload
             import molass_legacy.Models.RateTheory.EDM
             reload(molass_legacy.Models.RateTheory.EDM)
-        from molass_legacy.Models.RateTheory.EDM import guess_multiple_impl, edm_impl
+        from molass_legacy.Models.RateTheory.EDM import edm_impl
+        from .EghEstimator import _EghCurveAdapter
 
         init_xr_params, init_xr_baseparams, temp_rgs, init_mapping, init_uv_heights, init_uv_baseparams, init_mappable_range, seccol_params = self.estimate_egh_params()
 
@@ -34,7 +42,13 @@ class EdmEstimator(EghEstimator):
         x = xr_curve.x
         y = xr_curve.y
 
-        xr_params = guess_multiple_impl(x, y, nc, debug=debug)
+        try:
+            from molass.SEC.Models.EdmEstimatorImpl import guess_multiple_impl
+            adapters = [_EghCurveAdapter(x, init_xr_params[k]) for k in range(nc)]
+            xr_params = guess_multiple_impl(x, y, adapters, debug=debug)
+        except Exception:
+            from molass_legacy.Models.RateTheory.EDM import guess_multiple_impl as _legacy_gmi
+            xr_params = _legacy_gmi(x, y, nc, debug=debug)
 
         # Per-component UV weights via peak-lookup — same method as UvOptimizer.
         # Evaluate each EDM component curve; look up UV value at mapped peak frame.

@@ -285,7 +285,12 @@ class PeakEditor(FullBatch, Dialog):
 
     def build_lower(self, lower_left, lower_right):
 
-        self.pbar = ttk.Progressbar(lower_left, orient ="horizontal", length=700, mode="determinate")
+        style = ttk.Style()
+        style.theme_use('clam')
+        style.configure('Phase1.Horizontal.TProgressbar', troughcolor='#e0e0e0', background='#4caf50')  # green
+        style.configure('Phase2.Horizontal.TProgressbar', troughcolor='#e0e0e0', background='#2196f3')  # blue
+        self.pbar = ttk.Progressbar(lower_left, orient="horizontal", length=700, mode="determinate",
+                                    style='Phase1.Horizontal.TProgressbar')
         self.pbar["maximum"] = MAXNUM_STEPS
         self.pbar.pack(pady=10)
 

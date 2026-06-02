@@ -58,23 +58,71 @@ class SdmEstimator(BaseEstimator):
             return self._estimate_mono(lrf_src=lrf_src, edm_available=edm_available, debug=debug)
 
     def _estimate_mono(self, lrf_src=None, edm_available=False, debug=False):
-        """G1200 init: mono-pore + gamma — appends k_gamma=2.0 to the 6-element sdmcol."""
-        init_params = self.compute_sdm_init_params(self.nc, lrf_src=lrf_src,
-                                                   edm_available=edm_available, debug=debug)
-        if init_params is None:
+        """G1200 init: mono-pore + gamma.
+
+        Mirrors the library's ``upgrade(model='SDM')`` pipeline (2 stages):
+          1. ``estimate_sdm_column_params``    — multi-start NM → converged mono env
+          2. ``optimize_sdm_xr_decomposition`` — converged mono-pore SdmComponentCurves
+
+        Falls back to the legacy moment-matching estimate if the library import fails.
+        """
+        init_params_6 = self.compute_sdm_init_params(self.nc, lrf_src=lrf_src,
+                                                      edm_available=edm_available, debug=debug)
+        if init_params_6 is None:
             return None
-        # Append k_gamma (gamma shape param for pore residence time); initial value 2.0
-        return np.append(init_params, 2.0)
+        # Legacy mono-pore column params: [N, K, x0, poresize, N0, tI]
+        N, K, x0, poresize, N0, tI = init_params_6[-6:]
+        xr_scales = None
+        nc_xr = 0
+
+        try:
+            from molass.SEC.Models.SdmEstimator import estimate_sdm_column_params
+            from molass.SEC.Models.SdmOptimizer import optimize_sdm_xr_decomposition
+            from molass_legacy._MOLASS.SerialSettings import get_setting
+            proxy = _ProxyDecomposition(
+                self._xr_x, self._xr_y, self._xr_peaks, self._xr_model, self.peak_rgs
+            )
+            # Stage 1: multi-start mono-pore column param estimation.
+            # Pass the column-specific poresize_bounds (e.g. (71, 81) Å for Superdex 200).
+            poresize_bounds = get_setting("poresize_bounds")
+            mono_env = estimate_sdm_column_params(proxy, poresize_bounds=poresize_bounds)
+            # Stage 2: converged mono-pore SdmComponentCurves
+            mono_ccurves = optimize_sdm_xr_decomposition(proxy, mono_env)
+            # Extract Stage-2 converged column params (shared across all components)
+            N2, T2, _me, _mp, x0_2, tI_2, N0_2, poresize_2, _ts, k_2 = mono_ccurves[0].column.get_params()
+            K_lib = N2 * T2   # Legacy K = N*T  (see DispersiveMonopore.py: "T_ = K_/N_")
+            self.logger.info(
+                "Library mono init (stage2): N=%g, T=%g, K=%g, N0=%g, t0=%g, poresize=%g Å, k=%g",
+                N2, T2, K_lib, N0_2, x0_2, poresize_2, k_2,
+            )
+            xr_scales = np.array([cc.scale for cc in mono_ccurves])
+            nc_xr = len(mono_ccurves)
+            # Map → G1200 sdmcol_7: [N, K, x0, poresize, N0, tI, k_gamma]
+            sdmcol_7 = np.array([N2, K_lib, x0_2, poresize_2, N0_2, tI_2, k_2])
+        except Exception as e:
+            self.logger.warning(
+                "Library mono init failed (%s); falling back to legacy estimate.", e
+            )
+            sdmcol_7 = np.array([N, K, x0, poresize, N0, tI, 2.0])
+
+        non_col = init_params_6[:-6].copy()
+        if xr_scales is not None:
+            non_col[:nc_xr] = xr_scales  # replace XR weights with Stage-2 scales
+        return np.concatenate([non_col, sdmcol_7])
 
     def _estimate_lognormal(self, lrf_src=None, edm_available=False, debug=False):
         """G1300 init: lognormal pore + gamma.
 
-        Mirrors the library's ``upgrade(model='SDM', pore_dist='lognormal')``
-        pipeline as closely as possible:
-          1. ``estimate_sdm_column_params``    — multi-start NM → converged mono
-          2. ``optimize_sdm_xr_decomposition`` — mono-pore NM → SdmComponentCurves
-          3. ``estimate_sdm_lognormal_from_monopore`` — geometric mean poresize +
-             moment matching → ``LognormalEnv(N, T, me, mp, N0, t0, mu, sigma)``
+        Fully mirrors the library's ``upgrade(model='SDM', pore_dist='lognormal')``
+        pipeline (4 stages):
+          1. ``estimate_sdm_column_params``              — multi-start NM → converged mono env
+          2. ``optimize_sdm_xr_decomposition``           — mono-pore NM → SdmComponentCurves
+          3. ``estimate_sdm_lognormal_from_monopore``    — geometric mean poresize +
+             moment matching → ``LognormalEnv`` (SV≈52)
+          4. ``optimize_sdm_lognormal_xr_decomposition`` — converged lognormal NM (SV≈72)
+
+        Stage 4 matches the library notebook's BH starting point and is the key
+        improvement over the previous 3-stage version (SV≈52 → SV≈72 at init).
 
         Falls back to the legacy rough estimate (N0=50000, poresize from moments)
         if the library import fails.
@@ -89,10 +137,16 @@ class SdmEstimator(BaseEstimator):
         # Legacy mono-pore column params: [N, K, x0, poresize, N0, tI]
         N, K, x0, poresize, N0, tI = init_params_6[-6:]
 
-        # Drive the library's 3-stage lognormal init pipeline.
+        # Drive the library's 4-stage lognormal init pipeline.
         # This replicates what upgrade() does before its final NM, giving BH
         # a much better starting point than the legacy rough moment estimate.
+        # Temporarily scale the progress bar to 4 steps (one per lognormal stage).
+        # scipy blocks the main thread, so indeterminate/bouncing mode won't animate;
+        # a determinate 0→4 bar ticked after each stage is clearer and more honest.
+        editor = self.editor
+        editor.pbar.configure(maximum=4, value=0, style='Phase2.Horizontal.TProgressbar')
         try:
+            editor.update_status_bar("SDM lognormal init (1/4): estimating mono-pore column parameters...")
             from molass.SEC.Models.SdmEstimator import (
                 estimate_sdm_column_params,
                 estimate_sdm_lognormal_from_monopore,
@@ -108,30 +162,39 @@ class SdmEstimator(BaseEstimator):
             from molass_legacy._MOLASS.SerialSettings import get_setting
             poresize_bounds = get_setting("poresize_bounds")
             mono_env = estimate_sdm_column_params(proxy, poresize_bounds=poresize_bounds)
+            editor.pbar["value"] = 1
+            editor.update()
             # Stage 2: converged mono-pore SdmComponentCurves
+            editor.update_status_bar("SDM lognormal init (2/4): optimizing mono-pore decomposition...")
             mono_ccurves = optimize_sdm_xr_decomposition(proxy, mono_env)
+            editor.pbar["value"] = 2
+            editor.update()
             # Stage 3: lognormal (mu, sigma, t0, k) refined by moment matching
+            editor.update_status_bar("SDM lognormal init (3/4): moment matching to lognormal distribution...")
             ln_env = estimate_sdm_lognormal_from_monopore(
                 mono_ccurves, proxy.xr_icurve, decomposition=proxy
             )
-            # Stage 3 output (moment-matched LognormalEnv) is the init for BH.
-            # No stage 4 here: upgrade()'s optimize_sdm_lognormal_xr_decomposition
-            # runs to convergence because it IS the final result in the library context,
-            # but here BH is the real convergence step — stage 3 (fv≈-0.76) is
-            # already inside the basin and sufficient as a starting point.
-            N_lib, T_lib, _me, _mp, N0_lib, t0_lib, mu_lib, sigma_lib = ln_env
-            # Legacy K = N*T  (see DispersiveMonopore.py: "T_ = K_/N_")
-            K_lib = N_lib * T_lib
-            # Fix sigma to the library default (0.3) — consistent with optimize_sdm_lognormal_xr_decomposition
-            # default ln_pore_sigma=0.3. The stage-3 sigma estimate is unreliable for 2-component data.
-            _SIGMA_FIXED = 0.3
+            editor.pbar["value"] = 3
+            editor.update()
+            # Stage 4: converged lognormal NM — mirrors upgrade()'s final optimization step.
+            # Lifts init fv from Stage-3 ≈-0.76 (SV≈52) to ≈-1.21 (SV≈72),
+            # matching the library notebook's starting point for BH.
+            editor.update_status_bar("SDM lognormal init (4/4): refining lognormal parameters (NM)...")
+            from molass.SEC.Models.SdmOptimizer import optimize_sdm_lognormal_xr_decomposition
+            ln_ccurves = optimize_sdm_lognormal_xr_decomposition(proxy, ln_env)
+            # Extract Stage-4 converged column params (shared across all components)
+            N4, T4, _me4, _mp4, x0_4, tI_4, N0_4, mu_4, sigma_4, k_4 = ln_ccurves[0].column.get_params()
+            K_lib = N4 * T4   # Legacy K = N*T  (see DispersiveMonopore.py: "T_ = K_/N_")
+            _SIGMA_FIXED = sigma_4  # 0.3 — ln_pore_sigma is fixed in Stage 4 by default
             self.logger.info(
-                "Library lognormal init (stage3): N=%g, T=%g, K=%g, N0=%g, t0=%g, mu=%g (poresize=%g Å), sigma=%g (fixed to %g)",
-                N_lib, T_lib, K_lib, N0_lib, t0_lib, mu_lib, np.exp(mu_lib), sigma_lib, _SIGMA_FIXED,
+                "Library lognormal init (stage4): N=%g, T=%g, K=%g, N0=%g, t0=%g, mu=%g (poresize=%g Å), sigma=%g, k=%g",
+                N4, T4, K_lib, N0_4, x0_4, mu_4, np.exp(mu_4), _SIGMA_FIXED, k_4,
             )
-            # Map LognormalEnv → G1300 sdmcol_8: [N, K, x0, mu, sigma, N0, tI, k_gamma]
-            # t0 used for both x0 and tI; k_gamma default 2.0; sigma fixed to 0.3
-            sdmcol_8 = np.array([N_lib, K_lib, t0_lib, mu_lib, _SIGMA_FIXED, N0_lib, t0_lib, 2.0])
+            # Update XR weights from Stage-4 converged scales (better BH start)
+            xr_scales = np.array([cc.scale for cc in ln_ccurves])
+            nc_xr = len(ln_ccurves)
+            # Map → G1300 sdmcol_8: [N, K, x0, mu, sigma_fixed, N0, tI, k_gamma]
+            sdmcol_8 = np.array([N4, K_lib, x0_4, mu_4, _SIGMA_FIXED, N0_4, tI_4, k_4])
         except Exception as e:
             self.logger.warning(
                 "Library lognormal init failed (%s); falling back to legacy rough estimate.", e
@@ -139,8 +202,17 @@ class SdmEstimator(BaseEstimator):
             N0 = 50000.0
             mu = np.log(max(float(poresize), 1.0))
             sdmcol_8 = np.array([N, K, x0, mu, 0.3, N0, tI, 2.0])
+            xr_scales = None
+            nc_xr = 0
+        finally:
+            editor.pbar.configure(maximum=MAXNUM_STEPS, value=MAXNUM_STEPS,
+                                  style='Phase1.Horizontal.TProgressbar')
+            editor.update_status_bar("Stochastic initial parameters are ready.")
 
-        return np.concatenate([init_params_6[:-6], sdmcol_8])
+        non_col = init_params_6[:-6].copy()
+        if xr_scales is not None:
+            non_col[:nc_xr] = xr_scales  # replace XR weights with Stage-4 scales
+        return np.concatenate([non_col, sdmcol_8])
 
     def compute_sdm_init_params(self, nc_b, lrf_src=None, edm_available=False, debug=False):
         if debug:

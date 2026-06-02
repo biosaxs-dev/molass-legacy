@@ -6,6 +6,23 @@
 import numpy as np
 from molass_legacy.SecTheory.SecEstimator import guess_initial_secparams
 from molass_legacy.Baseline.Constants import SLOPE_SCALE
+from molass_legacy.Peaks.ElutionModels import egh
+
+
+class _EghCurveAdapter:
+    """Adapts EGH params to the curve interface used by EdmEstimatorImpl.
+
+    Exposes .x and .y arrays (needed by optimize_edm_xr_decomposition for
+    EGH peak-frame detection) as well as the get_y() method (used by
+    guess_multiple_impl).
+    """
+    def __init__(self, x, egh_params):
+        self._params = egh_params
+        self.x = x
+        self.y = np.maximum(egh(x, *egh_params[:4]), 0.0)
+
+    def get_y(self):
+        return self.y
 
 if True:
     from importlib import reload
