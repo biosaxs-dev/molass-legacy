@@ -833,17 +833,17 @@ class OptStrategyDialog(Dialog):
     def show_mwrg_figure(self, debug=True):
         if debug:
             from importlib import reload
-            import SecTheory.MwRgFigure
-            reload(SecTheory.MwRgFigure)
-        from SecTheory.MwRgFigure import MwRgFigure
+            import molass_legacy.SecTheory.MwRgFigure
+            reload(molass_legacy.SecTheory.MwRgFigure)
+        from molass_legacy.SecTheory.MwRgFigure import MwRgFigure
         fig = MwRgFigure(self, self.excl_limit.get())
         fig.show()
 
     def show_trimming_figure(self, debug=True):
         if debug:
             from importlib import reload
-            import Trimming.TrimmingResult
-            reload(Trimming.TrimmingResult)
+            import molass_legacy.Trimming.TrimmingResult
+            reload(molass_legacy.Trimming.TrimmingResult)
         from molass_legacy.Trimming.TrimmingResult import TrimmingResultDialog
         from molass_legacy.Trimming.PreliminaryRecognition import PreliminaryRecognition
 
@@ -857,8 +857,8 @@ class OptStrategyDialog(Dialog):
     def show_strategy_editor(self, debug=True):
         if debug:
             from importlib import reload
-            import Optimizer.StrategyEditor
-            reload(Optimizer.StrategyEditor)
+            import molass_legacy.Optimizer.StrategyEditor
+            reload(molass_legacy.Optimizer.StrategyEditor)
         from molass_legacy.Optimizer.StrategyEditor import StrategyEditor
 
         editor = StrategyEditor(self)
