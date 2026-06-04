@@ -388,6 +388,7 @@ ITEM_DEFAULTS = {
     'default_func_egh'      : 'G0346',
     'default_func_sdm'      : 'G1200',
     'sdm_pore_dist'         : 'mono',       # 'mono' (G1200) or 'lognormal' (G1300)
+    'sdm_pore_sigma'         : 0.3,          # σ of ln(r/r0) pore-size distribution (G1300)
     'default_func_lj_egh'   : 'G0525',
     'default_func_fd_emg'   : 'G0665',
     'default_func_rt_egh'   : 'G0705',

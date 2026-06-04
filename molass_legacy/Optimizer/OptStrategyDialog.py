@@ -30,10 +30,10 @@ DEFAULT_FUNC_ITEM = {
     6 : 'default_func_lkm',
     }
 
-MODEL_LIST = [  (0, "[%d] %s - EGH - Exponential-Gaussian Hybrid"),
+MODEL_LIST = [  (0, "EGH - Exponential-Gaussian Hybrid"),
                 (1, "SDM - Stochastic Dispersive Model"),
-                (5, "[%d] %s - EDM - Equilibrium Dispersive Model"),
-                (6, "[%d] %s - LKM - Lumped Kinetic Model"),
+                (5, "EDM - Equilibrium Dispersive Model"),
+                (6, "LKM - Lumped Kinetic Model"),
                 ]
 
 MODEL_TO_FUNC = {
@@ -257,8 +257,16 @@ class OptStrategyDialog(Dialog):
                                              variable=self.sdm_pore_dist, value=pore_val)
                     pore_rb.pack(side=Tk.LEFT, padx=4)
                     self.sdm_pore_rbs.append(pore_rb)
+                # PSD σ entry — enabled only when SDM(lognormal) is selected
+                self.sdm_pore_sigma = Tk.DoubleVar()
+                self.sdm_pore_sigma.set(get_setting("sdm_pore_sigma"))
+                Tk.Frame(sdm_pore_frame, width=8).pack(side=Tk.LEFT)
+                self.psd_sigma_label = Tk.Label(sdm_pore_frame, text="PSD σ:")
+                self.psd_sigma_label.pack(side=Tk.LEFT)
+                self.psd_sigma_entry = Tk.Entry(sdm_pore_frame, textvariable=self.sdm_pore_sigma, width=6, justify=Tk.CENTER)
+                self.psd_sigma_entry.pack(side=Tk.LEFT, padx=2)
             else:
-                cname = cname_fmt % (k, get_setting(DEFAULT_FUNC_ITEM[k]))
+                cname = cname_fmt
                 rb = Tk.Radiobutton(option_frame, text=cname, variable=self.elution_model_gui, value=k)
                 rb.grid(row=i, column=0, columnspan=2, sticky=Tk.W)
 
@@ -560,6 +568,7 @@ class OptStrategyDialog(Dialog):
             self.uv_basemodel_cb = cb
 
         # Tracers which concers multiple parts
+        self.sdm_pore_dist.trace_add("write", self._update_psd_sigma_state)
         self.elution_model_gui_tracer()
         self.elution_model_gui.trace_add("write", self.elution_model_gui_tracer)
 
@@ -616,6 +625,16 @@ class OptStrategyDialog(Dialog):
                 state = Tk.DISABLED
                 self.try_model_composing.set(0)
             self.try_model_composing_cb.config(state=state)
+
+        self._update_psd_sigma_state()
+
+    def _update_psd_sigma_state(self, *args):
+        is_sdm_lognormal = (
+            self.elution_model_gui.get() == 1 and self.sdm_pore_dist.get() == 1
+        )
+        state = Tk.NORMAL if is_sdm_lognormal else Tk.DISABLED
+        self.psd_sigma_entry.config(state=state)
+        self.psd_sigma_label.config(state=state)
 
     def trimming_strategy_tracer(self, *args):
         strategy = self.trimming_strategy.get()
@@ -772,6 +791,7 @@ class OptStrategyDialog(Dialog):
             pore_dist_idx = self.sdm_pore_dist.get()
             func_code = 'G1300' if pore_dist_idx == 1 else 'G1200'
             set_setting("sdm_pore_dist", 'lognormal' if pore_dist_idx == 1 else 'mono')
+            set_setting("sdm_pore_sigma", self.sdm_pore_sigma.get())
             set_setting("default_func_sdm", func_code)
         else:
             func_code = MODEL_TO_FUNC[elution_model]

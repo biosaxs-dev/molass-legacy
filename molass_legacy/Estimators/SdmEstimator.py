@@ -179,9 +179,10 @@ class SdmEstimator(BaseEstimator):
             # Stage 4: converged lognormal NM — mirrors upgrade()'s final optimization step.
             # Lifts init fv from Stage-3 ≈-0.76 (SV≈52) to ≈-1.21 (SV≈72),
             # matching the library notebook's starting point for BH.
-            editor.update_status_bar("SDM lognormal init (4/4): refining lognormal parameters (NM)...")
+            editor.update_status_bar("SDM lognormal init (4/4): refining lognormal parameters; may take more than 10 minutes...")
             from molass.SEC.Models.SdmOptimizer import optimize_sdm_lognormal_xr_decomposition
-            ln_ccurves = optimize_sdm_lognormal_xr_decomposition(proxy, ln_env)
+            ln_pore_sigma_setting = get_setting("sdm_pore_sigma")
+            ln_ccurves = optimize_sdm_lognormal_xr_decomposition(proxy, ln_env, ln_pore_sigma=ln_pore_sigma_setting)
             # Extract Stage-4 converged column params (shared across all components)
             N4, T4, _me4, _mp4, x0_4, tI_4, N0_4, mu_4, sigma_4, k_4 = ln_ccurves[0].column.get_params()
             K_lib = N4 * T4   # Legacy K = N*T  (see DispersiveMonopore.py: "T_ = K_/N_")
