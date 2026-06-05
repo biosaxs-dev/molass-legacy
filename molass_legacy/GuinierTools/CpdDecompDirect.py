@@ -1,13 +1,13 @@
 """
     GuinierTools.CpdDecompDirect.py
 
-    Copyright (c) 2024, SAXS Team, KEK-PF
+    Copyright (c) 2024-2026, SAXS Team, KEK-PF
 """
 import numpy as np
 from bisect import bisect_right
 import molass_legacy.KekLib.DebugPlot as plt
 from molass_legacy._MOLASS.SerialSettings import get_setting
-from GuinierTools.RgCurveUtils import get_connected_curve_info
+from molass_legacy.GuinierTools.RgCurveUtils import get_connected_curve_info
 from molass_legacy.Models.Stochastic.DispersiveMonopore import guess_params_using_moments
 
 MIN_PROP = 0.03
@@ -26,10 +26,10 @@ def compute_proportions(x, y, end_points):
 
 def cpd_direct_impl(editor, debug=False):
     from importlib import reload
-    import GuinierTools.CpdDecompUtils
-    reload(GuinierTools.CpdDecompUtils)
-    from GuinierTools.CpdDecompUtils import compute_end_points
-    from Estimators.SdmEstimatorImpl import guess_exec_spec, edit_to_full_sdmparams
+    import molass_legacy.GuinierTools.CpdDecompUtils
+    reload(molass_legacy.GuinierTools.CpdDecompUtils)
+    from molass_legacy.GuinierTools.CpdDecompUtils import compute_end_points
+    from molass_legacy.Estimators.SdmEstimatorImpl import guess_exec_spec, edit_to_full_sdmparams
 
     print("cpd_direct_impl")
 

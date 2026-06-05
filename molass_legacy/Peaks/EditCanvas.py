@@ -43,7 +43,7 @@ class EditCanvas(Dialog):
         if devel:
             from importlib import reload
             import molass_legacy.KekLib.DraggableCurves
-            reload(KekLib.DraggableCurves)
+            reload(molass_legacy.KekLib.DraggableCurves)
         from molass_legacy.KekLib.DraggableCurves import DraggableCurves
 
         upper_frame = Tk.Frame(body_frame)
