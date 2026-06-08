@@ -69,6 +69,7 @@ class PeakEditor(FullBatch, Dialog):
         assert self.advanced
         
         self.dsets = None
+        self.decomposition = None   # library Decomposition, built by _build_library_decomposition_thread
         self.exact_num_peaks = exact_num_peaks
         self.strict_sec_penalty = strict_sec_penalty
         self.fullopt_class, self.class_code = None, None
@@ -194,7 +195,7 @@ class PeakEditor(FullBatch, Dialog):
             self.buttons_to_update.append(w)
 
         col += 1
-        w = Tk.Button(box, text="▽ Complementary View", width=20, command=self.show_complementary_view, state=Tk.DISABLED)
+        w = Tk.Button(box, text="▽ Plot Components", width=20, command=self.show_complementary_view, state=Tk.DISABLED)
         w.grid(row=0, column=col, pady=10)
         self.opposite_btn = w
         self.buttons_to_update.append(w)
@@ -386,7 +387,34 @@ class PeakEditor(FullBatch, Dialog):
         self.watching = True
         self.after(500, self.watch_rg_curve_thread)
 
+    def _build_library_decomposition(self, ssd):
+        """Build a library Decomposition from an already-constructed ssd.
+
+        Called after prepare_rg_curve completes so that ssd._rgcurve is already
+        cached — quick_decomposition() picks it up at no extra cost.
+        """
+        try:
+            decomposition = ssd.quick_decomposition(rgcurve=ssd._rgcurve)
+            # Inject the cached Rg curve so Decomposition.get_rg_curve() never
+            # triggers a second full Rg scan (it would recompute from decomp.ssd.xr).
+            decomposition._rgcurve = ssd._rgcurve
+            self.decomposition = decomposition
+        except Exception:
+            import logging
+            logging.getLogger(__name__).warning(
+                "_build_library_decomposition failed; falling back to legacy ComplementaryView",
+                exc_info=True
+            )
+
     def prepare_rg_curve(self, queue):
+        """Unified Rg computation thread using the library path.
+
+        Replaces the legacy ``fullopt_input.get_dsets(compute_rg=True)`` call.
+        The library ``ssd.get_rg_curve(progress_cb=...)`` drives the same queue
+        protocol (progress bar + live Rg overlay) as before, then wraps the
+        result as a ``LegacyRgCurve`` so ``self.dsets`` has the same structure
+        the optimizer expects.
+        """
         queue.put([STARTED, None])
 
         if self.elution_model in [0, 2]:
@@ -394,8 +422,64 @@ class PeakEditor(FullBatch, Dialog):
         else:
             rg_curve_ok = RG_CURVE_OK - STOCH_INIT_STEPS
 
-        progress_cb = ProgressCallback(queue, STARTED, rg_curve_ok)
-        self.dsets = self.fullopt_input.get_dsets(progress_cb=progress_cb, compute_rg=True, possibly_relocated=False)
+        try:
+            from molass.Bridge.SdAdapter import make_ssd_from_corrected_sd
+            from molass.Bridge.LegacyRgCurve import LegacyRgCurve
+
+            ssd = make_ssd_from_corrected_sd(self.corrected_sd)
+
+            # Build a ProgressCallback-compatible callable that wraps the queue.
+            # The library calls progress_cb(rg_buffer, j) with the same signature
+            # the legacy ProgressCallback uses, so watch_rg_curve_thread works unchanged.
+            progress_cb = ProgressCallback(queue, STARTED, rg_curve_ok)
+            library_rgcurve = ssd.get_rg_curve(progress_cb=progress_cb)
+
+            # Wrap the library RgCurve into the legacy format the optimizer reads.
+            xr_curve = self.ecurves[1]   # ElutionCurve — already set by body()
+            legacy_rgcurve = LegacyRgCurve(xr_curve, library_rgcurve)
+
+            # Export the rg-curve folder so the subprocess can find it —
+            # this mirrors what get_dsets_impl(compute_rg=True) normally does.
+            from molass_legacy.Optimizer.OptDataSets import get_current_rg_folder
+            from molass_legacy._MOLASS.SerialSettings import set_setting
+            import os as _os
+            rg_folder = get_current_rg_folder(compute_rg=True, possibly_relocated=False)
+            _os.makedirs(rg_folder, exist_ok=True)
+            legacy_rgcurve.export(rg_folder)
+            set_setting("rg_curve_folder", rg_folder)
+            # Tell the subprocess to trust this folder without re-verifying trimming consistency.
+            # This matches what the legacy path does via RgCurveProxy trust logic.
+            set_setting("trust_rg_curve_folder", True)
+
+            # Build dsets directly from corrected_sd — same as the top of get_dsets_impl()
+            # but without any rg-folder lookup, which fails on first run before the
+            # optimizer folder exists.  Use interface methods to support both
+            # SerialData and DataSet (the "re-run" path uses DataSet as corrected_sd).
+            D, E, qv, xr_curve_sd = self.corrected_sd.get_xr_data_separate_ly()
+            uv_ret = self.corrected_sd.get_uv_data_separate_ly()
+            U, uv_curve_sd = uv_ret[0], uv_ret[-1]  # handle both 3-tuple (DataSet) and 4-tuple (SerialData)
+            raw_tuple = ((xr_curve_sd, D), legacy_rgcurve, (uv_curve_sd, U))
+
+            # Wrap in OptDataSets so BasicOptimizer.dsets.E and .weight_info are available.
+            # Pass dsets= directly (no rg-folder lookup) and E= explicitly.
+            from molass_legacy.Optimizer.OptDataSets import OptDataSets
+            self.dsets = OptDataSets(self.sd, self.corrected_sd, dsets=raw_tuple, E=E)
+
+            # quick_decomposition() can reuse the cached ssd._rgcurve at no cost.
+            from threading import Thread as _Thread
+            _Thread(target=self._build_library_decomposition, args=[ssd], daemon=True,
+                    name="Library Decomposition Thread").start()
+
+        except Exception:
+            import logging
+            logging.getLogger(__name__).warning(
+                "prepare_rg_curve (library path) failed; falling back to legacy Rg computation",
+                exc_info=True
+            )
+            # Fallback: original legacy path
+            progress_cb = ProgressCallback(queue, STARTED, rg_curve_ok)
+            self.dsets = self.fullopt_input.get_dsets(progress_cb=progress_cb, compute_rg=True, possibly_relocated=False)
+
         queue.put([rg_curve_ok, None])
         queue.put([PREPARED, None])
 
@@ -422,7 +506,6 @@ class PeakEditor(FullBatch, Dialog):
                 self.update_status_bar("Rg curve is ready.")
                 self.rg_curve_thread = None
                 self.get_ready_for_scores_etc()
-                # self.save_rg_buffer()
                 return
 
         except:
@@ -452,10 +535,6 @@ class PeakEditor(FullBatch, Dialog):
                 pass
             else:
                 widget.config(state=Tk.NORMAL)
-
-    def save_rg_buffer(self):
-        rc_curve = self.dsets[1]
-        rc_curve.save_buffer("rg_buffer.dat")
 
     def re_construct_optimizer(self):
         self.construct_optimizer()
@@ -635,6 +714,12 @@ class PeakEditor(FullBatch, Dialog):
         self.draw_scores()
 
     def show_complementary_view(self, debug=False):
+        if self.decomposition is not None:
+            from molass_legacy.Peaks.ComponentsView import ComponentsView
+            cv = ComponentsView(self.parent, self.decomposition)
+            cv.show()
+            return
+        # Fallback: legacy ComplementaryView (used when library decomposition is not ready)
         if debug:
             from importlib import reload
             import molass_legacy.Optimizer.ComplementaryView

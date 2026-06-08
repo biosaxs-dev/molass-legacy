@@ -36,6 +36,8 @@ class JobStateCanvas(Tk.Frame):
         self.logger = dialog.logger
         self.optinit_info = dialog.optinit_info
         self.composite = self.optinit_info.composite
+        self.decomposition = None   # library Decomposition, built by _build_library_decomposition
+        self._decomposition_index = None  # curr_index at which decomposition was last built; None = initial state
         self.suptitle = None
         Tk.Frame.__init__(self, parent)
 
@@ -102,6 +104,56 @@ class JobStateCanvas(Tk.Frame):
         self.popup_menu_prog = None
         self.popup_menu_devel = None
         self.mpl_canvas.mpl_connect('button_press_event', self.on_figure_click)
+        # Start the library decomposition in a background thread so it is
+        # ready by the time the user clicks "Complementary View".
+        from threading import Thread
+        lib_thread = Thread(target=self._build_library_decomposition, daemon=True,
+                            name="Library Decomposition Thread")
+        lib_thread.start()
+
+    def _build_library_decomposition(self):
+        """Background thread: build a library Decomposition from dsets + sd.
+
+        Result is stored in ``self.decomposition`` (None on failure —
+        the legacy ComplementaryView fallback will be used instead).
+        """
+        try:
+            from molass.Bridge.SdAdapter import make_ssd_from_dsets
+            ssd = make_ssd_from_dsets(self.dsets, self.optinit_info.sd)
+            # Build the library Decomposition.  The rg-curve is already available
+            # in dsets[1] (a LegacyRgCurve or RgCurveProxy); extract it as a
+            # library RgCurve so we avoid a redundant ~40 s full Rg scan.
+            legacy_rg = self.dsets[1]   # LegacyRgCurve or RgCurveProxy
+            library_rgcurve = None
+            if legacy_rg is not None:
+                try:
+                    from molass.Guinier.RgCurve import RgCurve as LibRgCurve
+                    import numpy as np
+                    # Collect (frame, Rg, quality) triples from the segments.
+                    frames, rgs, quals = [], [], []
+                    for (x_seg, _y_seg, rg_seg), qual_seg in zip(legacy_rg.segments, legacy_rg.qualities):
+                        frames.append(x_seg.astype(int))
+                        rgs.append(rg_seg)
+                        quals.append(qual_seg)
+                    if frames:
+                        library_rgcurve = LibRgCurve(
+                            np.concatenate(frames),
+                            np.concatenate(rgs),
+                            np.concatenate(quals),
+                        )
+                except Exception:
+                    pass  # fall back to None (no Rg overlay)
+
+            decomposition = ssd.quick_decomposition()
+            decomposition._rgcurve = library_rgcurve  # may be None — ComponentsView handles gracefully
+            self.decomposition = decomposition
+            self._decomposition_index = None  # initial state, not a snapshot
+        except Exception:
+            import logging
+            logging.getLogger(__name__).warning(
+                "_build_library_decomposition failed; falling back to legacy ComplementaryView",
+                exc_info=True
+            )
 
     def get_view_width_button_text(self):
         if self.optview_ranges is None:
@@ -472,7 +524,45 @@ class JobStateCanvas(Tk.Frame):
         dialog.show()
         self.dialog.grab_set()  # temporary fix to the grab_release problem
 
+    def _update_decomposition_to_current(self):
+        """Update self.decomposition to reflect self.curr_index optimizer params.
+
+        Calls ``decomposition_from_optimizer_params`` in the Bridge layer, which
+        reuses the existing ``ComponentUtils.get_xr_ccurves`` dispatch table to
+        reconstruct model-correct component curves for all five models (EGH, SDM,
+        EDM/CEDM, LKM).  On failure, self.decomposition is left unchanged so the
+        initial decomposition (or any previously updated one) is still shown.
+        """
+        try:
+            from molass.Bridge.SdAdapter import decomposition_from_optimizer_params
+            params = self.demo_info[1][self.curr_index]
+            new_decomp = decomposition_from_optimizer_params(
+                self.fullopt, params, self.decomposition
+            )
+            self.decomposition = new_decomp
+            self._decomposition_index = self.curr_index
+        except Exception:
+            import logging
+            logging.getLogger(__name__).warning(
+                "_update_decomposition_to_current failed for index %d; "
+                "showing previous decomposition",
+                self.curr_index, exc_info=True
+            )
+
     def show_complementary_view(self, debug=True):
+        if self.decomposition is not None:
+            # Update the decomposition if it's stale (not built for curr_index).
+            # _decomposition_index is None for the initial build; any navigation
+            # sets curr_index, so None ≠ int always triggers an update attempt.
+            if self._decomposition_index != self.curr_index:
+                self._update_decomposition_to_current()
+            from molass_legacy.Peaks.ComponentsView import ComponentsView
+            self.dialog.grab_set()
+            cv = ComponentsView(self.dialog.parent, self.decomposition)
+            cv.show()
+            self.dialog.grab_set()
+            return
+        # Fallback: legacy ComplementaryView
         if debug or DEVELOP_MODE:
             from importlib import reload
             import molass_legacy.Optimizer.ComplementaryView

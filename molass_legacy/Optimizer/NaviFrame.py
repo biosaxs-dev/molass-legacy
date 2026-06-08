@@ -32,7 +32,7 @@ class NaviFrame(Tk.Frame):
 
         w = Tk.Button(self, text="Show Parameters", width=14, command=canvas.show_params)
         w.pack(side=Tk.LEFT, padx=10, pady=5)
-        w = Tk.Button(self, text="Complementary View", width=18, command=canvas.show_complementary_view)
+        w = Tk.Button(self, text="Plot Components", width=18, command=canvas.show_complementary_view)
         w.pack(side=Tk.LEFT, padx=10, pady=5)
         w = Tk.Button(self, text="MW Ratios", width=12, command=canvas.show_mw_integrity)
         w.pack(side=Tk.LEFT, padx=10, pady=5)

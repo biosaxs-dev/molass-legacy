@@ -45,7 +45,15 @@ def get_current_rg_folder(compute_rg=False, possibly_relocated=True, current_fol
         return parent_rg_folder
 
     relocated_root_folder = rg_folder + "s"
-    assert os.path.exists(relocated_root_folder)
+    if not os.path.exists(relocated_root_folder):
+        # rg-folder has not been created yet (e.g. first run before any optimization).
+        # Caller should handle rg_curve=None gracefully (optimizer accepts dsets[1]=None).
+        # Raise a clear error so callers that cannot handle None fail explicitly.
+        # (molass-legacy #73: was a bare assert, now a ValueError with explanation)
+        raise FileNotFoundError(
+            f"rg-curve folder not found: {relocated_root_folder}. "
+            "On first run, call get_dsets(compute_rg=True) to compute and export it first."
+        )
 
     if current_folder is None:
         current_folder = os.getcwd()

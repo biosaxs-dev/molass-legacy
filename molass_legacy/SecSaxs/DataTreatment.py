@@ -28,6 +28,8 @@ class DataTreatment:
         if path is None:
             from molass_legacy.Optimizer.TheUtils import get_treatment_path
             path = get_treatment_path()
+        import os
+        os.makedirs(os.path.dirname(path), exist_ok=True)
         with open(path, "w") as fh:
             fh.write(self.__repr__())
 
