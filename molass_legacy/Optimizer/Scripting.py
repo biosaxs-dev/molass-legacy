@@ -104,7 +104,7 @@ def prepare_optimizer(batch, num_components=3, model="EGH", method="BH", functio
     batch.construct_optimizer(fullopt_class=function_class)
     return batch.optimizer
 
-def set_optimizer_settings(num_components=3, model="EGH", method="BH", param_init_type=1, ns_narrow_bounds=True, ns_adaptive_nsteps=False, ns_nsteps=None):
+def set_optimizer_settings(num_components=3, model="EGH", method="BH", param_init_type=1, ns_narrow_bounds=True, ns_adaptive_nsteps=False, ns_nsteps=None, **solver_kwargs):
     from molass_legacy._MOLASS.SerialSettings import set_setting
     from .OptimizerSettings import OptimizerSettings
 
@@ -130,19 +130,25 @@ def set_optimizer_settings(num_components=3, model="EGH", method="BH", param_ini
         )
 
     solver_name = method.upper()
-    if solver_name == "BH":
-        optimization_method = 0
-    elif solver_name == "NS":
-        optimization_method = 1
-    elif solver_name == "CMA":
-        optimization_method = 5  # IMPL_METHOD_NAMES[5] = 'cma'
-    else:
-        raise ValueError(
-            f"Unknown method: {method!r}. "
-            "Add it to set_optimizer_settings() in Optimizer/Scripting.py "
-            "and assign an unused optimization_method integer."
-        )
+    try:
+        from molass_legacy.Solvers.Registry import SOLVER_REGISTRY
+        if solver_name not in SOLVER_REGISTRY:
+            raise ValueError(
+                f"Unknown method: {method!r}. "
+                "Add it to SOLVER_REGISTRY in molass_legacy/Solvers/Registry.py."
+            )
+        optimization_method = SOLVER_REGISTRY[solver_name].int_code
+    except ImportError:
+        # Fallback (Registry not available)
+        if solver_name == "BH":     optimization_method = 0
+        elif solver_name == "NS":   optimization_method = 1
+        elif solver_name == "CMA":  optimization_method = 5
+        elif solver_name == "DE":   optimization_method = 6
+        elif solver_name == "NSGA2":optimization_method = 7
+        else: raise ValueError(f"Unknown method: {method!r}.")
     set_setting("optimization_method", optimization_method)     # for backward compatibility
+    for k, v in solver_kwargs.items():
+        set_setting(k, v)
 
     separate_eoii_flags = [0] * num_components
 

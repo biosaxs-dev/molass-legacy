@@ -422,6 +422,11 @@ ITEM_DEFAULTS = {
     'ns_narrow_bounds'      : True,     # NS prior width: True=narrow (init±1.0), False=wide ([0,10])
     'ns_adaptive_nsteps'    : False,    # NS slice sampler: adaptively grow nsteps
     'ns_nsteps'             : None,     # NS slice sampler: override nsteps (None = auto min(2*ndim,16))
+    'de_pop_size'           : None,     # DE population size (None = auto: max(20, 5*n_var))
+    'de_variant'            : None,     # DE variant string e.g. 'DE/rand/1/bin' (None = default)
+    'de_F'                  : None,     # DE mutation scale factor (None = default 0.5)
+    'de_CR'                 : None,     # DE crossover probability (None = default 0.5)
+    'de_niter'              : 800,      # DE iteration budget (overrides the GUI niter when DE is selected)
 
     # See also Optimizer.OptimizerSettings.py on the items below
     't0_upper_bound'        : None,
@@ -455,6 +460,11 @@ V2_TEMPORARY_ITEMS = [
     'ns_narrow_bounds',
     'ns_adaptive_nsteps',
     'ns_nsteps',
+    'de_pop_size',
+    'de_variant',
+    'de_F',
+    'de_CR',
+    'de_niter',
     ]
 
 TEMPORARY_ITEMS = [
@@ -596,7 +606,10 @@ def restore_default_setting( item ):
 def set_setting( item, value ):
     assert item in ITEM_DEFAULTS, (
         f"Unknown setting key: {item!r}. "
-        "Add it to ITEM_DEFAULTS (and V2_TEMPORARY_ITEMS if session-scoped) in SerialSettings.py."
+        "Add it to ITEM_DEFAULTS (and V2_TEMPORARY_ITEMS if session-scoped) in SerialSettings.py.\n"
+        "If you recently added this key, the kernel may have a stale module — try:\n"
+        "    import importlib, molass_legacy._MOLASS.SerialSettings\n"
+        "    importlib.reload(molass_legacy._MOLASS.SerialSettings)"
     )
     if settings_ is None:
         initialize_settings()

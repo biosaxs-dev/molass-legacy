@@ -24,12 +24,26 @@ def get_function_code(model_name):
             return code
     return None
 
-METHOD_NAMES = ["BH", "NS", "MCMC", "SMC", "PYMC", "CMA"]
+METHOD_NAMES      = None   # populated below from Registry
+IMPL_METHOD_NAMES = None   # populated below from Registry
+
+def _load_registry():
+    global METHOD_NAMES, IMPL_METHOD_NAMES
+    try:
+        from molass_legacy.Solvers.Registry import METHOD_NAMES as _mn, IMPL_METHOD_NAMES as _imn
+        METHOD_NAMES      = _mn
+        IMPL_METHOD_NAMES = _imn
+    except ImportError:
+        # Fallback for environments without Registry (should not happen)
+        METHOD_NAMES      = ["BH", "NS", "MCMC", "SMC", "PYMC", "CMA", "DE", "NSGA2"]
+        IMPL_METHOD_NAMES = ["bh", "ultranest", "emcee", "pyabc", "pymc", "cma", "de", "nsga2"]
+
+_load_registry()
+
 def get_method_name():
     from molass_legacy._MOLASS.SerialSettings import get_setting
     return METHOD_NAMES[get_setting("optimization_method")]
 
-IMPL_METHOD_NAMES = ["bh", "ultranest", "emcee", "pyabc", "pymc", "cma"]
 def get_impl_method_name(nnn, method=None):
     if method is None:
         from molass_legacy._MOLASS.SerialSettings import get_setting

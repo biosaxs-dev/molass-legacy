@@ -74,7 +74,7 @@ def _resolve_solver(method, nnn):
 
     Accepts:
       * None                 — fall back to `get_impl_method_name(nnn)`
-      * 'BH'/'NS'/'MCMC'/'SMC' — user-facing method names
+      * 'BH'/'NS'/'CMA'/... — user-facing method names (from Registry)
       * 'bh'/'ultranest'/... — already-resolved implementation names
     """
     if method is None:
@@ -82,11 +82,14 @@ def _resolve_solver(method, nnn):
     if method in IMPL_METHOD_NAMES:
         return method
     if method in METHOD_NAMES:
-        # BH, NS, CMA have a direct 1:1 mapping to their impl names;
-        # only MCMC/SMC use the nnn-based alternating logic.
-        _direct = {'BH': 'bh', 'NS': 'ultranest', 'CMA': 'cma'}
-        if method in _direct:
-            return _direct[method]
+        # Direct solvers have a 1:1 user→impl mapping (Registry.DIRECT_SOLVERS).
+        # MCMC/SMC use the nnn-based alternating logic.
+        try:
+            from molass_legacy.Solvers.Registry import DIRECT_SOLVERS
+            if method in DIRECT_SOLVERS:
+                return DIRECT_SOLVERS[method]
+        except ImportError:
+            pass
         idx = METHOD_NAMES.index(method)
         return get_impl_method_name(nnn, method=idx)
     raise ValueError(

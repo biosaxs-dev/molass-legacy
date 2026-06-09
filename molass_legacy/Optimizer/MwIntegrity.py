@@ -73,9 +73,9 @@ class MwIntegrityPlot(Dialog):
 
     def draw_mws(self, fig, axes):
         from importlib import reload
-        import Optimizer.IntegerRatios as module
+        import molass_legacy.Optimizer.IntegerRatios as module
         reload(module)
-        from .IntegerRatios import determine_integer_ratios
+        from molass_legacy.Optimizer.IntegerRatios import determine_integer_ratios
 
         M, M_, E, P, C, qv = self.info
 

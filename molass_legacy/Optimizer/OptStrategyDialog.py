@@ -359,13 +359,36 @@ class OptStrategyDialog(Dialog):
                         (3, "Alternate NS → BH"),
                         # (2, "MCMC (emcee)        "),
                         # (3, "SMC (pyABC)"),
+                        (6, "Diff. Evolution"),
                         ]
-        # activate = slice(None, None) if is_developing_version() else slice(0,2)
-        activate = slice(0,1)   # NS disabled: not working well
-        for k, cname in (option_specs[activate]):
-            # method_frame.columnconfigure(k, weight=1)
+        activate = slice(0,1,None)   # show BH only by default
+        activate_with_de = [0, 6]    # BH + DE
+        for k, cname in option_specs:
+            if k not in activate_with_de:
+                continue
             rb = Tk.Radiobutton(grid_frame, text=cname, variable=self.optimization_method, value=k)
-            rb.grid(row=gf_row, column=k+1, sticky=Tk.W)
+            col = 1 if k == 0 else 2
+            rb.grid(row=gf_row, column=col, sticky=Tk.W)
+
+        # DE variant selector — shown on the same row, only meaningful when DE is selected
+        de_variants = ["DE/best/1/bin", "DE/rand/1/bin"]
+        self.de_variant_var = Tk.StringVar()
+        self.de_variant_var.set(get_setting("de_variant") or "DE/best/1/bin")
+        de_label = Tk.Label(grid_frame, text="DE variant:")
+        de_label.grid(row=gf_row, column=3, sticky=Tk.E)
+        import tkinter.ttk as ttk
+        de_combo = ttk.Combobox(grid_frame, textvariable=self.de_variant_var,
+                                values=de_variants, width=16, state="readonly")
+        de_combo.grid(row=gf_row, column=4, sticky=Tk.W)
+
+        # DE niter — shown on the same row; default 800 so one job = full budget
+        de_niter_label = Tk.Label(grid_frame, text="niter:")
+        de_niter_label.grid(row=gf_row, column=5, sticky=Tk.E)
+        self.de_niter_var = Tk.IntVar()
+        self.de_niter_var.set(int(get_setting("de_niter") or 800))
+        de_niter_spin = Tk.Spinbox(grid_frame, textvariable=self.de_niter_var,
+                                   from_=100, to=5000, increment=100, width=6)
+        de_niter_spin.grid(row=gf_row, column=6, sticky=Tk.W)
 
         if SHOW_OPTIMIZATION_STRATEGY_OPTION:
             gf_row += 1
@@ -807,7 +830,11 @@ class OptStrategyDialog(Dialog):
 
         # Advanced Settings
         set_setting("ratio_interpretation", self.ratio_interpretation.get())
-        set_setting("optimization_method",self.optimization_method.get())
+        set_setting("optimization_method", self.optimization_method.get())
+        # DE hyperparameters
+        if self.optimization_method.get() == 6:
+            set_setting("de_variant", self.de_variant_var.get())
+            set_setting("de_niter", self.de_niter_var.get())
         set_setting("try_model_composing", self.try_model_composing.get())
         set_setting("separate_eoii", self.separate_eoii.get())
         set_setting("separate_eoii_type", self.separate_eoii_type.get())
