@@ -48,6 +48,11 @@ def delayed_settings_init():
         ("ns_narrow_bounds", True),          # NS prior width: True=narrow (init±1.0), False=wide ([0,10])
         ("ns_adaptive_nsteps", False),       # NS slice sampler: adaptively grow nsteps to ≥1 jump distance
         ("ns_nsteps", None),                 # NS slice sampler: override nsteps (None = auto min(2*ndim,16))
+        ("de_niter", 800),                   # DE evaluation budget override (niter × 200 fevals); default 800
+        ("de_pop_size", None),               # DE population size (None = auto max(20, 5*n_var))
+        ("de_variant", None),                # DE variant e.g. 'DE/best/1/bin' (None = default)
+        ("de_F", None),                      # DE mutation scale factor (None = default 0.5)
+        ("de_CR", None),                     # DE crossover probability (None = default 0.5)
         # SEC parameters
         ("exclusion_limit", default_columntype.excl_limit),
         ("poresize", poresize),
