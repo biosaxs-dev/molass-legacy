@@ -32,6 +32,17 @@ class JobState:
         if counter == 0:
             # init state
             xmax = 500000*self.niter//100
+        elif self.solver_name in ("DE", "de"):
+            # DE budget = de_niter × FEVALS_PER_NITER (200).
+            # estimate_xmax with counter/len ratio over-estimates because DE
+            # accumulates many evals per accepted callback (population evaluations).
+            try:
+                from molass_legacy._MOLASS.SerialSettings import get_setting
+                from molass.Solvers.DE.SolverDE import FEVALS_PER_NITER
+                de_niter = get_setting('de_niter') or self.niter
+                xmax = int(de_niter * FEVALS_PER_NITER)
+            except Exception:
+                xmax = int(counter * (self.niter+1)/len(fv_list))
         else:
             xmax = int(counter * (self.niter+1)/len(fv_list))
         return xmax
