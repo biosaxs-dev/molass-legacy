@@ -147,7 +147,7 @@ class BackRunner:
         # loader (get_sd_from_folder_impl), reproducing the pre-#38 divergence
         # (~5-6 SV gap for all solvers from the GUI).
         try:
-            _opt_folder = self.optjob_folder  # analysis_folder/optimized
+            _opt_folder = os.path.dirname(self.optjob_folder)  # analysis_folder/optimized (parent of jobs/)
             _np = __import__('numpy')
             _np.save(os.path.join(_opt_folder, 'ip_xr_elcurve_y.npy'),  optimizer.xr_curve.y)
             _np.save(os.path.join(_opt_folder, 'ip_uv_elcurve_y.npy'),  optimizer.uv_curve.y)
