@@ -138,6 +138,27 @@ class BackRunner:
 
         stderr_path = os.path.join(folder, 'optimizer_stderr.txt')
         self._stderr_file = open(stderr_path, 'w')
+
+        # Export ip_*.npy override files so the subprocess reads the same
+        # in-process-prepared data as the parent (molass-library#206).
+        # These are the same 6 files that prepare_rigorous_folders() writes when
+        # called via the notebook path (make_rigorous_decomposition_impl).
+        # Without them, the subprocess re-derives all data from disk via the legacy
+        # loader (get_sd_from_folder_impl), reproducing the pre-#38 divergence
+        # (~5-6 SV gap for all solvers from the GUI).
+        try:
+            _opt_folder = self.optjob_folder  # analysis_folder/optimized
+            _np = __import__('numpy')
+            _np.save(os.path.join(_opt_folder, 'ip_xr_elcurve_y.npy'),  optimizer.xr_curve.y)
+            _np.save(os.path.join(_opt_folder, 'ip_uv_elcurve_y.npy'),  optimizer.uv_curve.y)
+            _np.save(os.path.join(_opt_folder, 'ip_xr_D.npy'),          optimizer.xrD)
+            _np.save(os.path.join(_opt_folder, 'ip_uv_U.npy'),          optimizer.uvD)
+            _np.save(os.path.join(_opt_folder, 'ip_xr_E.npy'),          optimizer.xrE)
+            _np.save(os.path.join(_opt_folder, 'ip_xr_qvector.npy'),    optimizer.qvector)
+            self.logger.info("BackRunner: exported ip_*.npy override files to %s", _opt_folder)
+        except Exception as _e:
+            self.logger.warning("BackRunner: ip_*.npy export failed (%s); subprocess will use legacy-derived data", _e)
+
         # Pass MOLASS_NS_SUBPROCESS so SamplerCallback skips CustomLivePointsWidget,
         # which spawns a tkinter GUI subprocess and blocks on Queue.put() when that
         # subprocess crashes (molass-legacy#67).
