@@ -233,6 +233,20 @@ class JobStateCanvas(Tk.Frame):
 
         fv, max_num_evals = self.get_fv_array()
         x_, y_ = fv[:,0:2].T
+        # For DE: always ensure xmax covers the full budget (de_niter × 200 fevals).
+        # Without this, the chart x-axis is set to the current counter value,
+        # and the red progress line appears beyond the visible area.
+        try:
+            from molass_legacy._MOLASS.SerialSettings import get_setting as _gs
+            _de_n = _gs('de_niter')
+            if _de_n is not None:
+                _DE_FEVALS_PER_NITER = 200   # matches molass.Solvers.DE.SolverDE.FEVALS_PER_NITER
+                max_num_evals = max(max_num_evals, int(_de_n) * _DE_FEVALS_PER_NITER)
+        except Exception:
+            pass
+        # Also expand if actual evals exceed the estimate (covers resume runs)
+        if len(x_) > 0:
+            max_num_evals = max(max_num_evals, int(x_[-1]))
         prog_ax.plot(x_, convert_score(y_))
         prog_ax.set_xlim(-PROGRESS_X_MARGIN, max_num_evals + PROGRESS_X_MARGIN)
         ymin, ymax = prog_ax.get_ylim()
@@ -275,7 +289,8 @@ class JobStateCanvas(Tk.Frame):
         map_ax.set_ylim(xmin_, xmax_)
 
         # Best and Current Result Indicator
-        xmin, xmax = self.get_xlim_prog_axes()
+        # Use the same corrected max_num_evals (already expanded for DE budget above)
+        xmin, xmax = -PROGRESS_X_MARGIN, max_num_evals + PROGRESS_X_MARGIN
         best_x = fv[m,0]
         for k, ax in enumerate(self.prog_axes):
             if k > 0:
