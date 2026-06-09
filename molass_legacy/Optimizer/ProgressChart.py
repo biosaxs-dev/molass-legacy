@@ -90,8 +90,19 @@ def draw_progress(self, plot_info, niter=20):
 
     x_, y_ = fv[:,0:2].T
     # Always include the running front — if actual evals exceed the estimate, expand.
+    # For population-based solvers (DE, NSGA2) the counter grows by pop_size per callback,
+    # so use de_niter*FEVALS_PER_NITER as the budget estimate when available.
     if len(x_) > 0:
         max_num_evals = max(max_num_evals, int(x_[-1]))
+    try:
+        from molass_legacy._MOLASS.SerialSettings import get_setting as _gs
+        _de_n = _gs('de_niter')
+        if _de_n is not None:
+            from molass.Solvers.DE.SolverDE import FEVALS_PER_NITER as _FPN
+            _de_budget = int(_de_n) * _FPN
+            max_num_evals = max(max_num_evals, _de_budget)
+    except Exception:
+        pass
     prog_ax.plot(x_, convert_score(y_))
     prog_ax.set_xlim(-PROGRESS_X_MARGIN, max_num_evals + PROGRESS_X_MARGIN)
     ymin, ymax = prog_ax.get_ylim()
