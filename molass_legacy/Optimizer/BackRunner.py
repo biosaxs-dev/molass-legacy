@@ -159,35 +159,76 @@ class BackRunner:
         except Exception as _e:
             self.logger.warning("BackRunner: ip_*.npy export failed (%s); subprocess will use legacy-derived data", _e)
 
-        # Recompute rg_curve from the already-exported ip_*.npy arrays using the
-        # library's stricter Guinier quality filtering, then export to rg_curve_parent/.
-        # This closes the Guinier_deviation gap between LIB-IN and LEG-GUI without
-        # requiring the GUI to construct an SSD object (molass-library#209).
-        # jv comes from ip_xr_jv.npy if exported by prepare_rigorous_folders (notebook
-        # path); for LEG-GUI (no jv file), fall back to sequential frame numbering.
+        # Phase 2 — Library-quality D and rg_curve for LEG-GUI path (molass-library#211).
+        #
+        # The root cause of the ~2 SV gap between LIB-IN and LEG-GUI is that the legacy
+        # data loader retains 8 noisy low-q rows near the beamstop (q<0.0143 Å⁻¹) that
+        # the library's load_xr_with_options strips during trimming.  Those rows cause
+        # SimpleGuinier to fail on ~50% of frames → legacy rg_curve has only 121 valid
+        # frames vs library's 239.
+        #
+        # Fix: load the raw data from in_folder, apply the library pipeline
+        # (trimmed_copy → corrected_copy), then:
+        #   1. Overwrite ip_xr_D.npy with the library-corrected, library-trimmed D
+        #      (consistent replacement: both D and rg_curve come from the same pipeline)
+        #   2. Compute rg_curve from that same library D
+        #   3. Export to rg_curve_parent/
+        #
+        # The D+rg_curve pair is now LIB+LIB (consistent).
+        # Total overhead: ~35 s (data load 0.6 s + trim 0.1 s + correct 0.5 s + rg_curve 30 s).
+        # Wrapped in try/except: failure is non-fatal; subprocess falls back to legacy data.
+        try:
+            _in_folder = get_setting('in_folder')
+            if _in_folder and os.path.exists(_in_folder):
+                from molass.DataObjects.SecSaxsData import SecSaxsData as _SSD
+                from molass.Global.Options import set_molass_options as _sqo
+                _sqo(quiet=True)
+                self.logger.info("BackRunner: building library SSD from in_folder=%s", _in_folder)
+                _ssd_raw      = _SSD(_in_folder, xr_only=True)
+                _ssd_trimmed  = _ssd_raw.trimmed_copy()
+                _ssd_corrected = _ssd_trimmed.corrected_copy()
+                _D_lib  = _ssd_corrected.xr.M
+                _qv_lib = _ssd_corrected.xr.q_values
+                _E_lib  = _ssd_corrected.xr.E
+                _jv_lib = _np.array(_ssd_corrected.xr.jv, dtype=int)
+
+                # Overwrite ip_xr_D.npy / ip_xr_E.npy / ip_xr_qvector.npy / ip_xr_jv.npy
+                # with library-quality versions so subprocess sees consistent data.
+                _np.save(os.path.join(_opt_folder, 'ip_xr_D.npy'),       _D_lib)
+                _np.save(os.path.join(_opt_folder, 'ip_xr_E.npy'),        _E_lib)
+                _np.save(os.path.join(_opt_folder, 'ip_xr_qvector.npy'),  _qv_lib)
+                _np.save(os.path.join(_opt_folder, 'ip_xr_jv.npy'),       _jv_lib)
+                self.logger.info("BackRunner: library D (%s) and qvector (%s) written",
+                                 _D_lib.shape, _qv_lib.shape)
+            else:
+                # No in_folder available — fall through to legacy rg_curve path below
+                _D_lib = _qv_lib = _E_lib = _jv_lib = None
+                self.logger.warning("BackRunner: in_folder not found; using legacy D for rg_curve")
+        except Exception as _e3:
+            _D_lib = _qv_lib = _E_lib = _jv_lib = None
+            self.logger.warning("BackRunner: library D computation failed (%s); using legacy D", _e3)
+
+        # Compute rg_curve from library D (if Phase 2 succeeded) or legacy D (fallback),
+        # then export to rg_curve_parent/ so subprocess reads library-quality Guinier data.
         try:
             from molass.Guinier.RgCurveUtils import compute_rg_curve_from_arrays
             from molass.Bridge.LegacyRgCurve import LegacyRgCurve
             import shutil as _shutil
 
-            _D   = optimizer.xrD
-            _qv  = optimizer.qvector
-            _E   = optimizer.xrE
-            _xr_curve = optimizer.xr_curve
-
-            _jv_file = os.path.join(_opt_folder, 'ip_xr_jv.npy')
-            if os.path.exists(_jv_file):
-                # Notebook path: exact original frame numbers exported by prepare_rigorous_folders
-                _jv = _np.load(_jv_file)
+            if _D_lib is not None:
+                # Phase 2 succeeded: use library D (LIB+LIB consistent pair)
+                _D_rg, _qv_rg, _E_rg, _jv_rg = _D_lib, _qv_lib, _E_lib, _jv_lib
+                self.logger.info("BackRunner: using library D for rg_curve (Phase 2)")
             else:
-                # GUI path: use xr_curve.x which holds the legacy frame numbers
-                # (e.g. 64..305 after trimming).  This ensures LegacyRgCurve maps
-                # the computed Rg values to the correct frame positions.
-                _jv = _np.array(_xr_curve.x, dtype=int)
+                # Fallback: use legacy D (GUI+GUI consistent pair)
+                _D_rg   = optimizer.xrD
+                _qv_rg  = optimizer.qvector
+                _E_rg   = optimizer.xrE
+                _jv_rg  = _np.array(optimizer.xr_curve.x, dtype=int)
+                self.logger.info("BackRunner: using legacy D for rg_curve (fallback)")
 
-            self.logger.info("BackRunner: computing library rg_curve from ip arrays "
-                             "(D=%s, jv=%s)", _D.shape, _jv.shape if _jv is not None else None)
-            _lib_rgcurve = compute_rg_curve_from_arrays(_D, _qv, _E, jv=_jv)
+            _xr_curve = optimizer.xr_curve
+            _lib_rgcurve = compute_rg_curve_from_arrays(_D_rg, _qv_rg, _E_rg, jv=_jv_rg)
             _legacy_rgcurve = LegacyRgCurve(_xr_curve, _lib_rgcurve)
 
             _parent_rg_folder = os.path.join(_opt_folder, 'rg_curve_parent')
