@@ -159,6 +159,43 @@ class BackRunner:
         except Exception as _e:
             self.logger.warning("BackRunner: ip_*.npy export failed (%s); subprocess will use legacy-derived data", _e)
 
+        # Recompute rg_curve from the already-exported ip_*.npy arrays using the
+        # library's stricter Guinier quality filtering, then export to rg_curve_parent/.
+        # This closes the Guinier_deviation gap between LIB-IN and LEG-GUI without
+        # requiring the GUI to construct an SSD object (molass-library#209).
+        # jv comes from ip_xr_jv.npy if exported by prepare_rigorous_folders (notebook
+        # path); for LEG-GUI (no jv file), fall back to sequential frame numbering.
+        try:
+            from molass.Guinier.RgCurveUtils import compute_rg_curve_from_arrays
+            from molass.Bridge.LegacyRgCurve import LegacyRgCurve
+            import shutil as _shutil
+
+            _D   = optimizer.xrD
+            _qv  = optimizer.qvector
+            _E   = optimizer.xrE
+            _xr_curve = optimizer.xr_curve
+
+            _jv_file = os.path.join(_opt_folder, 'ip_xr_jv.npy')
+            _jv = _np.load(_jv_file) if os.path.exists(_jv_file) else None
+
+            self.logger.info("BackRunner: computing library rg_curve from ip arrays "
+                             "(D=%s, jv=%s)", _D.shape, _jv.shape if _jv is not None else None)
+            _lib_rgcurve = compute_rg_curve_from_arrays(_D, _qv, _E, jv=_jv)
+            _legacy_rgcurve = LegacyRgCurve(_xr_curve, _lib_rgcurve)
+
+            _parent_rg_folder = os.path.join(_opt_folder, 'rg_curve_parent')
+            if os.path.exists(_parent_rg_folder):
+                _shutil.rmtree(_parent_rg_folder)
+            os.makedirs(_parent_rg_folder)
+            _legacy_rgcurve.export(_parent_rg_folder)
+
+            from molass_legacy._MOLASS.SerialSettings import set_setting as _ss
+            _ss('trust_rg_curve_folder', True)
+            self.logger.info("BackRunner: library rg_curve exported to %s", _parent_rg_folder)
+        except Exception as _e2:
+            self.logger.warning("BackRunner: library rg_curve export failed (%s); "
+                                "subprocess will use legacy rg-curve/", _e2)
+
         # Pass MOLASS_NS_SUBPROCESS so SamplerCallback skips CustomLivePointsWidget,
         # which spawns a tkinter GUI subprocess and blocks on Queue.put() when that
         # subprocess crashes (molass-legacy#67).
