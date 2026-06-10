@@ -37,13 +37,6 @@ def get_current_rg_folder(compute_rg=False, possibly_relocated=True, current_fol
         if compute_rg:
             return rg_folder
 
-    # Check for rg_curve_parent/ — the parent process exports the Rg curve here
-    # (molass-legacy#34 cleanup removed the redundant rg-curve/ copy).
-    # Return it early so get_dsets_impl can detect it via optimizer_folder.
-    parent_rg_folder = os.path.join(os.path.dirname(rg_folder), 'rg_curve_parent')
-    if os.path.exists(parent_rg_folder):
-        return parent_rg_folder
-
     relocated_root_folder = rg_folder + "s"
     if not os.path.exists(relocated_root_folder):
         # rg-folder has not been created yet (e.g. first run before any optimization).
@@ -111,81 +104,44 @@ def get_dsets_impl(sd, corrected_sd, progress_cb=None, rg_folder=None, rg_info=T
             if logger is not None:
                 logger.info("D matrix overridden from parent's corrected XR data (molass-legacy#39)")
 
-        parent_rg_folder = os.path.join(optimizer_folder, "rg_curve_parent")
-        _rg_data_files = ['segments.txt', 'qualities.txt', 'slices.txt',
-                          'states.txt', 'baseline_type.txt']
-        parent_folder_ok = (os.path.exists(parent_rg_folder) and
-                            os.path.exists(os.path.join(parent_rg_folder, 'ok.stamp')) and
-                            all(os.path.exists(os.path.join(parent_rg_folder, f))
-                                for f in _rg_data_files))
-        trust_by_setting = get_setting("trust_rg_curve_folder")
+        # Single rg-curve/ folder — written by both prepare_rigorous_folders() (notebook
+        # path) and BackRunner.run() (GUI path).  The trimming consistency check guards
+        # the cross-session load case (Result Viewer / Resume loading an rg-curve/ from
+        # a different earlier analysis folder with different trim boundaries).
+        # Within the same analysis folder and session, trimming is always consistent.
+        # On mismatch: reject clearly — do NOT silently recompute from raw data.
+        rg_folder_ok = check_rg_folder(rg_folder)
         if logger is not None:
-            logger.info("rg_folder=%s trust_by_setting=%s parent_folder_ok=%s",
-                        rg_folder, trust_by_setting, parent_folder_ok)
-
-        # Use rg_curve_parent/ when parent explicitly exported it.
-        # (molass-legacy#34 cleanup: rg-curve/ was a redundant second copy and has been removed.)
-        if trust_by_setting and parent_folder_ok:
-            rg_folder = parent_rg_folder
-            rg_folder_ok = True
-            if logger is not None:
-                logger.info("rg_folder redirected to parent folder: %s", parent_rg_folder)
-        else:
-            rg_folder_ok = check_rg_folder(rg_folder)
-            if logger is not None:
-                logger.info("rg_folder=%s status is %s", rg_folder, str(rg_folder_ok))
-
-        if not rg_folder_ok:
-            previous_rg_folder = get_setting("rg_curve_folder")
-            if previous_rg_folder is None:
-                # i.e., not ok
-                pass
-            else:
-                if check_rg_folder(previous_rg_folder):
-                    from shutil import rmtree, copytree
-                    if os.path.exists(rg_folder):
-                        # maybe broken
-                        rmtree(rg_folder)
-                    copytree(previous_rg_folder, rg_folder)
-                    rg_folder_ok = check_rg_folder(rg_folder)
-                    if logger is not None:
-                        logger.info("rg-curve has been copied from %s: check status %s", previous_rg_folder, str(rg_folder_ok))
+            logger.info("rg_folder=%s status is %s", rg_folder, str(rg_folder_ok))
 
         if rg_folder_ok:
             rg_curve = RgCurveProxy(xr_curve, rg_folder, progress_cb=progress_cb)
-            # Skip trimming consistency check ONLY when rg_curve_parent/ was actually used
-            # (parent_folder_ok=True means the notebook path exported a fresh rg_curve_parent/).
-            # When the old rg-curve/ folder is being used (GUI path, parent_folder_ok=False),
-            # always run the trimming check even if trust_by_setting=True — otherwise the
-            # subprocess trusts a stale rg-curve/ with wrong trimming → wrong Guinier region
-            # → ~3 SV regression in LEG-GUI (molass-legacy#76).
-            if trust_by_setting and parent_folder_ok:
+            xr_restrict_list = get_setting("xr_restrict_list")
+            current_rg_trimming = str(None if xr_restrict_list is None else xr_restrict_list[0])
+            proxy_rg_trimming = str(rg_curve.rg_trimming)
+            if logger is not None:
+                logger.info("trimming check: current=%s, rg-curve=%s",
+                            current_rg_trimming, proxy_rg_trimming)
+            if current_rg_trimming == proxy_rg_trimming:
                 if logger is not None:
-                    logger.info("rg-curve proxy is trusted without trimming consistency check.")
+                    logger.info("rg-curve proxy accepted (trimming matches).")
             else:
-                xr_restrict_list = get_setting("xr_restrict_list")
-                current_rg_trimming = str(None if xr_restrict_list is None else xr_restrict_list[0])
-                proxy_rg_trimming = str(rg_curve.rg_trimming)
+                # Trimming mismatch: the rg-curve/ was computed with different trim boundaries.
+                # This happens when Result Viewer or Resume loads a run from a different session.
+                # Reject clearly instead of silently recomputing — the user should start a new run.
+                msg = ("rg-curve trimming mismatch: current=%s, rg-curve=%s. "
+                       "The stored rg-curve was computed with different trim boundaries. "
+                       "Please start a new optimization run instead of resuming this one."
+                       % (current_rg_trimming, proxy_rg_trimming))
                 if logger is not None:
-                    logger.info("trimmings are %s, %s", current_rg_trimming, proxy_rg_trimming)
-                if current_rg_trimming == proxy_rg_trimming:
-                    if logger is not None:
-                        logger.info("rg-curve has been created as a proxy.")
-                else:
-                    if logger is not None:
-                        logger.info("the existing rg-curve will be discarded due to trimming inconsistency.")
-                    rg_folder_ok = False
+                    logger.warning(msg)
+                import warnings
+                warnings.warn(msg, stacklevel=3)
+                rg_folder_ok = False
+                rg_curve = None
 
         if not rg_folder_ok:
-            # create rg_curve from corrected_sd
-            D_, E_, qv_, xr_curve_ = corrected_sd.get_xr_data_separate_ly()
-            rg_curve = RgCurve(qv_, xr_curve_, D_, E_, progress_cb=progress_cb)
-
-            from molass_legacy.KekLib.BasicUtils import clear_dirs_with_retry
-            clear_dirs_with_retry([rg_folder])
-            rg_curve.export(rg_folder)
-            set_setting("rg_curve_folder", rg_folder)
-            logger.info("rg-curve calculation complete.")
+            rg_curve = None
     else:
         rg_curve = None
 
