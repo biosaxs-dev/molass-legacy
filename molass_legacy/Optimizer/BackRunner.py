@@ -194,12 +194,18 @@ class BackRunner:
 
                 # Overwrite ip_xr_D.npy / ip_xr_E.npy / ip_xr_qvector.npy / ip_xr_jv.npy
                 # with library-quality versions so subprocess sees consistent data.
-                _np.save(os.path.join(_opt_folder, 'ip_xr_D.npy'),       _D_lib)
-                _np.save(os.path.join(_opt_folder, 'ip_xr_E.npy'),        _E_lib)
-                _np.save(os.path.join(_opt_folder, 'ip_xr_qvector.npy'),  _qv_lib)
-                _np.save(os.path.join(_opt_folder, 'ip_xr_jv.npy'),       _jv_lib)
-                self.logger.info("BackRunner: library D (%s) and qvector (%s) written",
-                                 _D_lib.shape, _qv_lib.shape)
+                # IMPORTANT: also overwrite ip_xr_elcurve_y.npy — the elcurve y must have
+                # the same frame count as D (241 frames here vs 242 for legacy).
+                # Mismatch causes ValueError in BasicOptimizer.compute_LRF_matrices:
+                # shapes (4,242) vs (1,241).
+                _xr_icurve_y = _ssd_corrected.xr.get_icurve().y   # (n_frames,) matching D
+                _np.save(os.path.join(_opt_folder, 'ip_xr_D.npy'),          _D_lib)
+                _np.save(os.path.join(_opt_folder, 'ip_xr_E.npy'),          _E_lib)
+                _np.save(os.path.join(_opt_folder, 'ip_xr_qvector.npy'),    _qv_lib)
+                _np.save(os.path.join(_opt_folder, 'ip_xr_jv.npy'),         _jv_lib)
+                _np.save(os.path.join(_opt_folder, 'ip_xr_elcurve_y.npy'),  _xr_icurve_y)
+                self.logger.info("BackRunner: library D (%s), qvector (%s), elcurve (%s) written",
+                                 _D_lib.shape, _qv_lib.shape, _xr_icurve_y.shape)
             else:
                 # No in_folder available — fall through to legacy rg_curve path below
                 _D_lib = _qv_lib = _E_lib = _jv_lib = None
