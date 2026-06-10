@@ -479,9 +479,25 @@ class JobStateCanvas(Tk.Frame):
                     fv_array = self.demo_info[0]
                     start_time = fv_array[0,3]
                     curr_time = fv_array[-1,3]
-                    finish_time = start_time + (curr_time - start_time)*(self.num_iter/fv_array.shape[0])
-                    # add 1 minute so that it won't be too early
-                    time = friendly_time_str(finish_time + timedelta(minutes=1))
+                    # For DE: extrapolate by eval count, not callback count
+                    _guessed = False
+                    try:
+                        from molass_legacy._MOLASS.SerialSettings import get_setting as _gs
+                        _de_n = _gs('de_niter')
+                        if _de_n is not None:
+                            _total_evals = int(_de_n) * 200
+                            _curr_evals = float(fv_array[-1, 0])
+                            if _curr_evals > 0:
+                                _frac = _curr_evals / _total_evals
+                                finish_time = start_time + (curr_time - start_time) / _frac
+                                time = friendly_time_str(finish_time + timedelta(minutes=1))
+                                _guessed = True
+                    except Exception:
+                        pass
+                    if not _guessed:
+                        finish_time = start_time + (curr_time - start_time)*(self.num_iter/fv_array.shape[0])
+                        # add 1 minute so that it won't be too early
+                        time = friendly_time_str(finish_time + timedelta(minutes=1))
                 except:
                     pass
 

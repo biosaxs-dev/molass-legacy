@@ -49,6 +49,25 @@ def guess_ending_time(fv_array, niter=20):
         try:
             start_time = fv_array[0,3]
             curr_time = fv_array[-1,3]
+            # For DE (and other population-based solvers), extrapolate based on eval
+            # count (fv_array[:,0]) rather than callback count (fv_array.shape[0]).
+            # DE has few callbacks but many evals per callback; callback-based
+            # extrapolation over-estimates the remaining time by ~10-20×.
+            try:
+                from molass_legacy._MOLASS.SerialSettings import get_setting as _gs
+                _de_n = _gs('de_niter')
+                if _de_n is not None:
+                    _DE_FEVALS_PER_NITER = 200
+                    total_evals = int(_de_n) * _DE_FEVALS_PER_NITER
+                    curr_evals = float(fv_array[-1, 0])
+                    if curr_evals > 0:
+                        fraction_done = curr_evals / total_evals
+                        finish_time = start_time + (curr_time - start_time) / fraction_done
+                        time = friendly_time_str(finish_time + timedelta(minutes=1))
+                        return time, finish_time
+            except Exception:
+                pass
+            # Default: callback-count extrapolation (works well for BH/NS)
             finish_time = start_time + (curr_time - start_time)*(niter/fv_array.shape[0])
             # add 1 minute so that it won't be too early
             time = friendly_time_str(finish_time + timedelta(minutes=1))
