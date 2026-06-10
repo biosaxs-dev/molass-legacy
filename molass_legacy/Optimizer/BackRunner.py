@@ -160,69 +160,40 @@ class BackRunner:
             self.logger.warning("BackRunner: ip_*.npy export failed (%s); subprocess will use legacy-derived data", _e)
 
         # Phase 2 — Library-quality rg_curve for LEG-GUI path (molass-library#211).
-        #
-        # Goal: close the Guinier_deviation gap (~2 SV) between LIB-IN and LEG-GUI.
-        #
-        # Root cause: legacy D retains 8 noisy low-q rows (q < 0.0143 Å⁻¹) near
-        # the beamstop.  SimpleGuinier fails on ~50% of frames with those rows present
-        # → legacy rg_curve: only 121 valid frames.
-        # Library D strips those rows → 239 valid frames.
-        #
-        # IMPORTANT: We cannot replace ip_xr_D.npy with library D because the legacy
-        # optimizer is already built with a 242-frame xr_curve; swapping to a 241-frame
-        # D creates shape mismatches in weight matrices (vw, xrDw) that crash the
-        # subprocess (ValueError shapes (4,242) vs (1,241)).
-        #
-        # Approach: load the raw data via the library pipeline and compute the
-        # library-quality rg_curve from the library-trimmed D, then export it to
-        # rg_curve_parent/.  The rg_curve itself is written to rg_curve_parent/ and
-        # the subprocess loads it there — the D and weight matrices stay unchanged
-        # (still 242 frames from the legacy optimizer).
-        #
-        # Note: D and rg_curve now come from slightly different pipelines (legacy 242-
-        # frame D vs library 241-frame rg_curve).  This is a temporary hybrid that
-        # gives most of the Guinier improvement while keeping the subprocess stable.
-        # Full consistency (LIB+LIB) requires Phase 3: the GUI constructing an SSD
-        # and calling prepare_rigorous_folders() before BackRunner.
+        # Compute rg_curve from legacy D (GUI+GUI consistency) and export to
+        # rg_curve_parent/ so the subprocess reads it instead of the old rg-curve/.
+        # Uses the same SimpleGuinier algorithm as the library path, applied to
+        # optimizer.xrD (legacy 242-frame D).  Frame numbers come from xr_curve.x.
+        # This replaces the stale rg-curve/ folder reliably on every run (molass-legacy#77).
         try:
-            _in_folder = get_setting('in_folder')
-            if _in_folder and os.path.exists(_in_folder):
-                from molass.DataObjects.SecSaxsData import SecSaxsData as _SSD
-                from molass.Global.Options import set_molass_options as _sqo
-                from molass.Guinier.RgCurveUtils import compute_rg_curve_from_arrays
-                from molass.Bridge.LegacyRgCurve import LegacyRgCurve
-                import shutil as _shutil
-                _sqo(quiet=True)
-                self.logger.info("BackRunner: building library SSD from in_folder=%s", _in_folder)
-                _ssd_raw       = _SSD(_in_folder, xr_only=True)
-                _ssd_trimmed   = _ssd_raw.trimmed_copy()
-                _ssd_corrected = _ssd_trimmed.corrected_copy()
-                _D_lib  = _ssd_corrected.xr.M          # (984 q-rows, 241 frames)
-                _qv_lib = _ssd_corrected.xr.q_values   # (984,)
-                _E_lib  = _ssd_corrected.xr.E           # (984, 241)
-                _jv_lib = _np.array(_ssd_corrected.xr.jv, dtype=int)
+            from molass.Guinier.RgCurveUtils import compute_rg_curve_from_arrays
+            from molass.Bridge.LegacyRgCurve import LegacyRgCurve
+            import shutil as _shutil
 
-                # Compute rg_curve from library D (library-quality: 239 valid frames)
-                _xr_curve = optimizer.xr_curve
-                _lib_rgcurve = compute_rg_curve_from_arrays(_D_lib, _qv_lib, _E_lib, jv=_jv_lib)
-                _legacy_rgcurve = LegacyRgCurve(_xr_curve, _lib_rgcurve)
+            _D_rg  = optimizer.xrD
+            _qv_rg = optimizer.qvector
+            _E_rg  = optimizer.xrE
+            _jv_rg = _np.array(optimizer.xr_curve.x, dtype=int)
+            _xr_curve = optimizer.xr_curve
 
-                _parent_rg_folder = os.path.join(_opt_folder, 'rg_curve_parent')
-                if os.path.exists(_parent_rg_folder):
-                    _shutil.rmtree(_parent_rg_folder)
-                os.makedirs(_parent_rg_folder)
-                _legacy_rgcurve.export(_parent_rg_folder)
+            self.logger.info("BackRunner: computing rg_curve from legacy D %s", _D_rg.shape)
+            _lib_rgcurve = compute_rg_curve_from_arrays(_D_rg, _qv_rg, _E_rg, jv=_jv_rg)
+            _legacy_rgcurve = LegacyRgCurve(_xr_curve, _lib_rgcurve)
 
-                from molass_legacy._MOLASS.SerialSettings import set_setting as _ss
-                _ss('trust_rg_curve_folder', True)
-                self.logger.info("BackRunner: library rg_curve (%d valid frames) exported to %s",
-                                 int(_np.sum(_np.isfinite(_lib_rgcurve.y) & (_lib_rgcurve.y > 0))),
-                                 _parent_rg_folder)
-            else:
-                self.logger.warning("BackRunner: in_folder not found; using legacy rg-curve/")
-        except Exception as _e_phase2:
-            self.logger.warning("BackRunner: library rg_curve export failed (%s); "
-                                "subprocess will use legacy rg-curve/", _e_phase2)
+            _parent_rg_folder = os.path.join(_opt_folder, 'rg_curve_parent')
+            if os.path.exists(_parent_rg_folder):
+                _shutil.rmtree(_parent_rg_folder)
+            os.makedirs(_parent_rg_folder)
+            _legacy_rgcurve.export(_parent_rg_folder)
+
+            from molass_legacy._MOLASS.SerialSettings import set_setting as _ss
+            _ss('trust_rg_curve_folder', True)
+            _n_valid = int(_np.sum(_np.isfinite(_lib_rgcurve.y) & (_lib_rgcurve.y > 0)))
+            self.logger.info("BackRunner: rg_curve exported (%d valid frames) to %s",
+                             _n_valid, _parent_rg_folder)
+        except Exception as _e_rg:
+            self.logger.warning("BackRunner: rg_curve export failed (%s); "
+                                "subprocess will use legacy rg-curve/", _e_rg)
 
         # Pass MOLASS_NS_SUBPROCESS so SamplerCallback skips CustomLivePointsWidget,
         # which spawns a tkinter GUI subprocess and blocks on Queue.put() when that
