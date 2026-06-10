@@ -153,7 +153,13 @@ def get_dsets_impl(sd, corrected_sd, progress_cb=None, rg_folder=None, rg_info=T
 
         if rg_folder_ok:
             rg_curve = RgCurveProxy(xr_curve, rg_folder, progress_cb=progress_cb)
-            if trust_by_setting:
+            # Skip trimming consistency check ONLY when rg_curve_parent/ was actually used
+            # (parent_folder_ok=True means the notebook path exported a fresh rg_curve_parent/).
+            # When the old rg-curve/ folder is being used (GUI path, parent_folder_ok=False),
+            # always run the trimming check even if trust_by_setting=True — otherwise the
+            # subprocess trusts a stale rg-curve/ with wrong trimming → wrong Guinier region
+            # → ~3 SV regression in LEG-GUI (molass-legacy#76).
+            if trust_by_setting and parent_folder_ok:
                 if logger is not None:
                     logger.info("rg-curve proxy is trusted without trimming consistency check.")
             else:
