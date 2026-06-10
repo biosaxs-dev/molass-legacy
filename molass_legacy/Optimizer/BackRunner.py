@@ -176,7 +176,14 @@ class BackRunner:
             _xr_curve = optimizer.xr_curve
 
             _jv_file = os.path.join(_opt_folder, 'ip_xr_jv.npy')
-            _jv = _np.load(_jv_file) if os.path.exists(_jv_file) else None
+            if os.path.exists(_jv_file):
+                # Notebook path: exact original frame numbers exported by prepare_rigorous_folders
+                _jv = _np.load(_jv_file)
+            else:
+                # GUI path: use xr_curve.x which holds the legacy frame numbers
+                # (e.g. 64..305 after trimming).  This ensures LegacyRgCurve maps
+                # the computed Rg values to the correct frame positions.
+                _jv = _np.array(_xr_curve.x, dtype=int)
 
             self.logger.info("BackRunner: computing library rg_curve from ip arrays "
                              "(D=%s, jv=%s)", _D.shape, _jv.shape if _jv is not None else None)
