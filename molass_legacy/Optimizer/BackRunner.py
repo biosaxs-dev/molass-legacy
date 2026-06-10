@@ -160,37 +160,62 @@ class BackRunner:
             self.logger.warning("BackRunner: ip_*.npy export failed (%s); subprocess will use legacy-derived data", _e)
 
         # Phase 2 — Library-quality rg_curve for LEG-GUI path (molass-library#211).
-        # Compute rg_curve from legacy D (GUI+GUI consistency) and export to
-        # rg_curve_parent/ so the subprocess reads it instead of the old rg-curve/.
-        # Uses the same SimpleGuinier algorithm as the library path, applied to
-        # optimizer.xrD (legacy 242-frame D).  Frame numbers come from xr_curve.x.
-        # This replaces the stale rg-curve/ folder reliably on every run (molass-legacy#77).
+        # Export rg_curve to rg_curve_parent/ so the subprocess always reads a
+        # freshly computed, trimming-matched rg_curve instead of the stale rg-curve/.
+        #
+        # Unified design (two-path logic):
+        #
+        #   rg_curve_parent/ ALREADY EXISTS (ok.stamp present)
+        #     → prepare_rigorous_folders() put it there before BackRunner was called
+        #       (notebook/LIB-SUB/LEG-NOTE paths).  It contains the library-quality
+        #       rg_curve computed from library-corrected D.  DO NOT overwrite — this
+        #       is higher quality than anything BackRunner can produce.
+        #
+        #   rg_curve_parent/ ABSENT or INCOMPLETE
+        #     → GUI path: prepare_rigorous_folders() was never called.
+        #       Compute rg_curve from optimizer.xrD (legacy D, GUI+GUI consistent)
+        #       and export it here.
+        #
+        # This unifies the two export mechanisms into a single responsibility:
+        # prepare_rigorous_folders() owns the library path; BackRunner owns the GUI path.
         try:
             from molass.Guinier.RgCurveUtils import compute_rg_curve_from_arrays
             from molass.Bridge.LegacyRgCurve import LegacyRgCurve
             import shutil as _shutil
-
-            _D_rg  = optimizer.xrD
-            _qv_rg = optimizer.qvector
-            _E_rg  = optimizer.xrE
-            _jv_rg = _np.array(optimizer.xr_curve.x, dtype=int)
-            _xr_curve = optimizer.xr_curve
-
-            self.logger.info("BackRunner: computing rg_curve from legacy D %s", _D_rg.shape)
-            _lib_rgcurve = compute_rg_curve_from_arrays(_D_rg, _qv_rg, _E_rg, jv=_jv_rg)
-            _legacy_rgcurve = LegacyRgCurve(_xr_curve, _lib_rgcurve)
+            from molass_legacy._MOLASS.SerialSettings import set_setting as _ss
 
             _parent_rg_folder = os.path.join(_opt_folder, 'rg_curve_parent')
-            if os.path.exists(_parent_rg_folder):
-                _shutil.rmtree(_parent_rg_folder)
-            os.makedirs(_parent_rg_folder)
-            _legacy_rgcurve.export(_parent_rg_folder)
+            _parent_rg_ok = (os.path.isdir(_parent_rg_folder) and
+                             os.path.exists(os.path.join(_parent_rg_folder, 'ok.stamp')))
 
-            from molass_legacy._MOLASS.SerialSettings import set_setting as _ss
-            _ss('trust_rg_curve_folder', True)
-            _n_valid = int(_np.sum(_np.isfinite(_lib_rgcurve.y) & (_lib_rgcurve.y > 0)))
-            self.logger.info("BackRunner: rg_curve exported (%d valid frames) to %s",
-                             _n_valid, _parent_rg_folder)
+            if _parent_rg_ok:
+                # Library rg_curve already exported by prepare_rigorous_folders()
+                # — preserve it, just ensure trust_rg_curve_folder is set.
+                _ss('trust_rg_curve_folder', True)
+                self.logger.info("BackRunner: rg_curve_parent/ already exported by "
+                                 "prepare_rigorous_folders; skipping BackRunner export")
+            else:
+                # GUI path: compute from legacy D (GUI+GUI consistent)
+                _D_rg     = optimizer.xrD
+                _qv_rg    = optimizer.qvector
+                _E_rg     = optimizer.xrE
+                _jv_rg    = _np.array(optimizer.xr_curve.x, dtype=int)
+                _xr_curve = optimizer.xr_curve
+
+                self.logger.info("BackRunner: computing rg_curve from legacy D %s "
+                                 "(prepare_rigorous_folders not called)", _D_rg.shape)
+                _lib_rgcurve    = compute_rg_curve_from_arrays(_D_rg, _qv_rg, _E_rg, jv=_jv_rg)
+                _legacy_rgcurve = LegacyRgCurve(_xr_curve, _lib_rgcurve)
+
+                if os.path.exists(_parent_rg_folder):
+                    _shutil.rmtree(_parent_rg_folder)
+                os.makedirs(_parent_rg_folder)
+                _legacy_rgcurve.export(_parent_rg_folder)
+                _ss('trust_rg_curve_folder', True)
+
+                _n_valid = int(_np.sum(_np.isfinite(_lib_rgcurve.y) & (_lib_rgcurve.y > 0)))
+                self.logger.info("BackRunner: rg_curve exported (%d valid frames) to %s",
+                                 _n_valid, _parent_rg_folder)
         except Exception as _e_rg:
             self.logger.warning("BackRunner: rg_curve export failed (%s); "
                                 "subprocess will use legacy rg-curve/", _e_rg)
