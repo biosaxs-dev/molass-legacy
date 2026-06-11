@@ -24,7 +24,7 @@ from .ValidComponents import ValidComponents
 
 USE_COLUMN_INTERP = True
 
-from molass_legacy.GuinierTools.GuinierDeviation import USE_NORMALIZED_RMSD_FOR_RGCURVES
+from molass.Guinier.GuinierDeviation import USE_NORMALIZED_RMSD_FOR_RGCURVES
 
 USE_NORMALIZED_RMSD = True
 USE_FROBENIUS_XDIFFMAX = False
@@ -1032,9 +1032,9 @@ class BasicOptimizer:
     def update_guinier_region(self, params=None, debug=False):
         if debug:
             from importlib import reload
-            import molass_legacy.GuinierTools.GuinierDeviation
-            reload(molass_legacy.GuinierTools.GuinierDeviation)
-        from molass_legacy.GuinierTools.GuinierDeviation import GuinierDeviation
+            import molass.Guinier.GuinierDeviation
+            reload(molass.Guinier.GuinierDeviation)
+        from molass.Guinier.GuinierDeviation import GuinierDeviation
 
         if params is None:
             params = self.init_params
