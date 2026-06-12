@@ -361,14 +361,19 @@ class OptStrategyDialog(Dialog):
                         # (3, "SMC (pyABC)"),
                         (6, "Diff. Evolution"),
                         ]
-        activate = slice(0,1,None)   # show BH only by default
+        devel_mode = is_developing_version()
+
         activate_with_de = [0, 6]    # BH + DE
+        de_rb = None
         for k, cname in option_specs:
             if k not in activate_with_de:
                 continue
             rb = Tk.Radiobutton(grid_frame, text=cname, variable=self.optimization_method, value=k)
             col = 1 if k == 0 else 2
-            rb.grid(row=gf_row, column=col, sticky=Tk.W)
+            padx = (0, 30) if col == 1 else 0   # right padding on BH matches baseline column spacing
+            rb.grid(row=gf_row, column=col, sticky=Tk.W, padx=padx)
+            if k == 6:
+                de_rb = rb
 
         # DE variant selector — shown on the same row, only meaningful when DE is selected
         de_variants = ["DE/best/1/bin", "DE/rand/1/bin"]
@@ -389,6 +394,13 @@ class OptStrategyDialog(Dialog):
         de_niter_spin = Tk.Spinbox(grid_frame, textvariable=self.de_niter_var,
                                    from_=100, to=5000, increment=100, width=6)
         de_niter_spin.grid(row=gf_row, column=6, sticky=Tk.W)
+
+        # Hide DE detail options for general users; show only in --devel mode
+        # The DE radio button itself remains visible so users can select it.
+        self._de_detail_widgets = [de_label, de_combo, de_niter_label, de_niter_spin]
+        if not devel_mode:
+            for w in self._de_detail_widgets:
+                w.grid_remove()
 
         if SHOW_OPTIMIZATION_STRATEGY_OPTION:
             gf_row += 1
