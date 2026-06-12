@@ -419,6 +419,8 @@ ITEM_DEFAULTS = {
     'sf_bound_ratio'        : 1.0,
     'NUM_MAJOR_SCORES'      : 7,
     'trust_rg_curve_folder' : False,    # temporary fix to trimming inconsistency
+    # Solver hyperparameters — also registered in SOLVER_SETTING_KEYS below,
+    # which merges them into V2_TEMPORARY_ITEMS automatically (see issue #75).
     'ns_narrow_bounds'      : True,     # NS prior width: True=narrow (init±1.0), False=wide ([0,10])
     'ns_adaptive_nsteps'    : False,    # NS slice sampler: adaptively grow nsteps
     'ns_nsteps'             : None,     # NS slice sampler: override nsteps (None = auto min(2*ndim,16))
@@ -441,6 +443,22 @@ ITEM_DEFAULTS = {
     'suppress_numba_warning' : True,
    }
 
+# Solver hyperparameter keys with their default values.
+# Adding a new solver key here is the ONLY registration needed:
+# it is automatically merged into ITEM_DEFAULTS (above via **dict unpacking)
+# and into V2_TEMPORARY_ITEMS (below via list(SOLVER_SETTING_KEYS)).
+# See molass-legacy issue #75.
+SOLVER_SETTING_KEYS = [
+    'ns_narrow_bounds',
+    'ns_adaptive_nsteps',
+    'ns_nsteps',
+    'de_pop_size',
+    'de_variant',
+    'de_F',
+    'de_CR',
+    'de_niter',
+]
+
 V2_TEMPORARY_ITEMS = [
     'uv_wl_lower_bound',    # to be refreshed always without clearing the permanent memory
     'using_shared_memory', 'reuse_analysis_folder', 'elution_model', 'unified_baseline_type', 'init_sec_params',
@@ -457,14 +475,7 @@ V2_TEMPORARY_ITEMS = [
     'ignore_secconformance', 'try_model_composing', 'identification_allowance', 'apply_sf_bounds', 'sf_bound_ratio',
     'NUM_MAJOR_SCORES',
     'trust_rg_curve_folder',
-    'ns_narrow_bounds',
-    'ns_adaptive_nsteps',
-    'ns_nsteps',
-    'de_pop_size',
-    'de_variant',
-    'de_F',
-    'de_CR',
-    'de_niter',
+    *SOLVER_SETTING_KEYS,   # automatically includes all solver hyperparameters (issue #75)
     ]
 
 TEMPORARY_ITEMS = [
