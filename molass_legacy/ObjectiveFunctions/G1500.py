@@ -1,17 +1,18 @@
 """
-    G1400.py — 7-score LKM (Lumped Kinetic Model) objective function
+    G1500.py — 7-score GRM (General Rate Model) objective function
 
-    Elution model: LKM via PDE characteristic-function + FFT inversion
+    Elution model: GRM via PDE characteristic-function + FFT inversion
     Parameter layout:
         xr_params, xr_baseparams, rg_params, (a,b), uv_params, uv_baseparams,
-        (c,d), lkmcol_params
-    lkmcol_params = [Pe, t0, R_0, k_MT_0, R_1, k_MT_1, ..., R_{nc-1}, k_MT_{nc-1}]
+        (c,d), grmcol_params
+    grmcol_params = [Pe, t0, R_p, D_eff, R_0, k_ext_0, R_1, k_ext_1, ...,
+                     R_{nc-1}, k_ext_{nc-1}]
 
     Copyright (c) 2026, SAXS Team, KEK-PF
 """
 import numpy as np
 from molass_legacy.KekLib.ExceptionTracebacker import ExceptionTracebacker
-from molass.SEC.Models.LkmLinear import lkm_pdf
+from molass.SEC.Models.GrmLinear import grm_pdf
 from molass_legacy.Optimizer.BasicOptimizer import BasicOptimizer, PENALTY_SCALE, UV_XR_RATIO_ALLOW, UV_XR_RATIO_SCALE
 from molass_legacy.Optimizer.NumericalUtils import safe_ratios
 from molass_legacy._MOLASS.SerialSettings import get_setting
@@ -22,38 +23,50 @@ LRF_RESIDUAL_FAKED = 10
 XR_VALID = 0.001
 
 
-class G1400(BasicOptimizer):
+class G1500(BasicOptimizer):
     """
-    Lumped Kinetic Model (LKM) rigorous optimizer.
+    General Rate Model (GRM) rigorous optimizer.
 
-    lkmcol_params layout: [Pe, t0, R_0, k_MT_0, R_1, k_MT_1, ..., R_{nc-1}, k_MT_{nc-1}]
+    grmcol_params layout:
+      [Pe, t0, R_p, D_eff, R_0, k_ext_0, R_1, k_ext_1, ..., R_{nc-1}, k_ext_{nc-1}]
     """
 
     def __init__(self, dsets, n_components, **kwargs):
         if True:
             from importlib import reload
-            import molass_legacy.ModelParams.LkmParams
-            reload(molass_legacy.ModelParams.LkmParams)
-        from molass_legacy.ModelParams.LkmParams import LkmParams
+            import molass_legacy.ModelParams.GrmParams
+            reload(molass_legacy.ModelParams.GrmParams)
+        from molass_legacy.ModelParams.GrmParams import GrmParams
 
-        nc = n_components - 1
-        num_col_params = 2 + 2 * nc
-        params_type = LkmParams(n_components)
+        params_type = GrmParams(n_components)
         BasicOptimizer.__init__(self, dsets, n_components, params_type, kwargs)
         self.exports_bounds = True
+
+        # GRM needs a_star and F_ratio to evaluate the PDF.
+        # These are derived from grmcol_params each call (R_i → a_star via
+        # R_i = 1 + F * a_star), so a_star is effectively per-component.
+        # We store the shared eps used for F_ratio.
+        try:
+            from molass_legacy._MOLASS.SerialSettings import get_setting as _gs
+            eps = _gs("column_porosity") or 0.4
+        except Exception:
+            eps = 0.4
+        self._F_ratio = (1 - eps) / eps
 
     def objective_func(self, p, plot=False, debug=False, fig_info=None, axis_info=None,
                        return_full=False, avoid_pinv=False, return_lrf_info=False, **kwargs):
         self.eval_counter += 1
-        xr_params, xr_baseparams, rg_params, (a, b), uv_params, uv_baseparams, (c, d), lkmcol_params = self.split_params_simple(p)
+        xr_params, xr_baseparams, rg_params, (a, b), uv_params, uv_baseparams, (c, d), grmcol_params = self.split_params_simple(p)
 
         x = self.xr_curve.x
         y = self.xr_curve.y
 
-        # LKM column params: shared Pe, t0; per-component R_i, k_MT_i
-        Pe = lkmcol_params[0]
-        t0 = lkmcol_params[1]
-        nc = self.n_components - 1
+        # GRM column params: shared Pe, t0, R_p, D_eff; per-component R_i, k_ext_i
+        Pe    = grmcol_params[0]
+        t0    = grmcol_params[1]
+        R_p   = grmcol_params[2]
+        D_eff = grmcol_params[3]
+        nc    = self.n_components - 1
 
         uv_x = a * x + b
         uv_y = self.uv_curve.spline(uv_x)
@@ -78,12 +91,14 @@ class G1400(BasicOptimizer):
         uv_ty = np.zeros(len(uv_x))
         negative_penalty = 0.0
 
+        F_ratio = self._F_ratio
         for i, (xr_w, rg_, uv_w) in enumerate(zip(xr_params, rg_params, uv_params)):
             negative_penalty += min(0, xr_w) ** 2 + min(0, uv_w) ** 2
-            R_i    = lkmcol_params[2 + 2 * i]
-            k_MT_i = lkmcol_params[2 + 2 * i + 1]
-            # LKM: x is absolute frame axis; no tI subtraction needed
-            pd_cy  = lkm_pdf(x, Pe, t0, k_MT_i, R_i)
+            R_i     = grmcol_params[4 + 2 * i]
+            k_ext_i = grmcol_params[4 + 2 * i + 1]
+            # a_star derived from R_i: R = 1 + F*a_star → a_star = (R-1)/F
+            a_star_i = (R_i - 1.0) / F_ratio
+            pd_cy = grm_pdf(x, Pe, t0, k_ext_i, R_p, D_eff, a_star_i, F_ratio)
             xr_cy  = xr_w * pd_cy
             uv_cy  = uv_w * pd_cy
             xr_ty += xr_cy
@@ -114,14 +129,14 @@ class G1400(BasicOptimizer):
 
             # R ordering constraint: R_0 <= R_1 <= ... <= R_{nc-1}
             # (peak elution time = t0 * R_i; SEC order = ascending R)
-            R_values = lkmcol_params[2::2]
+            R_values = grmcol_params[4::2]
             order_penalty = PENALTY_SCALE * float(np.sum(np.maximum(0.0, R_values[:-1] - R_values[1:]) ** 2))
 
             penalties = [mapping_penalty, negative_penalty, baseline_penalty,
                          outofbounds_penalty, order_penalty]
 
             fv, score_list = self.compute_fv(
-                lrf_info, xr_params, rg_params, lkmcol_params, penalties, p, debug=debug)
+                lrf_info, xr_params, rg_params, grmcol_params, penalties, p, debug=debug)
 
         except:
             etb = ExceptionTracebacker()

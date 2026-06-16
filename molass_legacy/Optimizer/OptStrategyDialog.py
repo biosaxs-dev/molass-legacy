@@ -3,6 +3,14 @@
 
     Copyright (c) 2022-2024, SAXS Team, KEK-PF
 """
+# ── Model registration checklist ──────────────────────────────────────────────
+# When adding a new elution model, update ALL of the following:
+#   1. OptStrategyDialog.py  — MODEL_LIST, MODEL_TO_FUNC, DEFAULT_FUNC_ITEM  (this file)
+#   2. _MOLASS/SerialSettings.py — default_func_<model> entry + elution_model comment
+#   3. Optimizer/FuncImporter.py — elif elution_model == N: if class_code != "GXXXX": continue
+#   4. Optimizer/Scripting.py   — elif model == "NAME": elution_model = N (+ update comment)
+# See molass-legacy issue #82.
+# ──────────────────────────────────────────────────────────────────────────────
 from molass_legacy.KekLib.OurTkinter import Tk, Dialog, ttk
 from molass_legacy._MOLASS.SerialSettings import get_setting
 from molass_legacy.KekLib.TkCustomWidgets import FolderEntry
@@ -28,12 +36,14 @@ DEFAULT_FUNC_ITEM = {
     1 : 'default_func_sdm',
     5 : 'default_func_edm',
     6 : 'default_func_lkm',
+    7 : 'default_func_grm',
     }
 
 MODEL_LIST = [  (0, "EGH - Exponential-Gaussian Hybrid"),
                 (1, "SDM - Stochastic Dispersive Model"),
                 (5, "EDM - Equilibrium Dispersive Model"),
                 (6, "LKM - Lumped Kinetic Model"),
+                (7, "GRM - General Rate Model"),
                 ]
 
 MODEL_TO_FUNC = {
@@ -41,6 +51,7 @@ MODEL_TO_FUNC = {
     1 : 'G1200',   # default SDM; actual code set in apply() based on sdm_pore_dist
     5 : 'G2020',
     6 : 'G1400',
+    7 : 'G1500',
 }
 
 class OptStrategyDialog(Dialog):

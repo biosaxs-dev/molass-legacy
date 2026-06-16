@@ -66,6 +66,9 @@ def get_objective_function_info(logger=None, default_func_code=None, debug=False
             elif elution_model == 6:
                 if class_code != "G1400":
                     continue
+            elif elution_model == 7:
+                if class_code != "G1500":
+                    continue
             else:
                 assert False
 

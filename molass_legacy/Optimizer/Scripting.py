@@ -111,7 +111,8 @@ def set_optimizer_settings(num_components=3, model="EGH", method="BH", param_ini
     # ── Model registry ────────────────────────────────────────────────────────
     # This is the canonical registration point for new elution models.
     # Add a new elif branch here and assign an unused elution_model integer.
-    # Current assignments: EGH=0, SDM=2, LKM=4, EDM/NEDM/CEDM=5
+    # Current assignments: EGH=0, SDM=1, EDM/NEDM/CEDM=5, LKM=6, GRM=7
+    # (These match the GUI MODEL_LIST indices in OptStrategyDialog.py)
     elution_model = 0
     model = model.upper()
     if model == "EGH":
@@ -121,7 +122,9 @@ def set_optimizer_settings(num_components=3, model="EGH", method="BH", param_ini
     elif model in ("EDM", "NEDM", "CEDM"):
         elution_model = 5   # G2000–G2999 range covers both NEDM (G2010) and EDM/CEDM (G2020)
     elif model == "LKM":
-        elution_model = 4   # G1400
+        elution_model = 6   # G1400 (matches OptStrategyDialog MODEL_LIST index 6)
+    elif model == "GRM":
+        elution_model = 7   # G1500 (matches OptStrategyDialog MODEL_LIST index 7)
     else:
         raise ValueError(
             f"Unknown model: {model!r}. "

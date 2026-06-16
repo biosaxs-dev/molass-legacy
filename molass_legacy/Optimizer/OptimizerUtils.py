@@ -10,6 +10,7 @@ MODEL_NAME_DICT = {
     "G1200" : "SDM(mono)",
     "G1300" : "SDM(lognormal)",
     "G1400" : "LKM",
+    "G1500" : "GRM",
     "G2010" : "NEDM",
     "G2020" : "EDM",
 }

@@ -377,7 +377,7 @@ ITEM_DEFAULTS = {
 
     'rg_curve_folder'       : None,
     'reuse_analysis_folder' : 0,
-    'elution_model'         : 0,        # 0: EGH, 1: SDM, 5: EDM (G2020), 6: LKM
+    'elution_model'         : 0,        # 0: EGH, 1: SDM, 5: EDM (G2020), 6: LKM, 7: GRM
     'init_sec_params'       : None,
 
     'optimizer_folder'      : None,     # optimized
@@ -394,6 +394,7 @@ ITEM_DEFAULTS = {
     'default_func_rt_egh'   : 'G0705',
     'default_func_edm'      : 'G2020',
     'default_func_lkm'      : 'G1400',
+    'default_func_grm'      : 'G1500',
     'default_objective_func' : None,
     'TAU_BOUND_RATIO'       : 0.65,
     'RG_UPPER_BOUND'        : 150,
