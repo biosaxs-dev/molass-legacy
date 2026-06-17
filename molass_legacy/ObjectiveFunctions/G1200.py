@@ -38,6 +38,15 @@ class G1200(BasicOptimizer):
         params_type = SdmParams(n_components, num_col_params=7)
         BasicOptimizer.__init__(self, dsets, n_components, params_type, kwargs)
         self.exports_bounds = True
+        
+        # Enable UV scale refinement via objective function (issue: prevent near-zero scales under high component overlap)
+        self._refine_uv_scales = True
+        # Compute indices of uv_params in flattened parameter vector
+        # Structure: [xr_params (nc), xr_baseparams (2), rgs (nc), mapping (2), uv_params (nc), ...]
+        param_lengths = [n_components, 2, n_components, 2, n_components]
+        uv_start = np.sum(param_lengths[:-1])
+        uv_stop = uv_start + n_components
+        self._uv_scale_indices = np.arange(uv_start, uv_stop, dtype=int)
 
     def objective_func(self, p, plot=False, debug=False, fig_info=None, axis_info=None, return_full=False, avoid_pinv=False, return_lrf_info=False, **kwargs):
         self.eval_counter += 1

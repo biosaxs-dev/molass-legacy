@@ -11,6 +11,20 @@ from molass_legacy._MOLASS.SerialSettings import get_setting, set_setting, clear
 from molass_legacy.Peaks.PeakParamsSet import PeakParamsSet
 from molass_legacy.KekLib.ExceptionTracebacker import log_exception
 
+def _get_proportional_xr_peaks(xr_x, xr_y, ratios):
+    """Decompose the XR elution curve proportionally; returns EGH params array (nc, 4)."""
+    from molass.Decompose.Proportional import decompose_proportionally
+
+    class _ICurve:
+        def __init__(self, x, y):
+            self.x = x
+            self.y = y
+        def get_xy(self):
+            return self.x, self.y
+
+    result = decompose_proportionally(_ICurve(xr_x, xr_y), ratios)
+    return result.x.reshape(len(ratios), 4)
+
 class FullBatch:
     def __init__(self):
         # to be moved from molass_legacy.Peaks.PeakEditor
@@ -103,11 +117,19 @@ class FullBatch:
             from importlib import reload
             reload(molass_legacy.QuickAnalysis.ModeledPeaks)
         from molass_legacy.QuickAnalysis.ModeledPeaks import get_modeled_peaks_impl
+        proportional_peaks = get_setting("proportional_peaks")
+        prop_ratios = None
+        if proportional_peaks:
+            prop_ratios = [float(v.strip()) for v in proportional_peaks.split(',') if v.strip()]
+            if num_peaks is None:
+                num_peaks = len(prop_ratios)
         if num_peaks is None:
             num_peaks = self.exact_num_peaks
         a, b = self.get_pre_recog_mapping_params()
         uv_peaks, xr_peaks = get_modeled_peaks_impl(a, b, uv_x, uv_y, xr_x, xr_y, num_peaks, exact_num_peaks=num_peaks,
-                                                affine=affine, min_area_prop=min_area_prop, debug=debug)        
+                                                affine=affine, min_area_prop=min_area_prop, debug=debug)
+        if prop_ratios is not None:
+            xr_peaks = _get_proportional_xr_peaks(xr_x, xr_y, prop_ratios)
         self.peak_params_set = PeakParamsSet(uv_peaks, xr_peaks, a, b)     # for backward compatibility
         return uv_peaks, xr_peaks
 

@@ -476,6 +476,37 @@ class BasicOptimizer:
         self.zero_bounds = np.zeros(masked_init_params.shape)
         self.sf_bounds = None   # referenced in objective_func, but is this ok?
 
+        # Refine UV scales using the objective function (avoids near-zero scales under high overlap)
+        # Only for SDM and similar models where UV scale optimization is meaningful
+        if hasattr(self, '_refine_uv_scales') and self._refine_uv_scales:
+            print(f"[DEBUG] Attempting UV scale refinement...")
+            try:
+                from molass_legacy.Models.Stochastic.DispersiveUvScaler import optimize_uv_scales_via_objective
+                print(f"[DEBUG]   Function imported successfully")
+                uv_params_refined = optimize_uv_scales_via_objective(
+                    self, init_params, self._uv_scale_indices, 
+                    uv_params, xr_params, debug=True
+                )
+                print(f"[DEBUG]   Result: {uv_params_refined}")
+                if uv_params_refined is not None:
+                    # Update init params with refined UV scales
+                    init_params = init_params.copy()
+                    init_params[self._uv_scale_indices] = uv_params_refined
+                    self.init_params = init_params
+                    # Re-split with refined params
+                    self.init_separate_params = self.split_params_simple(init_params)
+                    uv_params, uv_baseparams = self.init_separate_params[4:6]
+                    self.init_uv_params = uv_params
+                    self.logger.info("UV scales refined via objective: %s", str(uv_params))
+                    print(f"[DEBUG]   Updated UV scales: {uv_params}")
+            except Exception as e:
+                print(f"[DEBUG]   Error: {e}")
+                import traceback
+                traceback.print_exc()
+                self.logger.warning("UV scale refinement failed: %s (continuing with initial estimate)", str(e))
+        else:
+            print(f"[DEBUG] UV scale refinement disabled (hasattr={hasattr(self, '_refine_uv_scales')}, _refine_uv_scales={getattr(self, '_refine_uv_scales', None)})")
+
         self.update_minima_props(init_params)
 
         self.ones_nc = np.ones(xr_params.shape[0])

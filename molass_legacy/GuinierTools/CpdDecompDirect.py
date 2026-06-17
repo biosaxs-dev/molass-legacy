@@ -91,7 +91,7 @@ def cpd_direct_impl(editor, debug=False):
     sdm_params, corrected_rgs, bounds = ret
     optimizer = editor.optimizer
 
-    init_params = edit_to_full_sdmparams(editor, sdm_params, corrected_rgs, optimizer.uv_curve, debug=False)
+    init_params = edit_to_full_sdmparams(editor, sdm_params, corrected_rgs, optimizer.uv_curve, debug=False, optimizer=optimizer)
     if init_params is None:
         return
     

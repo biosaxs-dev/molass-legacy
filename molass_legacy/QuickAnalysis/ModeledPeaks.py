@@ -134,7 +134,30 @@ def recognize_peaks(x, y, num_peaks=5, exact_num_peaks=None, affine=False, model
     """
     moved here due to 
     ImportError: cannot import name 'get_corrected' from partially initialized module 'LPM' (most likely due to a circular import) (.../DataStructure/LPM.py)
+
+    For the standard EGH case (affine=False, allow_negative=False), this delegates to
+    molass.Peaks.EghPeeler.egh_peel — the canonical library implementation.
+    The legacy get_a_peak loop is retained as fallback for affine=True (EGHA) callers.
     """
+    # Standard EGH case: delegate to the library's canonical implementation.
+    # egh_peel uses Savitzky-Golay smoothing, sigma-dominance guard, and cleaner
+    # stopping criteria — strictly better than the legacy moment-based path.
+    if not affine and not allow_negative:
+        try:
+            from molass.Peaks.EghPeeler import egh_peel
+            if min_area_prop is not None:
+                peaks = egh_peel(x, y, num_components=None,
+                                 min_area_frac=min_area_prop, debug=debug)
+            else:
+                nc = exact_num_peaks if exact_num_peaks is not None else num_peaks
+                peaks = egh_peel(x, y, num_components=nc, debug=debug)
+            return [np.array(p, dtype=float) for p in peaks]
+        except Exception as _exc:
+            import logging
+            logging.getLogger(__name__).warning(
+                "egh_peel delegation failed (%s); using legacy recognize_peaks", _exc)
+
+    # Legacy path: used for affine=True (EGHA), allow_negative=True, or egh_peel fallback.
     from molass_legacy.DataStructure.LPM import get_corrected
 
     if model is None:

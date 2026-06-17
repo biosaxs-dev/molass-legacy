@@ -9,7 +9,7 @@ import molass_legacy.KekLib.DebugPlot as plt
 def has_fronting_peak(ecurve, debug=False):
     x = ecurve.x
     y = ecurve.y
-    j = ecurve.max_j
+    j = getattr(ecurve, 'max_j', int(np.argmax(y)))
     hy = ecurve.max_y/2
     hyw = np.where(y > hy)[0]
     gap = np.where(hyw[1:] - hyw[:-1] > 1)[0]

@@ -197,39 +197,51 @@ class OptStrategyDialog(Dialog):
             if rg_curve_folder is not None:
                 self.rg_curve_folder.set(rg_curve_folder)
 
-        # Number of Components
+        # Peak Recognition Method
         grid_row += 1
-        label = Tk.Label(iframe, text="Number of Components")
+        label = Tk.Label(iframe, text="Peak Recognition Method")
         label.grid(row=grid_row, column=0, sticky=Tk.W)
 
         grid_row += 1
         option_frame = Tk.Frame(iframe)
         option_frame.grid(row=grid_row, column=0, padx=indent_width, pady=5, sticky=Tk.W)
 
-        self.nc_option = Tk.IntVar()
-        self.nc_option.set(0)
+        self.peak_recog_method = Tk.IntVar()
         self.num_peaks = Tk.IntVar()
         set_num_peaks = self.default_num_peaks
         self.num_peaks.set(set_num_peaks)
+        self.proportional_peaks_var = Tk.StringVar()
+        self.proportional_peaks_var.set(",".join(["1"] * set_num_peaks))
+        self.prop_entry = None
 
-        btn_row = 0
-        for k, cname in enumerate([ "use an automatically determined number",
-                                    "use the specified number in the next box: "]):
+        for k, cname in [(0, "Automatic"),
+                         (1, "EGH Peeling \u2014 number of components:"),
+                         (2, "Proportional \u2014 area ratios:")]:
             button_frame = Tk.Frame(option_frame)
             rb = Tk.Radiobutton(button_frame, text=cname,
-                        variable=self.nc_option, value=k,
-                        )
+                        variable=self.peak_recog_method, value=k)
             rb.pack(side=Tk.LEFT)
             if k == 1:
-                self.sbox  = Tk.Spinbox(button_frame, textvariable=self.num_peaks,
+                self.sbox = Tk.Spinbox(button_frame, textvariable=self.num_peaks,
                                   from_=MIN_NUM_PEAKS, to=MAX_NUM_PEAKS, increment=1,
                                   justify=Tk.CENTER, width=6)
                 self.sbox.pack(side=Tk.LEFT)
+            elif k == 2:
+                self.prop_entry = Tk.Entry(button_frame,
+                                           textvariable=self.proportional_peaks_var,
+                                           justify=Tk.CENTER, width=14)
+                self.prop_entry.pack(side=Tk.LEFT)
+            button_frame.grid(row=k, column=1, sticky=Tk.W)
 
-            button_frame.grid(row=btn_row+k, column=1, sticky=Tk.W )
+        saved_props = get_setting("proportional_peaks")
+        if saved_props:
+            self.peak_recog_method.set(2)
+            self.proportional_peaks_var.set(saved_props)
+        else:
+            self.peak_recog_method.set(0)
 
-        self.nc_option.trace_add("write", self.nc_option_tracer)
-        self.nc_option_tracer()
+        self.peak_recog_method.trace_add("write", self.peak_recog_method_tracer)
+        self.peak_recog_method_tracer()
         self.num_peaks.trace_add("write", self.num_peaks_tracer)
 
         # Elution Model
@@ -703,14 +715,27 @@ class OptStrategyDialog(Dialog):
             self.uv_basemodel_cb.config(state=state)
             self.uv_basemodel.set(advanced)
 
-    def nc_option_tracer(self, *args):
-        nc_option = self.nc_option.get()
-        state = Tk.DISABLED if nc_option == 0 else Tk.NORMAL
-        self.sbox.config(state=state)
+    def peak_recog_method_tracer(self, *args):
+        method = self.peak_recog_method.get()
+        self.sbox.config(state=Tk.NORMAL if method == 1 else Tk.DISABLED)
+        if self.prop_entry is not None:
+            self.prop_entry.config(state=Tk.NORMAL if method == 2 else Tk.DISABLED)
 
     def num_peaks_tracer(self, *args):
         if not SIMPLE_EOII_OPTIONS:
             self.update_separate_eoii_flags()
+        # Keep equal-ratio entry in sync with the spinbox count
+        # (only when all current values are equal, i.e. user hasn't typed custom ratios)
+        current = self.proportional_peaks_var.get().strip()
+        try:
+            parts = [float(v.strip()) for v in current.split(',') if v.strip()]
+            if parts and len(set(parts)) == 1:
+                nc = self.num_peaks.get()
+                v = parts[0]
+                fmt = str(int(v)) if v == int(v) else str(v)
+                self.proportional_peaks_var.set(",".join([fmt] * nc))
+        except (ValueError, TypeError):
+            pass
 
     def try_model_composing_tracer(self, *args):
         try_model_composing = self.try_model_composing.get()
@@ -822,6 +847,17 @@ class OptStrategyDialog(Dialog):
                     import molass_legacy.KekLib.CustomMessageBox as MessageBox
                     MessageBox.showerror( "Value Error", "mw_integer_ratios error:" + str(exc), parent=self)
                     ret = 0
+        if ret and self.peak_recog_method.get() == 2:
+            ratios_str = self.proportional_peaks_var.get().strip()
+            try:
+                parts = [v.strip() for v in ratios_str.split(',') if v.strip()]
+                if len(parts) < MIN_NUM_PEAKS:
+                    raise ValueError("need at least %d ratios" % MIN_NUM_PEAKS)
+                self.proportional_peaks_eval = [float(v) for v in parts]
+            except Exception as exc:
+                import molass_legacy.KekLib.CustomMessageBox as MessageBox
+                MessageBox.showerror("Value Error", "proportional ratios error: " + str(exc), parent=self)
+                ret = 0
         return ret
 
     def apply(self):
@@ -879,18 +915,27 @@ class OptStrategyDialog(Dialog):
         set_setting("mw_integer_ratios", ratios)
         set_setting("identification_allowance", self.identification_allowance.get())
 
+        if self.peak_recog_method.get() == 2:
+            set_setting("proportional_peaks", self.proportional_peaks_var.get().strip())
+        else:
+            set_setting("proportional_peaks", None)
+
         if self.trimming_strategy.get() == 2:
             set_setting("uv_restrict_list", get_setting("uv_restrict_copy"))
             set_setting("xr_restrict_list", get_setting("xr_restrict_copy"))
             set_setting("manually_trimmed", False)
 
     def get_num_peaks(self):
-        if self.nc_option.get() == 1:
-            num_peaks = self.num_peaks.get()
-        else:
-            # num_peaks = None      # revive this if a better estimation using Rg curve become availabe
-            num_peaks = self.num_peaks.get()
-        return num_peaks
+        method = self.peak_recog_method.get()
+        if method == 2:
+            ratios_str = self.proportional_peaks_var.get().strip()
+            try:
+                ratios = [float(v.strip()) for v in ratios_str.split(',') if v.strip()]
+                if len(ratios) >= MIN_NUM_PEAKS:
+                    return len(ratios)
+            except (ValueError, TypeError):
+                pass
+        return self.num_peaks.get()
 
     def get_options(self):
         strict_sec_penalty = self.strict_sec_penalty.get()

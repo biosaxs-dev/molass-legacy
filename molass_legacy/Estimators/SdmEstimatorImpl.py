@@ -17,7 +17,7 @@ def guess_exec_spec(peak_rgs, props, qualities):
     init_N0 = get_setting("num_plates_pc")
     return {"unreliable_indeces": unreliable_indeces, 'poresize_bounds': poresize_bounds, 'init_N0': init_N0}
 
-def edit_to_full_sdmparams(editor, sdm_params, corrected_rgs, uv_curve, debug=False):
+def edit_to_full_sdmparams(editor, sdm_params, corrected_rgs, uv_curve, debug=False, optimizer=None):
     if debug:
         from importlib import reload
         import molass_legacy.Models.Stochastic.MonoporeUvScaler
@@ -46,7 +46,7 @@ def edit_to_full_sdmparams(editor, sdm_params, corrected_rgs, uv_curve, debug=Fa
     uv_y_ = uv_y - uv_baseline
     xr_y_ = xr_y - baselines[1]
 
-    ret = adjust_to_uv_scales(xr_x, xr_y_, uv_x, uv_y_, sdm_params, corrected_rgs, debug=debug)
+    ret = adjust_to_uv_scales(xr_x, xr_y_, uv_x, uv_y_, sdm_params, corrected_rgs, debug=debug, optimizer=optimizer)
     if ret is None:
         return
     else:
