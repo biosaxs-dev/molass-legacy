@@ -26,6 +26,18 @@ class _CurveProxy:
         return float(np.max(self.y))
 
 
+def _get_lib_xr_cc(editor_decomp, xr_peaks):
+    """Return _CurveProxy list from editor.decomposition.xr_ccurves if count matches.
+
+    Returns None when the library decomposition is unavailable or has a different
+    component count; _ProxyDecomposition then falls back to legacy EGH curves.
+    """
+    if editor_decomp is None or len(editor_decomp.xr_ccurves) != len(xr_peaks):
+        return None
+    lib_ccs = sorted(editor_decomp.xr_ccurves, key=lambda cc: cc.params[1])
+    return [_CurveProxy(*cc.get_xy()) for cc in lib_ccs]
+
+
 class _ProxyDecomposition:
     """Minimal Decomposition-like object for driving the library's 3-stage
     lognormal init pipeline from ``lrf_src`` data.
@@ -34,9 +46,14 @@ class _ProxyDecomposition:
       1. ``estimate_sdm_column_params``   — multi-start mono-pore NM
       2. ``optimize_sdm_xr_decomposition`` — converged mono-pore curves
       3. ``estimate_sdm_lognormal_from_monopore`` — geometric mean + moment matching
+
+    If ``xr_ccurves`` is provided (library EGH curves), it replaces the curves
+    that would otherwise be computed from ``model(xr_x, p)`` for each legacy peak.
     """
-    def __init__(self, xr_x, xr_y, peaks, model, peak_rgs):
-        self.xr_ccurves = [_CurveProxy(xr_x, model(xr_x, p)) for p in peaks]
+    def __init__(self, xr_x, xr_y, peaks, model, peak_rgs, xr_ccurves=None):
+        self.xr_ccurves = xr_ccurves if xr_ccurves is not None else [
+            _CurveProxy(xr_x, model(xr_x, p)) for p in peaks
+        ]
         self.xr_icurve = _CurveProxy(xr_x, xr_y)
         self.num_components = len(peaks)
         self._rgs = list(np.asarray(peak_rgs))
@@ -79,8 +96,11 @@ class SdmEstimator(BaseEstimator):
             from molass.SEC.Models.SdmEstimator import estimate_sdm_column_params
             from molass.SEC.Models.SdmOptimizer import optimize_sdm_xr_decomposition
             from molass_legacy._MOLASS.SerialSettings import get_setting
+            # Use library EGH curves if available — better separated than recognize_peaks output.
+            lib_xr_cc = _get_lib_xr_cc(self.editor.decomposition, self._xr_peaks)
             proxy = _ProxyDecomposition(
-                self._xr_x, self._xr_y, self._xr_peaks, self._xr_model, self.peak_rgs
+                self._xr_x, self._xr_y, self._xr_peaks, self._xr_model, self.peak_rgs,
+                xr_ccurves=lib_xr_cc,
             )
             # Stage 1: multi-start mono-pore column param estimation.
             # Pass the column-specific poresize_bounds (e.g. (71, 81) Å for Superdex 200).
@@ -152,15 +172,18 @@ class SdmEstimator(BaseEstimator):
                 estimate_sdm_lognormal_from_monopore,
             )
             from molass.SEC.Models.SdmOptimizer import optimize_sdm_xr_decomposition
-            proxy = _ProxyDecomposition(
-                self._xr_x, self._xr_y, self._xr_peaks, self._xr_model, self.peak_rgs
-            )
             # Stage 1: multi-start mono-pore column param estimation.
             # Pass the column-specific poresize_bounds from SerialSettings so
             # the library estimator uses the same window as the optimizer
             # (e.g. (71, 81) Å for Superdex 200) instead of the default (70, 300).
             from molass_legacy._MOLASS.SerialSettings import get_setting
             poresize_bounds = get_setting("poresize_bounds")
+            # Use library EGH curves if available — better separated than recognize_peaks output.
+            lib_xr_cc = _get_lib_xr_cc(self.editor.decomposition, self._xr_peaks)
+            proxy = _ProxyDecomposition(
+                self._xr_x, self._xr_y, self._xr_peaks, self._xr_model, self.peak_rgs,
+                xr_ccurves=lib_xr_cc,
+            )
             mono_env = estimate_sdm_column_params(proxy, poresize_bounds=poresize_bounds)
             editor.pbar["value"] = 1
             editor.update()

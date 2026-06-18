@@ -70,6 +70,7 @@ class PeakEditor(FullBatch, Dialog):
         
         self.dsets = None
         self.decomposition = None   # library Decomposition, built by _build_library_decomposition_thread
+        self._library_decomp_ready = False  # set True when _build_library_decomposition finishes (or is skipped)
         self.exact_num_peaks = exact_num_peaks
         self.strict_sec_penalty = strict_sec_penalty
         self.fullopt_class, self.class_code = None, None
@@ -390,20 +391,68 @@ class PeakEditor(FullBatch, Dialog):
     def _build_library_decomposition(self, ssd):
         """Build a library Decomposition from an already-constructed ssd.
 
-        Called after prepare_rg_curve completes so that ssd._rgcurve is already
-        cached — quick_decomposition() picks it up at no extra cost.
+        Uses the same num_components as the legacy pre_recog with equal proportions,
+        so the library EGH curves match the optimizer's component count and give
+        better seeds for column model estimators (SDM, EDM, LKM, GRM).
         """
         try:
-            decomposition = ssd.quick_decomposition(rgcurve=ssd._rgcurve)
+            num_components = len(self.peak_params_set[1])
+            decomposition = ssd.quick_decomposition(
+                num_components=num_components,
+                proportions=[1] * num_components,
+                rgcurve=ssd._rgcurve,
+            )
             # Inject the cached Rg curve so Decomposition.get_rg_curve() never
             # triggers a second full Rg scan (it would recompute from decomp.ssd.xr).
             decomposition._rgcurve = ssd._rgcurve
             self.decomposition = decomposition
+            # Schedule a display update on the main thread so the UV/XR panels
+            # show the proportional EGH curves instead of the legacy pre_recog peaks.
+            self.after(0, self._update_display_from_library_decomp)
         except Exception:
             import logging
             logging.getLogger(__name__).warning(
                 "_build_library_decomposition failed; falling back to legacy ComplementaryView",
                 exc_info=True
+            )
+        finally:
+            self._library_decomp_ready = True
+
+    def _update_display_from_library_decomp(self):
+        """Refresh UV/XR panels with library (proportional) EGH decomposition.
+
+        Called on the main Tk thread after _build_library_decomposition completes.
+        Updates peak_params_set so column model estimators also see library params.
+        """
+        decomp = self.decomposition
+        if decomp is None:
+            return
+        try:
+            # XR peaks: sort by tR (ascending)
+            xr_peaks = np.array(sorted(
+                [cc.params[:4] for cc in decomp.xr_ccurves], key=lambda p: p[1]
+            ))
+            # UV peaks: use library uv_ccurves if available and count matches
+            uv_peaks_old = self.peak_params_set.uv_peaks
+            if decomp.uv_ccurves is not None and len(decomp.uv_ccurves) == len(xr_peaks):
+                uv_peaks = np.array(sorted(
+                    [cc.params[:4] for cc in decomp.uv_ccurves], key=lambda p: p[1]
+                ))
+            else:
+                uv_peaks = uv_peaks_old
+
+            # Update stored peaks so estimators (EghEstimator, SdmEstimator, …)
+            # read library values from peak_params_set when decomp is unavailable.
+            self.peak_params_set[0] = uv_peaks
+            self.peak_params_set[1] = xr_peaks
+
+            # Redraw both elution panels with new peaks
+            uv_x, uv_y, xr_x, xr_y, baselines = self.get_curve_xy(return_baselines=True)
+            self.draw_elements(uv_peaks, xr_peaks, uv_x, uv_y, xr_x, xr_y, baselines=baselines)
+        except Exception:
+            import logging
+            logging.getLogger(__name__).warning(
+                "_update_display_from_library_decomp failed", exc_info=True
             )
 
     def prepare_rg_curve(self, queue):
@@ -479,6 +528,8 @@ class PeakEditor(FullBatch, Dialog):
             # Fallback: original legacy path
             progress_cb = ProgressCallback(queue, STARTED, rg_curve_ok)
             self.dsets = self.fullopt_input.get_dsets(progress_cb=progress_cb, compute_rg=True, possibly_relocated=False)
+            # No library decomp thread started in fallback — unblock get_ready_for_optimization.
+            self._library_decomp_ready = True
 
         queue.put([rg_curve_ok, None])
         queue.put([PREPARED, None])
@@ -582,6 +633,11 @@ class PeakEditor(FullBatch, Dialog):
         # self.optimize_btn_blink.start()
 
     def get_ready_for_optimization(self):
+        # Wait for _build_library_decomposition to finish so draw_scores() uses
+        # library EGH peaks as estimator seeds (not legacy recognize_peaks output).
+        if not self._library_decomp_ready:
+            self.after(200, self.get_ready_for_optimization)
+            return
         self.draw_scores()      # includes self.construct_optimizer()
         self.update_button_states()
         self.is_ready = True

@@ -38,6 +38,30 @@ class EghEstimator(BaseEstimator):
         editor = self.editor
 
         init_xr_params, init_xr_baseparams, init_mapping, init_uv_heights, temp_uv_baseparams = get_peak_params_advanced(editor, lrf_src=lrf_src, debug=debug)
+
+        # Replace legacy EGH params with library-quality values when available.
+        # editor.decomposition is built in background by _build_library_decomposition,
+        # which uses len(peak_params_set[1]) components with proportions=[1]*nc.
+        decomp = editor.decomposition
+        if decomp is not None and len(decomp.xr_ccurves) == len(init_xr_params):
+            lib_params = np.array([cc.params[:4] for cc in decomp.xr_ccurves])
+            order = np.argsort(lib_params[:, 1])          # sort by tR (ascending)
+            init_xr_params = lib_params[order]
+            editor.logger.info(
+                "estimate_egh_params: replaced legacy EGH with library EghPeeler results (n=%d)",
+                len(init_xr_params),
+            )
+            # Also inject library UV heights — bypasses timing dependency on peak_params_set[0].
+            # uv_ccurves are built by optimize_uv_decomposition with proportional XR seeds,
+            # so their heights reflect actual UV absorption per component.
+            if decomp.uv_ccurves is not None and len(decomp.uv_ccurves) == len(init_xr_params):
+                lib_uv = sorted(decomp.uv_ccurves, key=lambda cc: cc.params[1])  # sort by tR
+                init_uv_heights = np.array([cc.params[0] for cc in lib_uv])
+                editor.logger.info(
+                    "estimate_egh_params: replaced legacy UV heights with library uv_ccurves (n=%d)",
+                    len(init_uv_heights),
+                )
+
         init_uv_baseparams = temp_uv_baseparams.copy()
         init_uv_baseparams[4:6] /=SLOPE_SCALE
 

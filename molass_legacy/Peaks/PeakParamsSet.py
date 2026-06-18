@@ -20,3 +20,11 @@ class PeakParamsSet:
     def __getitem__(self, item):
         # this is for backward compatibility
         return self.items[item]
+
+    def __setitem__(self, item, value):
+        # this is for backward compatibility
+        self.items[item] = value
+        if item == 0:
+            self.uv_peaks = np.asarray(value)
+        elif item == 1:
+            self.xr_peaks = np.asarray(value)
