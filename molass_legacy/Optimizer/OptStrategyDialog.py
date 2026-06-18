@@ -461,8 +461,8 @@ class OptStrategyDialog(Dialog):
             if k not in activate_with_de:
                 continue
             rb = Tk.Radiobutton(grid_frame, text=cname, variable=self.optimization_method, value=k)
-            col = 1 if k == 0 else 2
-            padx = (0, 30) if col == 1 else 0   # right padding on BH matches baseline column spacing
+            col = 1 if k == 6 else 2   # DE first (col=1), BH second (col=2)
+            padx = (0, 30) if col == 1 else 0   # right padding on DE matches baseline column spacing
             rb.grid(row=gf_row, column=col, sticky=Tk.W, padx=padx)
             if k == 6:
                 de_rb = rb

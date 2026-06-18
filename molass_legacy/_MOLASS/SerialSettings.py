@@ -400,7 +400,7 @@ ITEM_DEFAULTS = {
     'RG_UPPER_BOUND'        : 150,
     'RATE_R_UPPER_BOUND'    : 300,  # > 228 for 20200623_1
     'recompute_rg_curve'    : 0,
-    'optimization_method'   : 0,        # 0: Basin-Hopping, 1: Nested Sampling
+    'optimization_method'   : 6,        # 0: Basin-Hopping, 1: Nested Sampling, 6: Diff. Evolution (default)
     'optimization_strategy' : 0,        # 0: Standard, 1: Custom
 
     'ratio_interpretation'  : 0,
