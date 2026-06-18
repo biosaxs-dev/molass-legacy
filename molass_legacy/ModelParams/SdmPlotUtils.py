@@ -25,14 +25,22 @@ def plot_objective_state(score_list_pair, fv, xm,
         pass
     else:
         xr_params, xr_baseparams, rg_params_not_used, (a, b), uv_params, uv_baseparams, (c, d), sec_params = func.split_params_simple(params)
-        t0, rp, N, me, T, mp = sec_params[:6]
-        rho = rg_params/rp
-        rho[rho > 1] = 1
-        model_trs = t0 + N*T*(1 - rho)**(me + mp)
-        if debug:
-            print("--------------------------------------- sec_params=", sec_params)
-            print("--------------------------------------- rg_params=", rg_params)
-            print("--------------------------------------- model_trs=", model_trs)
+        # sec_params length depends on the column model:
+        #   SDM/CEDM  (n_comp=3): 6 params → t0, rp, N, me, T, mp
+        #   LKM       (n_comp=3): also 6 params (Pe, t0, R_0, k_MT_0, R_1, k_MT_1)
+        #   LKM       (n_comp=2): only 4 params → unpack of 6 would crash
+        #   LKM       (n_comp=1): only 2 params → same
+        # model_trs is computed here but only printed (debug=True); it is not
+        # used in any plot panel, so skipping it for short sec_params is safe.
+        if sec_params is not None and len(sec_params) >= 6:
+            t0, rp, N, me, T, mp = sec_params[:6]
+            rho = rg_params/rp
+            rho[rho > 1] = 1
+            model_trs = t0 + N*T*(1 - rho)**(me + mp)
+            if debug:
+                print("--------------------------------------- sec_params=", sec_params)
+                print("--------------------------------------- rg_params=", rg_params)
+                print("--------------------------------------- model_trs=", model_trs)
 
     uv_x = lrf_info.uv_x
     uv_y = lrf_info.uv_y
