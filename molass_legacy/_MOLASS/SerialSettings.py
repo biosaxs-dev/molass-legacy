@@ -413,6 +413,7 @@ ITEM_DEFAULTS = {
     'mw_integer_ratios'     : None,
     'avoid_peak_fronting'   : 0,
     'proportional_peaks'    : None,     # None = automatic; '1,1' etc. = proportional area ratios
+    'interparticle_ranks'   : None,     # None = no interparticle; [2,...] = rank-2 per component (Guinier)
     'kratky_smoothness'     : 1,
     'ignore_secconformance' : 0,
     'try_model_composing'   : 0,
@@ -475,6 +476,7 @@ V2_TEMPORARY_ITEMS = [
     'apply_mw_integrity', 'mw_integer_ratios',
     'avoid_peak_fronting',
     'proportional_peaks',
+    'interparticle_ranks',
     'ignore_secconformance', 'try_model_composing', 'identification_allowance', 'apply_sf_bounds', 'sf_bound_ratio',
     'NUM_MAJOR_SCORES',
     'trust_rg_curve_folder',

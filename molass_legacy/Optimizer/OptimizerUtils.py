@@ -56,6 +56,35 @@ def get_impl_method_name(nnn, method=None):
         method = (nnn + r) % 2
     return IMPL_METHOD_NAMES[method]
 
+def _apply_library_recommendation(corrected_sd, fallback_num_peaks):
+    """Call molass-library recommend_decomposition_options() and update settings.
+
+    Used by show_peak_editor_impl() when "Automatic" peak recognition is
+    selected.  Falls back silently to *fallback_num_peaks* on any error.
+
+    Returns the recommended (or fallback) number of components.
+    """
+    from molass_legacy._MOLASS.SerialSettings import set_setting
+    try:
+        from molass.Bridge.SdAdapter import make_ssd_from_corrected_sd
+        from molass.Decompose.Recommend import recommend_decomposition_options
+        lib_ssd = make_ssd_from_corrected_sd(corrected_sd)
+        opts = recommend_decomposition_options(lib_ssd.xr)
+        n = opts['num_components']
+        if 'proportions' in opts:
+            ratios = opts['proportions']
+            set_setting('proportional_peaks',
+                        ','.join(str(int(r)) for r in ratios))
+        else:
+            set_setting('proportional_peaks', None)
+        set_setting('interparticle_ranks', opts.get('ranks', None))
+        return n
+    except Exception:
+        from molass_legacy.KekLib.ExceptionTracebacker import log_exception
+        log_exception(None, '_apply_library_recommendation failed: ', n=5)
+        return fallback_num_peaks
+
+
 def show_peak_editor_impl(strategy_dialog, dialog, pe_proxy=None, pe_ready_cb=None, apply_cb=None, debug=True):
     from molass_legacy._MOLASS.SerialSettings import get_setting
     if debug:
@@ -78,6 +107,14 @@ def show_peak_editor_impl(strategy_dialog, dialog, pe_proxy=None, pe_ready_cb=No
         pre_recog = dialog.pre_recog
         trimmed_sd = treat.get_trimmed_sd(sd, pre_recog)
         corrected_sd = treat.get_corrected_sd(sd, pre_recog, trimmed_sd)
+
+        # --- Library recommendation override for "Automatic" recognition ---
+        # When the user selects method=0 (Automatic), delegate ncomp detection
+        # and proportional/xr_peakpositions decision to recommend_decomposition_options().
+        # This also detects interparticle effects (ranks=[2]) via the Guinier test.
+        if strategy_dialog is not None and strategy_dialog.peak_recog_method.get() == 0:
+            exact_num_peaks = _apply_library_recommendation(corrected_sd, exact_num_peaks)
+        # -------------------------------------------------------------------
 
         dialog.grab_set()   # temporary fix to the grab_release problem
 

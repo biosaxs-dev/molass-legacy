@@ -54,13 +54,53 @@ MODEL_TO_FUNC = {
     7 : 'G1500',
 }
 
+
+def _get_library_defaults(sd):
+    """Return the full opts dict from recommend_decomposition_options.
+
+    Applies the standard trim + baseline correction pipeline so that the
+    Guinier interparticle test (``detect_interparticle=True``) can run at
+    dialog-open time.  This ensures the Ranks entry is pre-populated
+    correctly (e.g. ``2`` for SAMPLE3).
+
+    Uses ``get_setting("in_folder")`` to build a fresh library SecSaxsData
+    rather than going through ``make_ssd_from_corrected_sd``, which requires
+    the corrected (post-UV-processing) sd and is not available at this point.
+
+    Keys in the returned dict: 'num_components', and optionally 'proportions',
+    'xr_peakpositions', 'ranks'.
+
+    Falls back to ``{'num_components': <legacy heuristic>}`` on any error.
+    """
+    try:
+        import warnings
+        from molass_legacy._MOLASS.SerialSettings import get_setting as _get
+        from molass.DataObjects.SecSaxsData import SecSaxsData as _SSD
+        from molass.Decompose.Recommend import recommend_decomposition_options
+        in_folder = _get('in_folder')
+        if not in_folder:
+            raise ValueError('in_folder not set')
+        with warnings.catch_warnings():
+            warnings.simplefilter('ignore')
+            lib_ssd  = _SSD(in_folder)
+            trimmed  = lib_ssd.trimmed_copy()
+            corrected = trimmed.corrected_copy()
+        return recommend_decomposition_options(corrected.xr, detect_interparticle=True)
+    except Exception as _e:
+        import traceback, sys
+        print(f"[_get_library_defaults] fallback — {type(_e).__name__}: {_e}", file=sys.stderr)
+        traceback.print_exc(file=sys.stderr)
+        return {'num_components': get_default_num_peaks(sd)}
+
+
 class OptStrategyDialog(Dialog):
     def __init__(self, parent, sd, pre_recog=None, test_mode=False):
         self.parent = parent
         self.sd = sd
         self.pre_recog = pre_recog
         self.manually_trimmed = seem_to_be_manually_trimmed()
-        self.default_num_peaks = get_default_num_peaks(sd)
+        self.default_opts = _get_library_defaults(sd)
+        self.default_num_peaks = self.default_opts['num_components']
         self.major_peak_index = None    # let the user give this info because there is no reliable index yet
         self.applied = False
         location = None if test_mode else "lower center"
@@ -211,7 +251,11 @@ class OptStrategyDialog(Dialog):
         set_num_peaks = self.default_num_peaks
         self.num_peaks.set(set_num_peaks)
         self.proportional_peaks_var = Tk.StringVar()
-        self.proportional_peaks_var.set(",".join(["1"] * set_num_peaks))
+        lib_props = self.default_opts.get('proportions')
+        if lib_props:
+            self.proportional_peaks_var.set(",".join(str(int(v)) for v in lib_props))
+        else:
+            self.proportional_peaks_var.set(",".join(["1"] * set_num_peaks))
         self.prop_entry = None
 
         for k, cname in [(0, "Automatic"),
@@ -243,6 +287,31 @@ class OptStrategyDialog(Dialog):
         self.peak_recog_method.trace_add("write", self.peak_recog_method_tracer)
         self.peak_recog_method_tracer()
         self.num_peaks.trace_add("write", self.num_peaks_tracer)
+
+        # Component Ranks
+        grid_row += 1
+        label = Tk.Label(iframe, text="Component Ranks")
+        label.grid(row=grid_row, column=0, sticky=Tk.W)
+
+        grid_row += 1
+        ranks_frame = Tk.Frame(iframe)
+        ranks_frame.grid(row=grid_row, column=0, padx=indent_width, pady=5, sticky=Tk.W)
+
+        self.ranks_var = Tk.StringVar()
+        saved_ranks = get_setting("interparticle_ranks")
+        lib_ranks = self.default_opts.get('ranks')
+        if saved_ranks and isinstance(saved_ranks, list):
+            self.ranks_var.set(",".join(str(r) for r in saved_ranks))
+        elif lib_ranks and isinstance(lib_ranks, list):
+            self.ranks_var.set(",".join(str(r) for r in lib_ranks))
+        else:
+            self.ranks_var.set(",".join(["1"] * set_num_peaks))
+        self.ranks_entry = Tk.Entry(ranks_frame, textvariable=self.ranks_var,
+                                    justify=Tk.CENTER, width=14)
+        self.ranks_entry.pack(side=Tk.LEFT)
+        ranks_note = Tk.Label(ranks_frame, text="  (1 = standard,  2 = interparticle repulsion)",
+                              fg="gray")
+        ranks_note.pack(side=Tk.LEFT)
 
         # Elution Model
         grid_row += 1
@@ -736,6 +805,15 @@ class OptStrategyDialog(Dialog):
                 self.proportional_peaks_var.set(",".join([fmt] * nc))
         except (ValueError, TypeError):
             pass
+        # Keep ranks entry in sync when all values are equal
+        try:
+            current_ranks = self.ranks_var.get().strip()
+            rparts = [int(v.strip()) for v in current_ranks.split(',') if v.strip()]
+            if rparts and len(set(rparts)) == 1:
+                nc = self.num_peaks.get()
+                self.ranks_var.set(",".join([str(rparts[0])] * nc))
+        except (ValueError, TypeError):
+            pass
 
     def try_model_composing_tracer(self, *args):
         try_model_composing = self.try_model_composing.get()
@@ -919,6 +997,13 @@ class OptStrategyDialog(Dialog):
             set_setting("proportional_peaks", self.proportional_peaks_var.get().strip())
         else:
             set_setting("proportional_peaks", None)
+
+        # Save component ranks (None when all ranks are 1 — the standard case)
+        try:
+            ranks_list = [int(v.strip()) for v in self.ranks_var.get().strip().split(',') if v.strip()]
+            set_setting("interparticle_ranks", ranks_list if any(r > 1 for r in ranks_list) else None)
+        except (ValueError, TypeError):
+            set_setting("interparticle_ranks", None)
 
         if self.trimming_strategy.get() == 2:
             set_setting("uv_restrict_list", get_setting("uv_restrict_copy"))
