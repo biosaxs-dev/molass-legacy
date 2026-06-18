@@ -25,6 +25,20 @@ def _get_proportional_xr_peaks(xr_x, xr_y, ratios):
     result = decompose_proportionally(_ICurve(xr_x, xr_y), ratios)
     return result.x.reshape(len(ratios), 4)
 
+def _get_proportional_uv_peaks(uv_x, uv_y, ratios):
+    """Decompose the UV elution curve proportionally; returns EGH params array (nc, 4)."""
+    from molass.Decompose.Proportional import decompose_proportionally
+
+    class _ICurve:
+        def __init__(self, x, y):
+            self.x = x
+            self.y = y
+        def get_xy(self):
+            return self.x, self.y
+
+    result = decompose_proportionally(_ICurve(uv_x, uv_y), ratios)
+    return result.x.reshape(len(ratios), 4)
+
 class FullBatch:
     def __init__(self):
         # to be moved from molass_legacy.Peaks.PeakEditor
@@ -130,6 +144,7 @@ class FullBatch:
                                                 affine=affine, min_area_prop=min_area_prop, debug=debug)
         if prop_ratios is not None:
             xr_peaks = _get_proportional_xr_peaks(xr_x, xr_y, prop_ratios)
+            uv_peaks = _get_proportional_uv_peaks(uv_x, uv_y, prop_ratios)
         self.peak_params_set = PeakParamsSet(uv_peaks, xr_peaks, a, b)     # for backward compatibility
         return uv_peaks, xr_peaks
 

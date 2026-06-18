@@ -49,8 +49,7 @@ def edit_to_full_sdmparams(editor, sdm_params, corrected_rgs, uv_curve, debug=Fa
     ret = adjust_to_uv_scales(xr_x, xr_y_, uv_x, uv_y_, sdm_params, corrected_rgs, debug=debug, optimizer=optimizer)
     if ret is None:
         return
-    else:
-        uv_w, uv_ty = ret
+    uv_w, uv_ty = ret
 
     uv_base_params = editor.get_uv_base_params(xyt=(uv_x, uv_y, uv_ty))
     param_list = [xr_w, editor.baseline_params[1], rgs, (a, b), uv_w, uv_base_params, xr_x[[0,-1]], sdmcol_params]

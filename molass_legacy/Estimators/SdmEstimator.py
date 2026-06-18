@@ -77,12 +77,33 @@ class SdmEstimator(BaseEstimator):
     def _estimate_mono(self, lrf_src=None, edm_available=False, debug=False):
         """G1200 init: mono-pore + gamma.
 
-        Mirrors the library's ``upgrade(model='SDM')`` pipeline (2 stages):
-          1. ``estimate_sdm_column_params``    — multi-start NM → converged mono env
-          2. ``optimize_sdm_xr_decomposition`` — converged mono-pore SdmComponentCurves
+        Fast path: if ``editor.sdm_decomposition`` holds a library SDM upgrade result
+        (built by ``_build_library_decomposition`` in the background), use
+        ``make_rigorous_initparams`` to convert it directly to legacy init-params.
+        This is the cleanest approach: the library handles XR column fitting and UV
+        partner decomposition (with data-driven UV scale bounds); the conversion is
+        a thin read of already-computed values.
 
-        Falls back to the legacy moment-matching estimate if the library import fails.
+        Falls back to the legacy stage-wise path if the SDM decomp is unavailable.
         """
+        editor = self.editor
+        model_decomp = getattr(editor, 'model_decomposition', None)
+        if model_decomp is not None:
+            try:
+                column = model_decomp.xr_ccurves[0].column
+                if getattr(column, 'pore_dist', 'mono') == 'mono':
+                    from molass.Rigorous.LegacyBridgeUtils import make_basecurves_from_decomposition
+                    _, baseparams = make_basecurves_from_decomposition(model_decomp)
+                    init_params = model_decomp.make_rigorous_initparams(baseparams)
+                    self.logger.info(
+                        "_estimate_mono: used library SDM upgrade result directly"
+                    )
+                    return init_params
+            except Exception as _e:
+                self.logger.warning(
+                    "_estimate_mono: library SDM fast path failed (%s); falling back to legacy path", _e
+                )
+
         init_params_6 = self.compute_sdm_init_params(self.nc, lrf_src=lrf_src,
                                                       edm_available=edm_available, debug=debug)
         if init_params_6 is None:
@@ -128,25 +149,96 @@ class SdmEstimator(BaseEstimator):
         non_col = init_params_6[:-6].copy()
         if xr_scales is not None:
             non_col[:nc_xr] = xr_scales  # replace XR weights with Stage-2 scales
+            # Refit UV with Stage-2 refined column params (library upgrade → UV conversion).
+            # adjust_to_uv_scales knows the SDM UV normalisation; running it with Stage-N
+            # params instead of the rough initial guess makes uv_w proportional and correct.
+            uv_w_new = self._refit_uv_w(sdmcol_7[:6], xr_scales)
+            self._update_non_col_uv(non_col, nc_xr, uv_w_new)
         return np.concatenate([non_col, sdmcol_7])
+
+    def _refit_uv_w(self, sdm_col_params_6, xr_scales):
+        """Re-fit UV component weights using Stage-N refined column params.
+
+        Calls adjust_to_uv_scales with the library-upgraded column params so that
+        uv_w is in the correct SDM UV normalisation (not EGH peak-height units).
+        This is the 'result conversion' step after the library upgrade.
+
+        Parameters
+        ----------
+        sdm_col_params_6 : array, shape (6,) — [N, K, x0, poresize, N0, tI]
+        xr_scales        : array, shape (nc,) — Stage-N XR component weights
+
+        Returns uv_w array (nc,) or None on failure.
+        """
+        from molass_legacy.Models.Stochastic.DispersiveUvScaler import adjust_to_uv_scales
+        editor = self.editor
+        try:
+            new_sdm_params = np.concatenate([sdm_col_params_6, xr_scales])
+            _, _, xr_x, xr_y, baselines = editor.get_curve_xy(return_baselines=True)
+            a, b = editor.peak_params_set[-2:]
+            uv_x = xr_x * a + b
+            _, _, (uv_curve_obj, _) = editor.dsets
+            uv_y = uv_curve_obj.spline(uv_x)
+            uv_baseline = editor.get_uv_baseline_deprecated(xy=(uv_x, uv_y))
+            uv_y_ = uv_y - uv_baseline
+            xr_y_ = xr_y - baselines[1]
+            ret = adjust_to_uv_scales(xr_x, xr_y_, uv_x, uv_y_, new_sdm_params, self.peak_rgs)
+            if ret is not None:
+                uv_w, _ = ret
+                self.logger.info("_refit_uv_w: uv_w=%s", str(uv_w))
+                return uv_w
+        except Exception as _e:
+            self.logger.warning("_refit_uv_w failed (%s); keeping rough uv_w", _e)
+        return None
+
+    def _update_non_col_uv(self, non_col, nc, uv_w_new):
+        """Overwrite the UV weight slice in non_col with Stage-N refitted values.
+
+        Layout: [xr_w(nc) | xr_baseline(nb_xr) | rgs(nc) | mapping(2) | uv_w(nc) | ...]
+        uv_w starts at index 2*nc + nb_xr + 2.
+        """
+        if uv_w_new is None:
+            return
+        nb_xr = len(self.editor.baseline_params[1])
+        uv_w_start = 2 * nc + nb_xr + 2
+        non_col[uv_w_start:uv_w_start + nc] = uv_w_new
 
     def _estimate_lognormal(self, lrf_src=None, edm_available=False, debug=False):
         """G1300 init: lognormal pore + gamma.
 
-        Fully mirrors the library's ``upgrade(model='SDM', pore_dist='lognormal')``
-        pipeline (4 stages):
+        Fast path: if ``editor.sdm_decomposition`` holds a library lognormal SDM
+        upgrade result, use ``make_rigorous_initparams`` directly (same as _estimate_mono).
+
+        Falls back to the legacy 4-stage library pipeline when unavailable.
+
+        The legacy pipeline (4 stages) is:
           1. ``estimate_sdm_column_params``              — multi-start NM → converged mono env
           2. ``optimize_sdm_xr_decomposition``           — mono-pore NM → SdmComponentCurves
           3. ``estimate_sdm_lognormal_from_monopore``    — geometric mean poresize +
              moment matching → ``LognormalEnv`` (SV≈52)
           4. ``optimize_sdm_lognormal_xr_decomposition`` — converged lognormal NM (SV≈72)
 
-        Stage 4 matches the library notebook's BH starting point and is the key
-        improvement over the previous 3-stage version (SV≈52 → SV≈72 at init).
-
         Falls back to the legacy rough estimate (N0=50000, poresize from moments)
         if the library import fails.
         """
+        editor = self.editor
+        model_decomp = getattr(editor, 'model_decomposition', None)
+        if model_decomp is not None:
+            try:
+                column = model_decomp.xr_ccurves[0].column
+                if getattr(column, 'pore_dist', 'mono') == 'lognormal':
+                    from molass.Rigorous.LegacyBridgeUtils import make_basecurves_from_decomposition
+                    _, baseparams = make_basecurves_from_decomposition(model_decomp)
+                    init_params = model_decomp.make_rigorous_initparams(baseparams)
+                    self.logger.info(
+                        "_estimate_lognormal: used library SDM upgrade result directly"
+                    )
+                    return init_params
+            except Exception as _e:
+                self.logger.warning(
+                    "_estimate_lognormal: library SDM fast path failed (%s); falling back to legacy path", _e
+                )
+
         # Run the full legacy mono-pore estimator first — we still need
         # corrected_rgs, self.bounds, self._xr_* attrs, and the UV/baseline
         # portion of init_params (indices 0..-6).
@@ -236,6 +328,13 @@ class SdmEstimator(BaseEstimator):
         non_col = init_params_6[:-6].copy()
         if xr_scales is not None:
             non_col[:nc_xr] = xr_scales  # replace XR weights with Stage-4 scales
+            # Refit UV using Stage-4 lognormal col params mapped to mono format for
+            # adjust_to_uv_scales.  sdmcol_8 = [N, K, x0, mu, sigma, N0, tI, k];
+            # poresize ≈ exp(mu) gives an equivalent mono-pore approximation.
+            col6_ln = np.array([sdmcol_8[0], sdmcol_8[1], sdmcol_8[2],
+                                np.exp(sdmcol_8[3]), sdmcol_8[5], sdmcol_8[6]])
+            uv_w_new = self._refit_uv_w(col6_ln, xr_scales)
+            self._update_non_col_uv(non_col, nc_xr, uv_w_new)
         return np.concatenate([non_col, sdmcol_8])
 
     def compute_sdm_init_params(self, nc_b, lrf_src=None, edm_available=False, debug=False):

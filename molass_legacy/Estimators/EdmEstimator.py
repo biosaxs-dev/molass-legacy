@@ -17,11 +17,25 @@ class EdmEstimator(EghEstimator):
     def estimate_params(self, debug=False):
         """G1800/non-CEDM EDM init.
 
-        Delegates per-component EDM fitting to the library's
-        guess_multiple_impl (EdmEstimatorImpl), which takes pre-built
-        component curves instead of re-running recognize_peaks.
-        Falls back to the legacy guess_multiple_impl on import failure.
+        Fast path: if ``editor.model_decomposition`` holds a library EDM upgrade
+        result, use ``make_rigorous_initparams`` directly.
+        Falls back to the legacy per-component EDM fitting approach.
         """
+        # Fast path: use library EDM upgrade result directly.
+        editor = self.editor
+        model_decomp = getattr(editor, 'model_decomposition', None)
+        if model_decomp is not None and getattr(model_decomp, 'model', None) == 'edm':
+            try:
+                from molass.Rigorous.LegacyBridgeUtils import make_basecurves_from_decomposition
+                _, baseparams = make_basecurves_from_decomposition(model_decomp)
+                init_params = model_decomp.make_rigorous_initparams(baseparams)
+                self.logger.info("EdmEstimator: used library EDM upgrade result directly")
+                return init_params
+            except Exception as _e:
+                self.logger.warning(
+                    "EdmEstimator: library fast path failed (%s); falling back to legacy path", _e
+                )
+
         if debug:
             from importlib import reload
             import molass_legacy.Models.RateTheory.EDM

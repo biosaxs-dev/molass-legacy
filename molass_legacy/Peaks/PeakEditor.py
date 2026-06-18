@@ -69,7 +69,8 @@ class PeakEditor(FullBatch, Dialog):
         assert self.advanced
         
         self.dsets = None
-        self.decomposition = None   # library Decomposition, built by _build_library_decomposition_thread
+        self.decomposition = None        # library EGH Decomposition (for display)
+        self.model_decomposition = None  # library upgraded Decomposition for the selected model (for init-params)
         self._library_decomp_ready = False  # set True when _build_library_decomposition finishes (or is skipped)
         self.exact_num_peaks = exact_num_peaks
         self.strict_sec_penalty = strict_sec_penalty
@@ -409,6 +410,43 @@ class PeakEditor(FullBatch, Dialog):
             # Schedule a display update on the main thread so the UV/XR panels
             # show the proportional EGH curves instead of the legacy pre_recog peaks.
             self.after(0, self._update_display_from_library_decomp)
+
+            # Run the appropriate library upgrade so each model's estimator can
+            # call make_rigorous_initparams directly instead of the legacy pipeline.
+            # Maps class_code → (upgrade_model_name, upgrade_kwargs).
+            # EGH (G0346/G0367): no upgrade — store decomposition directly.
+            _UPGRADE_MAP = {
+                'G1200': ('SDM',  {'pore_dist': 'mono'}),
+                'G1300': ('SDM',  {'pore_dist': 'lognormal'}),
+                'G1400': ('LKM',  {}),
+                'G1500': ('GRM',  {}),
+                'G2010': ('CEDM', {}),
+                'G2020': ('EDM',  {}),
+            }
+            try:
+                _, class_code = self.get_function_class()
+                if class_code in ('G0346', 'G0367'):
+                    # EGH: decomposition already has model='egh' — use directly.
+                    self.model_decomposition = decomposition
+                    import logging as _lg
+                    _lg.getLogger(__name__).info(
+                        "_build_library_decomposition: EGH — using decomposition directly"
+                    )
+                elif class_code in _UPGRADE_MAP:
+                    model_name, upgrade_kwargs = _UPGRADE_MAP[class_code]
+                    self.model_decomposition = decomposition.upgrade(model_name, **upgrade_kwargs)
+                    import logging as _lg
+                    _lg.getLogger(__name__).info(
+                        "_build_library_decomposition: %s upgrade done (class_code=%s)",
+                        model_name, class_code
+                    )
+            except Exception:
+                import logging as _lg
+                _lg.getLogger(__name__).warning(
+                    "_build_library_decomposition: model upgrade failed; estimator will use legacy path",
+                    exc_info=True
+                )
+                self.model_decomposition = None
         except Exception:
             import logging
             logging.getLogger(__name__).warning(

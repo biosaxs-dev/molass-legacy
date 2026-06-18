@@ -61,6 +61,21 @@ class GrmEstimator(EghEstimator):
         EghEstimator.__init__(self, editor)
 
     def estimate_params(self, debug=False):
+        # Fast path: use library GRM upgrade result directly.
+        editor = self.editor
+        model_decomp = getattr(editor, 'model_decomposition', None)
+        if model_decomp is not None and getattr(model_decomp, 'model', None) == 'grm':
+            try:
+                from molass.Rigorous.LegacyBridgeUtils import make_basecurves_from_decomposition
+                _, baseparams = make_basecurves_from_decomposition(model_decomp)
+                init_params = model_decomp.make_rigorous_initparams(baseparams)
+                self.logger.info("GrmEstimator: used library GRM upgrade result directly")
+                return init_params
+            except Exception as _e:
+                self.logger.warning(
+                    "GrmEstimator: library fast path failed (%s); falling back to legacy path", _e
+                )
+
         if debug:
             from importlib import reload
             import molass.SEC.Models.GrmEstimator

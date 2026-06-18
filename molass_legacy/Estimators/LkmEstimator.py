@@ -57,6 +57,21 @@ class LkmEstimator(EghEstimator):
         EghEstimator.__init__(self, editor)
 
     def estimate_params(self, debug=False):
+        # Fast path: use library LKM upgrade result directly.
+        editor = self.editor
+        model_decomp = getattr(editor, 'model_decomposition', None)
+        if model_decomp is not None and getattr(model_decomp, 'model', None) == 'lkm':
+            try:
+                from molass.Rigorous.LegacyBridgeUtils import make_basecurves_from_decomposition
+                _, baseparams = make_basecurves_from_decomposition(model_decomp)
+                init_params = model_decomp.make_rigorous_initparams(baseparams)
+                self.logger.info("LkmEstimator: used library LKM upgrade result directly")
+                return init_params
+            except Exception as _e:
+                self.logger.warning(
+                    "LkmEstimator: library fast path failed (%s); falling back to legacy path", _e
+                )
+
         if debug:
             from importlib import reload
             import molass.SEC.Models.LkmEstimator
