@@ -55,8 +55,7 @@ class EghEstimator(BaseEstimator):
             # uv_ccurves are built by optimize_uv_decomposition with proportional XR seeds,
             # so their heights reflect actual UV absorption per component.
             if decomp.uv_ccurves is not None and len(decomp.uv_ccurves) == len(init_xr_params):
-                lib_uv = sorted(decomp.uv_ccurves, key=lambda cc: cc.params[1])  # sort by tR
-                init_uv_heights = np.array([cc.params[0] for cc in lib_uv])
+                init_uv_heights = np.array([cc.get_scale() for cc in decomp.uv_ccurves])
                 editor.logger.info(
                     "estimate_egh_params: replaced legacy UV heights with library uv_ccurves (n=%d)",
                     len(init_uv_heights),

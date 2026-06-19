@@ -473,9 +473,11 @@ class PeakEditor(FullBatch, Dialog):
             # UV peaks: use library uv_ccurves if available and count matches
             uv_peaks_old = self.peak_params_set.uv_peaks
             if decomp.uv_ccurves is not None and len(decomp.uv_ccurves) == len(xr_peaks):
-                uv_peaks = np.array(sorted(
-                    [cc.params[:4] for cc in decomp.uv_ccurves], key=lambda p: p[1]
-                ))
+                # Start with old UV peaks (correct UV frame positions)
+                # Update only heights from library decomposition
+                uv_peaks = uv_peaks_old.copy()
+                for i, cc in enumerate(decomp.uv_ccurves):
+                    uv_peaks[i, 0] = cc.get_scale()
             else:
                 uv_peaks = uv_peaks_old
 

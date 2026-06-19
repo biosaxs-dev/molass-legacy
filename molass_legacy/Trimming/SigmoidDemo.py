@@ -50,7 +50,7 @@ def real_demo(x_curve, a_curve, a_curve2, fit_chain=False):
         # as in 20170301
         stop1 = x0 + 5
     sliceL = slice(0, stop1)
-    sliceR = slice(a_curve.peak_info[-1][-1], None)
+    sliceR = slice(int(a_curve.peak_info[-1][-1]), None)
 
     results = []
     for slice_ in [sliceL, sliceR]:

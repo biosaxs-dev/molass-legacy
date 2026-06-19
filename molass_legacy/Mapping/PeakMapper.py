@@ -696,10 +696,12 @@ class PeakMapper:
 
         source_y = curve2.spline(i)
         try:
-            scale = curve2.height/curve1.height
+            curve2_height = curve2.height
+            scale = curve2_height / curve1.height
         except:
             self.logger.warning("curve height not available, using max_y instead.")
-            scale = curve2.max_y/curve1.max_y
+            curve2_height = curve2.max_y
+            scale = curve2_height / curve1.max_y
         mapped_y_ = curve1.spline(j) * scale
 
         def obj_func(params):
@@ -712,7 +714,7 @@ class PeakMapper:
         diff_area = obj_func(result.x)
         mapped_y = mapped_y_ + result.x[0]
 
-        whole_area = curve2.height * len(source_y)
+        whole_area = curve2_height * len(source_y)
         similarity = abs(1 -  diff_area/whole_area)
 
         if debug:

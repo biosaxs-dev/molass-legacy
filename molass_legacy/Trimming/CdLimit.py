@@ -43,7 +43,7 @@ class CdLimit:
         pno = e_curve.primary_peak_no
         rec = e_curve.peak_info[pno]
         f, p, t = rec
-        eslice = slice(p,t+1)
+        eslice = slice(int(p), int(t)+1)
         c = e_curve.y[eslice]
         c = c/np.max(c)
         C = np.array([c, c**2])

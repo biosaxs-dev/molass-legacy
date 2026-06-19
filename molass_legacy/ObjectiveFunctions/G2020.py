@@ -91,7 +91,15 @@ class G2020(BasicOptimizer):
                 + Penalties[0]
             )
 
+        # Order penalty: enforce K_SEC monotonicity (a[0] ≤ a[1] ≤ ...)
+        # In SEC, earlier-eluting components have larger Rg → more excluded → smaller a.
+        # Components are ordered by initial EGH peak position (stored during init).
         order_penalty = 0
+        a_values = [a_k for a_k, b_k, cinj_k in xr_params_abc]
+        for i in range(len(a_values) - 1):
+            if a_values[i] > a_values[i+1]:
+                # Wrong order: penalize the squared violation
+                order_penalty += (a_values[i] - a_values[i+1]) ** 2
 
         for a_k, b_k, cinj_k in xr_params_abc:
             full = np.array([t0_sh, u_sh, a_k, b_k, e_sh, Dz_sh, cinj_k])
