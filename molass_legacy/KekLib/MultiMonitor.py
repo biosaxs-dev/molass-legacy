@@ -7,7 +7,14 @@
 
 """
 import os
-from ctypes import windll, Structure, c_long, byref
+import sys
+
+# Windows-only imports - guard for cross-platform compatibility
+if sys.platform == 'win32':
+    from ctypes import windll, Structure, c_long, byref
+else:
+    # Provide stub on non-Windows platforms
+    windll = None
 
 PYTHON_DEMO_MONITOR     = 'PYTHON_DEMO_MONITOR'
 
@@ -25,13 +32,21 @@ from
     to handle cases where the second monitor
     is placed to the left side of the first.
 """
-class POINT(Structure):
-    _fields_ = [("x", c_long), ("y", c_long)]
+if sys.platform == 'win32':
+    class POINT(Structure):
+        _fields_ = [("x", c_long), ("y", c_long)]
 
-def get_mouse_position():
-    pt = POINT()
-    windll.user32.GetCursorPos(byref(pt))
-    return pt.x, pt.y
+    def get_mouse_position():
+        pt = POINT()
+        windll.user32.GetCursorPos(byref(pt))
+        return pt.x, pt.y
+else:
+    def get_mouse_position():
+        # Stub for non-Windows - return center of max monitor
+        max_mon = get_max_monitor()
+        if max_mon:
+            return max_mon.x + max_mon.width // 2, max_mon.y + max_mon.height // 2
+        return 0, 0
 
 monitors = None
 max_monitor = None
