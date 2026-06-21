@@ -3,8 +3,8 @@ ExcelProcess
 
 .. automodule:: molass_legacy.ExcelProcess
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Submodules
 ----------

@@ -3,8 +3,8 @@ Optimizer
 
 .. automodule:: molass_legacy.Optimizer
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Submodules
 ----------
@@ -24,16 +24,17 @@ Submodules
    molass_legacy.Optimizer.BoundsInspection
    molass_legacy.Optimizer.ColumnInterp
    molass_legacy.Optimizer.ColumnInterpGPU
+   molass_legacy.Optimizer.Compatibility
    molass_legacy.Optimizer.ComplementaryView
    molass_legacy.Optimizer.CompositeInfo
    molass_legacy.Optimizer.DefaultNumPeaks
    molass_legacy.Optimizer.DefaultNumPeaks-try
    molass_legacy.Optimizer.Demo
+   molass_legacy.Optimizer.DsetsDebug
    molass_legacy.Optimizer.EghGradient
    molass_legacy.Optimizer.ElutionComposer
    molass_legacy.Optimizer.ElutionModelsGPU
    molass_legacy.Optimizer.FactorCurvePlot
-   molass_legacy.Optimizer.FixedBaselineOptimizer
    molass_legacy.Optimizer.FullOptDialog
    molass_legacy.Optimizer.FullOptInput
    molass_legacy.Optimizer.FullOptResult
@@ -51,6 +52,7 @@ Submodules
    molass_legacy.Optimizer.FvSynthesizerHistory
    molass_legacy.Optimizer.GlobalInspector
    molass_legacy.Optimizer.GuinierRg
+   molass_legacy.Optimizer.InProcessRunner
    molass_legacy.Optimizer.InitialInfo
    molass_legacy.Optimizer.IntegerRatios
    molass_legacy.Optimizer.JobState
@@ -61,6 +63,7 @@ Submodules
    molass_legacy.Optimizer.LrfOptimizer
    molass_legacy.Optimizer.ModelDataSet
    molass_legacy.Optimizer.ModifyStateDialog
+   molass_legacy.Optimizer.MolassIntegration
    molass_legacy.Optimizer.MplMonitor
    molass_legacy.Optimizer.MwIntegrity
    molass_legacy.Optimizer.NaviFrame
@@ -105,7 +108,6 @@ Submodules
    molass_legacy.Optimizer.SettingsSerializer
    molass_legacy.Optimizer.SimpleDebugUtils
    molass_legacy.Optimizer.StateSequence
-   molass_legacy.Optimizer.StrategicOptimizer
    molass_legacy.Optimizer.StrategyEditor
    molass_legacy.Optimizer.StructureFactorBounds
    molass_legacy.Optimizer.StructureFactorBoundsDemo

@@ -3,8 +3,8 @@ KDE
 
 .. automodule:: molass_legacy.KDE
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Submodules
 ----------

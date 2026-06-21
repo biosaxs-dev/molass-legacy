@@ -3,8 +3,8 @@ QuickAnalysis
 
 .. automodule:: molass_legacy.QuickAnalysis
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Submodules
 ----------

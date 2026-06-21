@@ -3,8 +3,8 @@ Pdb
 
 .. automodule:: molass_legacy.Pdb
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Submodules
 ----------

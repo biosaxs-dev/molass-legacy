@@ -3,8 +3,8 @@ LoaderProcess
 
 .. automodule:: molass_legacy.LoaderProcess
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Submodules
 ----------

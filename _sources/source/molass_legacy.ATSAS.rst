@@ -3,8 +3,8 @@ ATSAS
 
 .. automodule:: molass_legacy.ATSAS
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Submodules
 ----------

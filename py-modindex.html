@@ -15,33 +15,36 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-
-  
-  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
   
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
     <script src="_static/documentation_options.js?v=9eb32ce0"></script>
-    <script src="_static/doctools.js?v=9a2dae69"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>
-    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'py-modindex';</script>
     <link rel="icon" href="_static/molamola.png"/>
     <link rel="index" title="Index" href="genindex.html" />
@@ -49,6 +52,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
 
 
   </head>
@@ -66,19 +70,8 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="search.html"
       method="get">
@@ -86,7 +79,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search..."
          aria-label="Search..."
          autocomplete="off"
@@ -94,8 +86,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -113,7 +105,8 @@
       
         
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -143,21 +136,17 @@
     
     
     <img src="_static/molamola.png" class="logo__image only-light" alt="Molass Library Legacy  documentation - Home"/>
-    <script>document.write(`<img src="_static/molamola.png" class="logo__image only-dark" alt="Molass Library Legacy  documentation - Home"/>`);</script>
+    <img src="_static/molamola.png" class="logo__image only-dark pst-js-only" alt="Molass Library Legacy  documentation - Home"/>
   
   
 </a></div>
         <div class="sidebar-primary-item">
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         <ul class="nav bd-sidenav">
@@ -254,6 +243,7 @@
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Batch.DataBridgeUtils.html">Batch.DataBridgeUtils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Batch.DataWalk.html">Batch.DataWalk</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Batch.FullBatch.html">Batch.FullBatch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Batch.HeadlessPeakEditor.html">Batch.HeadlessPeakEditor</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Batch.LiteBatch.html">Batch.LiteBatch</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Batch.OptDataSetsProxy.html">Batch.OptDataSetsProxy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Batch.StandardProcedure.html">Batch.StandardProcedure</a></li>
@@ -416,11 +406,14 @@
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="source/molass_legacy.Estimators.html">Estimators</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Estimators.BaseEstimator.html">Estimators.BaseEstimator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Estimators.CedmEstimator.html">Estimators.CedmEstimator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Estimators.EdmEstimator.html">Estimators.EdmEstimator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Estimators.EdmEstimatorDevel.html">Estimators.EdmEstimatorDevel</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Estimators.EghEstimator.html">Estimators.EghEstimator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Estimators.FdEmgEstimator.html">Estimators.FdEmgEstimator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Estimators.GrmEstimator.html">Estimators.GrmEstimator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Estimators.LjEghEstimator.html">Estimators.LjEghEstimator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Estimators.LkmEstimator.html">Estimators.LkmEstimator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Estimators.RtEmgEstimator.html">Estimators.RtEmgEstimator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Estimators.SdmEstimator.html">Estimators.SdmEstimator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Estimators.SdmEstimatorDebug.html">Estimators.SdmEstimatorDebug</a></li>
@@ -834,6 +827,9 @@
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ModelParams.BaseSliderInfo.html">ModelParams.BaseSliderInfo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ModelParams.BaselineParams.html">ModelParams.BaselineParams</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ModelParams.BoundedSecParams.html">ModelParams.BoundedSecParams</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ModelParams.CedmParams.html">ModelParams.CedmParams</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ModelParams.CedmParamsSheet.html">ModelParams.CedmParamsSheet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ModelParams.CedmSliderInfo.html">ModelParams.CedmSliderInfo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ModelParams.EdmParams.html">ModelParams.EdmParams</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ModelParams.EdmParamsSheet.html">ModelParams.EdmParamsSheet</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ModelParams.EdmPlotUtils.html">ModelParams.EdmPlotUtils</a></li>
@@ -845,12 +841,18 @@
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ModelParams.EmgPlotUtils.html">ModelParams.EmgPlotUtils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ModelParams.FdEmgParams.html">ModelParams.FdEmgParams</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ModelParams.FdEmgParamsSheet.html">ModelParams.FdEmgParamsSheet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ModelParams.GrmParams.html">ModelParams.GrmParams</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ModelParams.GrmParamsSheet.html">ModelParams.GrmParamsSheet</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ModelParams.LjEghParams.html">ModelParams.LjEghParams</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ModelParams.LjEghParamsSheet.html">ModelParams.LjEghParamsSheet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ModelParams.LkmParams.html">ModelParams.LkmParams</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ModelParams.LkmParamsSheet.html">ModelParams.LkmParamsSheet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ModelParams.LkmSliderInfo.html">ModelParams.LkmSliderInfo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ModelParams.ModelDebugUtils.html">ModelParams.ModelDebugUtils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ModelParams.MonoporeSecParams.html">ModelParams.MonoporeSecParams</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ModelParams.ParamSetUtils.html">ModelParams.ParamSetUtils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ModelParams.ParamsSheetBase.html">ModelParams.ParamsSheetBase</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ModelParams.ParamsTypeBase.html">ModelParams.ParamsTypeBase</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ModelParams.RtEmgParams.html">ModelParams.RtEmgParams</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ModelParams.RtEmgParamsSheet.html">ModelParams.RtEmgParamsSheet</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ModelParams.SdmParams.html">ModelParams.SdmParams</a></li>
@@ -904,12 +906,17 @@
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="source/molass_legacy.ObjectiveFunctions.html">ObjectiveFunctions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ObjectiveFunctions.G0346.html">ObjectiveFunctions.G0346</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ObjectiveFunctions.G0367.html">ObjectiveFunctions.G0367</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ObjectiveFunctions.G0525.html">ObjectiveFunctions.G0525</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ObjectiveFunctions.G0665.html">ObjectiveFunctions.G0665</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ObjectiveFunctions.G0705.html">ObjectiveFunctions.G0705</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ObjectiveFunctions.G1100.html">ObjectiveFunctions.G1100</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ObjectiveFunctions.G1200.html">ObjectiveFunctions.G1200</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ObjectiveFunctions.G1300.html">ObjectiveFunctions.G1300</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ObjectiveFunctions.G1400.html">ObjectiveFunctions.G1400</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ObjectiveFunctions.G1500.html">ObjectiveFunctions.G1500</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ObjectiveFunctions.G2010.html">ObjectiveFunctions.G2010</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ObjectiveFunctions.G2020.html">ObjectiveFunctions.G2020</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="source/molass_legacy.OnTheFly.html">OnTheFly</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -930,16 +937,17 @@
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.BoundsInspection.html">Optimizer.BoundsInspection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.ColumnInterp.html">Optimizer.ColumnInterp</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.ColumnInterpGPU.html">Optimizer.ColumnInterpGPU</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.Compatibility.html">Optimizer.Compatibility</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.ComplementaryView.html">Optimizer.ComplementaryView</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.CompositeInfo.html">Optimizer.CompositeInfo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.DefaultNumPeaks.html">Optimizer.DefaultNumPeaks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.DefaultNumPeaks-try.html">Optimizer.DefaultNumPeaks-try</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.Demo.html">Optimizer.Demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.DsetsDebug.html">Optimizer.DsetsDebug</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.EghGradient.html">Optimizer.EghGradient</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.ElutionComposer.html">Optimizer.ElutionComposer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.ElutionModelsGPU.html">Optimizer.ElutionModelsGPU</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.FactorCurvePlot.html">Optimizer.FactorCurvePlot</a></li>
-<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.FixedBaselineOptimizer.html">Optimizer.FixedBaselineOptimizer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.FullOptDialog.html">Optimizer.FullOptDialog</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.FullOptInput.html">Optimizer.FullOptInput</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.FullOptResult.html">Optimizer.FullOptResult</a></li>
@@ -957,6 +965,7 @@
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.FvSynthesizerHistory.html">Optimizer.FvSynthesizerHistory</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.GlobalInspector.html">Optimizer.GlobalInspector</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.GuinierRg.html">Optimizer.GuinierRg</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.InProcessRunner.html">Optimizer.InProcessRunner</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.InitialInfo.html">Optimizer.InitialInfo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.IntegerRatios.html">Optimizer.IntegerRatios</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.JobState.html">Optimizer.JobState</a></li>
@@ -967,6 +976,7 @@
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.LrfOptimizer.html">Optimizer.LrfOptimizer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.ModelDataSet.html">Optimizer.ModelDataSet</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.ModifyStateDialog.html">Optimizer.ModifyStateDialog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.MolassIntegration.html">Optimizer.MolassIntegration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.MplMonitor.html">Optimizer.MplMonitor</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.MwIntegrity.html">Optimizer.MwIntegrity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.NaviFrame.html">Optimizer.NaviFrame</a></li>
@@ -1011,7 +1021,6 @@
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.SettingsSerializer.html">Optimizer.SettingsSerializer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.SimpleDebugUtils.html">Optimizer.SimpleDebugUtils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.StateSequence.html">Optimizer.StateSequence</a></li>
-<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.StrategicOptimizer.html">Optimizer.StrategicOptimizer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.StrategyEditor.html">Optimizer.StrategyEditor</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.StructureFactorBounds.html">Optimizer.StructureFactorBounds</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.StructureFactorBoundsDemo.html">Optimizer.StructureFactorBoundsDemo</a></li>
@@ -1035,6 +1044,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="source/molass_legacy.Peaks.html">Peaks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Peaks.ComponentsView.html">Peaks.ComponentsView</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Peaks.EditCanvas.html">Peaks.EditCanvas</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Peaks.EghSupples.html">Peaks.EghSupples</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Peaks.EghTauLimits.html">Peaks.EghTauLimits</a></li>
@@ -1144,12 +1154,10 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="source/molass_legacy.RgProcess.html">RgProcess</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.RgProcess.RgAnalysis.html">RgProcess.RgAnalysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.RgProcess.RgCurve.html">RgProcess.RgCurve</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.RgProcess.RgCurveComputer.html">RgProcess.RgCurveComputer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.RgProcess.RgCurveProxy.html">RgProcess.RgCurveProxy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.RgProcess.RgCurveUtils.html">RgProcess.RgCurveUtils</a></li>
-<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.RgProcess.RgManager.html">RgProcess.RgManager</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="source/molass_legacy.Saxs.html">Saxs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -1391,6 +1399,7 @@
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="source/molass_legacy.Solvers.html">Solvers</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Solvers.NcallsEstimator.html">Solvers.NcallsEstimator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Solvers.Registry.html">Solvers.Registry</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="source/molass_legacy.SSDC.html">SSDC</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -1554,9 +1563,14 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -1606,7 +1620,7 @@
 
 
 <button onclick="toggleFullScreen()"
-  class="btn btn-sm btn-fullscreen-button"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
   title="Fullscreen mode"
   data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
@@ -1620,24 +1634,16 @@
 
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-  </button>
-`);
-</script>
+</button>
 
 </div></div>
       
@@ -2064,6 +2070,11 @@ document.write(`
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="source/molass_legacy.Batch.FullBatch.html#module-molass_legacy.Batch.FullBatch"><code class="xref">molass_legacy.Batch.FullBatch</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="source/molass_legacy.Batch.HeadlessPeakEditor.html#module-molass_legacy.Batch.HeadlessPeakEditor"><code class="xref">molass_legacy.Batch.HeadlessPeakEditor</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
@@ -2568,6 +2579,11 @@ document.write(`
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
+       <a href="source/molass_legacy.Estimators.CedmEstimator.html#module-molass_legacy.Estimators.CedmEstimator"><code class="xref">molass_legacy.Estimators.CedmEstimator</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
        <a href="source/molass_legacy.Estimators.EdmEstimator.html#module-molass_legacy.Estimators.EdmEstimator"><code class="xref">molass_legacy.Estimators.EdmEstimator</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
@@ -2588,7 +2604,17 @@ document.write(`
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
+       <a href="source/molass_legacy.Estimators.GrmEstimator.html#module-molass_legacy.Estimators.GrmEstimator"><code class="xref">molass_legacy.Estimators.GrmEstimator</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
        <a href="source/molass_legacy.Estimators.LjEghEstimator.html#module-molass_legacy.Estimators.LjEghEstimator"><code class="xref">molass_legacy.Estimators.LjEghEstimator</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="source/molass_legacy.Estimators.LkmEstimator.html#module-molass_legacy.Estimators.LkmEstimator"><code class="xref">molass_legacy.Estimators.LkmEstimator</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
@@ -2939,6 +2965,16 @@ document.write(`
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="source/molass_legacy.GuinierTools.CompareGdevMeasures.html#module-molass_legacy.GuinierTools.CompareGdevMeasures"><code class="xref">molass_legacy.GuinierTools.CompareGdevMeasures</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="source/molass_legacy.GuinierTools.CpdDecompDirect.html#module-molass_legacy.GuinierTools.CpdDecompDirect"><code class="xref">molass_legacy.GuinierTools.CpdDecompDirect</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="source/molass_legacy.GuinierTools.CpdDecompIndirectImpl.html#module-molass_legacy.GuinierTools.CpdDecompIndirectImpl"><code class="xref">molass_legacy.GuinierTools.CpdDecompIndirectImpl</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
@@ -3468,11 +3504,6 @@ document.write(`
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="source/molass_legacy.KekLib.OurImageIO.html#module-molass_legacy.KekLib.OurImageIO"><code class="xref">molass_legacy.KekLib.OurImageIO</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
        <a href="source/molass_legacy.KekLib.OurImporter.html#module-molass_legacy.KekLib.OurImporter"><code class="xref">molass_legacy.KekLib.OurImporter</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
@@ -3819,6 +3850,11 @@ document.write(`
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="source/molass_legacy.Kratky.GuinierKratkyPlots.html#module-molass_legacy.Kratky.GuinierKratkyPlots"><code class="xref">molass_legacy.Kratky.GuinierKratkyPlots</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="source/molass_legacy.Kratky.GuinierKratkyView.html#module-molass_legacy.Kratky.GuinierKratkyView"><code class="xref">molass_legacy.Kratky.GuinierKratkyView</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
@@ -4243,6 +4279,21 @@ document.write(`
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
+       <a href="source/molass_legacy.ModelParams.CedmParams.html#module-molass_legacy.ModelParams.CedmParams"><code class="xref">molass_legacy.ModelParams.CedmParams</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="source/molass_legacy.ModelParams.CedmParamsSheet.html#module-molass_legacy.ModelParams.CedmParamsSheet"><code class="xref">molass_legacy.ModelParams.CedmParamsSheet</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="source/molass_legacy.ModelParams.CedmSliderInfo.html#module-molass_legacy.ModelParams.CedmSliderInfo"><code class="xref">molass_legacy.ModelParams.CedmSliderInfo</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
        <a href="source/molass_legacy.ModelParams.EdmParams.html#module-molass_legacy.ModelParams.EdmParams"><code class="xref">molass_legacy.ModelParams.EdmParams</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
@@ -4288,7 +4339,32 @@ document.write(`
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
+       <a href="source/molass_legacy.ModelParams.GrmParams.html#module-molass_legacy.ModelParams.GrmParams"><code class="xref">molass_legacy.ModelParams.GrmParams</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="source/molass_legacy.ModelParams.GrmParamsSheet.html#module-molass_legacy.ModelParams.GrmParamsSheet"><code class="xref">molass_legacy.ModelParams.GrmParamsSheet</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
        <a href="source/molass_legacy.ModelParams.LjEghParamsSheet.html#module-molass_legacy.ModelParams.LjEghParamsSheet"><code class="xref">molass_legacy.ModelParams.LjEghParamsSheet</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="source/molass_legacy.ModelParams.LkmParams.html#module-molass_legacy.ModelParams.LkmParams"><code class="xref">molass_legacy.ModelParams.LkmParams</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="source/molass_legacy.ModelParams.LkmParamsSheet.html#module-molass_legacy.ModelParams.LkmParamsSheet"><code class="xref">molass_legacy.ModelParams.LkmParamsSheet</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="source/molass_legacy.ModelParams.LkmSliderInfo.html#module-molass_legacy.ModelParams.LkmSliderInfo"><code class="xref">molass_legacy.ModelParams.LkmSliderInfo</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
@@ -4304,6 +4380,11 @@ document.write(`
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="source/molass_legacy.ModelParams.ParamsSheetBase.html#module-molass_legacy.ModelParams.ParamsSheetBase"><code class="xref">molass_legacy.ModelParams.ParamsSheetBase</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="source/molass_legacy.ModelParams.ParamsTypeBase.html#module-molass_legacy.ModelParams.ParamsTypeBase"><code class="xref">molass_legacy.ModelParams.ParamsTypeBase</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
@@ -4503,6 +4584,11 @@ document.write(`
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
+       <a href="source/molass_legacy.ObjectiveFunctions.G0367.html#module-molass_legacy.ObjectiveFunctions.G0367"><code class="xref">molass_legacy.ObjectiveFunctions.G0367</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
        <a href="source/molass_legacy.ObjectiveFunctions.G0525.html#module-molass_legacy.ObjectiveFunctions.G0525"><code class="xref">molass_legacy.ObjectiveFunctions.G0525</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
@@ -4523,7 +4609,32 @@ document.write(`
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
+       <a href="source/molass_legacy.ObjectiveFunctions.G1200.html#module-molass_legacy.ObjectiveFunctions.G1200"><code class="xref">molass_legacy.ObjectiveFunctions.G1200</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="source/molass_legacy.ObjectiveFunctions.G1300.html#module-molass_legacy.ObjectiveFunctions.G1300"><code class="xref">molass_legacy.ObjectiveFunctions.G1300</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="source/molass_legacy.ObjectiveFunctions.G1400.html#module-molass_legacy.ObjectiveFunctions.G1400"><code class="xref">molass_legacy.ObjectiveFunctions.G1400</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="source/molass_legacy.ObjectiveFunctions.G1500.html#module-molass_legacy.ObjectiveFunctions.G1500"><code class="xref">molass_legacy.ObjectiveFunctions.G1500</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
        <a href="source/molass_legacy.ObjectiveFunctions.G2010.html#module-molass_legacy.ObjectiveFunctions.G2010"><code class="xref">molass_legacy.ObjectiveFunctions.G2010</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="source/molass_legacy.ObjectiveFunctions.G2020.html#module-molass_legacy.ObjectiveFunctions.G2020"><code class="xref">molass_legacy.ObjectiveFunctions.G2020</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
@@ -4603,6 +4714,11 @@ document.write(`
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
+       <a href="source/molass_legacy.Optimizer.Compatibility.html#module-molass_legacy.Optimizer.Compatibility"><code class="xref">molass_legacy.Optimizer.Compatibility</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
        <a href="source/molass_legacy.Optimizer.ComplementaryView.html#module-molass_legacy.Optimizer.ComplementaryView"><code class="xref">molass_legacy.Optimizer.ComplementaryView</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
@@ -4618,6 +4734,11 @@ document.write(`
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
+       <a href="source/molass_legacy.Optimizer.DsetsDebug.html#module-molass_legacy.Optimizer.DsetsDebug"><code class="xref">molass_legacy.Optimizer.DsetsDebug</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
        <a href="source/molass_legacy.Optimizer.EghGradient.html#module-molass_legacy.Optimizer.EghGradient"><code class="xref">molass_legacy.Optimizer.EghGradient</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
@@ -4629,11 +4750,6 @@ document.write(`
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="source/molass_legacy.Optimizer.FactorCurvePlot.html#module-molass_legacy.Optimizer.FactorCurvePlot"><code class="xref">molass_legacy.Optimizer.FactorCurvePlot</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="source/molass_legacy.Optimizer.FixedBaselineOptimizer.html#module-molass_legacy.Optimizer.FixedBaselineOptimizer"><code class="xref">molass_legacy.Optimizer.FixedBaselineOptimizer</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
@@ -4723,6 +4839,11 @@ document.write(`
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
+       <a href="source/molass_legacy.Optimizer.InProcessRunner.html#module-molass_legacy.Optimizer.InProcessRunner"><code class="xref">molass_legacy.Optimizer.InProcessRunner</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
        <a href="source/molass_legacy.Optimizer.IntegerRatios.html#module-molass_legacy.Optimizer.IntegerRatios"><code class="xref">molass_legacy.Optimizer.IntegerRatios</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
@@ -4759,6 +4880,11 @@ document.write(`
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="source/molass_legacy.Optimizer.ModifyStateDialog.html#module-molass_legacy.Optimizer.ModifyStateDialog"><code class="xref">molass_legacy.Optimizer.ModifyStateDialog</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="source/molass_legacy.Optimizer.MolassIntegration.html#module-molass_legacy.Optimizer.MolassIntegration"><code class="xref">molass_legacy.Optimizer.MolassIntegration</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
@@ -4983,11 +5109,6 @@ document.write(`
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="source/molass_legacy.Optimizer.StrategicOptimizer.html#module-molass_legacy.Optimizer.StrategicOptimizer"><code class="xref">molass_legacy.Optimizer.StrategicOptimizer</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
        <a href="source/molass_legacy.Optimizer.StrategyEditor.html#module-molass_legacy.Optimizer.StrategyEditor"><code class="xref">molass_legacy.Optimizer.StrategyEditor</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
@@ -5058,11 +5179,6 @@ document.write(`
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="source/molass_legacy.Particles.SmcSolver.html#module-molass_legacy.Particles.SmcSolver"><code class="xref">molass_legacy.Particles.SmcSolver</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
        <a href="source/molass_legacy.Pdb.html#module-molass_legacy.Pdb"><code class="xref">molass_legacy.Pdb</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
@@ -5084,6 +5200,11 @@ document.write(`
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="source/molass_legacy.Peaks.html#module-molass_legacy.Peaks"><code class="xref">molass_legacy.Peaks</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="source/molass_legacy.Peaks.ComponentsView.html#module-molass_legacy.Peaks.ComponentsView"><code class="xref">molass_legacy.Peaks.ComponentsView</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
@@ -5753,11 +5874,6 @@ document.write(`
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="source/molass_legacy.RgProcess.RgAnalysis.html#module-molass_legacy.RgProcess.RgAnalysis"><code class="xref">molass_legacy.RgProcess.RgAnalysis</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
        <a href="source/molass_legacy.RgProcess.RgCurve.html#module-molass_legacy.RgProcess.RgCurve"><code class="xref">molass_legacy.RgProcess.RgCurve</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
@@ -5774,11 +5890,6 @@ document.write(`
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="source/molass_legacy.RgProcess.RgCurveUtils.html#module-molass_legacy.RgProcess.RgCurveUtils"><code class="xref">molass_legacy.RgProcess.RgCurveUtils</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="source/molass_legacy.RgProcess.RgManager.html#module-molass_legacy.RgProcess.RgManager"><code class="xref">molass_legacy.RgProcess.RgManager</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
@@ -5919,6 +6030,11 @@ document.write(`
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="source/molass_legacy.SecTheory.ColumnIllust.html#module-molass_legacy.SecTheory.ColumnIllust"><code class="xref">molass_legacy.SecTheory.ColumnIllust</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="source/molass_legacy.SecTheory.compare_grm_to_emg.html#module-molass_legacy.SecTheory.compare_grm_to_emg"><code class="xref">molass_legacy.SecTheory.compare_grm_to_emg</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
@@ -6873,6 +6989,11 @@ document.write(`
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
+       <a href="source/molass_legacy.Solvers.Registry.html#module-molass_legacy.Solvers.Registry"><code class="xref">molass_legacy.Solvers.Registry</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
        <a href="source/molass_legacy.SSDC.html#module-molass_legacy.SSDC"><code class="xref">molass_legacy.SSDC</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
@@ -6929,11 +7050,6 @@ document.write(`
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="source/molass_legacy.SymPy.html#module-molass_legacy.SymPy"><code class="xref">molass_legacy.SymPy</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="source/molass_legacy.SymPy.StochasticUtils.html#module-molass_legacy.SymPy.StochasticUtils"><code class="xref">molass_legacy.SymPy.StochasticUtils</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
@@ -7483,6 +7599,11 @@ document.write(`
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
+       <a href="source/molass_legacy.Tutorials.pythonRotate.html#module-molass_legacy.Tutorials.pythonRotate"><code class="xref">molass_legacy.Tutorials.pythonRotate</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
        <a href="source/molass_legacy.Tutorials.SvdAnimation.html#module-molass_legacy.Tutorials.SvdAnimation"><code class="xref">molass_legacy.Tutorials.SvdAnimation</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
@@ -7743,8 +7864,8 @@ By Molass Community
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
   </footer>

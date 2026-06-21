@@ -3,8 +3,8 @@ AutorgKek
 
 .. automodule:: molass_legacy.AutorgKek
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Submodules
 ----------

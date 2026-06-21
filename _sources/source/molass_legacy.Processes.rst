@@ -3,8 +3,8 @@ Processes
 
 .. automodule:: molass_legacy.Processes
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Submodules
 ----------

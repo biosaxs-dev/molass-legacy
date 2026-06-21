@@ -3,8 +3,8 @@ ModelParams
 
 .. automodule:: molass_legacy.ModelParams
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Submodules
 ----------
@@ -15,6 +15,9 @@ Submodules
    molass_legacy.ModelParams.BaseSliderInfo
    molass_legacy.ModelParams.BaselineParams
    molass_legacy.ModelParams.BoundedSecParams
+   molass_legacy.ModelParams.CedmParams
+   molass_legacy.ModelParams.CedmParamsSheet
+   molass_legacy.ModelParams.CedmSliderInfo
    molass_legacy.ModelParams.EdmParams
    molass_legacy.ModelParams.EdmParamsSheet
    molass_legacy.ModelParams.EdmPlotUtils
@@ -26,12 +29,18 @@ Submodules
    molass_legacy.ModelParams.EmgPlotUtils
    molass_legacy.ModelParams.FdEmgParams
    molass_legacy.ModelParams.FdEmgParamsSheet
+   molass_legacy.ModelParams.GrmParams
+   molass_legacy.ModelParams.GrmParamsSheet
    molass_legacy.ModelParams.LjEghParams
    molass_legacy.ModelParams.LjEghParamsSheet
+   molass_legacy.ModelParams.LkmParams
+   molass_legacy.ModelParams.LkmParamsSheet
+   molass_legacy.ModelParams.LkmSliderInfo
    molass_legacy.ModelParams.ModelDebugUtils
    molass_legacy.ModelParams.MonoporeSecParams
    molass_legacy.ModelParams.ParamSetUtils
    molass_legacy.ModelParams.ParamsSheetBase
+   molass_legacy.ModelParams.ParamsTypeBase
    molass_legacy.ModelParams.RtEmgParams
    molass_legacy.ModelParams.RtEmgParamsSheet
    molass_legacy.ModelParams.SdmParams

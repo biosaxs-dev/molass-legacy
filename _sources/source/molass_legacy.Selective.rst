@@ -3,8 +3,8 @@ Selective
 
 .. automodule:: molass_legacy.Selective
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Submodules
 ----------

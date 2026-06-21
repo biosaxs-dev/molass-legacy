@@ -3,8 +3,8 @@ Simulative
 
 .. automodule:: molass_legacy.Simulative
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Submodules
 ----------

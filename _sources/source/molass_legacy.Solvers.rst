@@ -3,8 +3,8 @@ Solvers
 
 .. automodule:: molass_legacy.Solvers
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Submodules
 ----------
@@ -13,3 +13,4 @@ Submodules
    :maxdepth: 4
 
    molass_legacy.Solvers.NcallsEstimator
+   molass_legacy.Solvers.Registry

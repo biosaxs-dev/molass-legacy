@@ -3,8 +3,8 @@ EFA
 
 .. automodule:: molass_legacy.EFA
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Submodules
 ----------

@@ -3,8 +3,8 @@ Pomegranate
 
 .. automodule:: molass_legacy.Pomegranate
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Submodules
 ----------

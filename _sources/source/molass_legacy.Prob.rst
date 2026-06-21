@@ -3,8 +3,8 @@ Prob
 
 .. automodule:: molass_legacy.Prob
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Submodules
 ----------

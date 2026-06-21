@@ -3,8 +3,8 @@ Microfluidics
 
 .. automodule:: molass_legacy.Microfluidics
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Submodules
 ----------

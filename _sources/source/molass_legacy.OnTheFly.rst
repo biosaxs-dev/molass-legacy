@@ -3,8 +3,8 @@ OnTheFly
 
 .. automodule:: molass_legacy.OnTheFly
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Submodules
 ----------

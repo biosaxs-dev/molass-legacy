@@ -3,8 +3,8 @@ CharFunc
 
 .. automodule:: molass_legacy.CharFunc
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Submodules
 ----------

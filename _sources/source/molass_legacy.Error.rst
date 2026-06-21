@@ -3,8 +3,8 @@ Error
 
 .. automodule:: molass_legacy.Error
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Submodules
 ----------

@@ -3,8 +3,8 @@ Models
 
 .. automodule:: molass_legacy.Models
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Submodules
 ----------

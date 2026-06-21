@@ -3,8 +3,8 @@ Jupyter
 
 .. automodule:: molass_legacy.Jupyter
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Submodules
 ----------

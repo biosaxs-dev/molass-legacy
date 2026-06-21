@@ -3,8 +3,8 @@ SerialAnalyzer
 
 .. automodule:: molass_legacy.SerialAnalyzer
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Submodules
 ----------

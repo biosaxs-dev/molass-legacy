@@ -3,8 +3,8 @@ BoundedLRF
 
 .. automodule:: molass_legacy.BoundedLRF
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Submodules
 ----------

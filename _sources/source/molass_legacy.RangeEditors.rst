@@ -3,8 +3,8 @@ RangeEditors
 
 .. automodule:: molass_legacy.RangeEditors
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Submodules
 ----------

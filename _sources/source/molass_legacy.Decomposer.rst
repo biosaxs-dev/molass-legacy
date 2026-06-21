@@ -3,8 +3,8 @@ Decomposer
 
 .. automodule:: molass_legacy.Decomposer
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Submodules
 ----------

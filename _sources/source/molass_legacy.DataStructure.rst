@@ -3,8 +3,8 @@ DataStructure
 
 .. automodule:: molass_legacy.DataStructure
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Submodules
 ----------

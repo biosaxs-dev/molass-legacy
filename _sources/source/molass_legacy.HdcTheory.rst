@@ -3,8 +3,8 @@ HdcTheory
 
 .. automodule:: molass_legacy.HdcTheory
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Submodules
 ----------

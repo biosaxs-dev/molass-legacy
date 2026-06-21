@@ -3,8 +3,8 @@ MultiProc
 
 .. automodule:: molass_legacy.MultiProc
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Submodules
 ----------

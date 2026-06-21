@@ -3,8 +3,8 @@ Peaks
 
 .. automodule:: molass_legacy.Peaks
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Submodules
 ----------
@@ -12,6 +12,7 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
+   molass_legacy.Peaks.ComponentsView
    molass_legacy.Peaks.EditCanvas
    molass_legacy.Peaks.EghSupples
    molass_legacy.Peaks.EghTauLimits

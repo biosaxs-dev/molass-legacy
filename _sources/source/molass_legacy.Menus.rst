@@ -3,8 +3,8 @@ Menus
 
 .. automodule:: molass_legacy.Menus
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Submodules
 ----------

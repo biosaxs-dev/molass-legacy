@@ -3,8 +3,8 @@ SymPy
 
 .. automodule:: molass_legacy.SymPy
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Submodules
 ----------

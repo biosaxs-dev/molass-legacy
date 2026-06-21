@@ -3,8 +3,8 @@ PSD
 
 .. automodule:: molass_legacy.PSD
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Submodules
 ----------

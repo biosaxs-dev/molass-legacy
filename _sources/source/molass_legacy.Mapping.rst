@@ -3,8 +3,8 @@ Mapping
 
 .. automodule:: molass_legacy.Mapping
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Submodules
 ----------

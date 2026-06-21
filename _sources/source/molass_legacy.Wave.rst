@@ -3,8 +3,8 @@ Wave
 
 .. automodule:: molass_legacy.Wave
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Submodules
 ----------

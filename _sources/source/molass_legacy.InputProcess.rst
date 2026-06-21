@@ -3,8 +3,8 @@ InputProcess
 
 .. automodule:: molass_legacy.InputProcess
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Submodules
 ----------

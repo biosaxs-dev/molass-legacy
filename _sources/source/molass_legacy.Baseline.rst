@@ -3,8 +3,8 @@ Baseline
 
 .. automodule:: molass_legacy.Baseline
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Submodules
 ----------

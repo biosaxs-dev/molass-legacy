@@ -3,8 +3,8 @@ SecTheory
 
 .. automodule:: molass_legacy.SecTheory
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Submodules
 ----------

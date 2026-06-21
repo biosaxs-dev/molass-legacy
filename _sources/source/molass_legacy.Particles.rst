@@ -3,8 +3,8 @@ Particles
 
 .. automodule:: molass_legacy.Particles
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Submodules
 ----------

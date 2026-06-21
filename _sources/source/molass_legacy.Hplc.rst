@@ -3,8 +3,8 @@ Hplc
 
 .. automodule:: molass_legacy.Hplc
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Submodules
 ----------

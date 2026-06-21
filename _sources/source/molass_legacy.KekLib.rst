@@ -3,8 +3,8 @@ KekLib
 
 .. automodule:: molass_legacy.KekLib
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Submodules
 ----------

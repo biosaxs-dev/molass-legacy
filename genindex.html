@@ -15,39 +15,43 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-
-  
-  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
   
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
     <script src="_static/documentation_options.js?v=9eb32ce0"></script>
-    <script src="_static/doctools.js?v=9a2dae69"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>
-    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'genindex';</script>
     <link rel="icon" href="_static/molamola.png"/>
     <link rel="index" title="Index" href="#" />
     <link rel="search" title="Search" href="search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -63,19 +67,8 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="search.html"
       method="get">
@@ -83,7 +76,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search..."
          aria-label="Search..."
          autocomplete="off"
@@ -91,8 +83,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -110,7 +102,8 @@
       
         
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -140,21 +133,17 @@
     
     
     <img src="_static/molamola.png" class="logo__image only-light" alt="Molass Library Legacy  documentation - Home"/>
-    <script>document.write(`<img src="_static/molamola.png" class="logo__image only-dark" alt="Molass Library Legacy  documentation - Home"/>`);</script>
+    <img src="_static/molamola.png" class="logo__image only-dark pst-js-only" alt="Molass Library Legacy  documentation - Home"/>
   
   
 </a></div>
         <div class="sidebar-primary-item">
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         <ul class="nav bd-sidenav">
@@ -251,6 +240,7 @@
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Batch.DataBridgeUtils.html">Batch.DataBridgeUtils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Batch.DataWalk.html">Batch.DataWalk</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Batch.FullBatch.html">Batch.FullBatch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Batch.HeadlessPeakEditor.html">Batch.HeadlessPeakEditor</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Batch.LiteBatch.html">Batch.LiteBatch</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Batch.OptDataSetsProxy.html">Batch.OptDataSetsProxy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Batch.StandardProcedure.html">Batch.StandardProcedure</a></li>
@@ -413,11 +403,14 @@
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="source/molass_legacy.Estimators.html">Estimators</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Estimators.BaseEstimator.html">Estimators.BaseEstimator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Estimators.CedmEstimator.html">Estimators.CedmEstimator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Estimators.EdmEstimator.html">Estimators.EdmEstimator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Estimators.EdmEstimatorDevel.html">Estimators.EdmEstimatorDevel</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Estimators.EghEstimator.html">Estimators.EghEstimator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Estimators.FdEmgEstimator.html">Estimators.FdEmgEstimator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Estimators.GrmEstimator.html">Estimators.GrmEstimator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Estimators.LjEghEstimator.html">Estimators.LjEghEstimator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Estimators.LkmEstimator.html">Estimators.LkmEstimator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Estimators.RtEmgEstimator.html">Estimators.RtEmgEstimator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Estimators.SdmEstimator.html">Estimators.SdmEstimator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Estimators.SdmEstimatorDebug.html">Estimators.SdmEstimatorDebug</a></li>
@@ -831,6 +824,9 @@
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ModelParams.BaseSliderInfo.html">ModelParams.BaseSliderInfo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ModelParams.BaselineParams.html">ModelParams.BaselineParams</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ModelParams.BoundedSecParams.html">ModelParams.BoundedSecParams</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ModelParams.CedmParams.html">ModelParams.CedmParams</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ModelParams.CedmParamsSheet.html">ModelParams.CedmParamsSheet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ModelParams.CedmSliderInfo.html">ModelParams.CedmSliderInfo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ModelParams.EdmParams.html">ModelParams.EdmParams</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ModelParams.EdmParamsSheet.html">ModelParams.EdmParamsSheet</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ModelParams.EdmPlotUtils.html">ModelParams.EdmPlotUtils</a></li>
@@ -842,12 +838,18 @@
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ModelParams.EmgPlotUtils.html">ModelParams.EmgPlotUtils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ModelParams.FdEmgParams.html">ModelParams.FdEmgParams</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ModelParams.FdEmgParamsSheet.html">ModelParams.FdEmgParamsSheet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ModelParams.GrmParams.html">ModelParams.GrmParams</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ModelParams.GrmParamsSheet.html">ModelParams.GrmParamsSheet</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ModelParams.LjEghParams.html">ModelParams.LjEghParams</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ModelParams.LjEghParamsSheet.html">ModelParams.LjEghParamsSheet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ModelParams.LkmParams.html">ModelParams.LkmParams</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ModelParams.LkmParamsSheet.html">ModelParams.LkmParamsSheet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ModelParams.LkmSliderInfo.html">ModelParams.LkmSliderInfo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ModelParams.ModelDebugUtils.html">ModelParams.ModelDebugUtils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ModelParams.MonoporeSecParams.html">ModelParams.MonoporeSecParams</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ModelParams.ParamSetUtils.html">ModelParams.ParamSetUtils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ModelParams.ParamsSheetBase.html">ModelParams.ParamsSheetBase</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ModelParams.ParamsTypeBase.html">ModelParams.ParamsTypeBase</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ModelParams.RtEmgParams.html">ModelParams.RtEmgParams</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ModelParams.RtEmgParamsSheet.html">ModelParams.RtEmgParamsSheet</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ModelParams.SdmParams.html">ModelParams.SdmParams</a></li>
@@ -901,12 +903,17 @@
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="source/molass_legacy.ObjectiveFunctions.html">ObjectiveFunctions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ObjectiveFunctions.G0346.html">ObjectiveFunctions.G0346</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ObjectiveFunctions.G0367.html">ObjectiveFunctions.G0367</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ObjectiveFunctions.G0525.html">ObjectiveFunctions.G0525</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ObjectiveFunctions.G0665.html">ObjectiveFunctions.G0665</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ObjectiveFunctions.G0705.html">ObjectiveFunctions.G0705</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ObjectiveFunctions.G1100.html">ObjectiveFunctions.G1100</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ObjectiveFunctions.G1200.html">ObjectiveFunctions.G1200</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ObjectiveFunctions.G1300.html">ObjectiveFunctions.G1300</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ObjectiveFunctions.G1400.html">ObjectiveFunctions.G1400</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ObjectiveFunctions.G1500.html">ObjectiveFunctions.G1500</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ObjectiveFunctions.G2010.html">ObjectiveFunctions.G2010</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.ObjectiveFunctions.G2020.html">ObjectiveFunctions.G2020</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="source/molass_legacy.OnTheFly.html">OnTheFly</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -927,16 +934,17 @@
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.BoundsInspection.html">Optimizer.BoundsInspection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.ColumnInterp.html">Optimizer.ColumnInterp</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.ColumnInterpGPU.html">Optimizer.ColumnInterpGPU</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.Compatibility.html">Optimizer.Compatibility</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.ComplementaryView.html">Optimizer.ComplementaryView</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.CompositeInfo.html">Optimizer.CompositeInfo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.DefaultNumPeaks.html">Optimizer.DefaultNumPeaks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.DefaultNumPeaks-try.html">Optimizer.DefaultNumPeaks-try</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.Demo.html">Optimizer.Demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.DsetsDebug.html">Optimizer.DsetsDebug</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.EghGradient.html">Optimizer.EghGradient</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.ElutionComposer.html">Optimizer.ElutionComposer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.ElutionModelsGPU.html">Optimizer.ElutionModelsGPU</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.FactorCurvePlot.html">Optimizer.FactorCurvePlot</a></li>
-<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.FixedBaselineOptimizer.html">Optimizer.FixedBaselineOptimizer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.FullOptDialog.html">Optimizer.FullOptDialog</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.FullOptInput.html">Optimizer.FullOptInput</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.FullOptResult.html">Optimizer.FullOptResult</a></li>
@@ -954,6 +962,7 @@
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.FvSynthesizerHistory.html">Optimizer.FvSynthesizerHistory</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.GlobalInspector.html">Optimizer.GlobalInspector</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.GuinierRg.html">Optimizer.GuinierRg</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.InProcessRunner.html">Optimizer.InProcessRunner</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.InitialInfo.html">Optimizer.InitialInfo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.IntegerRatios.html">Optimizer.IntegerRatios</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.JobState.html">Optimizer.JobState</a></li>
@@ -964,6 +973,7 @@
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.LrfOptimizer.html">Optimizer.LrfOptimizer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.ModelDataSet.html">Optimizer.ModelDataSet</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.ModifyStateDialog.html">Optimizer.ModifyStateDialog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.MolassIntegration.html">Optimizer.MolassIntegration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.MplMonitor.html">Optimizer.MplMonitor</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.MwIntegrity.html">Optimizer.MwIntegrity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.NaviFrame.html">Optimizer.NaviFrame</a></li>
@@ -1008,7 +1018,6 @@
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.SettingsSerializer.html">Optimizer.SettingsSerializer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.SimpleDebugUtils.html">Optimizer.SimpleDebugUtils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.StateSequence.html">Optimizer.StateSequence</a></li>
-<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.StrategicOptimizer.html">Optimizer.StrategicOptimizer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.StrategyEditor.html">Optimizer.StrategyEditor</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.StructureFactorBounds.html">Optimizer.StructureFactorBounds</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Optimizer.StructureFactorBoundsDemo.html">Optimizer.StructureFactorBoundsDemo</a></li>
@@ -1032,6 +1041,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="source/molass_legacy.Peaks.html">Peaks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Peaks.ComponentsView.html">Peaks.ComponentsView</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Peaks.EditCanvas.html">Peaks.EditCanvas</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Peaks.EghSupples.html">Peaks.EghSupples</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Peaks.EghTauLimits.html">Peaks.EghTauLimits</a></li>
@@ -1141,12 +1151,10 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="source/molass_legacy.RgProcess.html">RgProcess</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.RgProcess.RgAnalysis.html">RgProcess.RgAnalysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.RgProcess.RgCurve.html">RgProcess.RgCurve</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.RgProcess.RgCurveComputer.html">RgProcess.RgCurveComputer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.RgProcess.RgCurveProxy.html">RgProcess.RgCurveProxy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.RgProcess.RgCurveUtils.html">RgProcess.RgCurveUtils</a></li>
-<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.RgProcess.RgManager.html">RgProcess.RgManager</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="source/molass_legacy.Saxs.html">Saxs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -1388,6 +1396,7 @@
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="source/molass_legacy.Solvers.html">Solvers</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Solvers.NcallsEstimator.html">Solvers.NcallsEstimator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source/molass_legacy.Solvers.Registry.html">Solvers.Registry</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="source/molass_legacy.SSDC.html">SSDC</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -1551,9 +1560,14 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -1603,7 +1617,7 @@
 
 
 <button onclick="toggleFullScreen()"
-  class="btn btn-sm btn-fullscreen-button"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
   title="Fullscreen mode"
   data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
@@ -1617,24 +1631,16 @@
 
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-  </button>
-`);
-</script>
+</button>
 
 </div></div>
       
@@ -1944,6 +1950,8 @@ document.write(`
       <li><a href="source/molass_legacy.SerialAnalyzer.AffineDemo.html#molass_legacy.SerialAnalyzer.AffineDemo.AffineDemoDialog">AffineDemoDialog (class in molass_legacy.SerialAnalyzer.AffineDemo)</a>
 </li>
       <li><a href="source/molass_legacy.KekLib.PlotUtils.html#molass_legacy.KekLib.PlotUtils.align_yaxis_np">align_yaxis_np() (in module molass_legacy.KekLib.PlotUtils)</a>
+</li>
+      <li><a href="source/molass_legacy.GuinierTools.RgCurveUtils.html#molass_legacy.GuinierTools.RgCurveUtils.ValidBools.all_frames">all_frames (ValidBools attribute)</a>
 </li>
       <li><a href="source/molass_legacy.Optimizer.AllParameters.html#molass_legacy.Optimizer.AllParameters.AllParameters">AllParameters (class in molass_legacy.Optimizer.AllParameters)</a>
 </li>
@@ -2508,6 +2516,8 @@ document.write(`
 </li>
         <li><a href="source/molass_legacy.Optimizer.ComplementaryView.html#molass_legacy.Optimizer.ComplementaryView.ComplementaryView.body">(ComplementaryView method)</a>
 </li>
+        <li><a href="source/molass_legacy.Peaks.ComponentsView.html#molass_legacy.Peaks.ComponentsView.ComponentsView.body">(ComponentsView method)</a>
+</li>
         <li><a href="source/molass_legacy.Microfluidics.ConcNormalizerDialog.html#molass_legacy.Microfluidics.ConcNormalizerDialog.ConcNormalizerDialog.body">(ConcNormalizerDialog method)</a>
 </li>
         <li><a href="source/molass_legacy.Extrapolation.ConcOptsDialog.html#molass_legacy.Extrapolation.ConcOptsDialog.ConcOptsDialog.body">(ConcOptsDialog method)</a>
@@ -2587,6 +2597,8 @@ document.write(`
         <li><a href="source/molass_legacy.Trimming.GradualRegionAnalysis.html#molass_legacy.Trimming.GradualRegionAnalysis.GradualRegionAnalysis.body">(GradualRegionAnalysis method)</a>
 </li>
         <li><a href="source/molass_legacy.Kratky.GuinierKratkyPlots.html#molass_legacy.Kratky.GuinierKratkyPlots.GuinierKratkyPlots.body">(GuinierKratkyPlots method)</a>
+</li>
+        <li><a href="source/molass_legacy.Kratky.GuinierKratkyView.html#molass_legacy.Kratky.GuinierKratkyView.GuinierKratkyView.body">(GuinierKratkyView method)</a>
 </li>
         <li><a href="source/molass_legacy.Trimming.GuinierRegion.html#molass_legacy.Trimming.GuinierRegion.GuinierRegionInspector.body">(GuinierRegionInspector method)</a>
 </li>
@@ -2697,8 +2709,6 @@ document.write(`
         <li><a href="source/molass_legacy.SerialAnalyzer.SettingsDialog.html#molass_legacy.SerialAnalyzer.SettingsDialog.RestoreSettingDialog.body">(RestoreSettingDialog method)</a>
 </li>
         <li><a href="source/molass_legacy.Optimizer.ResultFolderSelector.html#molass_legacy.Optimizer.ResultFolderSelector.ResultFolderSelector.body">(ResultFolderSelector method)</a>
-</li>
-        <li><a href="source/molass_legacy.RgProcess.RgAnalysis.html#molass_legacy.RgProcess.RgAnalysis.RgAnalysisDialog.body">(RgAnalysisDialog method)</a>
 </li>
         <li><a href="source/molass_legacy.RgProcess.RgCurveComputer.html#molass_legacy.RgProcess.RgCurveComputer.RgCurveComputerDialog.body">(RgCurveComputerDialog method)</a>
 </li>
@@ -2986,6 +2996,8 @@ document.write(`
 </li>
         <li><a href="source/molass_legacy.Optimizer.ComplementaryView.html#molass_legacy.Optimizer.ComplementaryView.ComplementaryView.buttonbox">(ComplementaryView method)</a>
 </li>
+        <li><a href="source/molass_legacy.Peaks.ComponentsView.html#molass_legacy.Peaks.ComponentsView.ComponentsView.buttonbox">(ComponentsView method)</a>
+</li>
         <li><a href="source/molass_legacy.Microfluidics.ConcNormalizerDialog.html#molass_legacy.Microfluidics.ConcNormalizerDialog.ConcNormalizerDialog.buttonbox">(ConcNormalizerDialog method)</a>
 </li>
         <li><a href="source/molass_legacy.SerialAnalyzer.CurveSaverDialog.html#molass_legacy.SerialAnalyzer.CurveSaverDialog.CurveSaverDialog.buttonbox">(CurveSaverDialog method)</a>
@@ -3031,6 +3043,8 @@ document.write(`
         <li><a href="source/molass_legacy.SerialAnalyzer.DeveloperOptions.html#molass_legacy.SerialAnalyzer.DeveloperOptions.GpuDialog.buttonbox">(GpuDialog method)</a>
 </li>
         <li><a href="source/molass_legacy.Trimming.GradualRegionAnalysis.html#molass_legacy.Trimming.GradualRegionAnalysis.GradualRegionAnalysis.buttonbox">(GradualRegionAnalysis method)</a>
+</li>
+        <li><a href="source/molass_legacy.Kratky.GuinierKratkyView.html#molass_legacy.Kratky.GuinierKratkyView.GuinierKratkyView.buttonbox">(GuinierKratkyView method)</a>
 </li>
         <li><a href="source/molass_legacy.SerialAnalyzer.GuinierStartSelector.html#molass_legacy.SerialAnalyzer.GuinierStartSelector.GuinierStartSelector.buttonbox">(GuinierStartSelector method)</a>
 </li>
@@ -3179,8 +3193,6 @@ document.write(`
         <li><a href="source/molass_legacy.MD.NzDemo.html#molass_legacy.MD.NzDemo.Calculate_Temperature">(in module molass_legacy.MD.NzDemo)</a>
 </li>
       </ul></li>
-      <li><a href="source/molass_legacy.Particles.SmcSolver.html#molass_legacy.Particles.SmcSolver.SmcSolver.callback">callback() (SmcSolver method)</a>
-</li>
       <li><a href="source/molass_legacy.Batch.DataWalk.html#molass_legacy.Batch.DataWalk.CallbackWrapper">CallbackWrapper (class in molass_legacy.Batch.DataWalk)</a>
 </li>
       <li><a href="source/molass_legacy.KekLib.CallStack.html#molass_legacy.KekLib.CallStack.CallStack">CallStack (class in molass_legacy.KekLib.CallStack)</a>
@@ -3203,6 +3215,8 @@ document.write(`
         <li><a href="source/molass_legacy.Conc.CdInspection.html#molass_legacy.Conc.CdInspection.CdInspectionDailog.cancel">(CdInspectionDailog method)</a>
 </li>
         <li><a href="source/molass_legacy.Optimizer.ComplementaryView.html#molass_legacy.Optimizer.ComplementaryView.ComplementaryView.cancel">(ComplementaryView method)</a>
+</li>
+        <li><a href="source/molass_legacy.Peaks.ComponentsView.html#molass_legacy.Peaks.ComponentsView.ComponentsView.cancel">(ComponentsView method)</a>
 </li>
         <li><a href="source/molass_legacy.KekLib.DebugCanvas.html#molass_legacy.KekLib.DebugCanvas.DebugCanvas.cancel">(DebugCanvas method)</a>
 </li>
@@ -3289,11 +3303,17 @@ document.write(`
 </li>
       <li><a href="source/molass_legacy.Trimming.CdLimit.html#molass_legacy.Trimming.CdLimit.CdLimit">CdLimit (class in molass_legacy.Trimming.CdLimit)</a>
 </li>
+      <li><a href="source/molass_legacy.Estimators.CedmEstimator.html#molass_legacy.Estimators.CedmEstimator.CedmEstimator">CedmEstimator (class in molass_legacy.Estimators.CedmEstimator)</a>
+</li>
+      <li><a href="source/molass_legacy.ModelParams.CedmParams.html#molass_legacy.ModelParams.CedmParams.CedmParams">CedmParams (class in molass_legacy.ModelParams.CedmParams)</a>
+</li>
+      <li><a href="source/molass_legacy.ModelParams.CedmParamsSheet.html#molass_legacy.ModelParams.CedmParamsSheet.CedmParamsSheet">CedmParamsSheet (class in molass_legacy.ModelParams.CedmParamsSheet)</a>
+</li>
+      <li><a href="source/molass_legacy.ModelParams.CedmSliderInfo.html#molass_legacy.ModelParams.CedmSliderInfo.CedmSliderInfo">CedmSliderInfo (class in molass_legacy.ModelParams.CedmSliderInfo)</a>
+</li>
       <li><a href="source/molass_legacy.KekLib.TkMiniTable.html#molass_legacy.KekLib.TkMiniTable.Cell">Cell (class in molass_legacy.KekLib.TkMiniTable)</a>
 </li>
       <li><a href="source/molass_legacy.KekLib.ExcelCOM.html#molass_legacy.KekLib.ExcelCOM.CellAddr">CellAddr() (in module molass_legacy.KekLib.ExcelCOM)</a>
-</li>
-      <li><a href="source/molass_legacy.SymPy.StochasticUtils.html#molass_legacy.SymPy.StochasticUtils.central_moment">central_moment() (in module molass_legacy.SymPy.StochasticUtils)</a>
 </li>
       <li><a href="source/molass_legacy.Gmm.FoleyGmm.html#molass_legacy.Gmm.FoleyGmm.GMM.centroids">centroids (GMM attribute)</a>
 </li>
@@ -3421,6 +3441,8 @@ document.write(`
 </li>
       <li><a href="source/molass_legacy.KekLib.DebugPlot.html#molass_legacy.KekLib.DebugPlot.cla">cla() (in module molass_legacy.KekLib.DebugPlot)</a>
 </li>
+      <li><a href="source/molass_legacy.Solvers.Registry.html#molass_legacy.Solvers.Registry.SolverEntry.class_name">class_name (SolverEntry attribute)</a>
+</li>
       <li><a href="source/molass_legacy.SerialAnalyzer.StageExtrapolation.html#molass_legacy.SerialAnalyzer.StageExtrapolation.clean_tempfolders">clean_tempfolders() (in module molass_legacy.SerialAnalyzer.StageExtrapolation)</a>
 </li>
       <li><a href="source/molass_legacy.KekLib.SingleInstance.html#molass_legacy.KekLib.SingleInstance.SingleInstance.clean_up">clean_up() (SingleInstance method)</a>
@@ -3435,6 +3457,8 @@ document.write(`
 </li>
       <li><a href="source/molass_legacy.Optimizer.MplMonitor.html#molass_legacy.Optimizer.MplMonitor.MplMonitor.cleanup_orphaned_processes">cleanup_orphaned_processes() (MplMonitor class method)</a>
 </li>
+      <li><a href="source/molass_legacy.Optimizer.MplMonitor.html#molass_legacy.Optimizer.MplMonitor.MplMonitor.cleanup_orphaned_threads">cleanup_orphaned_threads() (MplMonitor class method)</a>
+</li>
       <li><a href="source/molass_legacy.KekLib.ProgressInfo.html#molass_legacy.KekLib.ProgressInfo.cleanup_queues">cleanup_queues() (in module molass_legacy.KekLib.ProgressInfo)</a>
 </li>
       <li><a href="source/molass_legacy.KekLib.DraggableCurves.html#molass_legacy.KekLib.DraggableCurves.DraggableCurves.clear">clear() (DraggableCurves method)</a>
@@ -3446,6 +3470,8 @@ document.write(`
 </li>
       </ul></li>
       <li><a href="source/molass_legacy.KekLib.TkTableWrapper.html#molass_legacy.KekLib.TkTableWrapper.Table.clear_all">clear_all() (Table method)</a>
+</li>
+      <li><a href="source/molass_legacy.Kratky.GuinierKratkyView.html#molass_legacy.Kratky.GuinierKratkyView.GuinierKratkyView.clear_axes">clear_axes() (GuinierKratkyView method)</a>
 </li>
       <li><a href="source/molass_legacy.KekLib.TkTableWrapper.html#molass_legacy.KekLib.TkTableWrapper.Table.clear_cache">clear_cache() (Table method)</a>
 </li>
@@ -3601,6 +3627,8 @@ document.write(`
 </li>
       <li><a href="source/molass_legacy.Alsaker.Compare.html#molass_legacy.Alsaker.Compare.compare_bridge_impl">compare_bridge_impl() (in module molass_legacy.Alsaker.Compare)</a>
 </li>
+      <li><a href="source/molass_legacy.Optimizer.DsetsDebug.html#molass_legacy.Optimizer.DsetsDebug.compare_dsets">compare_dsets() (in module molass_legacy.Optimizer.DsetsDebug)</a>
+</li>
       <li><a href="source/molass_legacy.GuinierTools.CompareGdevMeasures.html#molass_legacy.GuinierTools.CompareGdevMeasures.compare_gdev_measures_impl">compare_gdev_measures_impl() (in module molass_legacy.GuinierTools.CompareGdevMeasures)</a>
 </li>
       <li><a href="source/molass_legacy.Models.RateTheoryDemo.html#molass_legacy.Models.RateTheoryDemo.compare_models">compare_models() (in module molass_legacy.Models.RateTheoryDemo)</a>
@@ -3626,6 +3654,8 @@ document.write(`
       <li><a href="source/molass_legacy.LRF.regals.html#molass_legacy.LRF.regals.component">component (class in molass_legacy.LRF.regals)</a>
 </li>
       <li><a href="source/molass_legacy.Estimators.SdmEstimatorDebug.html#molass_legacy.Estimators.SdmEstimatorDebug.components_plot_debug_impl">components_plot_debug_impl() (in module molass_legacy.Estimators.SdmEstimatorDebug)</a>
+</li>
+      <li><a href="source/molass_legacy.Peaks.ComponentsView.html#molass_legacy.Peaks.ComponentsView.ComponentsView">ComponentsView (class in molass_legacy.Peaks.ComponentsView)</a>
 </li>
       <li><a href="source/molass_legacy.Optimizer.CompositeInfo.html#molass_legacy.Optimizer.CompositeInfo.CompositeInfo">CompositeInfo (class in molass_legacy.Optimizer.CompositeInfo)</a>
 </li>
@@ -3742,9 +3772,15 @@ document.write(`
       <li><a href="source/molass_legacy.Optimizer.BasicOptimizer.html#molass_legacy.Optimizer.BasicOptimizer.BasicOptimizer.compute_comformance">compute_comformance() (BasicOptimizer method)</a>
 
       <ul>
+        <li><a href="source/molass_legacy.ModelParams.CedmParams.html#molass_legacy.ModelParams.CedmParams.CedmParams.compute_comformance">(CedmParams method)</a>
+</li>
         <li><a href="source/molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.EdmParams.compute_comformance">(EdmParams method)</a>
 </li>
         <li><a href="source/molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghParamsBase.compute_comformance">(EghParamsBase method)</a>
+</li>
+        <li><a href="source/molass_legacy.ModelParams.GrmParams.html#molass_legacy.ModelParams.GrmParams.GrmParams.compute_comformance">(GrmParams method)</a>
+</li>
+        <li><a href="source/molass_legacy.ModelParams.LkmParams.html#molass_legacy.ModelParams.LkmParams.LkmParams.compute_comformance">(LkmParams method)</a>
 </li>
         <li><a href="source/molass_legacy.ModelParams.SdmParams.html#molass_legacy.ModelParams.SdmParams.SdmParams.compute_comformance">(SdmParams method)</a>
 </li>
@@ -3890,7 +3926,11 @@ document.write(`
 </li>
       </ul></li>
       <li><a href="source/molass_legacy.Optimizer.BasicOptimizer.html#molass_legacy.Optimizer.BasicOptimizer.BasicOptimizer.compute_fv">compute_fv() (BasicOptimizer method)</a>
+
+      <ul>
+        <li><a href="source/molass_legacy.ObjectiveFunctions.G0367.html#molass_legacy.ObjectiveFunctions.G0367.G0367.compute_fv">(G0367 method)</a>
 </li>
+      </ul></li>
       <li><a href="source/molass_legacy.Optimizer.FvScoreConverter.html#molass_legacy.Optimizer.FvScoreConverter.compute_fv_adjustment">compute_fv_adjustment() (in module molass_legacy.Optimizer.FvScoreConverter)</a>
 </li>
       <li><a href="source/molass_legacy.GuinierAnalyzer.SimpleGuinierScore.html#molass_legacy.GuinierAnalyzer.SimpleGuinierScore.compute_fwd_consistency">compute_fwd_consistency() (in module molass_legacy.GuinierAnalyzer.SimpleGuinierScore)</a>
@@ -3949,6 +3989,8 @@ document.write(`
         <li><a href="source/molass_legacy.Extrapolation.KnownPeakPenaltyNumba.html#molass_legacy.Extrapolation.KnownPeakPenaltyNumba.compute_known_error_grad_impl">(in module molass_legacy.Extrapolation.KnownPeakPenaltyNumba)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="source/molass_legacy.Extrapolation.KnownPeakPenalty.html#molass_legacy.Extrapolation.KnownPeakPenalty.compute_known_error_impl">compute_known_error_impl() (in module molass_legacy.Extrapolation.KnownPeakPenalty)</a>
 
       <ul>
@@ -3959,8 +4001,6 @@ document.write(`
 </li>
       <li><a href="source/molass_legacy.Simulative.ApproxBoundary.html#molass_legacy.Simulative.ApproxBoundary.compute_lnp_curves">compute_lnp_curves() (in module molass_legacy.Simulative.ApproxBoundary)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="source/molass_legacy.DataStructure.BaseSurface.html#molass_legacy.DataStructure.BaseSurface.BaseSurface.compute_lpm_baselines">compute_lpm_baselines() (BaseSurface method)</a>
 </li>
       <li><a href="source/molass_legacy.GuinierAnalyzer.SimpleGuinierDemo.html#molass_legacy.GuinierAnalyzer.SimpleGuinierDemo.compute_lrf_info">compute_lrf_info() (in module molass_legacy.GuinierAnalyzer.SimpleGuinierDemo)</a>
@@ -4114,6 +4154,8 @@ document.write(`
       <li><a href="source/molass_legacy.Extrapolation.ExtrapolationSolver.html#molass_legacy.Extrapolation.ExtrapolationSolver.ExtrapolationSolver.compute_propagated_errors">compute_propagated_errors() (ExtrapolationSolver method)</a>
 </li>
       <li><a href="source/molass_legacy.Extrapolation.ExtrapolationSolver.html#molass_legacy.Extrapolation.ExtrapolationSolver.ExtrapolationSolver.compute_propagated_errors_from_denoised_error">compute_propagated_errors_from_denoised_error() (ExtrapolationSolver method)</a>
+</li>
+      <li><a href="source/molass_legacy.GuinierTools.CpdDecompDirect.html#molass_legacy.GuinierTools.CpdDecompDirect.compute_proportions">compute_proportions() (in module molass_legacy.GuinierTools.CpdDecompDirect)</a>
 </li>
       <li><a href="source/molass_legacy.Selective.PropOptimizerEDM.html#molass_legacy.Selective.PropOptimizerEDM.compute_props">compute_props() (in module molass_legacy.Selective.PropOptimizerEDM)</a>
 
@@ -4547,6 +4589,8 @@ document.write(`
         <li><a href="source/molass_legacy.AutorgKek.SAngler_WLS.html#molass_legacy.AutorgKek.SAngler_WLS.SAngler_WLS_Result.cov_params">(SAngler_WLS_Result method)</a>
 </li>
       </ul></li>
+      <li><a href="source/molass_legacy.GuinierTools.CpdDecompDirect.html#molass_legacy.GuinierTools.CpdDecompDirect.cpd_direct_impl">cpd_direct_impl() (in module molass_legacy.GuinierTools.CpdDecompDirect)</a>
+</li>
       <li><a href="source/molass_legacy.GuinierTools.Alsaker2017.html#molass_legacy.GuinierTools.Alsaker2017.cpt_var">cpt_var() (in module molass_legacy.GuinierTools.Alsaker2017)</a>
 </li>
       <li><a href="source/molass_legacy.Prob.QuadEghMixtureUtils.html#molass_legacy.Prob.QuadEghMixtureUtils.SpikeDialog.create_animator">create_animator() (SpikeDialog method)</a>, <a href="source/molass_legacy.Prob.QuadEmgMixtureUtils.html#molass_legacy.Prob.QuadEmgMixtureUtils.SpikeDialog.create_animator">[1]</a>, <a href="source/molass_legacy.Prob.QuadMmUtils.html#molass_legacy.Prob.QuadMmUtils.SpikeDialog.create_animator">[2]</a>
@@ -4572,7 +4616,11 @@ document.write(`
       <li><a href="source/molass_legacy.SerialAnalyzer.ScatteringPlot.html#molass_legacy.SerialAnalyzer.ScatteringPlot.ScatteringPlot.create_corrected_data">create_corrected_data() (ScatteringPlot method)</a>
 </li>
       <li><a href="source/molass_legacy.Batch.LiteBatch.html#molass_legacy.Batch.LiteBatch.create_corrected_sd">create_corrected_sd() (in module molass_legacy.Batch.LiteBatch)</a>
+
+      <ul>
+        <li><a href="source/molass_legacy.Batch.StandardProcedure.html#molass_legacy.Batch.StandardProcedure.create_corrected_sd">(in module molass_legacy.Batch.StandardProcedure)</a>
 </li>
+      </ul></li>
       <li><a href="source/molass_legacy.KekLib.DraggableCurves.html#molass_legacy.KekLib.DraggableCurves.DraggableCurves.create_cursor">create_cursor() (DraggableCurves method)</a>
 </li>
       <li><a href="source/molass_legacy.Optimizer.MplMonitor.html#molass_legacy.Optimizer.MplMonitor.MplMonitor.create_dashboard">create_dashboard() (MplMonitor method)</a>
@@ -4582,6 +4630,8 @@ document.write(`
       <li><a href="source/molass_legacy.Reports.ZeroExtrapolationResultBook.html#molass_legacy.Reports.ZeroExtrapolationResultBook.ZeroExtrapolationResultBook.create_extrapolation_params_chart">create_extrapolation_params_chart() (ZeroExtrapolationResultBook method)</a>
 </li>
       <li><a href="source/molass_legacy.Reports.ZeroExtrapolationResultBook.html#molass_legacy.Reports.ZeroExtrapolationResultBook.create_extrapolation_params_chart_">create_extrapolation_params_chart_() (in module molass_legacy.Reports.ZeroExtrapolationResultBook)</a>
+</li>
+      <li><a href="source/molass_legacy.Tutorials.pythonRotate.html#molass_legacy.Tutorials.pythonRotate.create_face">create_face() (in module molass_legacy.Tutorials.pythonRotate)</a>
 </li>
       <li><a href="source/molass_legacy.DENSS.DenssFitData.html#molass_legacy.DENSS.DenssFitData.DenssFitDataDialog.create_figure">create_figure() (DenssFitDataDialog method)</a>
 
@@ -4784,11 +4834,7 @@ document.write(`
       <li><a href="source/molass_legacy.Optimizer.MplMonitor.html#molass_legacy.Optimizer.MplMonitor.MplMonitor.dashboard">dashboard (MplMonitor attribute)</a>
 </li>
       <li><a href="source/molass_legacy.UV.Absorbance.html#molass_legacy.UV.Absorbance.Absorbance.data">data (Absorbance attribute)</a>
-
-      <ul>
-        <li><a href="source/molass_legacy.KekLib.OurImageIO.html#molass_legacy.KekLib.OurImageIO.Image.data">(Image property)</a>
 </li>
-      </ul></li>
       <li><a href="source/molass_legacy.KekLib.KnownPaths.html#molass_legacy.KekLib.KnownPaths.GUID.Data1">Data1 (GUID attribute)</a>
 </li>
       <li><a href="source/molass_legacy.KekLib.KnownPaths.html#molass_legacy.KekLib.KnownPaths.GUID.Data2">Data2 (GUID attribute)</a>
@@ -5273,8 +5319,6 @@ document.write(`
       </ul></li>
       <li><a href="source/molass_legacy.Simulative.SimulationCushion.html#molass_legacy.Simulative.SimulationCushion.demo_cushion">demo_cushion() (in module molass_legacy.Simulative.SimulationCushion)</a>
 </li>
-      <li><a href="source/molass_legacy.SymPy.StochasticUtils.html#molass_legacy.SymPy.StochasticUtils.demo_dipore_cf">demo_dipore_cf() (in module molass_legacy.SymPy.StochasticUtils)</a>
-</li>
       <li><a href="source/molass_legacy.Optimizer.StructureFactorBoundsDemo.html#molass_legacy.Optimizer.StructureFactorBoundsDemo.demo_for_debugger">demo_for_debugger() (in module molass_legacy.Optimizer.StructureFactorBoundsDemo)</a>
 </li>
       <li><a href="source/molass_legacy.SerialAnalyzer.BpoDependencyDemo.html#molass_legacy.SerialAnalyzer.BpoDependencyDemo.demo_func">demo_func() (in module molass_legacy.SerialAnalyzer.BpoDependencyDemo)</a>
@@ -5306,8 +5350,6 @@ document.write(`
       <li><a href="source/molass_legacy.QuickAnalysis.PeakUtils.html#molass_legacy.QuickAnalysis.PeakUtils.demo_modeled_peaks">demo_modeled_peaks() (in module molass_legacy.QuickAnalysis.PeakUtils)</a>
 </li>
       <li><a href="source/molass_legacy.QuickAnalysis.PeakUtils.html#molass_legacy.QuickAnalysis.PeakUtils.demo_modeled_peaks_dialog">demo_modeled_peaks_dialog() (in module molass_legacy.QuickAnalysis.PeakUtils)</a>
-</li>
-      <li><a href="source/molass_legacy.SymPy.StochasticUtils.html#molass_legacy.SymPy.StochasticUtils.demo_monopore_cf">demo_monopore_cf() (in module molass_legacy.SymPy.StochasticUtils)</a>
 </li>
       <li><a href="source/molass_legacy.KekLib.OurMatplotlib3D.html#molass_legacy.KekLib.OurMatplotlib3D.demo_pathpatch_2d_to_3d">demo_pathpatch_2d_to_3d() (in module molass_legacy.KekLib.OurMatplotlib3D)</a>
 </li>
@@ -5632,6 +5674,8 @@ document.write(`
 </li>
         <li><a href="source/molass_legacy.Kratky.GuinierKratkyPlots.html#molass_legacy.Kratky.GuinierKratkyPlots.GuinierKratkyPlots.draw">(GuinierKratkyPlots method)</a>
 </li>
+        <li><a href="source/molass_legacy.Kratky.GuinierKratkyView.html#molass_legacy.Kratky.GuinierKratkyView.GuinierKratkyView.draw">(GuinierKratkyView method)</a>
+</li>
         <li><a href="source/molass_legacy.GuinierAnalyzer.GuinierViewer.html#molass_legacy.GuinierAnalyzer.GuinierViewer.GuinierViewer.draw">(GuinierViewer method)</a>
 </li>
         <li><a href="source/molass_legacy.KekLib.OurMatplotlib3D.html#molass_legacy.KekLib.OurMatplotlib3D.Inset2Din3D.draw">(Inset2Din3D method)</a>
@@ -5819,8 +5863,6 @@ document.write(`
 </li>
       <li><a href="source/molass_legacy.Conc.CdInspection.html#molass_legacy.Conc.CdInspection.CdInspectionDailog.draw_diff_curve">draw_diff_curve() (CdInspectionDailog method)</a>
 </li>
-      <li><a href="source/molass_legacy.RgProcess.RgAnalysis.html#molass_legacy.RgProcess.RgAnalysis.RgAnalysisDialog.draw_ecurve">draw_ecurve() (RgAnalysisDialog method)</a>
-</li>
       <li><a href="source/molass_legacy.Baseline.BpaInspect.html#molass_legacy.Baseline.BpaInspect.BpaInspector.draw_ecurve_at">draw_ecurve_at() (BpaInspector method)</a>
 </li>
       <li><a href="source/molass_legacy.Peaks.PeakEditor.html#molass_legacy.Peaks.PeakEditor.PeakEditor.draw_elements">draw_elements() (PeakEditor method)</a>
@@ -5951,7 +5993,7 @@ document.write(`
         <li><a href="source/molass_legacy.Peaks.PeakEditor.html#molass_legacy.Peaks.PeakEditor.PeakEditor.draw_scores">(PeakEditor method)</a>
 </li>
       </ul></li>
-      <li><a href="source/molass_legacy.RgProcess.RgAnalysis.html#molass_legacy.RgProcess.RgAnalysis.RgAnalysisDialog.draw_scurve">draw_scurve() (RgAnalysisDialog method)</a>
+      <li><a href="source/molass_legacy.Batch.HeadlessPeakEditor.html#molass_legacy.Batch.HeadlessPeakEditor.draw_scores_headless">draw_scores_headless() (in module molass_legacy.Batch.HeadlessPeakEditor)</a>
 </li>
       <li><a href="source/molass_legacy.SecTheory.SecParamsPlot.html#molass_legacy.SecTheory.SecParamsPlot.draw_sec_curve">draw_sec_curve() (in module molass_legacy.SecTheory.SecParamsPlot)</a>
 </li>
@@ -6359,12 +6401,12 @@ document.write(`
 </li>
       <li><a href="source/molass_legacy.Decomposer.ErrorAnalysis.html#molass_legacy.Decomposer.ErrorAnalysis.ErrorAnalyzer">ErrorAnalyzer (class in molass_legacy.Decomposer.ErrorAnalysis)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="source/molass_legacy.AutorgKek.ErrorResult.html#molass_legacy.AutorgKek.ErrorResult.ErrorFit">ErrorFit (class in molass_legacy.AutorgKek.ErrorResult)</a>
 </li>
       <li><a href="source/molass_legacy.AutorgKek.ErrorResult.html#molass_legacy.AutorgKek.ErrorResult.ErrorFitResult">ErrorFitResult (class in molass_legacy.AutorgKek.ErrorResult)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="source/molass_legacy.Error.ErrorModel.html#molass_legacy.Error.ErrorModel.ErrorModel">ErrorModel (class in molass_legacy.Error.ErrorModel)</a>
 
       <ul>
@@ -6421,9 +6463,11 @@ document.write(`
 </li>
       <li><a href="source/molass_legacy.Solvers.NcallsEstimator.html#molass_legacy.Solvers.NcallsEstimator.estimate_ncalls">estimate_ncalls() (in module molass_legacy.Solvers.NcallsEstimator)</a>
 </li>
-      <li><a href="source/molass_legacy.Estimators.EdmEstimator.html#molass_legacy.Estimators.EdmEstimator.EdmEstimator.estimate_params">estimate_params() (EdmEstimator method)</a>
+      <li><a href="source/molass_legacy.Estimators.CedmEstimator.html#molass_legacy.Estimators.CedmEstimator.CedmEstimator.estimate_params">estimate_params() (CedmEstimator method)</a>
 
       <ul>
+        <li><a href="source/molass_legacy.Estimators.EdmEstimator.html#molass_legacy.Estimators.EdmEstimator.EdmEstimator.estimate_params">(EdmEstimator method)</a>
+</li>
         <li><a href="source/molass_legacy.Estimators.EdmEstimatorDevel.html#molass_legacy.Estimators.EdmEstimatorDevel.EdmEstimatorDevel.estimate_params">(EdmEstimatorDevel method)</a>
 </li>
         <li><a href="source/molass_legacy.Estimators.EghEstimator.html#molass_legacy.Estimators.EghEstimator.EghEstimator.estimate_params">(EghEstimator method)</a>
@@ -6432,7 +6476,11 @@ document.write(`
 </li>
         <li><a href="source/molass_legacy.Estimators.FdEmgEstimator.html#molass_legacy.Estimators.FdEmgEstimator.FdEmgEstimator.estimate_params">(FdEmgEstimator method)</a>
 </li>
+        <li><a href="source/molass_legacy.Estimators.GrmEstimator.html#molass_legacy.Estimators.GrmEstimator.GrmEstimator.estimate_params">(GrmEstimator method)</a>
+</li>
         <li><a href="source/molass_legacy.Estimators.LjEghEstimator.html#molass_legacy.Estimators.LjEghEstimator.LjEghEstimator.estimate_params">(LjEghEstimator method)</a>
+</li>
+        <li><a href="source/molass_legacy.Estimators.LkmEstimator.html#molass_legacy.Estimators.LkmEstimator.LkmEstimator.estimate_params">(LkmEstimator method)</a>
 </li>
         <li><a href="source/molass_legacy.Estimators.RtEmgEstimator.html#molass_legacy.Estimators.RtEmgEstimator.RtEmgEstimator.estimate_params">(RtEmgEstimator method)</a>
 </li>
@@ -6468,6 +6516,8 @@ document.write(`
       <li><a href="source/molass_legacy.Optimizer.OptLrfInfo.html#molass_legacy.Optimizer.OptLrfInfo.OptLrfInfo.estimate_uv_peak_points">estimate_uv_peak_points() (OptLrfInfo method)</a>
 </li>
       <li><a href="source/molass_legacy.SecTheory.MonoPore.html#molass_legacy.SecTheory.MonoPore.estimate_uv_scale_params">estimate_uv_scale_params() (in module molass_legacy.SecTheory.MonoPore)</a>
+</li>
+      <li><a href="source/molass_legacy.Estimators.EghEstimator.html#molass_legacy.Estimators.EghEstimator.estimate_uv_weights_from_peaks">estimate_uv_weights_from_peaks() (in module molass_legacy.Estimators.EghEstimator)</a>
 </li>
       <li><a href="source/molass_legacy.Optimizer.FullOptDialog.html#molass_legacy.Optimizer.FullOptDialog.FullOptDialog.estimate_xmax">estimate_xmax() (FullOptDialog method)</a>
 
@@ -6606,7 +6656,11 @@ document.write(`
       <li><a href="source/molass_legacy.Saxs.Terbium.html#molass_legacy.Saxs.Terbium.expand_coordinates">expand_coordinates() (in module molass_legacy.Saxs.Terbium)</a>
 </li>
       <li><a href="source/molass_legacy.Saxs.Terbium.html#molass_legacy.Saxs.Terbium.explode">explode() (in module molass_legacy.Saxs.Terbium)</a>
+
+      <ul>
+        <li><a href="source/molass_legacy.Tutorials.pythonRotate.html#molass_legacy.Tutorials.pythonRotate.explode">(in module molass_legacy.Tutorials.pythonRotate)</a>
 </li>
+      </ul></li>
       <li><a href="source/molass_legacy.Decomposer.ConvolutionDemo.html#molass_legacy.Decomposer.ConvolutionDemo.Exponential">Exponential (class in molass_legacy.Decomposer.ConvolutionDemo)</a>
 </li>
       <li><a href="source/molass_legacy.Optimizer.FullOptDialog.html#molass_legacy.Optimizer.FullOptDialog.FullOptDialog.export">export() (FullOptDialog method)</a>
@@ -6624,8 +6678,6 @@ document.write(`
       <li><a href="source/molass_legacy.Optimizer.MplMonitor.html#molass_legacy.Optimizer.MplMonitor.MplMonitor.export_data">export_data() (MplMonitor method)</a>
 </li>
       <li><a href="source/molass_legacy.Extrapolation.ExSolver.html#molass_legacy.Extrapolation.ExSolver.ExSolver">ExSolver (class in molass_legacy.Extrapolation.ExSolver)</a>
-</li>
-      <li><a href="source/molass_legacy.KekLib.OurImageIO.html#molass_legacy.KekLib.OurImageIO.Image.ext">ext (Image property)</a>
 </li>
       <li><a href="source/molass_legacy.DataStructure.EmgPeak.html#molass_legacy.DataStructure.EmgPeak.EmgPeak.extend_debug_plot">extend_debug_plot() (EmgPeak method)</a>
 </li>
@@ -6855,12 +6907,12 @@ document.write(`
         <li><a href="source/molass_legacy.AutorgKek.WLS_Basics.html#molass_legacy.AutorgKek.WLS_Basics.WLS.fit">(WLS method)</a>, <a href="source/molass_legacy.KekLib.OurStatsModels.html#molass_legacy.KekLib.OurStatsModels.WLS.fit">[1]</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="source/molass_legacy.Models.MomentFitting.html#molass_legacy.Models.MomentFitting.fit_a_component">fit_a_component() (in module molass_legacy.Models.MomentFitting)</a>
 </li>
       <li><a href="source/molass_legacy.Theory.RoigSolvas2019.html#molass_legacy.Theory.RoigSolvas2019.Anisotropy.fit_approx">fit_approx() (Anisotropy method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="source/molass_legacy.Trimming.Sigmoid.html#molass_legacy.Trimming.Sigmoid.fit_bent_sigmoid">fit_bent_sigmoid() (in module molass_legacy.Trimming.Sigmoid)</a>
 </li>
       <li><a href="source/molass_legacy.LRF.regals.html#molass_legacy.LRF.regals.regals.fit_concentrations">fit_concentrations() (regals method)</a>
@@ -6939,8 +6991,6 @@ document.write(`
 </li>
       <li><a href="source/molass_legacy.SerialAnalyzer.SpecialistOptions.html#molass_legacy.SerialAnalyzer.SpecialistOptions.SpecialistOptionsDialog.fixed_guinier_start_tracer">fixed_guinier_start_tracer() (SpecialistOptionsDialog method)</a>
 </li>
-      <li><a href="source/molass_legacy.Optimizer.FixedBaselineOptimizer.html#molass_legacy.Optimizer.FixedBaselineOptimizer.FixedBaselineOptimizer">FixedBaselineOptimizer (class in molass_legacy.Optimizer.FixedBaselineOptimizer)</a>
-</li>
       <li><a href="source/molass_legacy.UV.Absorbance.html#molass_legacy.UV.Absorbance.FixedBaseResult">FixedBaseResult (class in molass_legacy.UV.Absorbance)</a>
 </li>
       <li><a href="source/molass_legacy.Trimming.FlangeLimit.html#molass_legacy.Trimming.FlangeLimit.FlangeLimit">FlangeLimit (class in molass_legacy.Trimming.FlangeLimit)</a>
@@ -6984,6 +7034,10 @@ document.write(`
       <li><a href="source/molass_legacy.InputProcess.FolderInfo.html#molass_legacy.InputProcess.FolderInfo.FolderInfo">FolderInfo (class in molass_legacy.InputProcess.FolderInfo)</a>
 </li>
       <li><a href="source/molass_legacy.GuinierAnalyzer.SimpleGuinierGuiUtils.html#molass_legacy.GuinierAnalyzer.SimpleGuinierGuiUtils.FolderInfoPanel">FolderInfoPanel (class in molass_legacy.GuinierAnalyzer.SimpleGuinierGuiUtils)</a>
+</li>
+      <li><a href="source/molass_legacy.Optimizer.MplMonitor.html#molass_legacy.Optimizer.MplMonitor.MplMonitor.for_run_info">for_run_info() (MplMonitor class method)</a>
+</li>
+      <li><a href="source/molass_legacy.Optimizer.MplMonitor.html#molass_legacy.Optimizer.MplMonitor.MplMonitor.for_subprocess">for_subprocess() (MplMonitor class method)</a>
 </li>
       <li><a href="source/molass_legacy.Microfluidics.BackgroundMaker.html#molass_legacy.Microfluidics.BackgroundMaker.BackgroundMakerFrame.forget_3d_canvas">forget_3d_canvas() (BackgroundMakerFrame method)</a>
 
@@ -7031,7 +7085,11 @@ document.write(`
 </li>
       <li><a href="source/molass_legacy.SecTheory.PoresizeFreedom.html#molass_legacy.SecTheory.PoresizeFreedom.freedom_plot">freedom_plot() (in module molass_legacy.SecTheory.PoresizeFreedom)</a>
 </li>
+      <li><a href="source/molass_legacy.Optimizer.BasicOptimizer.html#molass_legacy.Optimizer.BasicOptimizer.BasicOptimizer.freeze_components">freeze_components() (BasicOptimizer method)</a>
+</li>
       <li><a href="source/molass_legacy.KekLib.ExcelCOM.html#molass_legacy.KekLib.ExcelCOM.Worksheet.freeze_panes">freeze_panes() (Worksheet method)</a>
+</li>
+      <li><a href="source/molass_legacy.Optimizer.BasicOptimizer.html#molass_legacy.Optimizer.BasicOptimizer.BasicOptimizer.freeze_param_groups">freeze_param_groups() (BasicOptimizer method)</a>
 </li>
       <li><a href="source/molass_legacy.KekLib.TimeUtils.html#molass_legacy.KekLib.TimeUtils.friendly_time_str">friendly_time_str() (in module molass_legacy.KekLib.TimeUtils)</a>
 </li>
@@ -7073,6 +7131,8 @@ document.write(`
 </li>
       <li><a href="source/molass_legacy.ObjectiveFunctions.G0346.html#molass_legacy.ObjectiveFunctions.G0346.G0346">G0346 (class in molass_legacy.ObjectiveFunctions.G0346)</a>
 </li>
+      <li><a href="source/molass_legacy.ObjectiveFunctions.G0367.html#molass_legacy.ObjectiveFunctions.G0367.G0367">G0367 (class in molass_legacy.ObjectiveFunctions.G0367)</a>
+</li>
       <li><a href="source/molass_legacy.ObjectiveFunctions.G0525.html#molass_legacy.ObjectiveFunctions.G0525.G0525">G0525 (class in molass_legacy.ObjectiveFunctions.G0525)</a>
 </li>
       <li><a href="source/molass_legacy.ObjectiveFunctions.G0665.html#molass_legacy.ObjectiveFunctions.G0665.G0665">G0665 (class in molass_legacy.ObjectiveFunctions.G0665)</a>
@@ -7081,7 +7141,17 @@ document.write(`
 </li>
       <li><a href="source/molass_legacy.ObjectiveFunctions.G1100.html#molass_legacy.ObjectiveFunctions.G1100.G1100">G1100 (class in molass_legacy.ObjectiveFunctions.G1100)</a>
 </li>
+      <li><a href="source/molass_legacy.ObjectiveFunctions.G1200.html#molass_legacy.ObjectiveFunctions.G1200.G1200">G1200 (class in molass_legacy.ObjectiveFunctions.G1200)</a>
+</li>
+      <li><a href="source/molass_legacy.ObjectiveFunctions.G1300.html#molass_legacy.ObjectiveFunctions.G1300.G1300">G1300 (class in molass_legacy.ObjectiveFunctions.G1300)</a>
+</li>
+      <li><a href="source/molass_legacy.ObjectiveFunctions.G1400.html#molass_legacy.ObjectiveFunctions.G1400.G1400">G1400 (class in molass_legacy.ObjectiveFunctions.G1400)</a>
+</li>
+      <li><a href="source/molass_legacy.ObjectiveFunctions.G1500.html#molass_legacy.ObjectiveFunctions.G1500.G1500">G1500 (class in molass_legacy.ObjectiveFunctions.G1500)</a>
+</li>
       <li><a href="source/molass_legacy.ObjectiveFunctions.G2010.html#molass_legacy.ObjectiveFunctions.G2010.G2010">G2010 (class in molass_legacy.ObjectiveFunctions.G2010)</a>
+</li>
+      <li><a href="source/molass_legacy.ObjectiveFunctions.G2020.html#molass_legacy.ObjectiveFunctions.G2020.G2020">G2020 (class in molass_legacy.ObjectiveFunctions.G2020)</a>
 </li>
       <li><a href="source/molass_legacy.Prob.GammaVisualizer.html#molass_legacy.Prob.GammaVisualizer.GammaVisualizer">GammaVisualizer (class in molass_legacy.Prob.GammaVisualizer)</a>
 </li>
@@ -7255,9 +7325,11 @@ document.write(`
 </li>
       <li><a href="source/molass_legacy.AutorgKek.QrgLimitsAdjuster.html#molass_legacy.AutorgKek.QrgLimitsAdjuster.QrgLimitsAdjuster.get_adjusted_result">get_adjusted_result() (QrgLimitsAdjuster method)</a>
 </li>
-      <li><a href="source/molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.EdmParams.get_adjuster">get_adjuster() (EdmParams method)</a>
+      <li><a href="source/molass_legacy.ModelParams.CedmParams.html#molass_legacy.ModelParams.CedmParams.CedmParams.get_adjuster">get_adjuster() (CedmParams method)</a>
 
       <ul>
+        <li><a href="source/molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.EdmParams.get_adjuster">(EdmParams method)</a>
+</li>
         <li><a href="source/molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghParamsBase.get_adjuster">(EghParamsBase method)</a>
 </li>
       </ul></li>
@@ -7557,6 +7629,8 @@ document.write(`
       </ul></li>
       <li><a href="source/molass_legacy.Prob.itsample.html#molass_legacy.Prob.itsample.get_cdf">get_cdf() (in module molass_legacy.Prob.itsample)</a>
 </li>
+      <li><a href="source/molass_legacy.ModelParams.CedmParams.html#molass_legacy.ModelParams.CedmParams.CedmParams.get_cedm_col_bounds">get_cedm_col_bounds() (CedmParams method)</a>
+</li>
       <li><a href="source/molass_legacy.ModelParams.ParamsSheetBase.html#molass_legacy.ModelParams.ParamsSheetBase.ParamsSheetBase.get_cell_address">get_cell_address() (ParamsSheetBase method)</a>
 </li>
       <li><a href="source/molass_legacy.Models.CfsEvalPeaks.html#molass_legacy.Models.CfsEvalPeaks.get_cfs_evaluated_peaks">get_cfs_evaluated_peaks() (in module molass_legacy.Models.CfsEvalPeaks)</a>
@@ -7591,9 +7665,13 @@ document.write(`
         <li><a href="source/molass_legacy.LRF.PnoScdMap.html#molass_legacy.LRF.PnoScdMap.PnoScdMap.get_color">(PnoScdMap method)</a>
 </li>
       </ul></li>
-      <li><a href="source/molass_legacy.Estimators.SdmEstimator.html#molass_legacy.Estimators.SdmEstimator.SdmEstimator.get_colparam_bounds">get_colparam_bounds() (SdmEstimator method)</a>
+      <li><a href="source/molass_legacy.ModelParams.GrmParams.html#molass_legacy.ModelParams.GrmParams.GrmParams.get_colparam_bounds">get_colparam_bounds() (GrmParams method)</a>
 
       <ul>
+        <li><a href="source/molass_legacy.ModelParams.LkmParams.html#molass_legacy.ModelParams.LkmParams.LkmParams.get_colparam_bounds">(LkmParams method)</a>
+</li>
+        <li><a href="source/molass_legacy.Estimators.SdmEstimator.html#molass_legacy.Estimators.SdmEstimator.SdmEstimator.get_colparam_bounds">(SdmEstimator method)</a>
+</li>
         <li><a href="source/molass_legacy.ModelParams.SdmParams.html#molass_legacy.ModelParams.SdmParams.SdmParams.get_colparam_bounds">(SdmParams method)</a>
 </li>
       </ul></li>
@@ -7619,6 +7697,10 @@ document.write(`
 
       <ul>
         <li><a href="source/molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.get_common_parameter_names">(in module molass_legacy.ModelParams.EghParams)</a>
+</li>
+        <li><a href="source/molass_legacy.ModelParams.GrmParams.html#molass_legacy.ModelParams.GrmParams.get_common_parameter_names">(in module molass_legacy.ModelParams.GrmParams)</a>
+</li>
+        <li><a href="source/molass_legacy.ModelParams.LkmParams.html#molass_legacy.ModelParams.LkmParams.get_common_parameter_names">(in module molass_legacy.ModelParams.LkmParams)</a>
 </li>
         <li><a href="source/molass_legacy.ModelParams.SdmParams.html#molass_legacy.ModelParams.SdmParams.get_common_parameter_names">(in module molass_legacy.ModelParams.SdmParams)</a>
 </li>
@@ -7739,6 +7821,8 @@ document.write(`
 </li>
       <li><a href="source/molass_legacy.Optimizer.FullOptDialog.html#molass_legacy.Optimizer.FullOptDialog.FullOptDialog.get_curr_work_folder">get_curr_work_folder() (FullOptDialog method)</a>
 </li>
+      <li><a href="source/molass_legacy.Optimizer.MplMonitor.html#molass_legacy.Optimizer.MplMonitor.MplMonitor.get_current_curves">get_current_curves() (MplMonitor method)</a>
+</li>
       <li><a href="source/molass_legacy.KekLib.DebugPlot.html#molass_legacy.KekLib.DebugPlot.get_current_dialog">get_current_dialog() (in module molass_legacy.KekLib.DebugPlot)</a>
 </li>
       <li><a href="source/molass_legacy.RangeEditors.DecompEditorDialog.html#molass_legacy.RangeEditors.DecompEditorDialog.DecompEditorDialog.get_current_frame">get_current_frame() (DecompEditorDialog method)</a>
@@ -7799,11 +7883,9 @@ document.write(`
       </ul></li>
       <li><a href="source/molass_legacy.Prob.PairedDataSets.html#molass_legacy.Prob.PairedDataSets.get_cut_num_peaks">get_cut_num_peaks() (in module molass_legacy.Prob.PairedDataSets)</a>
 </li>
-      <li><a href="source/molass_legacy.KekLib.OurImageIO.html#molass_legacy.KekLib.OurImageIO.Image.get_data">get_data() (Image method)</a>
+      <li><a href="source/molass_legacy.Theory.ModelData.html#molass_legacy.Theory.ModelData.ModelData.get_data">get_data() (ModelData method)</a>
 
       <ul>
-        <li><a href="source/molass_legacy.Theory.ModelData.html#molass_legacy.Theory.ModelData.ModelData.get_data">(ModelData method)</a>
-</li>
         <li><a href="source/molass_legacy.DataStructure.ModeledData.html#molass_legacy.DataStructure.ModeledData.ModeledData.get_data">(ModeledData method)</a>
 </li>
         <li><a href="source/molass_legacy.Saxs.SaxsSamples.html#molass_legacy.Saxs.SaxsSamples.ObjectVoxels.get_data">(ObjectVoxels method)</a>
@@ -7983,10 +8065,16 @@ document.write(`
 </li>
       <li><a href="source/molass_legacy.Error.ErrorModel.html#molass_legacy.Error.ErrorModel.ErrorModel.get_error_curve">get_error_curve() (ErrorModel method)</a>, <a href="source/molass_legacy.SimTools.ErrorModel.html#molass_legacy.SimTools.ErrorModel.ErrorModel.get_error_curve">[1]</a>
 </li>
-      <li><a href="source/molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.EdmParams.get_estimator">get_estimator() (EdmParams method)</a>
+      <li><a href="source/molass_legacy.ModelParams.CedmParams.html#molass_legacy.ModelParams.CedmParams.CedmParams.get_estimator">get_estimator() (CedmParams method)</a>
 
       <ul>
+        <li><a href="source/molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.EdmParams.get_estimator">(EdmParams method)</a>
+</li>
         <li><a href="source/molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghAdvansedParams.get_estimator">(EghAdvansedParams method)</a>
+</li>
+        <li><a href="source/molass_legacy.ModelParams.GrmParams.html#molass_legacy.ModelParams.GrmParams.GrmParams.get_estimator">(GrmParams method)</a>
+</li>
+        <li><a href="source/molass_legacy.ModelParams.LkmParams.html#molass_legacy.ModelParams.LkmParams.LkmParams.get_estimator">(LkmParams method)</a>
 </li>
         <li><a href="source/molass_legacy.ModelParams.SdmParams.html#molass_legacy.ModelParams.SdmParams.SdmParams.get_estimator">(SdmParams method)</a>
 </li>
@@ -8004,8 +8092,6 @@ document.write(`
       <li><a href="source/molass_legacy.SerialAnalyzer.SerialData.html#molass_legacy.SerialAnalyzer.SerialData.SerialData.get_exec_copy_inside_of_flowchanges">get_exec_copy_inside_of_flowchanges() (SerialData method)</a>
 </li>
       <li><a href="source/molass_legacy.GuinierAnalyzer.SimpleGuinierTester.html#molass_legacy.GuinierAnalyzer.SimpleGuinierTester.SimpleGuinierTester.get_expected_results">get_expected_results() (SimpleGuinierTester method)</a>
-</li>
-      <li><a href="source/molass_legacy.KekLib.OurImageIO.html#molass_legacy.KekLib.OurImageIO.Image.get_ext">get_ext() (Image method)</a>
 </li>
       <li><a href="source/molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghParamsBase.get_extended_bounds">get_extended_bounds() (EghParamsBase method)</a>
 </li>
@@ -8228,8 +8314,6 @@ document.write(`
       <li><a href="source/molass_legacy.Trimming.PreliminaryRecognition.html#molass_legacy.Trimming.PreliminaryRecognition.PreliminaryRecognition.get_gunier_interval">get_gunier_interval() (PreliminaryRecognition method)</a>
 </li>
       <li><a href="source/molass_legacy.SerialAnalyzer.OptimalSmoothing.html#molass_legacy.SerialAnalyzer.OptimalSmoothing.OptimalSmoothing.get_halfmax_points_of_a_peak">get_halfmax_points_of_a_peak() (OptimalSmoothing method)</a>
-</li>
-      <li><a href="source/molass_legacy.KekLib.OurImageIO.html#molass_legacy.KekLib.OurImageIO.Image.get_header">get_header() (Image method)</a>
 </li>
       <li><a href="source/molass_legacy.Reports.ReportUtils.html#molass_legacy.Reports.ReportUtils.get_header_record">get_header_record() (in module molass_legacy.Reports.ReportUtils)</a>
 </li>
@@ -8554,13 +8638,19 @@ document.write(`
       <li><a href="source/molass_legacy.Optimizer.BasicOptimizer.html#molass_legacy.Optimizer.BasicOptimizer.BasicOptimizer.get_model_name">get_model_name() (BasicOptimizer method)</a>
 
       <ul>
+        <li><a href="source/molass_legacy.ModelParams.CedmParams.html#molass_legacy.ModelParams.CedmParams.CedmParams.get_model_name">(CedmParams method)</a>
+</li>
         <li><a href="source/molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.EdmParams.get_model_name">(EdmParams method)</a>
 </li>
         <li><a href="source/molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghParamsBase.get_model_name">(EghParamsBase method)</a>
 </li>
         <li><a href="source/molass_legacy.Batch.FullBatch.html#molass_legacy.Batch.FullBatch.FullBatch.get_model_name">(FullBatch method)</a>
 </li>
+        <li><a href="source/molass_legacy.ModelParams.GrmParams.html#molass_legacy.ModelParams.GrmParams.GrmParams.get_model_name">(GrmParams method)</a>
+</li>
         <li><a href="source/molass_legacy.Optimizer.OptimizerUtils.html#molass_legacy.Optimizer.OptimizerUtils.get_model_name">(in module molass_legacy.Optimizer.OptimizerUtils)</a>
+</li>
+        <li><a href="source/molass_legacy.ModelParams.LkmParams.html#molass_legacy.ModelParams.LkmParams.LkmParams.get_model_name">(LkmParams method)</a>
 </li>
         <li><a href="source/molass_legacy.Decomposer.ModelEvaluator.html#molass_legacy.Decomposer.ModelEvaluator.ModelEvaluator.get_model_name">(ModelEvaluator method)</a>
 </li>
@@ -8603,12 +8693,20 @@ document.write(`
 </li>
       <li><a href="source/molass_legacy.KekLib.MultiMonitor.html#molass_legacy.KekLib.MultiMonitor.get_mouse_position">get_mouse_position() (in module molass_legacy.KekLib.MultiMonitor)</a>
 </li>
-      <li><a href="source/molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.EdmParams.get_mr_start_index">get_mr_start_index() (EdmParams method)</a>
+      <li><a href="source/molass_legacy.Optimizer.DsetsDebug.html#molass_legacy.Optimizer.DsetsDebug.get_mp_b_index">get_mp_b_index() (in module molass_legacy.Optimizer.DsetsDebug)</a>
+</li>
+      <li><a href="source/molass_legacy.ModelParams.CedmParams.html#molass_legacy.ModelParams.CedmParams.CedmParams.get_mr_start_index">get_mr_start_index() (CedmParams method)</a>
 
       <ul>
+        <li><a href="source/molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.EdmParams.get_mr_start_index">(EdmParams method)</a>
+</li>
         <li><a href="source/molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghAdvansedParams.get_mr_start_index">(EghAdvansedParams method)</a>
 </li>
         <li><a href="source/molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghParams.get_mr_start_index">(EghParams method)</a>
+</li>
+        <li><a href="source/molass_legacy.ModelParams.GrmParams.html#molass_legacy.ModelParams.GrmParams.GrmParams.get_mr_start_index">(GrmParams method)</a>
+</li>
+        <li><a href="source/molass_legacy.ModelParams.LkmParams.html#molass_legacy.ModelParams.LkmParams.LkmParams.get_mr_start_index">(LkmParams method)</a>
 </li>
         <li><a href="source/molass_legacy.ModelParams.SdmParams.html#molass_legacy.ModelParams.SdmParams.SdmParams.get_mr_start_index">(SdmParams method)</a>
 </li>
@@ -8651,8 +8749,6 @@ document.write(`
       </ul></li>
       <li><a href="source/molass_legacy.Saxs.EdPlotter.html#molass_legacy.Saxs.EdPlotter.get_name_for_title">get_name_for_title() (in module molass_legacy.Saxs.EdPlotter)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="source/molass_legacy.Optimizer.StateSequence.html#molass_legacy.Optimizer.StateSequence.StateSequence.get_nc">get_nc() (StateSequence method)</a>
 </li>
       <li><a href="source/molass_legacy.Decomposer.DualOptimzer.html#molass_legacy.Decomposer.DualOptimzer.DualPairSelector.get_nearest_major_peak_index">get_nearest_major_peak_index() (DualPairSelector method)</a>
@@ -8681,6 +8777,8 @@ document.write(`
         <li><a href="source/molass_legacy.Optimizer.ScoreTransition.html#molass_legacy.Optimizer.ScoreTransition.ScoreTransition.get_next_best">(ScoreTransition method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="source/molass_legacy.Stochastic.StationaryMove.html#molass_legacy.Stochastic.StationaryMove.get_next_position_impl">get_next_position_impl() (in module molass_legacy.Stochastic.StationaryMove)</a>
 </li>
       <li><a href="source/molass_legacy.Peaks.ModeledCurve.html#molass_legacy.Peaks.ModeledCurve.ModeledCurve.get_next_range">get_next_range() (ModeledCurve method)</a>
@@ -8714,7 +8812,11 @@ document.write(`
 </li>
       </ul></li>
       <li><a href="source/molass_legacy.Optimizer.BasicOptimizer.html#molass_legacy.Optimizer.BasicOptimizer.BasicOptimizer.get_num_scores">get_num_scores() (BasicOptimizer method)</a>
+
+      <ul>
+        <li><a href="source/molass_legacy.ObjectiveFunctions.G0367.html#molass_legacy.ObjectiveFunctions.G0367.G0367.get_num_scores">(G0367 method)</a>
 </li>
+      </ul></li>
       <li><a href="source/molass_legacy.Optimizer.CompositeInfo.html#molass_legacy.Optimizer.CompositeInfo.CompositeInfo.get_num_substantial_components">get_num_substantial_components() (CompositeInfo method)</a>
 
       <ul>
@@ -8798,9 +8900,15 @@ document.write(`
       <li><a href="source/molass_legacy.Optimizer.BasicOptimizer.html#molass_legacy.Optimizer.BasicOptimizer.BasicOptimizer.get_param_bounds">get_param_bounds() (BasicOptimizer method)</a>
 
       <ul>
+        <li><a href="source/molass_legacy.ModelParams.CedmParams.html#molass_legacy.ModelParams.CedmParams.CedmParams.get_param_bounds">(CedmParams method)</a>
+</li>
         <li><a href="source/molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.EdmParams.get_param_bounds">(EdmParams method)</a>
 </li>
         <li><a href="source/molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghParamsBase.get_param_bounds">(EghParamsBase method)</a>
+</li>
+        <li><a href="source/molass_legacy.ModelParams.GrmParams.html#molass_legacy.ModelParams.GrmParams.GrmParams.get_param_bounds">(GrmParams method)</a>
+</li>
+        <li><a href="source/molass_legacy.ModelParams.LkmParams.html#molass_legacy.ModelParams.LkmParams.LkmParams.get_param_bounds">(LkmParams method)</a>
 </li>
         <li><a href="source/molass_legacy.ModelParams.SdmParams.html#molass_legacy.ModelParams.SdmParams.SdmParams.get_param_bounds">(SdmParams method)</a>
 </li>
@@ -8828,11 +8936,17 @@ document.write(`
       <li><a href="source/molass_legacy.Optimizer.BasicOptimizer.html#molass_legacy.Optimizer.BasicOptimizer.BasicOptimizer.get_parameter_names">get_parameter_names() (BasicOptimizer method)</a>
 
       <ul>
+        <li><a href="source/molass_legacy.ModelParams.CedmParams.html#molass_legacy.ModelParams.CedmParams.CedmParams.get_parameter_names">(CedmParams method)</a>
+</li>
         <li><a href="source/molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.EdmParams.get_parameter_names">(EdmParams method)</a>
 </li>
         <li><a href="source/molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghAdvansedParams.get_parameter_names">(EghAdvansedParams method)</a>
 </li>
         <li><a href="source/molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghParams.get_parameter_names">(EghParams method)</a>
+</li>
+        <li><a href="source/molass_legacy.ModelParams.GrmParams.html#molass_legacy.ModelParams.GrmParams.GrmParams.get_parameter_names">(GrmParams method)</a>
+</li>
+        <li><a href="source/molass_legacy.ModelParams.LkmParams.html#molass_legacy.ModelParams.LkmParams.LkmParams.get_parameter_names">(LkmParams method)</a>
 </li>
         <li><a href="source/molass_legacy.ModelParams.SdmParams.html#molass_legacy.ModelParams.SdmParams.SdmParams.get_parameter_names">(SdmParams method)</a>
 </li>
@@ -8877,10 +8991,18 @@ document.write(`
 </li>
       <li><a href="source/molass_legacy.Peaks.ModeledCurve.html#molass_legacy.Peaks.ModeledCurve.FitHistory.get_params_history">get_params_history() (FitHistory method)</a>
 </li>
-      <li><a href="source/molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.EdmParams.get_params_sheet">get_params_sheet() (EdmParams method)</a>
+      <li><a href="source/molass_legacy.ModelParams.CedmParams.html#molass_legacy.ModelParams.CedmParams.CedmParams.get_params_sheet">get_params_sheet() (CedmParams method)</a>
 
       <ul>
+        <li><a href="source/molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.EdmParams.get_params_sheet">(EdmParams method)</a>
+</li>
         <li><a href="source/molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghParamsBase.get_params_sheet">(EghParamsBase method)</a>
+</li>
+        <li><a href="source/molass_legacy.ModelParams.GrmParams.html#molass_legacy.ModelParams.GrmParams.GrmParams.get_params_sheet">(GrmParams method)</a>
+</li>
+        <li><a href="source/molass_legacy.ModelParams.LkmParams.html#molass_legacy.ModelParams.LkmParams.LkmParams.get_params_sheet">(LkmParams method)</a>
+</li>
+        <li><a href="source/molass_legacy.ModelParams.ParamsTypeBase.html#molass_legacy.ModelParams.ParamsTypeBase.ParamsTypeBase.get_params_sheet">(ParamsTypeBase method)</a>
 </li>
         <li><a href="source/molass_legacy.ModelParams.SdmParams.html#molass_legacy.ModelParams.SdmParams.SdmParams.get_params_sheet">(SdmParams method)</a>
 </li>
@@ -8898,7 +9020,13 @@ document.write(`
       <li><a href="source/molass_legacy.Optimizer.BasicOptimizer.html#molass_legacy.Optimizer.BasicOptimizer.BasicOptimizer.get_paramslider_info">get_paramslider_info() (BasicOptimizer method)</a>
 
       <ul>
+        <li><a href="source/molass_legacy.ModelParams.CedmParams.html#molass_legacy.ModelParams.CedmParams.CedmParams.get_paramslider_info">(CedmParams method)</a>
+</li>
         <li><a href="source/molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.EdmParams.get_paramslider_info">(EdmParams method)</a>
+</li>
+        <li><a href="source/molass_legacy.ModelParams.LkmParams.html#molass_legacy.ModelParams.LkmParams.LkmParams.get_paramslider_info">(LkmParams method)</a>
+</li>
+        <li><a href="source/molass_legacy.ModelParams.ParamsTypeBase.html#molass_legacy.ModelParams.ParamsTypeBase.ParamsTypeBase.get_paramslider_info">(ParamsTypeBase method)</a>
 </li>
         <li><a href="source/molass_legacy.ModelParams.SdmParams.html#molass_legacy.ModelParams.SdmParams.SdmParams.get_paramslider_info">(SdmParams method)</a>
 </li>
@@ -8941,10 +9069,16 @@ document.write(`
         <li><a href="source/molass_legacy.Batch.FullBatch.html#molass_legacy.Batch.FullBatch.FullBatch.get_peak_params_set">(FullBatch method)</a>
 </li>
       </ul></li>
-      <li><a href="source/molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.EdmParams.get_peak_pos_array_list">get_peak_pos_array_list() (EdmParams method)</a>
+      <li><a href="source/molass_legacy.ModelParams.CedmParams.html#molass_legacy.ModelParams.CedmParams.CedmParams.get_peak_pos_array_list">get_peak_pos_array_list() (CedmParams method)</a>
 
       <ul>
+        <li><a href="source/molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.EdmParams.get_peak_pos_array_list">(EdmParams method)</a>
+</li>
         <li><a href="source/molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghParamsBase.get_peak_pos_array_list">(EghParamsBase method)</a>
+</li>
+        <li><a href="source/molass_legacy.ModelParams.GrmParams.html#molass_legacy.ModelParams.GrmParams.GrmParams.get_peak_pos_array_list">(GrmParams method)</a>
+</li>
+        <li><a href="source/molass_legacy.ModelParams.LkmParams.html#molass_legacy.ModelParams.LkmParams.LkmParams.get_peak_pos_array_list">(LkmParams method)</a>
 </li>
         <li><a href="source/molass_legacy.ModelParams.SdmParams.html#molass_legacy.ModelParams.SdmParams.SdmParams.get_peak_pos_array_list">(SdmParams method)</a>
 </li>
@@ -9099,6 +9233,8 @@ document.write(`
         <li><a href="source/molass_legacy.KekLib.OnTheFlyUtils.html#molass_legacy.KekLib.OnTheFlyUtils.ProgressDialog.get_progress">(ProgressDialog method)</a>
 </li>
       </ul></li>
+      <li><a href="source/molass_legacy.Optimizer.MplMonitor.html#molass_legacy.Optimizer.MplMonitor.MplMonitor.get_progress_info">get_progress_info() (MplMonitor method)</a>
+</li>
       <li><a href="source/molass_legacy.Selective.AdvancedFrame.html#molass_legacy.Selective.AdvancedFrame.AdvancedFrame.get_prop_vector">get_prop_vector() (AdvancedFrame method)</a>
 </li>
       <li><a href="source/molass_legacy.Models.Proportional.html#molass_legacy.Models.Proportional.get_proportional_curves">get_proportional_curves() (in module molass_legacy.Models.Proportional)</a>
@@ -9285,12 +9421,18 @@ document.write(`
         <li><a href="source/molass_legacy.Optimizer.SecInspection.html#molass_legacy.Optimizer.SecInspection.SecInspection.get_rg_params">(SecInspection method)</a>
 </li>
       </ul></li>
-      <li><a href="source/molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.EdmParams.get_rg_start_index">get_rg_start_index() (EdmParams method)</a>
+      <li><a href="source/molass_legacy.ModelParams.CedmParams.html#molass_legacy.ModelParams.CedmParams.CedmParams.get_rg_start_index">get_rg_start_index() (CedmParams method)</a>
 
       <ul>
+        <li><a href="source/molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.EdmParams.get_rg_start_index">(EdmParams method)</a>
+</li>
         <li><a href="source/molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghAdvansedParams.get_rg_start_index">(EghAdvansedParams method)</a>
 </li>
         <li><a href="source/molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghParams.get_rg_start_index">(EghParams method)</a>
+</li>
+        <li><a href="source/molass_legacy.ModelParams.GrmParams.html#molass_legacy.ModelParams.GrmParams.GrmParams.get_rg_start_index">(GrmParams method)</a>
+</li>
+        <li><a href="source/molass_legacy.ModelParams.LkmParams.html#molass_legacy.ModelParams.LkmParams.LkmParams.get_rg_start_index">(LkmParams method)</a>
 </li>
         <li><a href="source/molass_legacy.ModelParams.SdmParams.html#molass_legacy.ModelParams.SdmParams.SdmParams.get_rg_start_index">(SdmParams method)</a>
 </li>
@@ -9346,7 +9488,11 @@ document.write(`
       <li><a href="source/molass_legacy.Mapping.ElutionMapper.html#molass_legacy.Mapping.ElutionMapper.ElutionMapper.get_sci_list">get_sci_list() (ElutionMapper method)</a>
 </li>
       <li><a href="source/molass_legacy.Optimizer.BasicOptimizer.html#molass_legacy.Optimizer.BasicOptimizer.BasicOptimizer.get_score_names">get_score_names() (BasicOptimizer method)</a>
+
+      <ul>
+        <li><a href="source/molass_legacy.ObjectiveFunctions.G0367.html#molass_legacy.ObjectiveFunctions.G0367.G0367.get_score_names">(G0367 method)</a>
 </li>
+      </ul></li>
       <li><a href="source/molass_legacy.Mapping.ElutionMapperCanvas.html#molass_legacy.Mapping.ElutionMapperCanvas.ElutionMapperCanvas.get_sd">get_sd() (ElutionMapperCanvas method)</a>
 
       <ul>
@@ -9398,8 +9544,6 @@ document.write(`
       <li><a href="source/molass_legacy.AutorgKek.Settings.html#molass_legacy.AutorgKek.Settings.get_setting">get_setting() (in module molass_legacy.AutorgKek.Settings)</a>
 </li>
       <li><a href="source/molass_legacy.Optimizer.OptimizerSettings.html#molass_legacy.Optimizer.OptimizerSettings.get_settings_path">get_settings_path() (in module molass_legacy.Optimizer.OptimizerSettings)</a>
-</li>
-      <li><a href="source/molass_legacy.RgProcess.RgManager.html#molass_legacy.RgProcess.RgManager.RgManager.get_sharedinfo">get_sharedinfo() (RgManager method)</a>
 </li>
       <li><a href="source/molass_legacy.Optimizer.SecConformance.html#molass_legacy.Optimizer.SecConformance.SecConformance.get_sheet_data_list">get_sheet_data_list() (SecConformance method)</a>
 </li>
@@ -9467,6 +9611,8 @@ document.write(`
 </li>
       <li><a href="source/molass_legacy.Trimming.FlowChange.html#molass_legacy.Trimming.FlowChange.FlowChange.get_solver_info">get_solver_info() (FlowChange method)</a>
 </li>
+      <li><a href="source/molass_legacy.Solvers.Registry.html#molass_legacy.Solvers.Registry.get_solver_instance">get_solver_instance() (in module molass_legacy.Solvers.Registry)</a>
+</li>
       <li><a href="source/molass_legacy.LRF.LrfResultPool.html#molass_legacy.LRF.LrfResultPool.LrfResultPool.get_solver_ret_tuple">get_solver_ret_tuple() (LrfResultPool method)</a>
 </li>
       <li><a href="source/molass_legacy.KekLib.RecentFolders.html#molass_legacy.KekLib.RecentFolders.RecentFolders.get_sorted_list">get_sorted_list() (RecentFolders method)</a>
@@ -9523,12 +9669,22 @@ document.write(`
         <li><a href="source/molass_legacy.MultiProc.ManagerDialog.html#molass_legacy.MultiProc.ManagerDialog.get_state_text">(in module molass_legacy.MultiProc.ManagerDialog)</a>
 </li>
       </ul></li>
+      <li><a href="source/molass_legacy.Optimizer.MplMonitor.html#molass_legacy.Optimizer.MplMonitor.MplMonitor.get_status_summary">get_status_summary() (MplMonitor method)</a>
+</li>
       <li><a href="source/molass_legacy.Peaks.EghTauLimits.html#molass_legacy.Peaks.EghTauLimits.get_stochastic_model">get_stochastic_model() (in module molass_legacy.Peaks.EghTauLimits)</a>
 </li>
       <li><a href="source/molass_legacy.Optimizer.BasicOptimizer.html#molass_legacy.Optimizer.BasicOptimizer.BasicOptimizer.get_strategy">get_strategy() (BasicOptimizer method)</a>
 
       <ul>
         <li><a href="source/molass_legacy.ObjectiveFunctions.G1100.html#molass_legacy.ObjectiveFunctions.G1100.G1100.get_strategy">(G1100 method)</a>
+</li>
+        <li><a href="source/molass_legacy.ObjectiveFunctions.G1200.html#molass_legacy.ObjectiveFunctions.G1200.G1200.get_strategy">(G1200 method)</a>
+</li>
+        <li><a href="source/molass_legacy.ObjectiveFunctions.G1300.html#molass_legacy.ObjectiveFunctions.G1300.G1300.get_strategy">(G1300 method)</a>
+</li>
+        <li><a href="source/molass_legacy.ObjectiveFunctions.G1400.html#molass_legacy.ObjectiveFunctions.G1400.G1400.get_strategy">(G1400 method)</a>
+</li>
+        <li><a href="source/molass_legacy.ObjectiveFunctions.G1500.html#molass_legacy.ObjectiveFunctions.G1500.G1500.get_strategy">(G1500 method)</a>
 </li>
       </ul></li>
       <li><a href="source/molass_legacy.Menus.V2Menu.html#molass_legacy.Menus.V2Menu.V2Menu.get_strategy_dialog">get_strategy_dialog() (V2Menu method)</a>
@@ -9588,7 +9744,11 @@ document.write(`
       <li><a href="source/molass_legacy.KekLib.TkUtils.html#molass_legacy.KekLib.TkUtils.get_tk_root">get_tk_root() (in module molass_legacy.KekLib.TkUtils)</a>
 </li>
       <li><a href="source/molass_legacy.Optimizer.ComplementaryView.html#molass_legacy.Optimizer.ComplementaryView.ComplementaryView.get_toggle_button_text">get_toggle_button_text() (ComplementaryView method)</a>
+
+      <ul>
+        <li><a href="source/molass_legacy.Kratky.GuinierKratkyView.html#molass_legacy.Kratky.GuinierKratkyView.GuinierKratkyView.get_toggle_button_text">(GuinierKratkyView method)</a>
 </li>
+      </ul></li>
       <li><a href="source/molass_legacy.Mapping.ElutionMapperCanvas.html#molass_legacy.Mapping.ElutionMapperCanvas.ElutionMapperCanvas.get_toggle_text">get_toggle_text() (ElutionMapperCanvas method)</a>
 </li>
       <li><a href="source/molass_legacy.Microfluidics.BackgroundMaker.html#molass_legacy.Microfluidics.BackgroundMaker.BackgroundMaker2dFrame.get_toggle_xlim">get_toggle_xlim() (BackgroundMaker2dFrame method)</a>
@@ -9601,9 +9761,15 @@ document.write(`
 </li>
       <li><a href="source/molass_legacy.Menus.V2Menu.html#molass_legacy.Menus.V2Menu.V2Menu.get_trace_dialog">get_trace_dialog() (V2Menu method)</a>
 </li>
-      <li><a href="source/molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.EdmParams.get_trans_indeces">get_trans_indeces() (EdmParams method)</a>
+      <li><a href="source/molass_legacy.ModelParams.CedmParams.html#molass_legacy.ModelParams.CedmParams.CedmParams.get_trans_indeces">get_trans_indeces() (CedmParams method)</a>
 
       <ul>
+        <li><a href="source/molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.EdmParams.get_trans_indeces">(EdmParams method)</a>
+</li>
+        <li><a href="source/molass_legacy.ModelParams.GrmParams.html#molass_legacy.ModelParams.GrmParams.GrmParams.get_trans_indeces">(GrmParams method)</a>
+</li>
+        <li><a href="source/molass_legacy.ModelParams.LkmParams.html#molass_legacy.ModelParams.LkmParams.LkmParams.get_trans_indeces">(LkmParams method)</a>
+</li>
         <li><a href="source/molass_legacy.ModelParams.SdmParams.html#molass_legacy.ModelParams.SdmParams.SdmParams.get_trans_indeces">(SdmParams method)</a>
 </li>
       </ul></li>
@@ -9837,6 +10003,8 @@ document.write(`
         <li><a href="source/molass_legacy.SerialAnalyzer.SerialData.html#molass_legacy.SerialAnalyzer.SerialData.SerialData.get_xr_data_separate_ly">(SerialData method)</a>
 </li>
       </ul></li>
+      <li><a href="source/molass_legacy.Optimizer.BasicOptimizer.html#molass_legacy.Optimizer.BasicOptimizer.BasicOptimizer.get_xr_only">get_xr_only() (BasicOptimizer method)</a>
+</li>
       <li><a href="source/molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.EdmParams.get_xr_param_bounds">get_xr_param_bounds() (EdmParams method)</a>
 
       <ul>
@@ -9850,6 +10018,8 @@ document.write(`
 </li>
       </ul></li>
       <li><a href="source/molass_legacy.Peaks.EditCanvas.html#molass_legacy.Peaks.EditCanvas.EditCanvas.get_xr_peaks">get_xr_peaks() (EditCanvas method)</a>
+</li>
+      <li><a href="source/molass_legacy.ModelParams.CedmParams.html#molass_legacy.ModelParams.CedmParams.CedmParams.get_xr_per_comp_bounds">get_xr_per_comp_bounds() (CedmParams method)</a>
 </li>
       <li><a href="source/molass_legacy.Optimizer.OptLrfInfo.html#molass_legacy.Optimizer.OptLrfInfo.OptLrfInfo.get_xr_proportions">get_xr_proportions() (OptLrfInfo method)</a>
 
@@ -9983,6 +10153,12 @@ document.write(`
         <li><a href="source/molass_legacy.KekLib.TkSizableWidgets.html#molass_legacy.KekLib.TkSizableWidgets.SizableLabel.grid">(SizableLabel method)</a>
 </li>
       </ul></li>
+      <li><a href="source/molass_legacy.Estimators.GrmEstimator.html#molass_legacy.Estimators.GrmEstimator.GrmEstimator">GrmEstimator (class in molass_legacy.Estimators.GrmEstimator)</a>
+</li>
+      <li><a href="source/molass_legacy.ModelParams.GrmParams.html#molass_legacy.ModelParams.GrmParams.GrmParams">GrmParams (class in molass_legacy.ModelParams.GrmParams)</a>
+</li>
+      <li><a href="source/molass_legacy.ModelParams.GrmParamsSheet.html#molass_legacy.ModelParams.GrmParamsSheet.GrmParamsSheet">GrmParamsSheet (class in molass_legacy.ModelParams.GrmParamsSheet)</a>
+</li>
       <li><a href="source/molass_legacy.Prob.GroupingMatrix.html#molass_legacy.Prob.GroupingMatrix.GroupingMatrix">GroupingMatrix (class in molass_legacy.Prob.GroupingMatrix)</a>
 </li>
       <li><a href="source/molass_legacy.Prob.GssMixture.html#molass_legacy.Prob.GssMixture.GssMixture">GssMixture (class in molass_legacy.Prob.GssMixture)</a>
@@ -10203,6 +10379,8 @@ document.write(`
 </li>
       <li><a href="source/molass_legacy.Kratky.GuinierKratkyPlots.html#molass_legacy.Kratky.GuinierKratkyPlots.GuinierKratkyPlots">GuinierKratkyPlots (class in molass_legacy.Kratky.GuinierKratkyPlots)</a>
 </li>
+      <li><a href="source/molass_legacy.Kratky.GuinierKratkyView.html#molass_legacy.Kratky.GuinierKratkyView.GuinierKratkyView">GuinierKratkyView (class in molass_legacy.Kratky.GuinierKratkyView)</a>
+</li>
       <li><a href="source/molass_legacy.Trimming.GuinierLimit.html#molass_legacy.Trimming.GuinierLimit.GuinierLimit">GuinierLimit (class in molass_legacy.Trimming.GuinierLimit)</a>
 </li>
       <li><a href="source/molass_legacy.AutorgKek.DataModels.html#molass_legacy.AutorgKek.DataModels.GuinierPorod">GuinierPorod (class in molass_legacy.AutorgKek.DataModels)</a>
@@ -10273,10 +10451,10 @@ document.write(`
 </li>
       <li><a href="source/molass_legacy.QuickAnalysis.Analyzer.html#molass_legacy.QuickAnalysis.Analyzer.Analyzer.has_mapper_canvas">has_mapper_canvas() (Analyzer method)</a>
 </li>
-      <li><a href="source/molass_legacy.QuickAnalysis.AnalysisGuide.html#molass_legacy.QuickAnalysis.AnalysisGuide.AnalysisGuide.has_overlapping_peaks">has_overlapping_peaks() (AnalysisGuide method)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="source/molass_legacy.QuickAnalysis.AnalysisGuide.html#molass_legacy.QuickAnalysis.AnalysisGuide.AnalysisGuide.has_overlapping_peaks">has_overlapping_peaks() (AnalysisGuide method)</a>
+</li>
       <li><a href="source/molass_legacy.Trimming.FlowChange.html#molass_legacy.Trimming.FlowChange.FlowChange.has_special">has_special() (FlowChange method)</a>
 </li>
       <li><a href="source/molass_legacy.QuickAnalysis.AnalysisGuide.html#molass_legacy.QuickAnalysis.AnalysisGuide.AnalysisGuide.has_uncomputable_rdrs">has_uncomputable_rdrs() (AnalysisGuide method)</a>
@@ -10286,8 +10464,6 @@ document.write(`
 </li>
       </ul></li>
       <li><a href="source/molass_legacy.AutorgKek.HeadAnomalies.html#molass_legacy.AutorgKek.HeadAnomalies.HeadAnomalies">HeadAnomalies (class in molass_legacy.AutorgKek.HeadAnomalies)</a>
-</li>
-      <li><a href="source/molass_legacy.KekLib.OurImageIO.html#molass_legacy.KekLib.OurImageIO.Image.header">header (Image property)</a>
 </li>
       <li><a href="source/molass_legacy.KekLib.TkMiniTable.html#molass_legacy.KekLib.TkMiniTable.TkMiniTable.heading">heading() (TkMiniTable method)</a>
 </li>
@@ -10341,7 +10517,9 @@ document.write(`
 </li>
       <li><a href="source/molass_legacy.DENSS.DenssGui.html#molass_legacy.DENSS.DenssGui.DenssGuiDialog.illustrate_dmax">illustrate_dmax() (DenssGuiDialog method)</a>
 </li>
-      <li><a href="source/molass_legacy.KekLib.OurImageIO.html#molass_legacy.KekLib.OurImageIO.Image">Image (class in molass_legacy.KekLib.OurImageIO)</a>
+      <li><a href="source/molass_legacy.Solvers.Registry.html#molass_legacy.Solvers.Registry.SolverEntry.impl_name">impl_name (SolverEntry attribute)</a>
+</li>
+      <li><a href="source/molass_legacy.GuinierTools.CpdDecompIndirectImpl.html#molass_legacy.GuinierTools.CpdDecompIndirectImpl.imporove_decomposition">imporove_decomposition() (in module molass_legacy.GuinierTools.CpdDecompIndirectImpl)</a>
 </li>
       <li><a href="source/molass_legacy.DevelUtils.LegacyImporters.html#molass_legacy.DevelUtils.LegacyImporters.import_legacy_modules">import_legacy_modules() (in module molass_legacy.DevelUtils.LegacyImporters)</a>
 </li>
@@ -10489,14 +10667,16 @@ document.write(`
 </li>
       <li><a href="source/molass_legacy.Tutorials.VoxelUtils.html#molass_legacy.Tutorials.VoxelUtils.int2hue">int2hue() (in module molass_legacy.Tutorials.VoxelUtils)</a>
 </li>
+      <li><a href="source/molass_legacy.Solvers.Registry.html#molass_legacy.Solvers.Registry.SolverEntry.int_code">int_code (SolverEntry attribute)</a>
+</li>
       <li><a href="source/molass_legacy.Baseline.IntegralBaseline.html#molass_legacy.Baseline.IntegralBaseline.IntegralBaseline">IntegralBaseline (class in molass_legacy.Baseline.IntegralBaseline)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="source/molass_legacy.Baseline.Baseline.html#molass_legacy.Baseline.Baseline.integrative_curve">integrative_curve() (in module molass_legacy.Baseline.Baseline)</a>
 </li>
       <li><a href="source/molass_legacy.Baseline.Convex.html#molass_legacy.Baseline.Convex.integrative_curve_convex">integrative_curve_convex() (in module molass_legacy.Baseline.Convex)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="source/molass_legacy.Theory.JsPedersen1997.html#molass_legacy.Theory.JsPedersen1997.SolidEllipsoidRev.intensity">intensity() (SolidEllipsoidRev method)</a>
 
       <ul>
@@ -10650,6 +10830,14 @@ document.write(`
       <ul>
         <li><a href="source/molass_legacy.ObjectiveFunctions.G1100.html#molass_legacy.ObjectiveFunctions.G1100.G1100.is_stochastic">(G1100 method)</a>
 </li>
+        <li><a href="source/molass_legacy.ObjectiveFunctions.G1200.html#molass_legacy.ObjectiveFunctions.G1200.G1200.is_stochastic">(G1200 method)</a>
+</li>
+        <li><a href="source/molass_legacy.ObjectiveFunctions.G1300.html#molass_legacy.ObjectiveFunctions.G1300.G1300.is_stochastic">(G1300 method)</a>
+</li>
+        <li><a href="source/molass_legacy.ObjectiveFunctions.G1400.html#molass_legacy.ObjectiveFunctions.G1400.G1400.is_stochastic">(G1400 method)</a>
+</li>
+        <li><a href="source/molass_legacy.ObjectiveFunctions.G1500.html#molass_legacy.ObjectiveFunctions.G1500.G1500.is_stochastic">(G1500 method)</a>
+</li>
       </ul></li>
       <li><a href="source/molass_legacy.SerialAnalyzer.Scattering3dSimple.html#molass_legacy.SerialAnalyzer.Scattering3dSimple.is_to_plot">is_to_plot() (in module molass_legacy.SerialAnalyzer.Scattering3dSimple)</a>
 
@@ -10664,6 +10852,8 @@ document.write(`
       <li><a href="source/molass_legacy.KekLib.BasicUtils.html#molass_legacy.KekLib.BasicUtils.is_usedfolder">is_usedfolder() (in module molass_legacy.KekLib.BasicUtils)</a>
 </li>
       <li><a href="source/molass_legacy.AutorgKek.QrgLimitsAdjuster.html#molass_legacy.AutorgKek.QrgLimitsAdjuster.ResultEvaluator.is_valid">is_valid() (ResultEvaluator method)</a>
+</li>
+      <li><a href="source/molass_legacy.Optimizer.MplMonitor.html#molass_legacy.Optimizer.MplMonitor.MplMonitor.is_watching">is_watching() (MplMonitor method)</a>
 </li>
       <li><a href="source/molass_legacy.Theory.PbMoore1980.html#molass_legacy.Theory.PbMoore1980.Ish2Iq">Ish2Iq() (in module molass_legacy.Theory.PbMoore1980)</a>
 </li>
@@ -10883,6 +11073,14 @@ document.write(`
 </li>
       <li><a href="source/molass_legacy.ModelParams.LjEghParamsSheet.html#molass_legacy.ModelParams.LjEghParamsSheet.LjEghParamsSheet">LjEghParamsSheet (class in molass_legacy.ModelParams.LjEghParamsSheet)</a>
 </li>
+      <li><a href="source/molass_legacy.Estimators.LkmEstimator.html#molass_legacy.Estimators.LkmEstimator.LkmEstimator">LkmEstimator (class in molass_legacy.Estimators.LkmEstimator)</a>
+</li>
+      <li><a href="source/molass_legacy.ModelParams.LkmParams.html#molass_legacy.ModelParams.LkmParams.LkmParams">LkmParams (class in molass_legacy.ModelParams.LkmParams)</a>
+</li>
+      <li><a href="source/molass_legacy.ModelParams.LkmParamsSheet.html#molass_legacy.ModelParams.LkmParamsSheet.LkmParamsSheet">LkmParamsSheet (class in molass_legacy.ModelParams.LkmParamsSheet)</a>
+</li>
+      <li><a href="source/molass_legacy.ModelParams.LkmSliderInfo.html#molass_legacy.ModelParams.LkmSliderInfo.LkmSliderInfo">LkmSliderInfo (class in molass_legacy.ModelParams.LkmSliderInfo)</a>
+</li>
       <li><a href="source/molass_legacy.AutorgKek.BiComponentSolver.html#molass_legacy.AutorgKek.BiComponentSolver.BiComponentSolver.lmfit_model">lmfit_model() (BiComponentSolver method)</a>
 </li>
       <li><a href="source/molass_legacy.Simulative.SimulationCushion.html#molass_legacy.Simulative.SimulationCushion.lnp_model_interactive">lnp_model_interactive() (in module molass_legacy.Simulative.SimulationCushion)</a>
@@ -10937,6 +11135,8 @@ document.write(`
 </li>
       <li><a href="source/molass_legacy.Optimizer.FullOptResult.html#molass_legacy.Optimizer.FullOptResult.FullOptResult.load_init_params">load_init_params() (FullOptResult method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="source/molass_legacy.SerialAnalyzer.SerialData.html#molass_legacy.SerialAnalyzer.SerialData.SerialData.load_intensity_array">load_intensity_array() (SerialData method)</a>
 </li>
       <li><a href="source/molass_legacy.DataStructure.InputDataUtils.html#molass_legacy.DataStructure.InputDataUtils.load_intensity_files">load_intensity_files() (in module molass_legacy.DataStructure.InputDataUtils)</a>
@@ -10945,8 +11145,6 @@ document.write(`
         <li><a href="source/molass_legacy.SerialAnalyzer.SerialDataUtils.html#molass_legacy.SerialAnalyzer.SerialDataUtils.load_intensity_files">(in module molass_legacy.SerialAnalyzer.SerialDataUtils)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="source/molass_legacy.Batch.BatchUtils.html#molass_legacy.Batch.BatchUtils.load_lrfsrc">load_lrfsrc() (in module molass_legacy.Batch.BatchUtils)</a>
 </li>
       <li><a href="source/molass_legacy.Batch.BatchMappingUtils.html#molass_legacy.Batch.BatchMappingUtils.load_lrfsrc_with_mapping">load_lrfsrc_with_mapping() (in module molass_legacy.Batch.BatchMappingUtils)</a>
@@ -11108,10 +11306,14 @@ document.write(`
 </li>
         <li><a href="source/molass_legacy.Processes.Main.html#molass_legacy.Processes.Main.main">(in module molass_legacy.Processes.Main)</a>
 </li>
-      </ul></li>
-      <li><a href="source/molass_legacy.Optimizer.optimizer.html#molass_legacy.Optimizer.optimizer.main_impl">main_impl() (in module molass_legacy.Optimizer.optimizer)</a>
+        <li><a href="source/molass_legacy.SecTheory.compare_grm_to_emg.html#molass_legacy.SecTheory.compare_grm_to_emg.main">(in module molass_legacy.SecTheory.compare_grm_to_emg)</a>
 </li>
-      <li><a href="source/molass_legacy.Optimizer.optimizer.html#molass_legacy.Optimizer.optimizer.main_tk">main_tk() (in module molass_legacy.Optimizer.optimizer)</a>
+      </ul></li>
+      <li><a href="source/molass_legacy.Optimizer.OptimizerMain.html#molass_legacy.Optimizer.OptimizerMain.main_driver">main_driver() (in module molass_legacy.Optimizer.OptimizerMain)</a>
+</li>
+      <li><a href="source/molass_legacy.Optimizer.OptimizerMain.html#molass_legacy.Optimizer.OptimizerMain.main_impl">main_impl() (in module molass_legacy.Optimizer.OptimizerMain)</a>
+</li>
+      <li><a href="source/molass_legacy.Optimizer.OptimizerMain.html#molass_legacy.Optimizer.OptimizerMain.main_tk">main_tk() (in module molass_legacy.Optimizer.OptimizerMain)</a>
 </li>
       <li><a href="source/molass_legacy.Mapping.PeakMapper.html#molass_legacy.Mapping.PeakMapper.MajorCurve">MajorCurve (class in molass_legacy.Mapping.PeakMapper)</a>
 </li>
@@ -11145,12 +11347,18 @@ document.write(`
 </li>
       <li><a href="source/molass_legacy.Rgg.MostSimultaneous.html#molass_legacy.Rgg.MostSimultaneous.SimultaneousSolver.make_bounds">make_bounds() (SimultaneousSolver method)</a>
 </li>
-      <li><a href="source/molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.EdmParams.make_bounds_mask">make_bounds_mask() (EdmParams method)</a>
+      <li><a href="source/molass_legacy.ModelParams.CedmParams.html#molass_legacy.ModelParams.CedmParams.CedmParams.make_bounds_mask">make_bounds_mask() (CedmParams method)</a>
 
       <ul>
+        <li><a href="source/molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.EdmParams.make_bounds_mask">(EdmParams method)</a>
+</li>
         <li><a href="source/molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghAdvansedParams.make_bounds_mask">(EghAdvansedParams method)</a>
 </li>
         <li><a href="source/molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghParams.make_bounds_mask">(EghParams method)</a>
+</li>
+        <li><a href="source/molass_legacy.ModelParams.GrmParams.html#molass_legacy.ModelParams.GrmParams.GrmParams.make_bounds_mask">(GrmParams method)</a>
+</li>
+        <li><a href="source/molass_legacy.ModelParams.LkmParams.html#molass_legacy.ModelParams.LkmParams.LkmParams.make_bounds_mask">(LkmParams method)</a>
 </li>
         <li><a href="source/molass_legacy.ModelParams.SdmParams.html#molass_legacy.ModelParams.SdmParams.SdmParams.make_bounds_mask">(SdmParams method)</a>
 </li>
@@ -11538,10 +11746,6 @@ document.write(`
       <ul>
         <li><a href="source/molass_legacy.Optimizer.BasicOptimizer.html#molass_legacy.Optimizer.BasicOptimizer.BasicOptimizer.minima_callback">(BasicOptimizer method)</a>
 </li>
-        <li><a href="source/molass_legacy.Optimizer.FixedBaselineOptimizer.html#molass_legacy.Optimizer.FixedBaselineOptimizer.FixedBaselineOptimizer.minima_callback">(FixedBaselineOptimizer method)</a>
-</li>
-        <li><a href="source/molass_legacy.Optimizer.StrategicOptimizer.html#molass_legacy.Optimizer.StrategicOptimizer.StrategicOptimizer.minima_callback">(StrategicOptimizer method)</a>
-</li>
         <li><a href="source/molass_legacy.Optimizer.UvBaselineEstimator.html#molass_legacy.Optimizer.UvBaselineEstimator.UvBaselineEstimator.minima_callback">(UvBaselineEstimator method)</a>
 </li>
       </ul></li>
@@ -11551,8 +11755,6 @@ document.write(`
 
       <ul>
         <li><a href="source/molass_legacy.KekLib.SimulatedAnnealing.html#molass_legacy.KekLib.SimulatedAnnealing.SimulatedAnnealing.minimize">(SimulatedAnnealing method)</a>, <a href="source/molass_legacy.SerialAnalyzer.SimulatedAnnealing.html#molass_legacy.SerialAnalyzer.SimulatedAnnealing.SimulatedAnnealing.minimize">[1]</a>
-</li>
-        <li><a href="source/molass_legacy.Particles.SmcSolver.html#molass_legacy.Particles.SmcSolver.SmcSolver.minimize">(SmcSolver method)</a>
 </li>
       </ul></li>
       <li><a href="source/molass_legacy.Selective.AdvancedFrame.html#molass_legacy.Selective.AdvancedFrame.AdvancedFrame.minimize_kpd">minimize_kpd() (AdvancedFrame method)</a>
@@ -11811,6 +12013,8 @@ document.write(`
 </li>
         <li><a href="source/molass_legacy.Batch.FullBatch.html#module-molass_legacy.Batch.FullBatch">molass_legacy.Batch.FullBatch</a>
 </li>
+        <li><a href="source/molass_legacy.Batch.HeadlessPeakEditor.html#module-molass_legacy.Batch.HeadlessPeakEditor">molass_legacy.Batch.HeadlessPeakEditor</a>
+</li>
         <li><a href="source/molass_legacy.Batch.LiteBatch.html#module-molass_legacy.Batch.LiteBatch">molass_legacy.Batch.LiteBatch</a>
 </li>
         <li><a href="source/molass_legacy.Batch.OptDataSetsProxy.html#module-molass_legacy.Batch.OptDataSetsProxy">molass_legacy.Batch.OptDataSetsProxy</a>
@@ -12011,6 +12215,8 @@ document.write(`
 </li>
         <li><a href="source/molass_legacy.Estimators.BaseEstimator.html#module-molass_legacy.Estimators.BaseEstimator">molass_legacy.Estimators.BaseEstimator</a>
 </li>
+        <li><a href="source/molass_legacy.Estimators.CedmEstimator.html#module-molass_legacy.Estimators.CedmEstimator">molass_legacy.Estimators.CedmEstimator</a>
+</li>
         <li><a href="source/molass_legacy.Estimators.EdmEstimator.html#module-molass_legacy.Estimators.EdmEstimator">molass_legacy.Estimators.EdmEstimator</a>
 </li>
         <li><a href="source/molass_legacy.Estimators.EdmEstimatorDevel.html#module-molass_legacy.Estimators.EdmEstimatorDevel">molass_legacy.Estimators.EdmEstimatorDevel</a>
@@ -12019,7 +12225,11 @@ document.write(`
 </li>
         <li><a href="source/molass_legacy.Estimators.FdEmgEstimator.html#module-molass_legacy.Estimators.FdEmgEstimator">molass_legacy.Estimators.FdEmgEstimator</a>
 </li>
+        <li><a href="source/molass_legacy.Estimators.GrmEstimator.html#module-molass_legacy.Estimators.GrmEstimator">molass_legacy.Estimators.GrmEstimator</a>
+</li>
         <li><a href="source/molass_legacy.Estimators.LjEghEstimator.html#module-molass_legacy.Estimators.LjEghEstimator">molass_legacy.Estimators.LjEghEstimator</a>
+</li>
+        <li><a href="source/molass_legacy.Estimators.LkmEstimator.html#module-molass_legacy.Estimators.LkmEstimator">molass_legacy.Estimators.LkmEstimator</a>
 </li>
         <li><a href="source/molass_legacy.Estimators.RtEmgEstimator.html#module-molass_legacy.Estimators.RtEmgEstimator">molass_legacy.Estimators.RtEmgEstimator</a>
 </li>
@@ -12160,6 +12370,10 @@ document.write(`
         <li><a href="source/molass_legacy.GuinierTools.Alsaker2017_Test.html#module-molass_legacy.GuinierTools.Alsaker2017_Test">molass_legacy.GuinierTools.Alsaker2017_Test</a>
 </li>
         <li><a href="source/molass_legacy.GuinierTools.CompareGdevMeasures.html#module-molass_legacy.GuinierTools.CompareGdevMeasures">molass_legacy.GuinierTools.CompareGdevMeasures</a>
+</li>
+        <li><a href="source/molass_legacy.GuinierTools.CpdDecompDirect.html#module-molass_legacy.GuinierTools.CpdDecompDirect">molass_legacy.GuinierTools.CpdDecompDirect</a>
+</li>
+        <li><a href="source/molass_legacy.GuinierTools.CpdDecompIndirectImpl.html#module-molass_legacy.GuinierTools.CpdDecompIndirectImpl">molass_legacy.GuinierTools.CpdDecompIndirectImpl</a>
 </li>
         <li><a href="source/molass_legacy.GuinierTools.CpdDecompUtils.html#module-molass_legacy.GuinierTools.CpdDecompUtils">molass_legacy.GuinierTools.CpdDecompUtils</a>
 </li>
@@ -12371,8 +12585,6 @@ document.write(`
 </li>
         <li><a href="source/molass_legacy.KekLib.OurGiniSOF.html#module-molass_legacy.KekLib.OurGiniSOF">molass_legacy.KekLib.OurGiniSOF</a>
 </li>
-        <li><a href="source/molass_legacy.KekLib.OurImageIO.html#module-molass_legacy.KekLib.OurImageIO">molass_legacy.KekLib.OurImageIO</a>
-</li>
         <li><a href="source/molass_legacy.KekLib.OurImporter.html#module-molass_legacy.KekLib.OurImporter">molass_legacy.KekLib.OurImporter</a>
 </li>
         <li><a href="source/molass_legacy.KekLib.OurManim.html#module-molass_legacy.KekLib.OurManim">molass_legacy.KekLib.OurManim</a>
@@ -12512,6 +12724,8 @@ document.write(`
         <li><a href="source/molass_legacy.Kratky.GuinierKratkyInfo.html#module-molass_legacy.Kratky.GuinierKratkyInfo">molass_legacy.Kratky.GuinierKratkyInfo</a>
 </li>
         <li><a href="source/molass_legacy.Kratky.GuinierKratkyPlots.html#module-molass_legacy.Kratky.GuinierKratkyPlots">molass_legacy.Kratky.GuinierKratkyPlots</a>
+</li>
+        <li><a href="source/molass_legacy.Kratky.GuinierKratkyView.html#module-molass_legacy.Kratky.GuinierKratkyView">molass_legacy.Kratky.GuinierKratkyView</a>
 </li>
         <li><a href="source/molass_legacy.LoaderProcess.html#module-molass_legacy.LoaderProcess">molass_legacy.LoaderProcess</a>
 </li>
@@ -12681,6 +12895,12 @@ document.write(`
 </li>
         <li><a href="source/molass_legacy.ModelParams.BoundedSecParams.html#module-molass_legacy.ModelParams.BoundedSecParams">molass_legacy.ModelParams.BoundedSecParams</a>
 </li>
+        <li><a href="source/molass_legacy.ModelParams.CedmParams.html#module-molass_legacy.ModelParams.CedmParams">molass_legacy.ModelParams.CedmParams</a>
+</li>
+        <li><a href="source/molass_legacy.ModelParams.CedmParamsSheet.html#module-molass_legacy.ModelParams.CedmParamsSheet">molass_legacy.ModelParams.CedmParamsSheet</a>
+</li>
+        <li><a href="source/molass_legacy.ModelParams.CedmSliderInfo.html#module-molass_legacy.ModelParams.CedmSliderInfo">molass_legacy.ModelParams.CedmSliderInfo</a>
+</li>
         <li><a href="source/molass_legacy.ModelParams.EdmParams.html#module-molass_legacy.ModelParams.EdmParams">molass_legacy.ModelParams.EdmParams</a>
 </li>
         <li><a href="source/molass_legacy.ModelParams.EdmParamsSheet.html#module-molass_legacy.ModelParams.EdmParamsSheet">molass_legacy.ModelParams.EdmParamsSheet</a>
@@ -12699,13 +12919,25 @@ document.write(`
 </li>
         <li><a href="source/molass_legacy.ModelParams.FdEmgParamsSheet.html#module-molass_legacy.ModelParams.FdEmgParamsSheet">molass_legacy.ModelParams.FdEmgParamsSheet</a>
 </li>
+        <li><a href="source/molass_legacy.ModelParams.GrmParams.html#module-molass_legacy.ModelParams.GrmParams">molass_legacy.ModelParams.GrmParams</a>
+</li>
+        <li><a href="source/molass_legacy.ModelParams.GrmParamsSheet.html#module-molass_legacy.ModelParams.GrmParamsSheet">molass_legacy.ModelParams.GrmParamsSheet</a>
+</li>
         <li><a href="source/molass_legacy.ModelParams.LjEghParamsSheet.html#module-molass_legacy.ModelParams.LjEghParamsSheet">molass_legacy.ModelParams.LjEghParamsSheet</a>
+</li>
+        <li><a href="source/molass_legacy.ModelParams.LkmParams.html#module-molass_legacy.ModelParams.LkmParams">molass_legacy.ModelParams.LkmParams</a>
+</li>
+        <li><a href="source/molass_legacy.ModelParams.LkmParamsSheet.html#module-molass_legacy.ModelParams.LkmParamsSheet">molass_legacy.ModelParams.LkmParamsSheet</a>
+</li>
+        <li><a href="source/molass_legacy.ModelParams.LkmSliderInfo.html#module-molass_legacy.ModelParams.LkmSliderInfo">molass_legacy.ModelParams.LkmSliderInfo</a>
 </li>
         <li><a href="source/molass_legacy.ModelParams.ModelDebugUtils.html#module-molass_legacy.ModelParams.ModelDebugUtils">molass_legacy.ModelParams.ModelDebugUtils</a>
 </li>
         <li><a href="source/molass_legacy.ModelParams.ParamSetUtils.html#module-molass_legacy.ModelParams.ParamSetUtils">molass_legacy.ModelParams.ParamSetUtils</a>
 </li>
         <li><a href="source/molass_legacy.ModelParams.ParamsSheetBase.html#module-molass_legacy.ModelParams.ParamsSheetBase">molass_legacy.ModelParams.ParamsSheetBase</a>
+</li>
+        <li><a href="source/molass_legacy.ModelParams.ParamsTypeBase.html#module-molass_legacy.ModelParams.ParamsTypeBase">molass_legacy.ModelParams.ParamsTypeBase</a>
 </li>
         <li><a href="source/molass_legacy.ModelParams.RtEmgParamsSheet.html#module-molass_legacy.ModelParams.RtEmgParamsSheet">molass_legacy.ModelParams.RtEmgParamsSheet</a>
 </li>
@@ -12785,6 +13017,8 @@ document.write(`
 </li>
         <li><a href="source/molass_legacy.ObjectiveFunctions.G0346.html#module-molass_legacy.ObjectiveFunctions.G0346">molass_legacy.ObjectiveFunctions.G0346</a>
 </li>
+        <li><a href="source/molass_legacy.ObjectiveFunctions.G0367.html#module-molass_legacy.ObjectiveFunctions.G0367">molass_legacy.ObjectiveFunctions.G0367</a>
+</li>
         <li><a href="source/molass_legacy.ObjectiveFunctions.G0525.html#module-molass_legacy.ObjectiveFunctions.G0525">molass_legacy.ObjectiveFunctions.G0525</a>
 </li>
         <li><a href="source/molass_legacy.ObjectiveFunctions.G0665.html#module-molass_legacy.ObjectiveFunctions.G0665">molass_legacy.ObjectiveFunctions.G0665</a>
@@ -12793,7 +13027,17 @@ document.write(`
 </li>
         <li><a href="source/molass_legacy.ObjectiveFunctions.G1100.html#module-molass_legacy.ObjectiveFunctions.G1100">molass_legacy.ObjectiveFunctions.G1100</a>
 </li>
+        <li><a href="source/molass_legacy.ObjectiveFunctions.G1200.html#module-molass_legacy.ObjectiveFunctions.G1200">molass_legacy.ObjectiveFunctions.G1200</a>
+</li>
+        <li><a href="source/molass_legacy.ObjectiveFunctions.G1300.html#module-molass_legacy.ObjectiveFunctions.G1300">molass_legacy.ObjectiveFunctions.G1300</a>
+</li>
+        <li><a href="source/molass_legacy.ObjectiveFunctions.G1400.html#module-molass_legacy.ObjectiveFunctions.G1400">molass_legacy.ObjectiveFunctions.G1400</a>
+</li>
+        <li><a href="source/molass_legacy.ObjectiveFunctions.G1500.html#module-molass_legacy.ObjectiveFunctions.G1500">molass_legacy.ObjectiveFunctions.G1500</a>
+</li>
         <li><a href="source/molass_legacy.ObjectiveFunctions.G2010.html#module-molass_legacy.ObjectiveFunctions.G2010">molass_legacy.ObjectiveFunctions.G2010</a>
+</li>
+        <li><a href="source/molass_legacy.ObjectiveFunctions.G2020.html#module-molass_legacy.ObjectiveFunctions.G2020">molass_legacy.ObjectiveFunctions.G2020</a>
 </li>
         <li><a href="source/molass_legacy.OnTheFly.html#module-molass_legacy.OnTheFly">molass_legacy.OnTheFly</a>
 </li>
@@ -12825,19 +13069,21 @@ document.write(`
 </li>
         <li><a href="source/molass_legacy.Optimizer.ColumnInterp.html#module-molass_legacy.Optimizer.ColumnInterp">molass_legacy.Optimizer.ColumnInterp</a>
 </li>
+        <li><a href="source/molass_legacy.Optimizer.Compatibility.html#module-molass_legacy.Optimizer.Compatibility">molass_legacy.Optimizer.Compatibility</a>
+</li>
         <li><a href="source/molass_legacy.Optimizer.ComplementaryView.html#module-molass_legacy.Optimizer.ComplementaryView">molass_legacy.Optimizer.ComplementaryView</a>
 </li>
         <li><a href="source/molass_legacy.Optimizer.CompositeInfo.html#module-molass_legacy.Optimizer.CompositeInfo">molass_legacy.Optimizer.CompositeInfo</a>
 </li>
         <li><a href="source/molass_legacy.Optimizer.DefaultNumPeaks.html#module-molass_legacy.Optimizer.DefaultNumPeaks">molass_legacy.Optimizer.DefaultNumPeaks</a>
 </li>
+        <li><a href="source/molass_legacy.Optimizer.DsetsDebug.html#module-molass_legacy.Optimizer.DsetsDebug">molass_legacy.Optimizer.DsetsDebug</a>
+</li>
         <li><a href="source/molass_legacy.Optimizer.EghGradient.html#module-molass_legacy.Optimizer.EghGradient">molass_legacy.Optimizer.EghGradient</a>
 </li>
         <li><a href="source/molass_legacy.Optimizer.ElutionComposer.html#module-molass_legacy.Optimizer.ElutionComposer">molass_legacy.Optimizer.ElutionComposer</a>
 </li>
         <li><a href="source/molass_legacy.Optimizer.FactorCurvePlot.html#module-molass_legacy.Optimizer.FactorCurvePlot">molass_legacy.Optimizer.FactorCurvePlot</a>
-</li>
-        <li><a href="source/molass_legacy.Optimizer.FixedBaselineOptimizer.html#module-molass_legacy.Optimizer.FixedBaselineOptimizer">molass_legacy.Optimizer.FixedBaselineOptimizer</a>
 </li>
         <li><a href="source/molass_legacy.Optimizer.FullOptDialog.html#module-molass_legacy.Optimizer.FullOptDialog">molass_legacy.Optimizer.FullOptDialog</a>
 </li>
@@ -12873,6 +13119,8 @@ document.write(`
 </li>
         <li><a href="source/molass_legacy.Optimizer.InitialInfo.html#module-molass_legacy.Optimizer.InitialInfo">molass_legacy.Optimizer.InitialInfo</a>
 </li>
+        <li><a href="source/molass_legacy.Optimizer.InProcessRunner.html#module-molass_legacy.Optimizer.InProcessRunner">molass_legacy.Optimizer.InProcessRunner</a>
+</li>
         <li><a href="source/molass_legacy.Optimizer.IntegerRatios.html#module-molass_legacy.Optimizer.IntegerRatios">molass_legacy.Optimizer.IntegerRatios</a>
 </li>
         <li><a href="source/molass_legacy.Optimizer.JobState.html#module-molass_legacy.Optimizer.JobState">molass_legacy.Optimizer.JobState</a>
@@ -12888,6 +13136,8 @@ document.write(`
         <li><a href="source/molass_legacy.Optimizer.LrfOptimizer.html#module-molass_legacy.Optimizer.LrfOptimizer">molass_legacy.Optimizer.LrfOptimizer</a>
 </li>
         <li><a href="source/molass_legacy.Optimizer.ModifyStateDialog.html#module-molass_legacy.Optimizer.ModifyStateDialog">molass_legacy.Optimizer.ModifyStateDialog</a>
+</li>
+        <li><a href="source/molass_legacy.Optimizer.MolassIntegration.html#module-molass_legacy.Optimizer.MolassIntegration">molass_legacy.Optimizer.MolassIntegration</a>
 </li>
         <li><a href="source/molass_legacy.Optimizer.MplMonitor.html#module-molass_legacy.Optimizer.MplMonitor">molass_legacy.Optimizer.MplMonitor</a>
 </li>
@@ -12977,8 +13227,6 @@ document.write(`
 </li>
         <li><a href="source/molass_legacy.Optimizer.StateSequence.html#module-molass_legacy.Optimizer.StateSequence">molass_legacy.Optimizer.StateSequence</a>
 </li>
-        <li><a href="source/molass_legacy.Optimizer.StrategicOptimizer.html#module-molass_legacy.Optimizer.StrategicOptimizer">molass_legacy.Optimizer.StrategicOptimizer</a>
-</li>
         <li><a href="source/molass_legacy.Optimizer.StrategyEditor.html#module-molass_legacy.Optimizer.StrategyEditor">molass_legacy.Optimizer.StrategyEditor</a>
 </li>
         <li><a href="source/molass_legacy.Optimizer.StructureFactorBounds.html#module-molass_legacy.Optimizer.StructureFactorBounds">molass_legacy.Optimizer.StructureFactorBounds</a>
@@ -13007,8 +13255,6 @@ document.write(`
 </li>
         <li><a href="source/molass_legacy.Particles.html#module-molass_legacy.Particles">molass_legacy.Particles</a>
 </li>
-        <li><a href="source/molass_legacy.Particles.SmcSolver.html#module-molass_legacy.Particles.SmcSolver">molass_legacy.Particles.SmcSolver</a>
-</li>
         <li><a href="source/molass_legacy.Pdb.html#module-molass_legacy.Pdb">molass_legacy.Pdb</a>
 </li>
         <li><a href="source/molass_legacy.Pdb.MwRgSurvey.html#module-molass_legacy.Pdb.MwRgSurvey">molass_legacy.Pdb.MwRgSurvey</a>
@@ -13018,6 +13264,8 @@ document.write(`
         <li><a href="source/molass_legacy.Pdb.PypdbLite.html#module-molass_legacy.Pdb.PypdbLite">molass_legacy.Pdb.PypdbLite</a>
 </li>
         <li><a href="source/molass_legacy.Peaks.html#module-molass_legacy.Peaks">molass_legacy.Peaks</a>
+</li>
+        <li><a href="source/molass_legacy.Peaks.ComponentsView.html#module-molass_legacy.Peaks.ComponentsView">molass_legacy.Peaks.ComponentsView</a>
 </li>
         <li><a href="source/molass_legacy.Peaks.EditCanvas.html#module-molass_legacy.Peaks.EditCanvas">molass_legacy.Peaks.EditCanvas</a>
 </li>
@@ -13285,8 +13533,6 @@ document.write(`
 </li>
         <li><a href="source/molass_legacy.RgProcess.html#module-molass_legacy.RgProcess">molass_legacy.RgProcess</a>
 </li>
-        <li><a href="source/molass_legacy.RgProcess.RgAnalysis.html#module-molass_legacy.RgProcess.RgAnalysis">molass_legacy.RgProcess.RgAnalysis</a>
-</li>
         <li><a href="source/molass_legacy.RgProcess.RgCurve.html#module-molass_legacy.RgProcess.RgCurve">molass_legacy.RgProcess.RgCurve</a>
 </li>
         <li><a href="source/molass_legacy.RgProcess.RgCurveComputer.html#module-molass_legacy.RgProcess.RgCurveComputer">molass_legacy.RgProcess.RgCurveComputer</a>
@@ -13294,8 +13540,6 @@ document.write(`
         <li><a href="source/molass_legacy.RgProcess.RgCurveProxy.html#module-molass_legacy.RgProcess.RgCurveProxy">molass_legacy.RgProcess.RgCurveProxy</a>
 </li>
         <li><a href="source/molass_legacy.RgProcess.RgCurveUtils.html#module-molass_legacy.RgProcess.RgCurveUtils">molass_legacy.RgProcess.RgCurveUtils</a>
-</li>
-        <li><a href="source/molass_legacy.RgProcess.RgManager.html#module-molass_legacy.RgProcess.RgManager">molass_legacy.RgProcess.RgManager</a>
 </li>
         <li><a href="source/molass_legacy.Saxs.html#module-molass_legacy.Saxs">molass_legacy.Saxs</a>
 </li>
@@ -13352,6 +13596,8 @@ document.write(`
         <li><a href="source/molass_legacy.SecTheory.ColumnConstants.html#module-molass_legacy.SecTheory.ColumnConstants">molass_legacy.SecTheory.ColumnConstants</a>
 </li>
         <li><a href="source/molass_legacy.SecTheory.ColumnIllust.html#module-molass_legacy.SecTheory.ColumnIllust">molass_legacy.SecTheory.ColumnIllust</a>
+</li>
+        <li><a href="source/molass_legacy.SecTheory.compare_grm_to_emg.html#module-molass_legacy.SecTheory.compare_grm_to_emg">molass_legacy.SecTheory.compare_grm_to_emg</a>
 </li>
         <li><a href="source/molass_legacy.SecTheory.ConformanceDemo.html#module-molass_legacy.SecTheory.ConformanceDemo">molass_legacy.SecTheory.ConformanceDemo</a>
 </li>
@@ -13733,6 +13979,8 @@ document.write(`
 </li>
         <li><a href="source/molass_legacy.Solvers.NcallsEstimator.html#module-molass_legacy.Solvers.NcallsEstimator">molass_legacy.Solvers.NcallsEstimator</a>
 </li>
+        <li><a href="source/molass_legacy.Solvers.Registry.html#module-molass_legacy.Solvers.Registry">molass_legacy.Solvers.Registry</a>
+</li>
         <li><a href="source/molass_legacy.SSDC.html#module-molass_legacy.SSDC">molass_legacy.SSDC</a>
 </li>
         <li><a href="source/molass_legacy.SSDC.FolderEntryDialog.html#module-molass_legacy.SSDC.FolderEntryDialog">molass_legacy.SSDC.FolderEntryDialog</a>
@@ -13756,8 +14004,6 @@ document.write(`
         <li><a href="source/molass_legacy.Stochastic.StationaryMove.html#module-molass_legacy.Stochastic.StationaryMove">molass_legacy.Stochastic.StationaryMove</a>
 </li>
         <li><a href="source/molass_legacy.SymPy.html#module-molass_legacy.SymPy">molass_legacy.SymPy</a>
-</li>
-        <li><a href="source/molass_legacy.SymPy.StochasticUtils.html#module-molass_legacy.SymPy.StochasticUtils">molass_legacy.SymPy.StochasticUtils</a>
 </li>
         <li><a href="source/molass_legacy.SysArgs.html#module-molass_legacy.SysArgs">molass_legacy.SysArgs</a>
 </li>
@@ -13977,6 +14223,8 @@ document.write(`
 </li>
         <li><a href="source/molass_legacy.Tutorials.MpInverseBasic.html#module-molass_legacy.Tutorials.MpInverseBasic">molass_legacy.Tutorials.MpInverseBasic</a>
 </li>
+        <li><a href="source/molass_legacy.Tutorials.pythonRotate.html#module-molass_legacy.Tutorials.pythonRotate">molass_legacy.Tutorials.pythonRotate</a>
+</li>
         <li><a href="source/molass_legacy.Tutorials.SvdAnimation.html#module-molass_legacy.Tutorials.SvdAnimation">molass_legacy.Tutorials.SvdAnimation</a>
 </li>
         <li><a href="source/molass_legacy.Tutorials.VoxelFFT.html#module-molass_legacy.Tutorials.VoxelFFT">molass_legacy.Tutorials.VoxelFFT</a>
@@ -14058,6 +14306,8 @@ document.write(`
         <li><a href="source/molass_legacy.Wave.ScatteringN.html#module-molass_legacy.Wave.ScatteringN">molass_legacy.Wave.ScatteringN</a>
 </li>
       </ul></li>
+      <li><a href="source/molass_legacy.Solvers.Registry.html#molass_legacy.Solvers.Registry.SolverEntry.module">module (SolverEntry attribute)</a>
+</li>
       <li>
     molass_legacy
 
@@ -14602,6 +14852,13 @@ document.write(`
 
       <ul>
         <li><a href="source/molass_legacy.Batch.FullBatch.html#module-molass_legacy.Batch.FullBatch">module</a>
+</li>
+      </ul></li>
+      <li>
+    molass_legacy.Batch.HeadlessPeakEditor
+
+      <ul>
+        <li><a href="source/molass_legacy.Batch.HeadlessPeakEditor.html#module-molass_legacy.Batch.HeadlessPeakEditor">module</a>
 </li>
       </ul></li>
       <li>
@@ -15305,6 +15562,13 @@ document.write(`
 </li>
       </ul></li>
       <li>
+    molass_legacy.Estimators.CedmEstimator
+
+      <ul>
+        <li><a href="source/molass_legacy.Estimators.CedmEstimator.html#module-molass_legacy.Estimators.CedmEstimator">module</a>
+</li>
+      </ul></li>
+      <li>
     molass_legacy.Estimators.EdmEstimator
 
       <ul>
@@ -15333,10 +15597,24 @@ document.write(`
 </li>
       </ul></li>
       <li>
+    molass_legacy.Estimators.GrmEstimator
+
+      <ul>
+        <li><a href="source/molass_legacy.Estimators.GrmEstimator.html#module-molass_legacy.Estimators.GrmEstimator">module</a>
+</li>
+      </ul></li>
+      <li>
     molass_legacy.Estimators.LjEghEstimator
 
       <ul>
         <li><a href="source/molass_legacy.Estimators.LjEghEstimator.html#module-molass_legacy.Estimators.LjEghEstimator">module</a>
+</li>
+      </ul></li>
+      <li>
+    molass_legacy.Estimators.LkmEstimator
+
+      <ul>
+        <li><a href="source/molass_legacy.Estimators.LkmEstimator.html#module-molass_legacy.Estimators.LkmEstimator">module</a>
 </li>
       </ul></li>
       <li>
@@ -15829,6 +16107,20 @@ document.write(`
 
       <ul>
         <li><a href="source/molass_legacy.GuinierTools.CompareGdevMeasures.html#module-molass_legacy.GuinierTools.CompareGdevMeasures">module</a>
+</li>
+      </ul></li>
+      <li>
+    molass_legacy.GuinierTools.CpdDecompDirect
+
+      <ul>
+        <li><a href="source/molass_legacy.GuinierTools.CpdDecompDirect.html#module-molass_legacy.GuinierTools.CpdDecompDirect">module</a>
+</li>
+      </ul></li>
+      <li>
+    molass_legacy.GuinierTools.CpdDecompIndirectImpl
+
+      <ul>
+        <li><a href="source/molass_legacy.GuinierTools.CpdDecompIndirectImpl.html#module-molass_legacy.GuinierTools.CpdDecompIndirectImpl">module</a>
 </li>
       </ul></li>
       <li>
@@ -16567,13 +16859,6 @@ document.write(`
 </li>
       </ul></li>
       <li>
-    molass_legacy.KekLib.OurImageIO
-
-      <ul>
-        <li><a href="source/molass_legacy.KekLib.OurImageIO.html#module-molass_legacy.KekLib.OurImageIO">module</a>
-</li>
-      </ul></li>
-      <li>
     molass_legacy.KekLib.OurImporter
 
       <ul>
@@ -17061,6 +17346,13 @@ document.write(`
 
       <ul>
         <li><a href="source/molass_legacy.Kratky.GuinierKratkyPlots.html#module-molass_legacy.Kratky.GuinierKratkyPlots">module</a>
+</li>
+      </ul></li>
+      <li>
+    molass_legacy.Kratky.GuinierKratkyView
+
+      <ul>
+        <li><a href="source/molass_legacy.Kratky.GuinierKratkyView.html#module-molass_legacy.Kratky.GuinierKratkyView">module</a>
 </li>
       </ul></li>
       <li>
@@ -17652,6 +17944,27 @@ document.write(`
 </li>
       </ul></li>
       <li>
+    molass_legacy.ModelParams.CedmParams
+
+      <ul>
+        <li><a href="source/molass_legacy.ModelParams.CedmParams.html#module-molass_legacy.ModelParams.CedmParams">module</a>
+</li>
+      </ul></li>
+      <li>
+    molass_legacy.ModelParams.CedmParamsSheet
+
+      <ul>
+        <li><a href="source/molass_legacy.ModelParams.CedmParamsSheet.html#module-molass_legacy.ModelParams.CedmParamsSheet">module</a>
+</li>
+      </ul></li>
+      <li>
+    molass_legacy.ModelParams.CedmSliderInfo
+
+      <ul>
+        <li><a href="source/molass_legacy.ModelParams.CedmSliderInfo.html#module-molass_legacy.ModelParams.CedmSliderInfo">module</a>
+</li>
+      </ul></li>
+      <li>
     molass_legacy.ModelParams.EdmParams
 
       <ul>
@@ -17715,10 +18028,45 @@ document.write(`
 </li>
       </ul></li>
       <li>
+    molass_legacy.ModelParams.GrmParams
+
+      <ul>
+        <li><a href="source/molass_legacy.ModelParams.GrmParams.html#module-molass_legacy.ModelParams.GrmParams">module</a>
+</li>
+      </ul></li>
+      <li>
+    molass_legacy.ModelParams.GrmParamsSheet
+
+      <ul>
+        <li><a href="source/molass_legacy.ModelParams.GrmParamsSheet.html#module-molass_legacy.ModelParams.GrmParamsSheet">module</a>
+</li>
+      </ul></li>
+      <li>
     molass_legacy.ModelParams.LjEghParamsSheet
 
       <ul>
         <li><a href="source/molass_legacy.ModelParams.LjEghParamsSheet.html#module-molass_legacy.ModelParams.LjEghParamsSheet">module</a>
+</li>
+      </ul></li>
+      <li>
+    molass_legacy.ModelParams.LkmParams
+
+      <ul>
+        <li><a href="source/molass_legacy.ModelParams.LkmParams.html#module-molass_legacy.ModelParams.LkmParams">module</a>
+</li>
+      </ul></li>
+      <li>
+    molass_legacy.ModelParams.LkmParamsSheet
+
+      <ul>
+        <li><a href="source/molass_legacy.ModelParams.LkmParamsSheet.html#module-molass_legacy.ModelParams.LkmParamsSheet">module</a>
+</li>
+      </ul></li>
+      <li>
+    molass_legacy.ModelParams.LkmSliderInfo
+
+      <ul>
+        <li><a href="source/molass_legacy.ModelParams.LkmSliderInfo.html#module-molass_legacy.ModelParams.LkmSliderInfo">module</a>
 </li>
       </ul></li>
       <li>
@@ -17740,6 +18088,13 @@ document.write(`
 
       <ul>
         <li><a href="source/molass_legacy.ModelParams.ParamsSheetBase.html#module-molass_legacy.ModelParams.ParamsSheetBase">module</a>
+</li>
+      </ul></li>
+      <li>
+    molass_legacy.ModelParams.ParamsTypeBase
+
+      <ul>
+        <li><a href="source/molass_legacy.ModelParams.ParamsTypeBase.html#module-molass_legacy.ModelParams.ParamsTypeBase">module</a>
 </li>
       </ul></li>
       <li>
@@ -18016,6 +18371,13 @@ document.write(`
 </li>
       </ul></li>
       <li>
+    molass_legacy.ObjectiveFunctions.G0367
+
+      <ul>
+        <li><a href="source/molass_legacy.ObjectiveFunctions.G0367.html#module-molass_legacy.ObjectiveFunctions.G0367">module</a>
+</li>
+      </ul></li>
+      <li>
     molass_legacy.ObjectiveFunctions.G0525
 
       <ul>
@@ -18044,10 +18406,45 @@ document.write(`
 </li>
       </ul></li>
       <li>
+    molass_legacy.ObjectiveFunctions.G1200
+
+      <ul>
+        <li><a href="source/molass_legacy.ObjectiveFunctions.G1200.html#module-molass_legacy.ObjectiveFunctions.G1200">module</a>
+</li>
+      </ul></li>
+      <li>
+    molass_legacy.ObjectiveFunctions.G1300
+
+      <ul>
+        <li><a href="source/molass_legacy.ObjectiveFunctions.G1300.html#module-molass_legacy.ObjectiveFunctions.G1300">module</a>
+</li>
+      </ul></li>
+      <li>
+    molass_legacy.ObjectiveFunctions.G1400
+
+      <ul>
+        <li><a href="source/molass_legacy.ObjectiveFunctions.G1400.html#module-molass_legacy.ObjectiveFunctions.G1400">module</a>
+</li>
+      </ul></li>
+      <li>
+    molass_legacy.ObjectiveFunctions.G1500
+
+      <ul>
+        <li><a href="source/molass_legacy.ObjectiveFunctions.G1500.html#module-molass_legacy.ObjectiveFunctions.G1500">module</a>
+</li>
+      </ul></li>
+      <li>
     molass_legacy.ObjectiveFunctions.G2010
 
       <ul>
         <li><a href="source/molass_legacy.ObjectiveFunctions.G2010.html#module-molass_legacy.ObjectiveFunctions.G2010">module</a>
+</li>
+      </ul></li>
+      <li>
+    molass_legacy.ObjectiveFunctions.G2020
+
+      <ul>
+        <li><a href="source/molass_legacy.ObjectiveFunctions.G2020.html#module-molass_legacy.ObjectiveFunctions.G2020">module</a>
 </li>
       </ul></li>
       <li>
@@ -18156,6 +18553,13 @@ document.write(`
 </li>
       </ul></li>
       <li>
+    molass_legacy.Optimizer.Compatibility
+
+      <ul>
+        <li><a href="source/molass_legacy.Optimizer.Compatibility.html#module-molass_legacy.Optimizer.Compatibility">module</a>
+</li>
+      </ul></li>
+      <li>
     molass_legacy.Optimizer.ComplementaryView
 
       <ul>
@@ -18177,6 +18581,13 @@ document.write(`
 </li>
       </ul></li>
       <li>
+    molass_legacy.Optimizer.DsetsDebug
+
+      <ul>
+        <li><a href="source/molass_legacy.Optimizer.DsetsDebug.html#module-molass_legacy.Optimizer.DsetsDebug">module</a>
+</li>
+      </ul></li>
+      <li>
     molass_legacy.Optimizer.EghGradient
 
       <ul>
@@ -18195,13 +18606,6 @@ document.write(`
 
       <ul>
         <li><a href="source/molass_legacy.Optimizer.FactorCurvePlot.html#module-molass_legacy.Optimizer.FactorCurvePlot">module</a>
-</li>
-      </ul></li>
-      <li>
-    molass_legacy.Optimizer.FixedBaselineOptimizer
-
-      <ul>
-        <li><a href="source/molass_legacy.Optimizer.FixedBaselineOptimizer.html#module-molass_legacy.Optimizer.FixedBaselineOptimizer">module</a>
 </li>
       </ul></li>
       <li>
@@ -18324,6 +18728,13 @@ document.write(`
 </li>
       </ul></li>
       <li>
+    molass_legacy.Optimizer.InProcessRunner
+
+      <ul>
+        <li><a href="source/molass_legacy.Optimizer.InProcessRunner.html#module-molass_legacy.Optimizer.InProcessRunner">module</a>
+</li>
+      </ul></li>
+      <li>
     molass_legacy.Optimizer.IntegerRatios
 
       <ul>
@@ -18377,6 +18788,13 @@ document.write(`
 
       <ul>
         <li><a href="source/molass_legacy.Optimizer.ModifyStateDialog.html#module-molass_legacy.Optimizer.ModifyStateDialog">module</a>
+</li>
+      </ul></li>
+      <li>
+    molass_legacy.Optimizer.MolassIntegration
+
+      <ul>
+        <li><a href="source/molass_legacy.Optimizer.MolassIntegration.html#module-molass_legacy.Optimizer.MolassIntegration">module</a>
 </li>
       </ul></li>
       <li>
@@ -18688,13 +19106,6 @@ document.write(`
 </li>
       </ul></li>
       <li>
-    molass_legacy.Optimizer.StrategicOptimizer
-
-      <ul>
-        <li><a href="source/molass_legacy.Optimizer.StrategicOptimizer.html#module-molass_legacy.Optimizer.StrategicOptimizer">module</a>
-</li>
-      </ul></li>
-      <li>
     molass_legacy.Optimizer.StrategyEditor
 
       <ul>
@@ -18793,13 +19204,6 @@ document.write(`
 </li>
       </ul></li>
       <li>
-    molass_legacy.Particles.SmcSolver
-
-      <ul>
-        <li><a href="source/molass_legacy.Particles.SmcSolver.html#module-molass_legacy.Particles.SmcSolver">module</a>
-</li>
-      </ul></li>
-      <li>
     molass_legacy.Pdb
 
       <ul>
@@ -18832,6 +19236,13 @@ document.write(`
 
       <ul>
         <li><a href="source/molass_legacy.Peaks.html#module-molass_legacy.Peaks">module</a>
+</li>
+      </ul></li>
+      <li>
+    molass_legacy.Peaks.ComponentsView
+
+      <ul>
+        <li><a href="source/molass_legacy.Peaks.ComponentsView.html#module-molass_legacy.Peaks.ComponentsView">module</a>
 </li>
       </ul></li>
       <li>
@@ -19766,13 +20177,6 @@ document.write(`
 </li>
       </ul></li>
       <li>
-    molass_legacy.RgProcess.RgAnalysis
-
-      <ul>
-        <li><a href="source/molass_legacy.RgProcess.RgAnalysis.html#module-molass_legacy.RgProcess.RgAnalysis">module</a>
-</li>
-      </ul></li>
-      <li>
     molass_legacy.RgProcess.RgCurve
 
       <ul>
@@ -19798,13 +20202,6 @@ document.write(`
 
       <ul>
         <li><a href="source/molass_legacy.RgProcess.RgCurveUtils.html#module-molass_legacy.RgProcess.RgCurveUtils">module</a>
-</li>
-      </ul></li>
-      <li>
-    molass_legacy.RgProcess.RgManager
-
-      <ul>
-        <li><a href="source/molass_legacy.RgProcess.RgManager.html#module-molass_legacy.RgProcess.RgManager">module</a>
 </li>
       </ul></li>
       <li>
@@ -20001,6 +20398,13 @@ document.write(`
 
       <ul>
         <li><a href="source/molass_legacy.SecTheory.ColumnIllust.html#module-molass_legacy.SecTheory.ColumnIllust">module</a>
+</li>
+      </ul></li>
+      <li>
+    molass_legacy.SecTheory.compare_grm_to_emg
+
+      <ul>
+        <li><a href="source/molass_legacy.SecTheory.compare_grm_to_emg.html#module-molass_legacy.SecTheory.compare_grm_to_emg">module</a>
 </li>
       </ul></li>
       <li>
@@ -21334,6 +21738,13 @@ document.write(`
 </li>
       </ul></li>
       <li>
+    molass_legacy.Solvers.Registry
+
+      <ul>
+        <li><a href="source/molass_legacy.Solvers.Registry.html#module-molass_legacy.Solvers.Registry">module</a>
+</li>
+      </ul></li>
+      <li>
     molass_legacy.SSDC
 
       <ul>
@@ -21415,13 +21826,6 @@ document.write(`
 
       <ul>
         <li><a href="source/molass_legacy.SymPy.html#module-molass_legacy.SymPy">module</a>
-</li>
-      </ul></li>
-      <li>
-    molass_legacy.SymPy.StochasticUtils
-
-      <ul>
-        <li><a href="source/molass_legacy.SymPy.StochasticUtils.html#module-molass_legacy.SymPy.StochasticUtils">module</a>
 </li>
       </ul></li>
       <li>
@@ -22188,6 +22592,13 @@ document.write(`
 </li>
       </ul></li>
       <li>
+    molass_legacy.Tutorials.pythonRotate
+
+      <ul>
+        <li><a href="source/molass_legacy.Tutorials.pythonRotate.html#module-molass_legacy.Tutorials.pythonRotate">module</a>
+</li>
+      </ul></li>
+      <li>
     molass_legacy.Tutorials.SvdAnimation
 
       <ul>
@@ -22513,8 +22924,6 @@ document.write(`
         <li><a href="source/molass_legacy.GuinierAnalyzer.GuinierDiffViewer.html#molass_legacy.GuinierAnalyzer.GuinierDiffViewer.ElutionCurveFrame.move">(ElutionCurveFrame method)</a>
 </li>
       </ul></li>
-      <li><a href="source/molass_legacy.RgProcess.RgAnalysis.html#molass_legacy.RgProcess.RgAnalysis.RgAnalysisDialog.move_step">move_step() (RgAnalysisDialog method)</a>
-</li>
       <li><a href="source/molass_legacy.KekLib.ListingFrame.html#molass_legacy.KekLib.ListingFrame.ListingFrame.move_to_target">move_to_target() (ListingFrame method)</a>
 </li>
       <li><a href="source/molass_legacy.KekLib.ListingFrame.html#molass_legacy.KekLib.ListingFrame.ListingFrame.move_widget_image">move_widget_image() (ListingFrame method)</a>
@@ -22599,8 +23008,6 @@ document.write(`
 </li>
       <li><a href="source/molass_legacy.LRF.regals.html#molass_legacy.LRF.regals.mixture.Nc">Nc (mixture property)</a>
 </li>
-      <li><a href="source/molass_legacy.Optimizer.OptStrategyDialog.html#molass_legacy.Optimizer.OptStrategyDialog.OptStrategyDialog.nc_option_tracer">nc_option_tracer() (OptStrategyDialog method)</a>
-</li>
       <li><a href="source/molass_legacy.KekLib.ThreeDimUtils.html#molass_legacy.KekLib.ThreeDimUtils.neaten_axes">neaten_axes() (in module molass_legacy.KekLib.ThreeDimUtils)</a>
 </li>
       <li><a href="source/molass_legacy.LRF.LrfInfo.html#molass_legacy.LRF.LrfInfo.LrfInfo.need_bq">need_bq() (LrfInfo method)</a>
@@ -22661,10 +23068,10 @@ document.write(`
 </li>
       <li><a href="source/molass_legacy.Rgg.RggUtils.html#molass_legacy.Rgg.RggUtils.normal_pdf">normal_pdf() (in module molass_legacy.Rgg.RggUtils)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="source/molass_legacy.Test.TesterMiscellaneous.html#molass_legacy.Test.TesterMiscellaneous.NormalInput">NormalInput (class in molass_legacy.Test.TesterMiscellaneous)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="source/molass_legacy.Microfluidics.ConcNormalizerDialog.html#molass_legacy.Microfluidics.ConcNormalizerDialog.ConcNormalizerDialog.normalize">normalize() (ConcNormalizerDialog method)</a>
 
       <ul>
@@ -22790,7 +23197,17 @@ document.write(`
 </li>
         <li><a href="source/molass_legacy.ObjectiveFunctions.G1100.html#molass_legacy.ObjectiveFunctions.G1100.G1100.objective_func">(G1100 method)</a>
 </li>
+        <li><a href="source/molass_legacy.ObjectiveFunctions.G1200.html#molass_legacy.ObjectiveFunctions.G1200.G1200.objective_func">(G1200 method)</a>
+</li>
+        <li><a href="source/molass_legacy.ObjectiveFunctions.G1300.html#molass_legacy.ObjectiveFunctions.G1300.G1300.objective_func">(G1300 method)</a>
+</li>
+        <li><a href="source/molass_legacy.ObjectiveFunctions.G1400.html#molass_legacy.ObjectiveFunctions.G1400.G1400.objective_func">(G1400 method)</a>
+</li>
+        <li><a href="source/molass_legacy.ObjectiveFunctions.G1500.html#molass_legacy.ObjectiveFunctions.G1500.G1500.objective_func">(G1500 method)</a>
+</li>
         <li><a href="source/molass_legacy.ObjectiveFunctions.G2010.html#molass_legacy.ObjectiveFunctions.G2010.G2010.objective_func">(G2010 method)</a>
+</li>
+        <li><a href="source/molass_legacy.ObjectiveFunctions.G2020.html#molass_legacy.ObjectiveFunctions.G2020.G2020.objective_func">(G2020 method)</a>
 </li>
         <li><a href="source/molass_legacy.Optimizer.FvSynthesisOptimizer.html#molass_legacy.Optimizer.FvSynthesisOptimizer.objective_func">(in module molass_legacy.Optimizer.FvSynthesisOptimizer)</a>
 </li>
@@ -22804,10 +23221,6 @@ document.write(`
       <li><a href="source/molass_legacy.Optimizer.BasicOptimizer.html#molass_legacy.Optimizer.BasicOptimizer.BasicOptimizer.objective_func_wrapper">objective_func_wrapper() (BasicOptimizer method)</a>
 
       <ul>
-        <li><a href="source/molass_legacy.Optimizer.FixedBaselineOptimizer.html#molass_legacy.Optimizer.FixedBaselineOptimizer.FixedBaselineOptimizer.objective_func_wrapper">(FixedBaselineOptimizer method)</a>
-</li>
-        <li><a href="source/molass_legacy.Optimizer.StrategicOptimizer.html#molass_legacy.Optimizer.StrategicOptimizer.StrategicOptimizer.objective_func_wrapper">(StrategicOptimizer method)</a>
-</li>
         <li><a href="source/molass_legacy.Optimizer.UvBaselineEstimator.html#molass_legacy.Optimizer.UvBaselineEstimator.UvBaselineEstimator.objective_func_wrapper">(UvBaselineEstimator method)</a>
 </li>
       </ul></li>
@@ -23007,10 +23420,10 @@ document.write(`
         <li><a href="source/molass_legacy.SerialAnalyzer.SpecialistOptions.html#molass_legacy.SerialAnalyzer.SpecialistOptions.SpecialistOptionsDialog.on_entry_xb_folder">(SpecialistOptionsDialog method)</a>
 </li>
       </ul></li>
-      <li><a href="source/molass_legacy.DENSS.DenssGui.html#molass_legacy.DENSS.DenssGui.DenssGuiDialog.on_fig_dnd">on_fig_dnd() (DenssGuiDialog method)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="source/molass_legacy.DENSS.DenssGui.html#molass_legacy.DENSS.DenssGui.DenssGuiDialog.on_fig_dnd">on_fig_dnd() (DenssGuiDialog method)</a>
+</li>
       <li><a href="source/molass_legacy.Trimming.DataRange.html#molass_legacy.Trimming.DataRange.DataRestrictor2dFrame.on_figure_click">on_figure_click() (DataRestrictor2dFrame method)</a>
 
       <ul>
@@ -23303,6 +23716,8 @@ document.write(`
 </li>
       <li><a href="source/molass_legacy.ModelParams.ParamsSheetBase.html#molass_legacy.ModelParams.ParamsSheetBase.ParamsSheetBase">ParamsSheetBase (class in molass_legacy.ModelParams.ParamsSheetBase)</a>
 </li>
+      <li><a href="source/molass_legacy.ModelParams.ParamsTypeBase.html#molass_legacy.ModelParams.ParamsTypeBase.ParamsTypeBase">ParamsTypeBase (class in molass_legacy.ModelParams.ParamsTypeBase)</a>
+</li>
       <li><a href="source/molass_legacy.ATSAS.CorMapAnalysis.html#molass_legacy.ATSAS.CorMapAnalysis.parse_saxs_dat_file">parse_saxs_dat_file() (in module molass_legacy.ATSAS.CorMapAnalysis)</a>
 </li>
       <li><a href="source/molass_legacy.SysArgs.html#molass_legacy.SysArgs.parse_sys_args">parse_sys_args() (in module molass_legacy.SysArgs)</a>
@@ -23352,6 +23767,8 @@ document.write(`
       <li><a href="source/molass_legacy.SecTheory.EdmDemo.html#molass_legacy.SecTheory.EdmDemo.peak_fronting_demo_3d">peak_fronting_demo_3d() (in module molass_legacy.SecTheory.EdmDemo)</a>
 </li>
       <li><a href="source/molass_legacy.SerialAnalyzer.ElutionCurve.html#molass_legacy.SerialAnalyzer.ElutionCurve.ElutionCurve.peak_no_from_range">peak_no_from_range() (ElutionCurve method)</a>
+</li>
+      <li><a href="source/molass_legacy.Optimizer.OptStrategyDialog.html#molass_legacy.Optimizer.OptStrategyDialog.OptStrategyDialog.peak_recog_method_tracer">peak_recog_method_tracer() (OptStrategyDialog method)</a>
 </li>
       <li><a href="source/molass_legacy.SecTheory.EdmDemo.html#molass_legacy.SecTheory.EdmDemo.peak_tailing_demo">peak_tailing_demo() (in module molass_legacy.SecTheory.EdmDemo)</a>
 </li>
@@ -23569,6 +23986,8 @@ document.write(`
 </li>
       <li><a href="source/molass_legacy.Extrapolation.RangeInspector.html#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.plot_distinction">plot_distinction() (RangeInspectorDialog method)</a>
 </li>
+      <li><a href="source/molass_legacy.Optimizer.DsetsDebug.html#molass_legacy.Optimizer.DsetsDebug.plot_dsets_comparison">plot_dsets_comparison() (in module molass_legacy.Optimizer.DsetsDebug)</a>
+</li>
       <li><a href="source/molass_legacy.SecTheory.ShapeRgFigure.html#molass_legacy.SecTheory.ShapeRgFigure.plot_ellipsoid">plot_ellipsoid() (in module molass_legacy.SecTheory.ShapeRgFigure)</a>
 </li>
       <li><a href="source/molass_legacy.SecTheory.ShapeRgFigure.html#molass_legacy.SecTheory.ShapeRgFigure.plot_ellipsoid_rg_ratio">plot_ellipsoid_rg_ratio() (in module molass_legacy.SecTheory.ShapeRgFigure)</a>
@@ -23636,6 +24055,8 @@ document.write(`
       <li><a href="source/molass_legacy.Rgg.UvAdjuster.html#molass_legacy.Rgg.UvAdjuster.UvAdjuster.plot_mapped_uv">plot_mapped_uv() (UvAdjuster method)</a>
 </li>
       <li><a href="source/molass_legacy.QuickAnalysis.ModeledPeaksTester.html#molass_legacy.QuickAnalysis.ModeledPeaksTester.plot_modeled_peaks">plot_modeled_peaks() (in module molass_legacy.QuickAnalysis.ModeledPeaksTester)</a>
+</li>
+      <li><a href="source/molass_legacy.Optimizer.DsetsDebug.html#molass_legacy.Optimizer.DsetsDebug.plot_mp_b_sweep">plot_mp_b_sweep() (in module molass_legacy.Optimizer.DsetsDebug)</a>
 </li>
       <li><a href="source/molass_legacy.Extrapolation.ConcOptsDialog.html#molass_legacy.Extrapolation.ConcOptsDialog.ConcOptsDialog.plot_normalized_curves">plot_normalized_curves() (ConcOptsDialog method)</a>
 </li>
@@ -23790,8 +24211,6 @@ document.write(`
 </li>
         <li><a href="source/molass_legacy.Prob.DiscretePdf.html#molass_legacy.Prob.DiscretePdf.DiscretePdf.prepare">(DiscretePdf method)</a>
 </li>
-        <li><a href="source/molass_legacy.Optimizer.FixedBaselineOptimizer.html#molass_legacy.Optimizer.FixedBaselineOptimizer.FixedBaselineOptimizer.prepare">(FixedBaselineOptimizer method)</a>
-</li>
         <li><a href="source/molass_legacy.Batch.FullBatch.html#molass_legacy.Batch.FullBatch.FullBatch.prepare">(FullBatch method)</a>
 </li>
         <li><a href="source/molass_legacy.DataStructure.InputData.html#molass_legacy.DataStructure.InputData.InputData.prepare">(InputData method)</a>
@@ -23821,6 +24240,12 @@ document.write(`
 </li>
       <li><a href="source/molass_legacy.Optimizer.JobStateInfo.html#molass_legacy.Optimizer.JobStateInfo.JobStateInfo.prepare_for_demo">prepare_for_demo() (JobStateInfo method)</a>
 </li>
+      <li><a href="source/molass_legacy.Optimizer.BasicOptimizer.html#molass_legacy.Optimizer.BasicOptimizer.BasicOptimizer.prepare_for_free_indices">prepare_for_free_indices() (BasicOptimizer method)</a>
+</li>
+      <li><a href="source/molass_legacy.Optimizer.BasicOptimizer.html#molass_legacy.Optimizer.BasicOptimizer.BasicOptimizer.prepare_for_frozen_groups">prepare_for_frozen_groups() (BasicOptimizer method)</a>
+</li>
+      <li><a href="source/molass_legacy.Optimizer.BasicOptimizer.html#molass_legacy.Optimizer.BasicOptimizer.BasicOptimizer.prepare_for_frozen_optimization">prepare_for_frozen_optimization() (BasicOptimizer method)</a>
+</li>
       <li><a href="source/molass_legacy.Batch.DataBridge.html#molass_legacy.Batch.DataBridge.DataBridge.prepare_for_lrf_source">prepare_for_lrf_source() (DataBridge method)</a>
 </li>
       <li><a href="source/molass_legacy.DataStructure.InputData.html#molass_legacy.DataStructure.InputData.InputData.prepare_for_mf">prepare_for_mf() (InputData method)</a>
@@ -23832,6 +24257,8 @@ document.write(`
 </li>
       </ul></li>
       <li><a href="source/molass_legacy.DataStructure.InputData.html#molass_legacy.DataStructure.InputData.InputData.prepare_for_sec">prepare_for_sec() (InputData method)</a>
+</li>
+      <li><a href="source/molass_legacy.Optimizer.BasicOptimizer.html#molass_legacy.Optimizer.BasicOptimizer.BasicOptimizer.prepare_for_xr_only_optimization">prepare_for_xr_only_optimization() (BasicOptimizer method)</a>
 </li>
       <li><a href="source/molass_legacy.DENSS.DenssGui.html#molass_legacy.DENSS.DenssGui.DenssGuiDialog.prepare_from_args">prepare_from_args() (DenssGuiDialog method)</a>
 </li>
@@ -24137,8 +24564,6 @@ document.write(`
 </li>
       <li><a href="source/molass_legacy.KekLib.TkUtils.html#molass_legacy.KekLib.TkUtils.rational_geometry">rational_geometry() (in module molass_legacy.KekLib.TkUtils)</a>
 </li>
-      <li><a href="source/molass_legacy.SymPy.StochasticUtils.html#molass_legacy.SymPy.StochasticUtils.raw_moment">raw_moment() (in module molass_legacy.SymPy.StochasticUtils)</a>
-</li>
       <li><a href="source/molass_legacy.DataStructure.RawData.html#molass_legacy.DataStructure.RawData.RawMatrix">RawMatrix (class in molass_legacy.DataStructure.RawData)</a>
 </li>
       <li><a href="source/molass_legacy.DataStructure.RawData.html#molass_legacy.DataStructure.RawData.RawUv">RawUv (class in molass_legacy.DataStructure.RawData)</a>
@@ -24214,6 +24639,10 @@ document.write(`
       <li><a href="source/molass_legacy.Mapping.PeakMapper.html#molass_legacy.Mapping.PeakMapper.PeakMapper.reconstruct_curves_simple">reconstruct_curves_simple() (PeakMapper method)</a>
 </li>
       <li><a href="source/molass_legacy.UV.FoldednessDemo.html#molass_legacy.UV.FoldednessDemo.reconstruct_optimizer">reconstruct_optimizer() (in module molass_legacy.UV.FoldednessDemo)</a>
+</li>
+      <li><a href="source/molass_legacy.Optimizer.DsetsDebug.html#molass_legacy.Optimizer.DsetsDebug.reconstruct_subprocess_dsets">reconstruct_subprocess_dsets() (in module molass_legacy.Optimizer.DsetsDebug)</a>
+</li>
+      <li><a href="source/molass_legacy.Optimizer.DsetsDebug.html#molass_legacy.Optimizer.DsetsDebug.reconstruct_subprocess_optimizer">reconstruct_subprocess_optimizer() (in module molass_legacy.Optimizer.DsetsDebug)</a>
 </li>
       <li><a href="source/molass_legacy.Decomposer.ElutionDecomposer.html#molass_legacy.Decomposer.ElutionDecomposer.ElutionDecomposer.rectify_peaks">rectify_peaks() (ElutionDecomposer method)</a>
 </li>
@@ -24355,11 +24784,7 @@ document.write(`
 </li>
       <li><a href="source/molass_legacy.KekLib.TkTester.html#molass_legacy.KekLib.TkTester.reply_yes">reply_yes() (in module molass_legacy.KekLib.TkTester)</a>
 </li>
-      <li><a href="source/molass_legacy.RgProcess.RgAnalysis.html#molass_legacy.RgProcess.RgAnalysis.RgAnalysisDialog.report_callback_exception">report_callback_exception() (RgAnalysisDialog method)</a>
-</li>
       <li><a href="source/molass_legacy.DataStructure.AnalysisRangeInfo.html#molass_legacy.DataStructure.AnalysisRangeInfo.report_ranges_from_analysis_ranges">report_ranges_from_analysis_ranges() (in module molass_legacy.DataStructure.AnalysisRangeInfo)</a>
-</li>
-      <li><a href="source/molass_legacy.RgProcess.RgAnalysis.html#molass_legacy.RgProcess.RgAnalysis.RgAnalysisDialog.reraw">reraw() (RgAnalysisDialog method)</a>
 </li>
       <li><a href="source/molass_legacy.KekLib.TkTableWrapper.html#molass_legacy.KekLib.TkTableWrapper.Table.reread">reread() (Table method)</a>
 </li>
@@ -24521,8 +24946,6 @@ document.write(`
 </li>
       <li><a href="source/molass_legacy.RgProcess.RgCurve.html#molass_legacy.RgProcess.RgCurve.rg_folder_ok_stamp_path">rg_folder_ok_stamp_path() (in module molass_legacy.RgProcess.RgCurve)</a>
 </li>
-      <li><a href="source/molass_legacy.RgProcess.RgAnalysis.html#molass_legacy.RgProcess.RgAnalysis.RgAnalysisDialog">RgAnalysisDialog (class in molass_legacy.RgProcess.RgAnalysis)</a>
-</li>
       <li><a href="source/molass_legacy.KekLib.ExcelCOM.html#molass_legacy.KekLib.ExcelCOM.RGB">RGB() (in module molass_legacy.KekLib.ExcelCOM)</a>
 </li>
       <li><a href="source/molass_legacy.Selective.MinimizerUtils.html#molass_legacy.Selective.MinimizerUtils.RgComputer">RgComputer (class in molass_legacy.Selective.MinimizerUtils)</a>
@@ -24542,8 +24965,6 @@ document.write(`
       <li><a href="source/molass_legacy.ModelParams.SeccolFunctions.html#molass_legacy.ModelParams.SeccolFunctions.rgfit_secconf_eval">rgfit_secconf_eval() (in module molass_legacy.ModelParams.SeccolFunctions)</a>
 </li>
       <li><a href="source/molass_legacy.SecTheory.LocalOptimizer.html#molass_legacy.SecTheory.LocalOptimizer.RgInfo">RgInfo (class in molass_legacy.SecTheory.LocalOptimizer)</a>
-</li>
-      <li><a href="source/molass_legacy.RgProcess.RgManager.html#molass_legacy.RgProcess.RgManager.RgManager">RgManager (class in molass_legacy.RgProcess.RgManager)</a>
 </li>
       <li><a href="source/molass_legacy.Rgg.RgRefiner.html#molass_legacy.Rgg.RgRefiner.RgRefiner">RgRefiner (class in molass_legacy.Rgg.RgRefiner)</a>
 </li>
@@ -24626,8 +25047,6 @@ document.write(`
 </li>
         <li><a href="source/molass_legacy.LRF.regals.html#molass_legacy.LRF.regals.regals.run">(regals method)</a>
 </li>
-        <li><a href="source/molass_legacy.RgProcess.RgManager.html#molass_legacy.RgProcess.RgManager.RgManager.run">(RgManager method)</a>
-</li>
         <li><a href="source/molass_legacy.SerialAnalyzer.SerialController.html#molass_legacy.SerialAnalyzer.SerialController.SerialExecuter.run">(SerialExecuter method)</a>
 </li>
         <li><a href="source/molass_legacy.QuickAnalysis.ModeledPeaksTester.html#molass_legacy.QuickAnalysis.ModeledPeaksTester.TestDialog.run">(TestDialog method)</a>
@@ -24700,6 +25119,8 @@ document.write(`
 </li>
       </ul></li>
       <li><a href="source/molass_legacy.Optimizer.Scripting.html#molass_legacy.Optimizer.Scripting.run_optimizer">run_optimizer() (in module molass_legacy.Optimizer.Scripting)</a>
+</li>
+      <li><a href="source/molass_legacy.Optimizer.InProcessRunner.html#molass_legacy.Optimizer.InProcessRunner.run_optimizer_in_process">run_optimizer_in_process() (in module molass_legacy.Optimizer.InProcessRunner)</a>
 </li>
       <li><a href="source/molass_legacy.GuiParts.FileInfoTable.html#molass_legacy.GuiParts.FileInfoTable.FileInfoTable.run_simple_guinier_animation">run_simple_guinier_animation() (FileInfoTable method)</a>
 </li>
@@ -24780,8 +25201,6 @@ document.write(`
 </li>
         <li><a href="source/molass_legacy.Reports.GuinierAnalysisResultBook.html#molass_legacy.Reports.GuinierAnalysisResultBook.GuinierAnalysisResultBook.save">(GuinierAnalysisResultBook method)</a>
 </li>
-        <li><a href="source/molass_legacy.KekLib.OurImageIO.html#molass_legacy.KekLib.OurImageIO.Image.save">(Image method)</a>
-</li>
         <li><a href="source/molass_legacy.Tutorials.LinTranAnim.html#molass_legacy.Tutorials.LinTranAnim.LinTranAnim.save">(LinTranAnim method)</a>
 </li>
         <li><a href="source/molass_legacy.KekLib.MinimalTiff.html#molass_legacy.KekLib.MinimalTiff.MinimalTiff.save">(MinimalTiff method)</a>
@@ -24860,8 +25279,6 @@ document.write(`
       <li><a href="source/molass_legacy.Optimizer.StateSequence.html#molass_legacy.Optimizer.StateSequence.save_opt_params">save_opt_params() (in module molass_legacy.Optimizer.StateSequence)</a>
 </li>
       <li><a href="source/molass_legacy.Extrapolation.ExtrapolSolverDialog.html#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.save_results">save_results() (ExtrapolSolverDialog method)</a>
-</li>
-      <li><a href="source/molass_legacy.Peaks.PeakEditor.html#molass_legacy.Peaks.PeakEditor.PeakEditor.save_rg_buffer">save_rg_buffer() (PeakEditor method)</a>
 </li>
       <li><a href="source/molass_legacy.AutorgKek.Settings.html#molass_legacy.AutorgKek.Settings.save_settings">save_settings() (in module molass_legacy.AutorgKek.Settings)</a>
 
@@ -25047,6 +25464,8 @@ document.write(`
 </li>
       <li><a href="source/molass_legacy.Trimming.TrimmingInfo.html#molass_legacy.Trimming.TrimmingInfo.seem_to_be_manually_trimmed">seem_to_be_manually_trimmed() (in module molass_legacy.Trimming.TrimmingInfo)</a>
 </li>
+      <li><a href="source/molass_legacy.GuinierTools.RgCurveUtils.html#molass_legacy.GuinierTools.RgCurveUtils.ValidBools.segment">segment (ValidBools attribute)</a>
+</li>
       <li><a href="source/molass_legacy.SerialAnalyzer.DraggablePoints.html#molass_legacy.SerialAnalyzer.DraggablePoints.DraggablePoints.select">select() (DraggablePoints method)</a>
 
       <ul>
@@ -25211,11 +25630,9 @@ document.write(`
 </li>
       <li><a href="source/molass_legacy.Saxs.EdPlotter.html#molass_legacy.Saxs.EdPlotter.EdPlotter.set_cubic_limits">set_cubic_limits() (EdPlotter method)</a>
 </li>
-      <li><a href="source/molass_legacy.KekLib.OurImageIO.html#molass_legacy.KekLib.OurImageIO.Image.set_data">set_data() (Image method)</a>
+      <li><a href="source/molass_legacy.Trimming.OutlineFigure.html#molass_legacy.Trimming.OutlineFigure.OutlineFigure.set_data">set_data() (OutlineFigure method)</a>
 
       <ul>
-        <li><a href="source/molass_legacy.Trimming.OutlineFigure.html#molass_legacy.Trimming.OutlineFigure.OutlineFigure.set_data">(OutlineFigure method)</a>
-</li>
         <li><a href="source/molass_legacy.SerialAnalyzer.SerialData.html#molass_legacy.SerialAnalyzer.SerialData.SerialData.set_data">(SerialData method)</a>
 </li>
       </ul></li>
@@ -25273,8 +25690,14 @@ document.write(`
         <li><a href="source/molass_legacy.KekLib.ProgressInfo.html#molass_legacy.KekLib.ProgressInfo.ProgressInfo.set_error">(ProgressInfo method)</a>
 </li>
       </ul></li>
-      <li><a href="source/molass_legacy.ModelParams.SdmParams.html#molass_legacy.ModelParams.SdmParams.SdmParams.set_estimator">set_estimator() (SdmParams method)</a>
+      <li><a href="source/molass_legacy.ModelParams.GrmParams.html#molass_legacy.ModelParams.GrmParams.GrmParams.set_estimator">set_estimator() (GrmParams method)</a>
+
+      <ul>
+        <li><a href="source/molass_legacy.ModelParams.LkmParams.html#molass_legacy.ModelParams.LkmParams.LkmParams.set_estimator">(LkmParams method)</a>
 </li>
+        <li><a href="source/molass_legacy.ModelParams.SdmParams.html#molass_legacy.ModelParams.SdmParams.SdmParams.set_estimator">(SdmParams method)</a>
+</li>
+      </ul></li>
       <li><a href="source/molass_legacy.Decomposer.FitRecord.html#molass_legacy.Decomposer.FitRecord.FitRecord.set_evaluator">set_evaluator() (FitRecord method)</a>
 </li>
       <li><a href="source/molass_legacy.KekLib.OurMatplotlib3D.html#molass_legacy.KekLib.OurMatplotlib3D.Inset2Din3D.set_event_handler">set_event_handler() (Inset2Din3D method)</a>
@@ -25285,13 +25708,15 @@ document.write(`
 </li>
       <li><a href="source/molass_legacy.ATSAS.AutoRg.html#molass_legacy.ATSAS.AutoRg.set_exe_array">set_exe_array() (in module molass_legacy.ATSAS.AutoRg)</a>
 </li>
-      <li><a href="source/molass_legacy.KekLib.OurImageIO.html#molass_legacy.KekLib.OurImageIO.Image.set_ext">set_ext() (Image method)</a>
-</li>
       <li><a href="source/molass_legacy.Decomposer.ElutionDecomposer.html#molass_legacy.Decomposer.ElutionDecomposer.ElutionDecomposer.set_fit_res_just_from_peaks">set_fit_res_just_from_peaks() (ElutionDecomposer method)</a>
 </li>
       <li><a href="source/molass_legacy.Microfluidics.MicrofluidicElution.html#molass_legacy.Microfluidics.MicrofluidicElution.MicrofluidicElution.set_flow_changes_as_a_temp_fix">set_flow_changes_as_a_temp_fix() (MicrofluidicElution method)</a>
 </li>
+      <li><a href="source/molass_legacy.Optimizer.BasicOptimizer.html#molass_legacy.Optimizer.BasicOptimizer.BasicOptimizer.set_free_param_indices">set_free_param_indices() (BasicOptimizer method)</a>
+</li>
       <li><a href="source/molass_legacy.Trimming.DataRange.html#molass_legacy.Trimming.DataRange.DataRestrictor2dFrame.set_from_opposite_data_info">set_from_opposite_data_info() (DataRestrictor2dFrame method)</a>
+</li>
+      <li><a href="source/molass_legacy.Optimizer.BasicOptimizer.html#molass_legacy.Optimizer.BasicOptimizer.BasicOptimizer.set_frozen_components">set_frozen_components() (BasicOptimizer method)</a>
 </li>
       <li><a href="source/molass_legacy.Selective.AdvancedFrame.html#molass_legacy.Selective.AdvancedFrame.AdvancedFrame.set_func_code_text">set_func_code_text() (AdvancedFrame method)</a>
 </li>
@@ -25314,8 +25739,6 @@ document.write(`
       <li><a href="source/molass_legacy.GuinierAnalyzer.SimpleGuinier.html#molass_legacy.GuinierAnalyzer.SimpleGuinier.SimpleGuinier.set_guinier_null_result">set_guinier_null_result() (SimpleGuinier method)</a>
 </li>
       <li><a href="source/molass_legacy.GuinierAnalyzer.SimpleGuinier.html#molass_legacy.GuinierAnalyzer.SimpleGuinier.SimpleGuinier.set_guinier_result">set_guinier_result() (SimpleGuinier method)</a>
-</li>
-      <li><a href="source/molass_legacy.KekLib.OurImageIO.html#molass_legacy.KekLib.OurImageIO.Image.set_header">set_header() (Image method)</a>
 </li>
       <li><a href="source/molass_legacy.KekLib.TkSupplements.html#molass_legacy.KekLib.TkSupplements.set_icon">set_icon() (in module molass_legacy.KekLib.TkSupplements)</a>
 </li>
@@ -25503,8 +25926,12 @@ document.write(`
 </li>
       <li><a href="source/molass_legacy.Optimizer.BackRunner.html#molass_legacy.Optimizer.BackRunner.BackRunner.set_work_folder">set_work_folder() (BackRunner method)</a>
 </li>
-      <li><a href="source/molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.EdmParams.set_x">set_x() (EdmParams method)</a>
+      <li><a href="source/molass_legacy.ModelParams.CedmParams.html#molass_legacy.ModelParams.CedmParams.CedmParams.set_x">set_x() (CedmParams method)</a>
+
+      <ul>
+        <li><a href="source/molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.EdmParams.set_x">(EdmParams method)</a>
 </li>
+      </ul></li>
       <li><a href="source/molass_legacy.Mapping.ElutionMapper.html#molass_legacy.Mapping.ElutionMapper.ElutionMapper.set_x_curve_update_callback">set_x_curve_update_callback() (ElutionMapper method)</a>
 </li>
       <li><a href="source/molass_legacy.Mapping.ElutionMapperAdjuster.html#molass_legacy.Mapping.ElutionMapperAdjuster.ElutionMapperAdjuster.set_xr_bpa_option">set_xr_bpa_option() (ElutionMapperAdjuster method)</a>
@@ -25512,6 +25939,8 @@ document.write(`
       <li><a href="source/molass_legacy.Processes.SharedInfo.html#molass_legacy.Processes.SharedInfo.SharedInfo.set_xr_data">set_xr_data() (SharedInfo method)</a>
 </li>
       <li><a href="source/molass_legacy.SecSaxs.DataSet.html#molass_legacy.SecSaxs.DataSet.DataSet.set_xr_dependents">set_xr_dependents() (DataSet method)</a>
+</li>
+      <li><a href="source/molass_legacy.Optimizer.BasicOptimizer.html#molass_legacy.Optimizer.BasicOptimizer.BasicOptimizer.set_xr_only">set_xr_only() (BasicOptimizer method)</a>
 </li>
       <li><a href="source/molass_legacy.KekLib.DDList.html#molass_legacy.KekLib.DDList.DDList.setCurrent">setCurrent() (DDList method)</a>
 
@@ -25522,6 +25951,8 @@ document.write(`
       <li><a href="source/molass_legacy.KekLib.FileTimeUtils.html#molass_legacy.KekLib.FileTimeUtils.setFileDateTimes">setFileDateTimes() (in module molass_legacy.KekLib.FileTimeUtils)</a>
 </li>
       <li><a href="source/molass_legacy.KekLib.DebugPlot.html#molass_legacy.KekLib.DebugPlot.setp">setp() (in module molass_legacy.KekLib.DebugPlot)</a>
+</li>
+      <li><a href="source/molass_legacy.Solvers.Registry.html#molass_legacy.Solvers.Registry.SolverEntry.settings_keys">settings_keys (SolverEntry attribute)</a>
 </li>
       <li><a href="source/molass_legacy.SerialAnalyzer.SettingsDialog.html#molass_legacy.SerialAnalyzer.SettingsDialog.SettingsDialog">SettingsDialog (class in molass_legacy.SerialAnalyzer.SettingsDialog)</a>
 </li>
@@ -25622,6 +26053,8 @@ document.write(`
 </li>
         <li><a href="source/molass_legacy.Optimizer.ComplementaryView.html#molass_legacy.Optimizer.ComplementaryView.ComplementaryView.show">(ComplementaryView method)</a>
 </li>
+        <li><a href="source/molass_legacy.Peaks.ComponentsView.html#molass_legacy.Peaks.ComponentsView.ComponentsView.show">(ComponentsView method)</a>
+</li>
         <li><a href="source/molass_legacy.Microfluidics.ConcNormalizerDialog.html#molass_legacy.Microfluidics.ConcNormalizerDialog.ConcNormalizerDialog.show">(ConcNormalizerDialog method)</a>
 </li>
         <li><a href="source/molass_legacy.Extrapolation.ConcOptsDialog.html#molass_legacy.Extrapolation.ConcOptsDialog.ConcOptsDialog.show">(ConcOptsDialog method)</a>
@@ -25711,6 +26144,8 @@ document.write(`
         <li><a href="source/molass_legacy.Trimming.GradualRegionAnalysis.html#molass_legacy.Trimming.GradualRegionAnalysis.GradualRegionAnalysis.show">(GradualRegionAnalysis method)</a>
 </li>
         <li><a href="source/molass_legacy.Kratky.GuinierKratkyPlots.html#molass_legacy.Kratky.GuinierKratkyPlots.GuinierKratkyPlots.show">(GuinierKratkyPlots method)</a>
+</li>
+        <li><a href="source/molass_legacy.Kratky.GuinierKratkyView.html#molass_legacy.Kratky.GuinierKratkyView.GuinierKratkyView.show">(GuinierKratkyView method)</a>
 </li>
         <li><a href="source/molass_legacy.SerialAnalyzer.GuinierProofPlot.html#molass_legacy.SerialAnalyzer.GuinierProofPlot.GuinierProofPlot.show">(GuinierProofPlot method)</a>
 </li>
@@ -25825,8 +26260,6 @@ document.write(`
         <li><a href="source/molass_legacy.Optimizer.ResidualView.html#molass_legacy.Optimizer.ResidualView.ResidualView.show">(ResidualView method)</a>
 </li>
         <li><a href="source/molass_legacy.Optimizer.ResultFolderSelector.html#molass_legacy.Optimizer.ResultFolderSelector.ResultFolderSelector.show">(ResultFolderSelector method)</a>
-</li>
-        <li><a href="source/molass_legacy.RgProcess.RgAnalysis.html#molass_legacy.RgProcess.RgAnalysis.RgAnalysisDialog.show">(RgAnalysisDialog method)</a>
 </li>
         <li><a href="source/molass_legacy.RgProcess.RgCurveComputer.html#molass_legacy.RgProcess.RgCurveComputer.RgCurveComputerDialog.show">(RgCurveComputerDialog method)</a>
 </li>
@@ -26229,6 +26662,8 @@ document.write(`
 </li>
       <li><a href="source/molass_legacy.Selective.VariedPropAnalysis.html#molass_legacy.Selective.VariedPropAnalysis.VariedPropAnalysis.show_rdr_chart">show_rdr_chart() (VariedPropAnalysis method)</a>, <a href="source/molass_legacy.V2PropOptimizer.VariedPropAnalysis.html#molass_legacy.V2PropOptimizer.VariedPropAnalysis.VariedPropAnalysis.show_rdr_chart">[1]</a>
 </li>
+      <li><a href="source/molass_legacy.Kratky.GuinierKratkyView.html#molass_legacy.Kratky.GuinierKratkyView.GuinierKratkyView.show_reducibility">show_reducibility() (GuinierKratkyView method)</a>
+</li>
       <li><a href="source/molass_legacy.RangeEditors.DecompEditorDialog.html#molass_legacy.RangeEditors.DecompEditorDialog.DecompEditorDialog.show_reset_from_log_dialog">show_reset_from_log_dialog() (DecompEditorDialog method)</a>
 
       <ul>
@@ -26330,6 +26765,8 @@ document.write(`
       <li><a href="source/molass_legacy.Saxs.SaxsSimulator.html#molass_legacy.Saxs.SaxsSimulator.SaxsSimulator.show_torus">show_torus() (SaxsSimulator method)</a>
 </li>
       <li><a href="source/molass_legacy.Optimizer.OptStrategyDialog.html#molass_legacy.Optimizer.OptStrategyDialog.OptStrategyDialog.show_trimming_figure">show_trimming_figure() (OptStrategyDialog method)</a>
+</li>
+      <li><a href="source/molass_legacy.Kratky.GuinierKratkyView.html#molass_legacy.Kratky.GuinierKratkyView.GuinierKratkyView.show_tutorial_figure">show_tutorial_figure() (GuinierKratkyView method)</a>
 </li>
       <li><a href="source/molass_legacy.Rank.RankView.html#molass_legacy.Rank.RankView.RankViewMenu.show_view_params_dialog">show_view_params_dialog() (RankViewMenu method)</a>
 </li>
@@ -26549,8 +26986,6 @@ document.write(`
 </li>
       <li><a href="source/molass_legacy.Prob.SmbMixture.html#molass_legacy.Prob.SmbMixture.SmbMixture">SmbMixture (class in molass_legacy.Prob.SmbMixture)</a>
 </li>
-      <li><a href="source/molass_legacy.Particles.SmcSolver.html#molass_legacy.Particles.SmcSolver.SmcSolver">SmcSolver (class in molass_legacy.Particles.SmcSolver)</a>
-</li>
       <li><a href="source/molass_legacy.Tools.EmbedCushion.html#molass_legacy.Tools.EmbedCushion.SmcTrial_impl">SmcTrial_impl() (in module molass_legacy.Tools.EmbedCushion)</a>
 </li>
       <li><a href="source/molass_legacy.KekLib.SciPyCookbook.html#molass_legacy.KekLib.SciPyCookbook.smooth">smooth() (in module molass_legacy.KekLib.SciPyCookbook)</a>
@@ -26594,8 +27029,6 @@ document.write(`
 </li>
         <li><a href="source/molass_legacy.Extrapolation.ExSolver.html#molass_legacy.Extrapolation.ExSolver.ExSolver.solve">(ExSolver method)</a>
 </li>
-        <li><a href="source/molass_legacy.Optimizer.FixedBaselineOptimizer.html#molass_legacy.Optimizer.FixedBaselineOptimizer.FixedBaselineOptimizer.solve">(FixedBaselineOptimizer method)</a>
-</li>
         <li><a href="source/molass_legacy.Rank.Synthesized.html#molass_legacy.Rank.Synthesized.solve">(in module molass_legacy.Rank.Synthesized)</a>
 </li>
         <li><a href="source/molass_legacy.Extrapolation.ExtrapolationProof.html#molass_legacy.Extrapolation.ExtrapolationProof.IteratedWLS.solve">(IteratedWLS method)</a>
@@ -26623,8 +27056,6 @@ document.write(`
         <li><a href="source/molass_legacy.Rgg.MostSimultaneous.html#molass_legacy.Rgg.MostSimultaneous.SimultaneousSolver.solve">(SimultaneousSolver method)</a>
 </li>
         <li><a href="source/molass_legacy.Extrapolation.SmoothFactorizer.html#molass_legacy.Extrapolation.SmoothFactorizer.SmoothFactorizer.solve">(SmoothFactorizer method)</a>
-</li>
-        <li><a href="source/molass_legacy.Optimizer.StrategicOptimizer.html#molass_legacy.Optimizer.StrategicOptimizer.StrategicOptimizer.solve">(StrategicOptimizer method)</a>
 </li>
         <li><a href="source/molass_legacy.Microfluidics.ThreeStateDimerSolver.html#molass_legacy.Microfluidics.ThreeStateDimerSolver.ThreeStateDimerSolver.solve">(ThreeStateDimerSolver method)</a>
 </li>
@@ -26692,6 +27123,8 @@ document.write(`
       <li><a href="source/molass_legacy.Extrapolation.RangeInspector.html#molass_legacy.Extrapolation.RangeInspector.RangeInspectorDialog.solve_this_range">solve_this_range() (RangeInspectorDialog method)</a>
 </li>
       <li><a href="source/molass_legacy.Extrapolation.ExtrapolSolverDialog.html#molass_legacy.Extrapolation.ExtrapolSolverDialog.ExtrapolSolverDialog.solve_unknowns">solve_unknowns() (ExtrapolSolverDialog method)</a>
+</li>
+      <li><a href="source/molass_legacy.Solvers.Registry.html#molass_legacy.Solvers.Registry.SolverEntry">SolverEntry (class in molass_legacy.Solvers.Registry)</a>
 </li>
       <li><a href="source/molass_legacy.Decomposer.FitRecord.html#molass_legacy.Decomposer.FitRecord.sort_fit_recs">sort_fit_recs() (in module molass_legacy.Decomposer.FitRecord)</a>
 </li>
@@ -26816,9 +27249,15 @@ document.write(`
       <li><a href="source/molass_legacy.Optimizer.BasicOptimizer.html#molass_legacy.Optimizer.BasicOptimizer.BasicOptimizer.split_as_unified_params">split_as_unified_params() (BasicOptimizer method)</a>
 
       <ul>
+        <li><a href="source/molass_legacy.ModelParams.CedmParams.html#molass_legacy.ModelParams.CedmParams.CedmParams.split_as_unified_params">(CedmParams method)</a>
+</li>
         <li><a href="source/molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.EdmParams.split_as_unified_params">(EdmParams method)</a>
 </li>
         <li><a href="source/molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghAdvansedParams.split_as_unified_params">(EghAdvansedParams method)</a>
+</li>
+        <li><a href="source/molass_legacy.ModelParams.GrmParams.html#molass_legacy.ModelParams.GrmParams.GrmParams.split_as_unified_params">(GrmParams method)</a>
+</li>
+        <li><a href="source/molass_legacy.ModelParams.LkmParams.html#molass_legacy.ModelParams.LkmParams.LkmParams.split_as_unified_params">(LkmParams method)</a>
 </li>
         <li><a href="source/molass_legacy.ModelParams.SdmParams.html#molass_legacy.ModelParams.SdmParams.SdmParams.split_as_unified_params">(SdmParams method)</a>
 </li>
@@ -26826,6 +27265,8 @@ document.write(`
       <li><a href="source/molass_legacy.Optimizer.BasicOptimizer.html#molass_legacy.Optimizer.BasicOptimizer.BasicOptimizer.split_bounds">split_bounds() (BasicOptimizer method)</a>
 
       <ul>
+        <li><a href="source/molass_legacy.ModelParams.CedmParams.html#molass_legacy.ModelParams.CedmParams.CedmParams.split_bounds">(CedmParams method)</a>
+</li>
         <li><a href="source/molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.EdmParams.split_bounds">(EdmParams method)</a>
 </li>
         <li><a href="source/molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghParamsBase.split_bounds">(EghParamsBase method)</a>
@@ -26842,17 +27283,27 @@ document.write(`
       <ul>
         <li><a href="source/molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghAdvansedParams.split_get_unified_sec_params">(EghAdvansedParams method)</a>
 </li>
+        <li><a href="source/molass_legacy.ModelParams.GrmParams.html#molass_legacy.ModelParams.GrmParams.GrmParams.split_get_unified_sec_params">(GrmParams method)</a>
+</li>
+        <li><a href="source/molass_legacy.ModelParams.LkmParams.html#molass_legacy.ModelParams.LkmParams.LkmParams.split_get_unified_sec_params">(LkmParams method)</a>
+</li>
         <li><a href="source/molass_legacy.ModelParams.SdmParams.html#molass_legacy.ModelParams.SdmParams.SdmParams.split_get_unified_sec_params">(SdmParams method)</a>
 </li>
       </ul></li>
-      <li><a href="source/molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.EdmParams.split_params">split_params() (EdmParams method)</a>
+      <li><a href="source/molass_legacy.ModelParams.CedmParams.html#molass_legacy.ModelParams.CedmParams.CedmParams.split_params">split_params() (CedmParams method)</a>
 
       <ul>
+        <li><a href="source/molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.EdmParams.split_params">(EdmParams method)</a>
+</li>
         <li><a href="source/molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghAdvansedParams.split_params">(EghAdvansedParams method)</a>
 </li>
         <li><a href="source/molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghParams.split_params">(EghParams method)</a>
 </li>
+        <li><a href="source/molass_legacy.ModelParams.GrmParams.html#molass_legacy.ModelParams.GrmParams.GrmParams.split_params">(GrmParams method)</a>
+</li>
         <li><a href="source/molass_legacy.SecTheory.LocalOptimizer.html#molass_legacy.SecTheory.LocalOptimizer.split_params">(in module molass_legacy.SecTheory.LocalOptimizer)</a>
+</li>
+        <li><a href="source/molass_legacy.ModelParams.LkmParams.html#molass_legacy.ModelParams.LkmParams.LkmParams.split_params">(LkmParams method)</a>
 </li>
         <li><a href="source/molass_legacy.SecTheory.RealisticProof.html#molass_legacy.SecTheory.RealisticProof.RealisticCf.split_params">(RealisticCf method)</a>
 </li>
@@ -26866,11 +27317,17 @@ document.write(`
       <li><a href="source/molass_legacy.Optimizer.BasicOptimizer.html#molass_legacy.Optimizer.BasicOptimizer.BasicOptimizer.split_params_simple">split_params_simple() (BasicOptimizer method)</a>
 
       <ul>
+        <li><a href="source/molass_legacy.ModelParams.CedmParams.html#molass_legacy.ModelParams.CedmParams.CedmParams.split_params_simple">(CedmParams method)</a>
+</li>
         <li><a href="source/molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.EdmParams.split_params_simple">(EdmParams method)</a>
 </li>
         <li><a href="source/molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghAdvansedParams.split_params_simple">(EghAdvansedParams method)</a>
 </li>
         <li><a href="source/molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghParams.split_params_simple">(EghParams method)</a>
+</li>
+        <li><a href="source/molass_legacy.ModelParams.GrmParams.html#molass_legacy.ModelParams.GrmParams.GrmParams.split_params_simple">(GrmParams method)</a>
+</li>
+        <li><a href="source/molass_legacy.ModelParams.LkmParams.html#molass_legacy.ModelParams.LkmParams.LkmParams.split_params_simple">(LkmParams method)</a>
 </li>
         <li><a href="source/molass_legacy.ModelParams.SdmParams.html#molass_legacy.ModelParams.SdmParams.SdmParams.split_params_simple">(SdmParams method)</a>
 </li>
@@ -26989,6 +27446,8 @@ document.write(`
         <li><a href="source/molass_legacy.Prob.MmAnimator.html#molass_legacy.Prob.MmAnimator.MmAnimator.stop">(MmAnimator method)</a>
 </li>
       </ul></li>
+      <li><a href="source/molass_legacy.Optimizer.MplMonitor.html#molass_legacy.Optimizer.MplMonitor.MplMonitor.stop_all_threads">stop_all_threads() (MplMonitor class method)</a>
+</li>
       <li><a href="source/molass_legacy.Mapping.ElutionMapperAdjuster.html#molass_legacy.Mapping.ElutionMapperAdjuster.ElutionMapperAdjuster.stop_blink">stop_blink() (ElutionMapperAdjuster method)</a>
 </li>
       <li><a href="source/molass_legacy.SerialAnalyzer.SerialController.html#molass_legacy.SerialAnalyzer.SerialController.SerialExecuter.stop_check">stop_check() (SerialExecuter method)</a>
@@ -26999,9 +27458,9 @@ document.write(`
       </ul></li>
       <li><a href="source/molass_legacy.KekLib.TkUtils.html#molass_legacy.KekLib.TkUtils.PositionSynchronizer.stop_drag">stop_drag() (PositionSynchronizer method)</a>
 </li>
-      <li><a href="source/molass_legacy.KekLib.NoseUtils.html#molass_legacy.KekLib.NoseUtils.str_for_source_code">str_for_source_code() (in module molass_legacy.KekLib.NoseUtils)</a>
+      <li><a href="source/molass_legacy.Optimizer.MplMonitor.html#molass_legacy.Optimizer.MplMonitor.MplMonitor.stop_watching">stop_watching() (MplMonitor method)</a>
 </li>
-      <li><a href="source/molass_legacy.Optimizer.StrategicOptimizer.html#molass_legacy.Optimizer.StrategicOptimizer.StrategicOptimizer">StrategicOptimizer (class in molass_legacy.Optimizer.StrategicOptimizer)</a>
+      <li><a href="source/molass_legacy.KekLib.NoseUtils.html#molass_legacy.KekLib.NoseUtils.str_for_source_code">str_for_source_code() (in module molass_legacy.KekLib.NoseUtils)</a>
 </li>
       <li><a href="source/molass_legacy.Optimizer.StrategyEditor.html#molass_legacy.Optimizer.StrategyEditor.StrategyEditor">StrategyEditor (class in molass_legacy.Optimizer.StrategyEditor)</a>
 </li>
@@ -27105,6 +27564,8 @@ document.write(`
 </li>
       <li><a href="source/molass_legacy.KekLib.ListingFrame.html#molass_legacy.KekLib.ListingFrame.ListingFrame.swap">swap() (ListingFrame method)</a>
 </li>
+      <li><a href="source/molass_legacy.Optimizer.DsetsDebug.html#molass_legacy.Optimizer.DsetsDebug.sweep_mp_b">sweep_mp_b() (in module molass_legacy.Optimizer.DsetsDebug)</a>
+</li>
       <li><a href="source/molass_legacy.KekLib.DebugPlot.html#molass_legacy.KekLib.DebugPlot.switch_backend">switch_backend() (in module molass_legacy.KekLib.DebugPlot)</a>
 </li>
       <li><a href="source/molass_legacy.Optimizer.SecInspection.html#molass_legacy.Optimizer.SecInspection.SecInspection.sychrionize">sychrionize() (SecInspection method)</a>
@@ -27125,6 +27586,8 @@ document.write(`
         <li><a href="source/molass_legacy.LRF.LrfResultPool.html#molass_legacy.LRF.LrfResultPool.LrfResultPool.synthesize">(LrfResultPool method)</a>
 </li>
       </ul></li>
+      <li><a href="source/molass_legacy.ObjectiveFunctions.G0367.html#molass_legacy.ObjectiveFunctions.G0367.synthesize4">synthesize4() (in module molass_legacy.ObjectiveFunctions.G0367)</a>
+</li>
       <li><a href="source/molass_legacy.Optimizer.FvSynthesizer.html#molass_legacy.Optimizer.FvSynthesizer.synthesize_demo">synthesize_demo() (in module molass_legacy.Optimizer.FvSynthesizer)</a>
 </li>
       <li><a href="source/molass_legacy.Rank.Synthesized.html#molass_legacy.Rank.Synthesized.synthesized_data">synthesized_data() (in module molass_legacy.Rank.Synthesized)</a>
@@ -27198,6 +27661,8 @@ document.write(`
 </li>
         <li><a href="source/molass_legacy.MultiProc.Manager.html#molass_legacy.MultiProc.Manager.Manager.terminate">(Manager method)</a>
 </li>
+        <li><a href="source/molass_legacy.Optimizer.MplMonitor.html#molass_legacy.Optimizer.MplMonitor.MplMonitor.terminate">(MplMonitor method)</a>
+</li>
         <li><a href="source/molass_legacy.KekLib.ProgressInfoDialog.html#molass_legacy.KekLib.ProgressInfoDialog.ProgressInfoDialog.terminate">(ProgressInfoDialog method)</a>
 </li>
         <li><a href="source/molass_legacy.SerialAnalyzer.SerialController.html#molass_legacy.SerialAnalyzer.SerialController.SerialController.terminate">(SerialController method)</a>
@@ -27270,12 +27735,14 @@ document.write(`
       <li><a href="source/molass_legacy.Selective.AdvancedFrame.html#molass_legacy.Selective.AdvancedFrame.AdvancedFrame.test_lognormalpore">test_lognormalpore() (AdvancedFrame method)</a>
 </li>
       <li><a href="source/molass_legacy.Optimizer.BaselineOptimizer.html#molass_legacy.Optimizer.BaselineOptimizer.test_optimizer">test_optimizer() (in module molass_legacy.Optimizer.BaselineOptimizer)</a>
-
-      <ul>
-        <li><a href="source/molass_legacy.Optimizer.FixedBaselineOptimizer.html#molass_legacy.Optimizer.FixedBaselineOptimizer.test_optimizer">(in module molass_legacy.Optimizer.FixedBaselineOptimizer)</a>
 </li>
-      </ul></li>
+      <li><a href="source/molass_legacy.Optimizer.Compatibility.html#molass_legacy.Optimizer.Compatibility.test_optimizer_compatibility">test_optimizer_compatibility() (in module molass_legacy.Optimizer.Compatibility)</a>
+</li>
       <li><a href="source/molass_legacy.SerialAnalyzer.DataUtils.html#molass_legacy.SerialAnalyzer.DataUtils.test_serial_folder_walk">test_serial_folder_walk() (in module molass_legacy.SerialAnalyzer.DataUtils)</a>
+</li>
+      <li><a href="source/molass_legacy.Optimizer.MplMonitor.html#molass_legacy.Optimizer.MplMonitor.MplMonitor.test_subprocess_optimizer">test_subprocess_optimizer() (MplMonitor method)</a>
+</li>
+      <li><a href="source/molass_legacy.Optimizer.Compatibility.html#molass_legacy.Optimizer.Compatibility.test_subprocess_optimizer_impl">test_subprocess_optimizer_impl() (in module molass_legacy.Optimizer.Compatibility)</a>
 </li>
       <li><a href="source/molass_legacy.Selective.AdvancedFrame.html#molass_legacy.Selective.AdvancedFrame.AdvancedFrame.test_tripore">test_tripore() (AdvancedFrame method)</a>
 </li>
@@ -27376,7 +27843,11 @@ document.write(`
       <li><a href="source/molass_legacy.Prob.QuadEghMixtureUtils.html#molass_legacy.Prob.QuadEghMixtureUtils.SpikeDialog.toggle_animation">toggle_animation() (SpikeDialog method)</a>, <a href="source/molass_legacy.Prob.QuadEmgMixtureUtils.html#molass_legacy.Prob.QuadEmgMixtureUtils.SpikeDialog.toggle_animation">[1]</a>, <a href="source/molass_legacy.Prob.QuadMmUtils.html#molass_legacy.Prob.QuadMmUtils.SpikeDialog.toggle_animation">[2]</a>
 </li>
       <li><a href="source/molass_legacy.Optimizer.ComplementaryView.html#molass_legacy.Optimizer.ComplementaryView.ComplementaryView.toggle_baseline">toggle_baseline() (ComplementaryView method)</a>
+
+      <ul>
+        <li><a href="source/molass_legacy.Kratky.GuinierKratkyView.html#molass_legacy.Kratky.GuinierKratkyView.GuinierKratkyView.toggle_baseline">(GuinierKratkyView method)</a>
 </li>
+      </ul></li>
       <li><a href="source/molass_legacy.UV.AbsorbanceViewer.html#molass_legacy.UV.AbsorbanceViewer.AbsorbanceViewer.toggle_baseplane">toggle_baseplane() (AbsorbanceViewer method)</a>
 </li>
       <li><a href="source/molass_legacy.UV.AbsorbanceViewer.html#molass_legacy.UV.AbsorbanceViewer.AbsorbanceViewer.toggle_lpm_area">toggle_lpm_area() (AbsorbanceViewer method)</a>
@@ -27427,6 +27898,8 @@ document.write(`
 </li>
       <li><a href="source/molass_legacy.Theory.JsPedersen1997.html#molass_legacy.Theory.JsPedersen1997.TriAxialEllipsoid">TriAxialEllipsoid (class in molass_legacy.Theory.JsPedersen1997)</a>
 </li>
+      <li><a href="source/molass_legacy.Optimizer.MplMonitor.html#molass_legacy.Optimizer.MplMonitor.MplMonitor.trigger_resume">trigger_resume() (MplMonitor method)</a>
+</li>
       <li><a href="source/molass_legacy.Optimizer.MplMonitor.html#molass_legacy.Optimizer.MplMonitor.MplMonitor.trigger_terminate">trigger_terminate() (MplMonitor method)</a>
 </li>
       <li><a href="source/molass_legacy.Trimming.TrimmingDebugUtils.html#molass_legacy.Trimming.TrimmingDebugUtils.trimming_debug_plot">trimming_debug_plot() (in module molass_legacy.Trimming.TrimmingDebugUtils)</a>
@@ -27474,6 +27947,8 @@ document.write(`
       <li><a href="source/molass_legacy.AutorgKek.QrgLimitsAdjuster.html#molass_legacy.AutorgKek.QrgLimitsAdjuster.QrgLimitsAdjuster.try_loop">try_loop() (QrgLimitsAdjuster method)</a>
 </li>
       <li><a href="source/molass_legacy.Optimizer.OptStrategyDialog.html#molass_legacy.Optimizer.OptStrategyDialog.OptStrategyDialog.try_model_composing_tracer">try_model_composing_tracer() (OptStrategyDialog method)</a>
+</li>
+      <li><a href="source/molass_legacy.Optimizer.MolassIntegration.html#molass_legacy.Optimizer.MolassIntegration.try_patch_from_molass">try_patch_from_molass() (in module molass_legacy.Optimizer.MolassIntegration)</a>
 </li>
       <li><a href="source/molass_legacy.Selective.RdrMinimizer.html#molass_legacy.Selective.RdrMinimizer.try_rdr_minimization">try_rdr_minimization() (in module molass_legacy.Selective.RdrMinimizer)</a>
 </li>
@@ -27638,6 +28113,8 @@ document.write(`
       <li><a href="source/molass_legacy.Optimizer.BasicOptimizer.html#molass_legacy.Optimizer.BasicOptimizer.BasicOptimizer.update_bounds_hook">update_bounds_hook() (BasicOptimizer method)</a>
 
       <ul>
+        <li><a href="source/molass_legacy.ModelParams.CedmParams.html#molass_legacy.ModelParams.CedmParams.CedmParams.update_bounds_hook">(CedmParams method)</a>
+</li>
         <li><a href="source/molass_legacy.ModelParams.EdmParams.html#molass_legacy.ModelParams.EdmParams.EdmParams.update_bounds_hook">(EdmParams method)</a>
 </li>
         <li><a href="source/molass_legacy.ModelParams.EghParams.html#molass_legacy.ModelParams.EghParams.EghParamsBase.update_bounds_hook">(EghParamsBase method)</a>
@@ -28061,6 +28538,8 @@ document.write(`
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="source/molass_legacy.GuinierTools.RgCurveUtils.html#molass_legacy.GuinierTools.RgCurveUtils.ValidBools">ValidBools (class in molass_legacy.GuinierTools.RgCurveUtils)</a>
+</li>
       <li><a href="source/molass_legacy.Optimizer.ValidComponents.html#molass_legacy.Optimizer.ValidComponents.ValidComponents">ValidComponents (class in molass_legacy.Optimizer.ValidComponents)</a>
 </li>
       <li><a href="source/molass_legacy.Rgg.VariationalMixture.html#molass_legacy.Rgg.VariationalMixture.VariationalMixture">VariationalMixture (class in molass_legacy.Rgg.VariationalMixture)</a>
@@ -28092,6 +28571,8 @@ document.write(`
       <li><a href="source/molass_legacy.KekLib.Canvas3D.html#molass_legacy.KekLib.Canvas3D.Canvas3D.view_reset">view_reset() (Canvas3D method)</a>
 </li>
       <li><a href="source/molass_legacy.KekLib.LogicalExpression.html#molass_legacy.KekLib.LogicalExpression.PrintNodeVisitor.visit">visit() (PrintNodeVisitor method)</a>
+</li>
+      <li><a href="source/molass_legacy.Tutorials.pythonRotate.html#molass_legacy.Tutorials.pythonRotate.voxel_face">voxel_face() (in module molass_legacy.Tutorials.pythonRotate)</a>
 </li>
       <li><a href="source/molass_legacy.Tutorials.VoxelFFT.html#molass_legacy.Tutorials.VoxelFFT.VoxelFFT">VoxelFFT (class in molass_legacy.Tutorials.VoxelFFT)</a>
 </li>
@@ -28157,10 +28638,10 @@ document.write(`
 </li>
       <li><a href="source/molass_legacy.KekLib.TkTableWrapper.html#molass_legacy.KekLib.TkTableWrapper.Table.window_configure">window_configure() (Table method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="source/molass_legacy.KekLib.TkTableWrapper.html#molass_legacy.KekLib.TkTableWrapper.Table.window_delete">window_delete() (Table method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="source/molass_legacy.KekLib.MessageBoxUtils.html#molass_legacy.KekLib.MessageBoxUtils.window_exists">window_exists() (in module molass_legacy.KekLib.MessageBoxUtils)</a>
 </li>
       <li><a href="source/molass_legacy.KekLib.TkTableWrapper.html#molass_legacy.KekLib.TkTableWrapper.Table.window_move">window_move() (Table method)</a>
@@ -28182,6 +28663,8 @@ document.write(`
       <li><a href="source/molass_legacy.Decomposer.WlsDecomposer.html#molass_legacy.Decomposer.WlsDecomposer.WlsDecomposer">WlsDecomposer (class in molass_legacy.Decomposer.WlsDecomposer)</a>
 </li>
       <li><a href="source/molass_legacy.KekLib.ExcelCOM.html#molass_legacy.KekLib.ExcelCOM.Workbook_">Workbook_ (class in molass_legacy.KekLib.ExcelCOM)</a>
+</li>
+      <li><a href="source/molass_legacy.Optimizer.MplMonitor.html#molass_legacy.Optimizer.MplMonitor.MplMonitor.working_folder">working_folder (MplMonitor property)</a>
 </li>
       <li><a href="source/molass_legacy.KekLib.ExcelCOM.html#molass_legacy.KekLib.ExcelCOM.Worksheet">Worksheet (class in molass_legacy.KekLib.ExcelCOM)</a>
 </li>
@@ -28410,8 +28893,8 @@ By Molass Community
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
   </footer>

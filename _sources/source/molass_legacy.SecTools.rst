@@ -3,8 +3,8 @@ SecTools
 
 .. automodule:: molass_legacy.SecTools
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Submodules
 ----------

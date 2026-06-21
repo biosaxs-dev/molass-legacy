@@ -3,5 +3,5 @@ KekLib.DraggableListbox
 
 .. automodule:: molass_legacy.KekLib.DraggableListbox
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
