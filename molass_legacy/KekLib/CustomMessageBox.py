@@ -12,16 +12,23 @@
     https://stackoverflow.com/questions/20995045/how-to-include-image-in-message-box-using-ctypes-in-python/21051586#21051586
 """
 import os
+import sys
 import ctypes
 
-SetActiveWindow     = ctypes.windll.user32.SetActiveWindow
-SendMessage         = ctypes.windll.user32.SendMessageW
-PostMessage         = ctypes.windll.user32.PostMessageW
-MessageBox          = ctypes.windll.user32.MessageBoxW
-FindWindow          = ctypes.windll.user32.FindWindowW
-FindWindowEx        = ctypes.windll.user32.FindWindowExW
-GetWindowRect       = ctypes.windll.user32.GetWindowRect
-SetWindowPos        = ctypes.windll.user32.SetWindowPos
+# Windows-only functionality - windll only exists on Windows
+if sys.platform == 'win32':
+    SetActiveWindow     = ctypes.windll.user32.SetActiveWindow
+    SendMessage         = ctypes.windll.user32.SendMessageW
+    PostMessage         = ctypes.windll.user32.PostMessageW
+    MessageBox          = ctypes.windll.user32.MessageBoxW
+    FindWindow          = ctypes.windll.user32.FindWindowW
+    FindWindowEx        = ctypes.windll.user32.FindWindowExW
+    GetWindowRect       = ctypes.windll.user32.GetWindowRect
+    SetWindowPos        = ctypes.windll.user32.SetWindowPos
+else:
+    # No-op stubs for non-Windows platforms
+    SetActiveWindow = SendMessage = PostMessage = MessageBox = None
+    FindWindow = FindWindowEx = GetWindowRect = SetWindowPos = None
 
 # icons
 MB_OK               = 0x0
