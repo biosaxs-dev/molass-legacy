@@ -10,6 +10,7 @@ from ctypes import *
 from ctypes.wintypes import *
 from os import path
 import platform
+import sys
 
 #################################################################
 
@@ -17,63 +18,71 @@ RelPath = lambda file : path.join(path.dirname(path.abspath(__file__)), file)
 
 #################################################################
 
-GetModuleHandle = windll.kernel32.GetModuleHandleW
-GetModuleHandle.restype = HMODULE
-GetModuleHandle.argtypes = [LPCWSTR]
+# Windows-only functionality - windll only exists on Windows
+if sys.platform == 'win32':
+    GetModuleHandle = windll.kernel32.GetModuleHandleW
+    GetModuleHandle.restype = HMODULE
+    GetModuleHandle.argtypes = [LPCWSTR]
 
-#################################################################
+    #################################################################
 
-IMAGE_ICON = 1
-LR_LOADFROMFILE = 0x00000010
-LR_CREATEDIBSECTION = 0x00002000
+    IMAGE_ICON = 1
+    LR_LOADFROMFILE = 0x00000010
+    LR_CREATEDIBSECTION = 0x00002000
 
-LoadImage = windll.user32.LoadImageW
-LoadImage.restype = HANDLE
-LoadImage.argtypes = [HINSTANCE, LPCWSTR, UINT, c_int, c_int, UINT]
+    LoadImage = windll.user32.LoadImageW
+    LoadImage.restype = HANDLE
+    LoadImage.argtypes = [HINSTANCE, LPCWSTR, UINT, c_int, c_int, UINT]
 
-#################################################################
+    #################################################################
 
-LRESULT = c_int64 if platform.architecture()[0] == "64bit" else c_long
+    LRESULT = c_int64 if platform.architecture()[0] == "64bit" else c_long
 
-SendMessage = windll.user32.SendMessageW
-SendMessage.restype = LRESULT
-SendMessage.argtypes = [HWND, UINT, WPARAM, LPARAM]
+    SendMessage = windll.user32.SendMessageW
+    SendMessage.restype = LRESULT
+    SendMessage.argtypes = [HWND, UINT, WPARAM, LPARAM]
 
-#################################################################
+    #################################################################
 
-MB_OK = 0x00000000
+    MB_OK = 0x00000000
 
-MessageBox = windll.user32.MessageBoxW
-MessageBox.restype  = c_int
-MessageBox.argtypes = [HWND, LPCWSTR, LPCWSTR, UINT]
+    MessageBox = windll.user32.MessageBoxW
+    MessageBox.restype  = c_int
+    MessageBox.argtypes = [HWND, LPCWSTR, LPCWSTR, UINT]
 
-#################################################################
+    #################################################################
 
-WH_CBT = 5
-HCBT_ACTIVATE = 5
-HOOKPROC = WINFUNCTYPE(LRESULT, c_int, WPARAM, LPARAM)
+    WH_CBT = 5
+    HCBT_ACTIVATE = 5
+    HOOKPROC = WINFUNCTYPE(LRESULT, c_int, WPARAM, LPARAM)
 
-SetWindowsHookEx = windll.user32.SetWindowsHookExW
-SetWindowsHookEx.restype = HHOOK
-SetWindowsHookEx.argtypes = [c_int, HOOKPROC, HINSTANCE, DWORD]
+    SetWindowsHookEx = windll.user32.SetWindowsHookExW
+    SetWindowsHookEx.restype = HHOOK
+    SetWindowsHookEx.argtypes = [c_int, HOOKPROC, HINSTANCE, DWORD]
 
-#################################################################
+    #################################################################
 
-CallNextHookEx = windll.user32.CallNextHookEx
-CallNextHookEx.restype = LRESULT
-CallNextHookEx.argtypes = [HHOOK, c_int, WPARAM, LPARAM]
+    CallNextHookEx = windll.user32.CallNextHookEx
+    CallNextHookEx.restype = LRESULT
+    CallNextHookEx.argtypes = [HHOOK, c_int, WPARAM, LPARAM]
 
-#################################################################
+    #################################################################
 
-GetCurrentThreadId = windll.kernel32.GetCurrentThreadId
-GetCurrentThreadId.restype = DWORD
-GetCurrentThreadId.argtypes = None
+    GetCurrentThreadId = windll.kernel32.GetCurrentThreadId
+    GetCurrentThreadId.restype = DWORD
+    GetCurrentThreadId.argtypes = None
 
-#################################################################
+    #################################################################
 
-UnhookWindowsHookEx = windll.user32.UnhookWindowsHookEx
-UnhookWindowsHookEx.restype = BOOL
-UnhookWindowsHookEx.argtypes = [HHOOK]
+    UnhookWindowsHookEx = windll.user32.UnhookWindowsHookEx
+    UnhookWindowsHookEx.restype = BOOL
+    UnhookWindowsHookEx.argtypes = [HHOOK]
+else:
+    # No-op stubs for non-Windows platforms
+    GetModuleHandle = LoadImage = SendMessage = MessageBox = None
+    SetWindowsHookEx = CallNextHookEx = GetCurrentThreadId = UnhookWindowsHookEx = None
+    WH_CBT = HCBT_ACTIVATE = MB_OK = None
+    IMAGE_ICON = LR_LOADFROMFILE = LR_CREATEDIBSECTION = None
 
 #################################################################
 # code starts here
