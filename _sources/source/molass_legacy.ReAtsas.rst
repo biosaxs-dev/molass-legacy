@@ -3,8 +3,8 @@ ReAtsas
 
 .. automodule:: molass_legacy.ReAtsas
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 Submodules
 ----------

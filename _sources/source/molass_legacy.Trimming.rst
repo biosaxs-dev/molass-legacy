@@ -3,8 +3,8 @@ Trimming
 
 .. automodule:: molass_legacy.Trimming
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 Submodules
 ----------

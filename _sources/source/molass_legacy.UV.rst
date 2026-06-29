@@ -3,8 +3,8 @@ UV
 
 .. automodule:: molass_legacy.UV
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 Submodules
 ----------

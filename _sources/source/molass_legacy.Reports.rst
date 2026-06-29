@@ -3,8 +3,8 @@ Reports
 
 .. automodule:: molass_legacy.Reports
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 Submodules
 ----------

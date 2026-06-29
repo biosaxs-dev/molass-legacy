@@ -3,8 +3,8 @@ SecSaxs
 
 .. automodule:: molass_legacy.SecSaxs
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 Submodules
 ----------

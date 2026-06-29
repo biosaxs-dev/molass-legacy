@@ -3,8 +3,8 @@ Env
 
 .. automodule:: molass_legacy.Env
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 Submodules
 ----------

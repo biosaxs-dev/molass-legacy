@@ -3,8 +3,8 @@ Global
 
 .. automodule:: molass_legacy.Global
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 Submodules
 ----------

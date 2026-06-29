@@ -3,8 +3,8 @@ Extrapolation
 
 .. automodule:: molass_legacy.Extrapolation
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 Submodules
 ----------

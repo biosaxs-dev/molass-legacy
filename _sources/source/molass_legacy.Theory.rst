@@ -3,8 +3,8 @@ Theory
 
 .. automodule:: molass_legacy.Theory
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 Submodules
 ----------

@@ -3,8 +3,8 @@ ICIS
 
 .. automodule:: molass_legacy.ICIS
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 Submodules
 ----------

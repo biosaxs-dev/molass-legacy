@@ -3,8 +3,8 @@ Tutorials
 
 .. automodule:: molass_legacy.Tutorials
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 Submodules
 ----------

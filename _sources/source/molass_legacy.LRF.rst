@@ -3,8 +3,8 @@ LRF
 
 .. automodule:: molass_legacy.LRF
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 Submodules
 ----------

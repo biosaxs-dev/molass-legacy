@@ -3,8 +3,8 @@ GuiParts
 
 .. automodule:: molass_legacy.GuiParts
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 Submodules
 ----------

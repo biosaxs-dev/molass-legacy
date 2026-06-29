@@ -3,8 +3,8 @@ Alsaker
 
 .. automodule:: molass_legacy.Alsaker
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 Submodules
 ----------

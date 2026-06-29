@@ -3,8 +3,8 @@ Rank
 
 .. automodule:: molass_legacy.Rank
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 Submodules
 ----------

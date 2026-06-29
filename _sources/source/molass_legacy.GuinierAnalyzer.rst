@@ -3,8 +3,8 @@ GuinierAnalyzer
 
 .. automodule:: molass_legacy.GuinierAnalyzer
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 Submodules
 ----------

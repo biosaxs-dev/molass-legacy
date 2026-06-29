@@ -3,8 +3,8 @@ Kratky
 
 .. automodule:: molass_legacy.Kratky
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 Submodules
 ----------

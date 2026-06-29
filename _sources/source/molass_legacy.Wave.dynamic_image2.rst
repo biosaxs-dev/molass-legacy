@@ -3,5 +3,5 @@ Wave.dynamic\_image2
 
 .. automodule:: molass_legacy.Wave.dynamic_image2
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:

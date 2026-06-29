@@ -3,8 +3,8 @@ Tools
 
 .. automodule:: molass_legacy.Tools
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 Submodules
 ----------

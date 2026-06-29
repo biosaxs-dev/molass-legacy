@@ -3,8 +3,8 @@ V2PropOptimizer
 
 .. automodule:: molass_legacy.V2PropOptimizer
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 Submodules
 ----------

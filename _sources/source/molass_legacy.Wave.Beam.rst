@@ -3,5 +3,5 @@ Wave.Beam
 
 .. automodule:: molass_legacy.Wave.Beam
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:

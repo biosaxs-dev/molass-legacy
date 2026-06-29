@@ -3,8 +3,8 @@ SSDC
 
 .. automodule:: molass_legacy.SSDC
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 Submodules
 ----------

@@ -3,8 +3,8 @@ Batch
 
 .. automodule:: molass_legacy.Batch
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 Submodules
 ----------
@@ -19,7 +19,6 @@ Submodules
    molass_legacy.Batch.DataBridgeUtils
    molass_legacy.Batch.DataWalk
    molass_legacy.Batch.FullBatch
-   molass_legacy.Batch.HeadlessPeakEditor
    molass_legacy.Batch.LiteBatch
    molass_legacy.Batch.OptDataSetsProxy
    molass_legacy.Batch.StandardProcedure

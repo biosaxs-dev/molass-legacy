@@ -3,5 +3,5 @@ Tutorials.SvdTutorial2D
 
 .. automodule:: molass_legacy.Tutorials.SvdTutorial2D
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:

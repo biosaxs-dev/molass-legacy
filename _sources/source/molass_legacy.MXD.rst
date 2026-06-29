@@ -3,8 +3,8 @@ MXD
 
 .. automodule:: molass_legacy.MXD
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 Submodules
 ----------

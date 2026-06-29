@@ -3,8 +3,8 @@ SimTools
 
 .. automodule:: molass_legacy.SimTools
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 Submodules
 ----------

@@ -3,8 +3,8 @@ Experiment
 
 .. automodule:: molass_legacy.Experiment
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 Submodules
 ----------

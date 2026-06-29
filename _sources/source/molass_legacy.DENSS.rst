@@ -3,8 +3,8 @@ DENSS
 
 .. automodule:: molass_legacy.DENSS
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 Submodules
 ----------

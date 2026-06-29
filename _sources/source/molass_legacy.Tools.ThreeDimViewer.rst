@@ -3,5 +3,5 @@ Tools.ThreeDimViewer
 
 .. automodule:: molass_legacy.Tools.ThreeDimViewer
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:

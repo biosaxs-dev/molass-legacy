@@ -3,8 +3,8 @@ Trials.BoundedLRF
 
 .. automodule:: molass_legacy.Trials.BoundedLRF
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 Submodules
 ----------

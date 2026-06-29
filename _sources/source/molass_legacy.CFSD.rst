@@ -3,8 +3,8 @@ CFSD
 
 .. automodule:: molass_legacy.CFSD
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 Submodules
 ----------

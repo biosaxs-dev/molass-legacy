@@ -3,8 +3,8 @@ Trials
 
 .. automodule:: molass_legacy.Trials
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 Submodules
 -----------

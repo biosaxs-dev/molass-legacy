@@ -3,8 +3,8 @@ Irregular
 
 .. automodule:: molass_legacy.Irregular
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 Submodules
 ----------

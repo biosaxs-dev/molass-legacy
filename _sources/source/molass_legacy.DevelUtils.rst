@@ -3,8 +3,8 @@ DevelUtils
 
 .. automodule:: molass_legacy.DevelUtils
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 Submodules
 ----------

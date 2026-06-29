@@ -3,8 +3,8 @@ Rgg
 
 .. automodule:: molass_legacy.Rgg
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 Submodules
 ----------

@@ -3,8 +3,8 @@ Test
 
 .. automodule:: molass_legacy.Test
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 Submodules
 ----------

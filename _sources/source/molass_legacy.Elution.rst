@@ -3,8 +3,8 @@ Elution
 
 .. automodule:: molass_legacy.Elution
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 Submodules
 ----------

@@ -3,8 +3,8 @@ Gmm
 
 .. automodule:: molass_legacy.Gmm
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 Submodules
 ----------

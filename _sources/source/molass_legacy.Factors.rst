@@ -3,8 +3,8 @@ Factors
 
 .. automodule:: molass_legacy.Factors
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 Submodules
 ----------

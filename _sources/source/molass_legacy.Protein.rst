@@ -3,8 +3,8 @@ Protein
 
 .. automodule:: molass_legacy.Protein
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 Submodules
 ----------

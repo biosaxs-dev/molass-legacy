@@ -3,8 +3,8 @@ SaxsTools
 
 .. automodule:: molass_legacy.SaxsTools
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 Submodules
 ----------

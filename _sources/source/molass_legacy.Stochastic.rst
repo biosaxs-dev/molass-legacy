@@ -3,8 +3,8 @@ Stochastic
 
 .. automodule:: molass_legacy.Stochastic
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 Submodules
 ----------

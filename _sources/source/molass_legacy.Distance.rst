@@ -3,8 +3,8 @@ Distance
 
 .. automodule:: molass_legacy.Distance
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 Submodules
 ----------

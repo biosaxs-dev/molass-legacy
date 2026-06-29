@@ -3,8 +3,8 @@ IFT
 
 .. automodule:: molass_legacy.IFT
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 Submodules
 ----------

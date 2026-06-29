@@ -3,8 +3,8 @@ Conc
 
 .. automodule:: molass_legacy.Conc
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 Submodules
 ----------

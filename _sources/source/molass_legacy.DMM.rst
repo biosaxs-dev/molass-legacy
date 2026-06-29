@@ -3,8 +3,8 @@ DMM
 
 .. automodule:: molass_legacy.DMM
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 Submodules
 ----------
