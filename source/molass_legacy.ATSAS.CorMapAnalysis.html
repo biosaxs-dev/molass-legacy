@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>ATSAS.CorMapAnalysis &#8212; Molass Library Legacy  documentation</title>
+    <title>ATSAS.CorMapAnalysis &#8212; Molass Library Legacy 1.6.10 documentation</title>
   
   
   
@@ -40,7 +40,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/documentation_options.js?v=b1e9c9b4"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -54,7 +54,7 @@
     <link rel="prev" title="ATSAS.AutorgRunner" href="molass_legacy.ATSAS.AutorgRunner.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="" />
+  <meta name="docsearch:version" content="1.6" />
   </head>
   
   
@@ -133,8 +133,8 @@
       
     
     
-    <img src="../_static/molamola.png" class="logo__image only-light" alt="Molass Library Legacy  documentation - Home"/>
-    <img src="../_static/molamola.png" class="logo__image only-dark pst-js-only" alt="Molass Library Legacy  documentation - Home"/>
+    <img src="../_static/molamola.png" class="logo__image only-light" alt="Molass Library Legacy 1.6.10 documentation - Home"/>
+    <img src="../_static/molamola.png" class="logo__image only-dark pst-js-only" alt="Molass Library Legacy 1.6.10 documentation - Home"/>
   
   
 </a></div>
@@ -1693,7 +1693,7 @@
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ATSAS.CorMapAnalysis.ScatterAnalysis"><code class="docutils literal notranslate"><span class="pre">ScatterAnalysis</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ATSAS.CorMapAnalysis.ScatterAnalysis"><code class="docutils literal notranslate"><span class="pre">ScatterAnalysis</span></code></a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ATSAS.CorMapAnalysis.ScatterAnalysis.PLOT_LABEL"><code class="docutils literal notranslate"><span class="pre">ScatterAnalysis.PLOT_LABEL</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ATSAS.CorMapAnalysis.ScatterAnalysis.PLOT_NUM"><code class="docutils literal notranslate"><span class="pre">ScatterAnalysis.PLOT_NUM</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ATSAS.CorMapAnalysis.ScatterAnalysis.calc_cormap"><code class="docutils literal notranslate"><span class="pre">ScatterAnalysis.calc_cormap()</span></code></a></li>
@@ -1738,7 +1738,7 @@ converted from Python2 to Python3</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="molass_legacy.ATSAS.CorMapAnalysis.ScatterAnalysis">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">ScatterAnalysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">intensities</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scattering_angles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datcmp_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_axis_vec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_metric</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_units</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#molass_legacy.ATSAS.CorMapAnalysis.ScatterAnalysis" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Scatter curve similarity analysis class.</p>
 <p>CorMap class implementing analysis of data output from a run of the
 ATSAS suite program DATCMP.</p>
@@ -1759,10 +1759,10 @@ image pairs.</p></li>
 <li><p><strong>x_axis_vec</strong> (<em>numpy array</em><em>, </em><em>optional</em><em> (</em><em>default=</em><em>[</em><em>]</em><em>)</em>) – Vector of values to use on the x-axis of plots. This can be things
 like dose values for example. If not specified then frame number is
 used as a default.</p></li>
-<li><p><strong>x_metric</strong> (<em>str</em><em>, </em><em>optional</em><em> (</em><em>default=&quot;&quot;</em><em>)</em>) – String specifying the type of metric used for the x-axis. An
+<li><p><strong>x_metric</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em><em> (</em><em>default=&quot;&quot;</em><em>)</em>) – String specifying the type of metric used for the x-axis. An
 example would be “Dose”. If not specified then the default metric
 used on the x-axis is “Frame Number”</p></li>
-<li><p><strong>x_units</strong> (<em>str</em><em>, </em><em>optional</em><em> (</em><em>default=&quot;&quot;</em><em>)</em>) – String specifying the units used for the x-axis metric. For example
+<li><p><strong>x_units</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em><em> (</em><em>default=&quot;&quot;</em><em>)</em>) – String specifying the units used for the x-axis metric. For example
 if the x-axis metric was the ‘dose’, then x_units may be specified
 as “kGy”.</p></li>
 </ul>
@@ -1808,8 +1808,8 @@ as “kGy”.</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>frame1</strong> (<em>int</em>) – Number of the 1st frame used for the pairwise analyis</p></li>
-<li><p><strong>frame2</strong> (<em>int</em>) – Number of the 2nd frame used for the pairwise analyis</p></li>
+<li><p><strong>frame1</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Number of the 1st frame used for the pairwise analyis</p></li>
+<li><p><strong>frame2</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Number of the 2nd frame used for the pairwise analyis</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1838,11 +1838,11 @@ as well as whether to use the Bonferroni corrected P values or not.
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>frame</strong> (<em>int</em><em>, </em><em>optional</em><em> (</em><em>default=1</em><em>)</em>) – The frame that every other frame in the dataset is compared with.
+<li><p><strong>frame</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em><em> (</em><em>default=1</em><em>)</em>) – The frame that every other frame in the dataset is compared with.
 If not specified then all frames are compared to the first frame.</p></li>
-<li><p><strong>P_threshold</strong> (<em>float</em><em>, </em><em>optional</em><em> (</em><em>default=0.01</em><em>)</em>) – The significance threshold of the test. If it’s not given then the
+<li><p><strong>P_threshold</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em><em> (</em><em>default=0.01</em><em>)</em>) – The significance threshold of the test. If it’s not given then the
 default value is 1%.</p></li>
-<li><p><strong>P_type</strong> (<em>str</em><em>, </em><em>optional</em><em> (</em><em>default=&quot;adjP&quot;</em><em>)</em>) – String denoting whether to use the Bonferroni corrected P value
+<li><p><strong>P_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em><em> (</em><em>default=&quot;adjP&quot;</em><em>)</em>) – String denoting whether to use the Bonferroni corrected P value
 (input string=”adjP”) or the ordinary P value (input string=”P”).
 Default is to use the Bonferroni corrected P value.</p></li>
 </ul>
@@ -1870,13 +1870,13 @@ after F that are also statistically dissimilar from the chosen frame.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>n</strong> (<em>int</em><em>, </em><em>optional</em><em> (</em><em>default=1</em><em>)</em>) – The number of consecutive dissimilar frames to be considered
+<li><p><strong>n</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em><em> (</em><em>default=1</em><em>)</em>) – The number of consecutive dissimilar frames to be considered
 significant.</p></li>
-<li><p><strong>frame</strong> (<em>int</em><em>, </em><em>optional</em><em> (</em><em>default=1</em><em>)</em>) – The frame that every other frame in the dataset is compared with.
+<li><p><strong>frame</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em><em> (</em><em>default=1</em><em>)</em>) – The frame that every other frame in the dataset is compared with.
 If not specified then all frames are compared to the first frame.</p></li>
-<li><p><strong>P_threshold</strong> (<em>float</em><em>, </em><em>optional</em><em> (</em><em>default=0.01</em><em>)</em>) – The significance threshold of the test. If it’s not given then the
+<li><p><strong>P_threshold</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em><em> (</em><em>default=0.01</em><em>)</em>) – The significance threshold of the test. If it’s not given then the
 default value is 1%.</p></li>
-<li><p><strong>P_type</strong> (<em>str</em><em>, </em><em>optional</em><em> (</em><em>default=&quot;adjP&quot;</em><em>)</em>) – string denoting whether to use the Bonferroni corrected P value
+<li><p><strong>P_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em><em> (</em><em>default=&quot;adjP&quot;</em><em>)</em>) – string denoting whether to use the Bonferroni corrected P value
 (input string=”adjP”) or the ordinary P value (input string=”P”).
 Default is to use the Bonferroni corrected P value.</p></li>
 </ul>
@@ -1885,7 +1885,7 @@ Default is to use the Bonferroni corrected P value.</p></li>
 <dd class="field-even"><p>Frame number of the first of n consecutive dissimilar frames.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)">int</a></p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -1905,26 +1905,26 @@ curve files.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>scattering_curve_location</strong> (<em>str</em>) – Location of the scattering curves for the dataset.</p></li>
+<li><p><strong>scattering_curve_location</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Location of the scattering curves for the dataset.</p></li>
 <li><p><strong>x_axis</strong> (<em>numpy array</em><em>, </em><em>optional</em><em> (</em><em>default=</em><em>[</em><em>]</em><em>)</em>) – Vector of values to use on the x-axis of plots. This can be things
 like dose values for example. If not specified then frame number is
 used as a default.</p></li>
-<li><p><strong>x_metric</strong> (<em>str</em><em>, </em><em>optional</em><em> (</em><em>default=&quot;&quot;</em><em>)</em>) – String specifying the type of metric used for the x-axis. An
+<li><p><strong>x_metric</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em><em> (</em><em>default=&quot;&quot;</em><em>)</em>) – String specifying the type of metric used for the x-axis. An
 example would be “Dose”. If not specified then the default metric
 used on the x-axis is “Frame Number”</p></li>
-<li><p><strong>x_units</strong> (<em>str</em><em>, </em><em>optional</em><em> (</em><em>default=&quot;&quot;</em><em>)</em>) – String specifying the units used for the x-axis metric. For example
+<li><p><strong>x_units</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em><em> (</em><em>default=&quot;&quot;</em><em>)</em>) – String specifying the units used for the x-axis metric. For example
 if the x-axis metric was the ‘dose’, then x_units may be specified
 as “kGy”.</p></li>
-<li><p><strong>first</strong> (<em>int</em><em>, </em><em>optional</em><em> (</em><em>default=-1</em><em>)</em>) – Index of the first point to be kept. This is mutually exclusive
+<li><p><strong>first</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em><em> (</em><em>default=-1</em><em>)</em>) – Index of the first point to be kept. This is mutually exclusive
 with argument parameter ‘smin’. Default value is -1. This will
 ultimately result in the method not using this value.</p></li>
-<li><p><strong>last</strong> (<em>int</em><em>, </em><em>optional</em><em> (</em><em>default=-1</em><em>)</em>) – Index of the last point to be kept. This is mutually exclusive with
+<li><p><strong>last</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em><em> (</em><em>default=-1</em><em>)</em>) – Index of the last point to be kept. This is mutually exclusive with
 argument parameter ‘smax’. Default value is -1. This will
 ultimately result in the method not using this value.</p></li>
-<li><p><strong>smin</strong> (<em>float</em><em>, </em><em>optional</em><em> (</em><em>Default=-1</em><em>)</em>) – Minimal scattering angle value to be kept. This is mutually
+<li><p><strong>smin</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em><em> (</em><em>Default=-1</em><em>)</em>) – Minimal scattering angle value to be kept. This is mutually
 exclusive with argument parameter ‘first’. Default value is -1.
 This will ultimately result in the method not using this value.</p></li>
-<li><p><strong>smax</strong> (<em>float</em><em>, </em><em>optional</em><em> (</em><em>Default=-1</em><em>)</em>) – Maximal scattering angle value to be kept. This is mutually
+<li><p><strong>smax</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em><em> (</em><em>Default=-1</em><em>)</em>) – Maximal scattering angle value to be kept. This is mutually
 exclusive with argument parameter ‘last’. Default value is -1.
 This will ultimately result in the method not using this value.</p></li>
 </ul>
@@ -1974,7 +1974,7 @@ class. It runs the DATCMP program on the dataset and returns a
 dictionary containing the main results from the DATCMP run.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>scattering_curve_files</strong> (<em>str</em>) – Location of the scattering curves for the dataset.</p>
+<dd class="field-odd"><p><strong>scattering_curve_files</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Location of the scattering curves for the dataset.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Dictionary containing the results of the DATCMP run. The dictionary
@@ -1984,7 +1984,7 @@ value is an array of DATCMP results for the corresponding pairwise
 comparison.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>dict(str, numpy.array)</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)">dict</a>(<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a>, numpy.array)</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -2002,9 +2002,9 @@ output.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>frame1</strong> (<em>int</em>) – number of the 1st frame used for the pairwise analyis</p></li>
-<li><p><strong>frame2</strong> (<em>int</em>) – number of the 2nd frame used for the pairwise analyis</p></li>
-<li><p><strong>datcmp_data_type</strong> (<em>str</em><em>, </em><em>optional</em><em> (</em><em>default=&quot;adj P</em><em>(</em><em>&gt;C</em><em>)</em><em>&quot;</em><em>)</em>) – String specifying the pairwise result to be returned.
+<li><p><strong>frame1</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – number of the 1st frame used for the pairwise analyis</p></li>
+<li><p><strong>frame2</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – number of the 2nd frame used for the pairwise analyis</p></li>
+<li><p><strong>datcmp_data_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em><em> (</em><em>default=&quot;adj P</em><em>(</em><em>&gt;C</em><em>)</em><em>&quot;</em><em>)</em>) – String specifying the pairwise result to be returned.
 The input options are:
 1) ‘C’ - This will return the C value i.e. the max observed patch
 of continuous runs of -1 or 1
@@ -2022,7 +2022,7 @@ standard P or Bonferroni corrected) the we observed more than C
 positive or negative values in a row.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int or float</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)">int</a> or <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)">float</a></p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -2050,10 +2050,10 @@ and all other frames.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>frame</strong> (<em>int</em><em>, </em><em>optional</em><em> (</em><em>default=0</em><em>)</em>) – The frame that every other frame in the dataset is compared with.
+<li><p><strong>frame</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em><em> (</em><em>default=0</em><em>)</em>) – The frame that every other frame in the dataset is compared with.
 If not specified then ALL data from the DATCMP results are
 returned.</p></li>
-<li><p><strong>delete_zero_row</strong> (<em>bool</em><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to include a row where the chosen frame would’ve
+<li><p><strong>delete_zero_row</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to include a row where the chosen frame would’ve
 been compared with itself - although this row is filled with zero.
 This makes sure that you’ll return an array whose number of rows
 is the same as the number of frames. By default this is set to
@@ -2085,25 +2085,25 @@ figure.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>frames</strong> (<em>int</em><em> or </em><em>list</em>) – Number of the frame or list of frame numbers to be plotted on the
+<li><p><strong>frames</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a>) – Number of the frame or list of frame numbers to be plotted on the
 figure.</p></li>
-<li><p><strong>start_point</strong> (<em>int</em><em>, </em><em>optional</em><em> (</em><em>default=1</em><em>)</em>) – The point on the scatter curve from which you would like to start
+<li><p><strong>start_point</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em><em> (</em><em>default=1</em><em>)</em>) – The point on the scatter curve from which you would like to start
 the plot. Default is to plot from the first point.</p></li>
-<li><p><strong>end_point</strong> (<em>int</em><em>, </em><em>optional</em><em> (</em><em>default=-1</em><em>)</em>) – The point on the scatter curve from which you would like to end
+<li><p><strong>end_point</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em><em> (</em><em>default=-1</em><em>)</em>) – The point on the scatter curve from which you would like to end
 the plot. Default is to plot up until to very last point on the
 curve.</p></li>
-<li><p><strong>log_intensity</strong> (<em>bool</em><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to plot the intensity curve on a logarithmic scale
+<li><p><strong>log_intensity</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to plot the intensity curve on a logarithmic scale
 (default) or on an absolute scale.</p></li>
-<li><p><strong>display</strong> (<em>bool</em><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to display the plot. By default it is displayed.</p></li>
-<li><p><strong>save</strong> (<em>bool</em><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to save the plot. By default the plot is not saved.</p></li>
-<li><p><strong>filename</strong> (<em>str</em><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Choose a filename for the plot that you want to save. This includes
+<li><p><strong>display</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to display the plot. By default it is displayed.</p></li>
+<li><p><strong>save</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to save the plot. By default the plot is not saved.</p></li>
+<li><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Choose a filename for the plot that you want to save. This includes
 the file extension.</p></li>
-<li><p><strong>directory</strong> (<em>str</em><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Select the directory in which you want the plot to be saved.</p></li>
-<li><p><strong>legend_loc</strong> (<em>str</em><em> or </em><em>int</em><em>, </em><em>optional</em><em> (</em><em>default=&quot;upper left&quot;</em><em>)</em>) – Set the location of the legend in the figure. All possible values
+<li><p><strong>directory</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Select the directory in which you want the plot to be saved.</p></li>
+<li><p><strong>legend_loc</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em><em> (</em><em>default=&quot;upper left&quot;</em><em>)</em>) – Set the location of the legend in the figure. All possible values
 can be found in the Matplotlib Legend API documentation:
 <a class="reference external" href="http://matplotlib.org/api/legend_api.html">http://matplotlib.org/api/legend_api.html</a>. Default is set to the
 upper left of the figure.</p></li>
-<li><p><strong>markersize</strong> (<em>float</em><em>, </em><em>optional</em><em> (</em><em>default=60</em><em>)</em>) – Change the size of the markers on the plot. Default value is 60.</p></li>
+<li><p><strong>markersize</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em><em> (</em><em>default=60</em><em>)</em>) – Change the size of the markers on the plot. Default value is 60.</p></li>
 </ul>
 </dd>
 </dl>
@@ -2132,14 +2132,14 @@ displaying it.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>colour_scheme</strong> (<em>str</em><em>, </em><em>optional</em><em> (</em><em>default=&quot;gray&quot;</em><em>)</em>) – The colour scheme used to plot the correlation map. The list of
+<li><p><strong>colour_scheme</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em><em> (</em><em>default=&quot;gray&quot;</em><em>)</em>) – The colour scheme used to plot the correlation map. The list of
 schemes can be found on the relevant matplotlib webpage:
 <a class="reference external" href="http://matplotlib.org/examples/color/colormaps_reference.html">http://matplotlib.org/examples/color/colormaps_reference.html</a></p></li>
-<li><p><strong>display</strong> (<em>bool</em><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to display the plot. By default it is displayed.</p></li>
-<li><p><strong>save</strong> (<em>bool</em><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to save the plot. By default the plot is not saved.</p></li>
-<li><p><strong>filename</strong> (<em>str</em><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Choose a filename for the plot that you want to save. This includes
+<li><p><strong>display</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to display the plot. By default it is displayed.</p></li>
+<li><p><strong>save</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to save the plot. By default the plot is not saved.</p></li>
+<li><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Choose a filename for the plot that you want to save. This includes
 the file extension.</p></li>
-<li><p><strong>directory</strong> (<em>str</em><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Select the directory in which you want the plot to be saved.</p></li>
+<li><p><strong>directory</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Select the directory in which you want the plot to be saved.</p></li>
 </ul>
 </dd>
 </dl>
@@ -2171,20 +2171,20 @@ for which every other frame is compared.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>n</strong> (<em>int</em><em>, </em><em>optional</em><em> (</em><em>default=1</em><em>)</em>) – Number of consecutive dissimilar frames to be considered
+<li><p><strong>n</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em><em> (</em><em>default=1</em><em>)</em>) – Number of consecutive dissimilar frames to be considered
 dissimilar.</p></li>
-<li><p><strong>P_threshold</strong> (<em>float</em><em>, </em><em>optional</em><em> (</em><em>default=0.01</em><em>)</em>) – The significance level for the data. If the probability is below
+<li><p><strong>P_threshold</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em><em> (</em><em>default=0.01</em><em>)</em>) – The significance level for the data. If the probability is below
 this value then one frame is considered dissimilar to the
 frame to which it is being compared. Default significance level is
 0.01.</p></li>
-<li><p><strong>P_type</strong> (<em>str</em><em>, </em><em>optional</em><em> (</em><em>default=&quot;adjP&quot;</em><em>)</em>) – String denoting whether to use the Bonferroni corrected P value
+<li><p><strong>P_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em><em> (</em><em>default=&quot;adjP&quot;</em><em>)</em>) – String denoting whether to use the Bonferroni corrected P value
 (input string=”adjP”) or the ordinary P value (input string=”P”).
 Default is to use the Bonferroni corrected P value.</p></li>
-<li><p><strong>display</strong> (<em>bool</em><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to display the plot. By default it is displayed.</p></li>
-<li><p><strong>save</strong> (<em>bool</em><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to save the plot. By default the plot is not saved.</p></li>
-<li><p><strong>filename</strong> (<em>str</em><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Choose a filename for the plot that you want to save. This includes
+<li><p><strong>display</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to display the plot. By default it is displayed.</p></li>
+<li><p><strong>save</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to save the plot. By default the plot is not saved.</p></li>
+<li><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Choose a filename for the plot that you want to save. This includes
 the file extension.</p></li>
-<li><p><strong>directory</strong> (<em>str</em><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Select the directory in which you want the plot to be saved.</p></li>
+<li><p><strong>directory</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Select the directory in which you want the plot to be saved.</p></li>
 </ul>
 </dd>
 </dl>
@@ -2216,21 +2216,21 @@ analyis of the SAXS dataset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>P_threshold</strong> (<em>float</em><em>, </em><em>optional</em><em> (</em><em>default=0.01</em><em>)</em>) – The significance level for the data. If the probability is below
+<li><p><strong>P_threshold</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em><em> (</em><em>default=0.01</em><em>)</em>) – The significance level for the data. If the probability is below
 this value then one frame is considered dissimilar to the
 frame to which it is being compared. Default significance level is
 0.01.</p></li>
-<li><p><strong>markersize</strong> (<em>float</em><em>, </em><em>optional</em><em> (</em><em>default=60</em><em>)</em>) – Change the size of the markers on the plot. Default value is 60.</p></li>
-<li><p><strong>display</strong> (<em>bool</em><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to display the plot. By default it is displayed.</p></li>
-<li><p><strong>save</strong> (<em>bool</em><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to save the plot. By default the plot is not saved.</p></li>
-<li><p><strong>filename</strong> (<em>str</em><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Choose a filename for the plot that you want to save. This includes
+<li><p><strong>markersize</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em><em> (</em><em>default=60</em><em>)</em>) – Change the size of the markers on the plot. Default value is 60.</p></li>
+<li><p><strong>display</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to display the plot. By default it is displayed.</p></li>
+<li><p><strong>save</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to save the plot. By default the plot is not saved.</p></li>
+<li><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Choose a filename for the plot that you want to save. This includes
 the file extension.</p></li>
-<li><p><strong>directory</strong> (<em>str</em><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Select the directory in which you want the plot to be saved.</p></li>
-<li><p><strong>legend_loc</strong> (<em>str</em><em> or </em><em>int</em><em>, </em><em>optional</em><em> (</em><em>default=2</em><em>)</em>) – Set the location of the legend in the figure. All possible values
+<li><p><strong>directory</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Select the directory in which you want the plot to be saved.</p></li>
+<li><p><strong>legend_loc</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em><em> (</em><em>default=2</em><em>)</em>) – Set the location of the legend in the figure. All possible values
 can be found in the Matplotlib Legend API documentation:
 <a class="reference external" href="http://matplotlib.org/api/legend_api.html">http://matplotlib.org/api/legend_api.html</a>. Default is set to the
 upper left (integer value is 2) of the figure.</p></li>
-<li><p><strong>x_change</strong> (<em>bool</em><em>, </em><em>optional</em><em> (</em><em>default=False</em><em>)</em>) – This option changes whether the x-axis is plotted with absolute
+<li><p><strong>x_change</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em><em> (</em><em>default=False</em><em>)</em>) – This option changes whether the x-axis is plotted with absolute
 values (x_change=True) or if it’s plotted with differences between
 the x-axis values (x_change=False). For example if we compare
 choose the reference frame to be frame 10 (frame=10) then compare
@@ -2240,17 +2240,17 @@ the relevant point to be at abs(10 - 30) = 20. This option allows
 you to determine if the dissimilar frames are frames that are
 collected far from the current frame. Default is set to
 x_change=True.</p></li>
-<li><p><strong>use_adjP</strong> (<em>bool</em><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to use the Bonferroni corrected P values or to use
+<li><p><strong>use_adjP</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to use the Bonferroni corrected P values or to use
 the unadjusted P values. Default is to use the Bonferroni corrected
 P values.</p></li>
-<li><p><strong>xaxis_frame_num</strong> (<em>bool</em><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to plot the x-axis with the frame number or whether
+<li><p><strong>xaxis_frame_num</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to plot the x-axis with the frame number or whether
 to use the custom x-axis metric values that may (or may not) have
 been defined when the ScatterAnalysis object was constructed.
 Default is to use the custom metric (if it was defined).</p></li>
-<li><p><strong>P_values</strong> (<em>bool</em><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to plot probability values or C values - the maximum
+<li><p><strong>P_values</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to plot probability values or C values - the maximum
 observed patch of continuous runs of -1 or 1. Default is to use the
 P values.</p></li>
-<li><p><strong>colours</strong> (<em>list</em><em>, </em><em>optional</em><em> (</em><em>default=</em><em>[</em><em>&quot;#0072B2&quot;</em><em>, </em><em>&quot;#009E73&quot;</em><em>, </em><em>&quot;#D55E00&quot;</em><em>]</em><em>)</em>) – Choose the colour scheme for the markers in the scatter plot, which
+<li><p><strong>colours</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>, </em><em>optional</em><em> (</em><em>default=</em><em>[</em><em>&quot;#0072B2&quot;</em><em>, </em><em>&quot;#009E73&quot;</em><em>, </em><em>&quot;#D55E00&quot;</em><em>]</em><em>)</em>) – Choose the colour scheme for the markers in the scatter plot, which
 is differentiated by the P value.</p></li>
 </ul>
 </dd>
@@ -2276,10 +2276,10 @@ then the method plots all pairwise frame comparison data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>frame</strong> (<em>int</em><em>, </em><em>optional</em><em> (</em><em>default=0</em><em>)</em>) – Number of the frame for which all pairwise comparison data is
+<li><p><strong>frame</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em><em> (</em><em>default=0</em><em>)</em>) – Number of the frame for which all pairwise comparison data is
 plotted. If not specified then all pairwise frame comparison data
 is shown.</p></li>
-<li><p><strong>datcmp_data_type</strong> (<em>str</em><em>, </em><em>optional</em><em> (</em><em>default=&quot;C&quot;</em><em>)</em>) – The data type from the DATCMP results that is plotted.
+<li><p><strong>datcmp_data_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em><em> (</em><em>default=&quot;C&quot;</em><em>)</em>) – The data type from the DATCMP results that is plotted.
 The input options are:
 1) ‘C’ - This will return the C value i.e. the max observed patch
 of continuous runs of -1 or 1
@@ -2288,12 +2288,12 @@ continuous runs of -1 or 1 bigger than the corresponding C value.
 3) ‘adj P(&gt;C)’ - This will return the Bonferroni adjusted P value
 of observing a patch of continuous runs of -1 or 1 bigger than the
 corresponding C value.</p></li>
-<li><p><strong>display</strong> (<em>bool</em><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to display the plot. By default it is displayed.</p></li>
-<li><p><strong>save</strong> (<em>bool</em><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to save the plot. By default the plot is not saved.</p></li>
-<li><p><strong>filename</strong> (<em>str</em><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Choose a filename for the plot that you want to save. This includes
+<li><p><strong>display</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to display the plot. By default it is displayed.</p></li>
+<li><p><strong>save</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to save the plot. By default the plot is not saved.</p></li>
+<li><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Choose a filename for the plot that you want to save. This includes
 the file extension.</p></li>
-<li><p><strong>directory</strong> (<em>str</em><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Select the directory in which you want the plot to be saved.</p></li>
-<li><p><strong>num_bins</strong> (<em>int</em><em>, </em><em>optional</em><em> (</em><em>default=20</em><em>)</em>) – Number of bins used to plot in the histogram.</p></li>
+<li><p><strong>directory</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Select the directory in which you want the plot to be saved.</p></li>
+<li><p><strong>num_bins</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em><em> (</em><em>default=20</em><em>)</em>) – Number of bins used to plot in the histogram.</p></li>
 </ul>
 </dd>
 </dl>
@@ -2323,16 +2323,16 @@ it</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>fr1</strong> (<em>int</em>) – Number of the 1st frame used for the pairwise analyis</p></li>
-<li><p><strong>fr2</strong> (<em>int</em>) – Number of the 2nd frame used for the pairwise analyis</p></li>
-<li><p><strong>colour_scheme</strong> (<em>str</em><em>, </em><em>optional</em><em> (</em><em>default=&quot;gray&quot;</em><em>)</em>) – The colour scheme used to plot the correlation map. The list of
+<li><p><strong>fr1</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Number of the 1st frame used for the pairwise analyis</p></li>
+<li><p><strong>fr2</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Number of the 2nd frame used for the pairwise analyis</p></li>
+<li><p><strong>colour_scheme</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em><em> (</em><em>default=&quot;gray&quot;</em><em>)</em>) – The colour scheme used to plot the correlation map. The list of
 schemes can be found on the relevant matplotlib webpage:
 <a class="reference external" href="http://matplotlib.org/examples/color/colormaps_reference.html">http://matplotlib.org/examples/color/colormaps_reference.html</a></p></li>
-<li><p><strong>display</strong> (<em>bool</em><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to display the plot. By default it is displayed.</p></li>
-<li><p><strong>save</strong> (<em>bool</em><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to save the plot. By default the plot is not saved.</p></li>
-<li><p><strong>filename</strong> (<em>str</em><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Choose a filename for the plot that you want to save. This includes
+<li><p><strong>display</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to display the plot. By default it is displayed.</p></li>
+<li><p><strong>save</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to save the plot. By default the plot is not saved.</p></li>
+<li><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Choose a filename for the plot that you want to save. This includes
 the file extension.</p></li>
-<li><p><strong>directory</strong> (<em>str</em><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Select the directory in which you want the plot to be saved.</p></li>
+<li><p><strong>directory</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Select the directory in which you want the plot to be saved.</p></li>
 </ul>
 </dd>
 </dl>
@@ -2360,24 +2360,24 @@ be changed by the user.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>frame</strong> (<em>int</em><em>, </em><em>optional</em><em> (</em><em>default=0</em><em>)</em>) – Number of the frame for which all pairwise comparison data is
+<li><p><strong>frame</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em><em> (</em><em>default=0</em><em>)</em>) – Number of the frame for which all pairwise comparison data is
 plotted. If not specified then all pairwise frame comparison data
 against frame 1 is plotted.</p></li>
-<li><p><strong>P_threshold</strong> (<em>float</em><em>, </em><em>optional</em><em> (</em><em>default=0.01</em><em>)</em>) – The significance level for the data. If the probability is below
+<li><p><strong>P_threshold</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em><em> (</em><em>default=0.01</em><em>)</em>) – The significance level for the data. If the probability is below
 this value then the current frame is considered dissimilar to the
 frame to which it is being compared. Default significance level is
 0.01.</p></li>
-<li><p><strong>markersize</strong> (<em>float</em><em>, </em><em>optional</em><em> (</em><em>default=60</em><em>)</em>) – Change the size of the markers on the plot. Default value is 60.</p></li>
-<li><p><strong>display</strong> (<em>bool</em><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to display the plot. By default it is displayed.</p></li>
-<li><p><strong>save</strong> (<em>bool</em><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to save the plot. By default the plot is not saved.</p></li>
-<li><p><strong>filename</strong> (<em>str</em><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Choose a filename for the plot that you want to save. This includes
+<li><p><strong>markersize</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em><em> (</em><em>default=60</em><em>)</em>) – Change the size of the markers on the plot. Default value is 60.</p></li>
+<li><p><strong>display</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to display the plot. By default it is displayed.</p></li>
+<li><p><strong>save</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to save the plot. By default the plot is not saved.</p></li>
+<li><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Choose a filename for the plot that you want to save. This includes
 the file extension.</p></li>
-<li><p><strong>directory</strong> (<em>str</em><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Select the directory in which you want the plot to be saved.</p></li>
-<li><p><strong>legend_loc</strong> (<em>str</em><em> or </em><em>int</em><em>, </em><em>optional</em><em> (</em><em>default=&quot;upper left&quot;</em><em>)</em>) – Set the location of the legend in the figure. All possible values
+<li><p><strong>directory</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em><em>  (</em><em>default=&quot;&quot;</em><em>)</em>) – Select the directory in which you want the plot to be saved.</p></li>
+<li><p><strong>legend_loc</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em><em> (</em><em>default=&quot;upper left&quot;</em><em>)</em>) – Set the location of the legend in the figure. All possible values
 can be found in the Matplotlib Legend API documentation:
 <a class="reference external" href="http://matplotlib.org/api/legend_api.html">http://matplotlib.org/api/legend_api.html</a>. Default is set to the
 upper left of the figure.</p></li>
-<li><p><strong>x_change</strong> (<em>bool</em><em>, </em><em>optional</em><em> (</em><em>default=False</em><em>)</em>) – This option changes whether the x-axis is plotted with absolute
+<li><p><strong>x_change</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em><em> (</em><em>default=False</em><em>)</em>) – This option changes whether the x-axis is plotted with absolute
 values (x_change=True) or if it’s plotted with differences between
 the x-axis values (x_change=False). For example if we compare
 choose the reference frame to be frame 10 (frame=10) then compare
@@ -2387,16 +2387,16 @@ the relevant point to be at abs(10 - 30) = 20. This option allows
 you to determine if the dissimilar frames are frames that are
 collected far from the current frame. Default is set to
 x_change=True.</p></li>
-<li><p><strong>use_adjP</strong> (<em>bool</em><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to use the Bonferroni corrected P values or to use
+<li><p><strong>use_adjP</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to use the Bonferroni corrected P values or to use
 the unadjusted P values. Default is to use the Bonferroni corrected
 P values.</p></li>
-<li><p><strong>xaxis_frame_num</strong> (<em>bool</em><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to plot the x-axis with the frame number or whether
+<li><p><strong>xaxis_frame_num</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Choose whether to plot the x-axis with the frame number or whether
 to use the custom x-axis metric values that may (or may not) have
 been defined when the ScatterAnalysis object was constructed.
 Default is to use the custom metric (if it was defined).</p></li>
-<li><p><strong>colours</strong> (<em>list</em><em>, </em><em>optional</em><em> (</em><em>default=</em><em>[</em><em>&quot;#0072B2&quot;</em><em>, </em><em>&quot;#009E73&quot;</em><em>, </em><em>&quot;#D55E00&quot;</em><em>]</em><em>)</em>) – Choose the colour scheme for the markers in the scatter plot, which
+<li><p><strong>colours</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>, </em><em>optional</em><em> (</em><em>default=</em><em>[</em><em>&quot;#0072B2&quot;</em><em>, </em><em>&quot;#009E73&quot;</em><em>, </em><em>&quot;#D55E00&quot;</em><em>]</em><em>)</em>) – Choose the colour scheme for the markers in the scatter plot, which
 is differentiated by the P value.</p></li>
-<li><p><strong>markers</strong> (<em>list</em><em>, </em><em>optional</em><em> (</em><em>default=</em><em>[</em><em>&quot;o&quot;</em><em>, </em><em>&quot;o&quot;</em><em>, </em><em>&quot;o&quot;</em><em>]</em><em>)</em>) – Choose the markers used for the markers in the scatter plot, which
+<li><p><strong>markers</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>, </em><em>optional</em><em> (</em><em>default=</em><em>[</em><em>&quot;o&quot;</em><em>, </em><em>&quot;o&quot;</em><em>, </em><em>&quot;o&quot;</em><em>]</em><em>)</em>) – Choose the markers used for the markers in the scatter plot, which
 is differentiated by the P value. A list of the markers that can be
 used can be found on the Matplotlib Markers API webpage:
 <a class="reference external" href="http://matplotlib.org/api/markers_api.html">http://matplotlib.org/api/markers_api.html</a></p></li>
@@ -2432,11 +2432,11 @@ as well as whether to use the Bonferroni corrected P values or not.
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>frame</strong> (<em>int</em><em>, </em><em>optional</em><em> (</em><em>default=1</em><em>)</em>) – The frame that every other frame in the dataset is compared with.
+<li><p><strong>frame</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em><em> (</em><em>default=1</em><em>)</em>) – The frame that every other frame in the dataset is compared with.
 If not specified then all frames are compared to the first frame.</p></li>
-<li><p><strong>P_threshold</strong> (<em>float</em><em>, </em><em>optional</em><em> (</em><em>default=0.01</em><em>)</em>) – The significance threshold of the test. If it’s not given then the
+<li><p><strong>P_threshold</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em><em> (</em><em>default=0.01</em><em>)</em>) – The significance threshold of the test. If it’s not given then the
 default value is 1%.</p></li>
-<li><p><strong>P_type</strong> (<em>str</em><em>, </em><em>optional</em><em> (</em><em>default=&quot;adjP&quot;</em><em>)</em>) – string denoting whether to use the Bonferroni corrected P value
+<li><p><strong>P_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em><em> (</em><em>default=&quot;adjP&quot;</em><em>)</em>) – string denoting whether to use the Bonferroni corrected P value
 (input string=”adjP”) or the ordinary P value (input string=”P”).
 Default is to use the Bonferroni corrected P value.</p></li>
 </ul>
@@ -2546,7 +2546,7 @@ tuple of x,y, and rotation is the angle in degrees)</p>
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ATSAS.CorMapAnalysis.ScatterAnalysis"><code class="docutils literal notranslate"><span class="pre">ScatterAnalysis</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ATSAS.CorMapAnalysis.ScatterAnalysis"><code class="docutils literal notranslate"><span class="pre">ScatterAnalysis</span></code></a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ATSAS.CorMapAnalysis.ScatterAnalysis.PLOT_LABEL"><code class="docutils literal notranslate"><span class="pre">ScatterAnalysis.PLOT_LABEL</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ATSAS.CorMapAnalysis.ScatterAnalysis.PLOT_NUM"><code class="docutils literal notranslate"><span class="pre">ScatterAnalysis.PLOT_NUM</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#molass_legacy.ATSAS.CorMapAnalysis.ScatterAnalysis.calc_cormap"><code class="docutils literal notranslate"><span class="pre">ScatterAnalysis.calc_cormap()</span></code></a></li>
