@@ -420,13 +420,6 @@ class BasicOptimizer:
                 _reload(molass_legacy.Solvers.Registry)
                 from molass_legacy.Solvers.Registry import get_solver_instance
                 solver = get_solver_instance(method, self)
-                # DE uses de_niter as its budget (niter=20 from GUI is too small).
-                # Use de_niter if set and method is DE; otherwise fall through with niter.
-                if method == "de":
-                    from molass_legacy._MOLASS.SerialSettings import get_setting as _gs
-                    _de_niter = _gs('de_niter')
-                    if _de_niter is not None:
-                        niter = int(_de_niter)
                 result = solver.minimize(self.objective_func_wrapper, norm_params, niter=niter, seed=seed, bounds=bounds)
             except (ImportError, ValueError):
                 raise ValueError("Unknown method: %s" % method)
