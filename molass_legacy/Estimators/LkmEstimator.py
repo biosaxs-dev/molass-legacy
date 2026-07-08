@@ -12,7 +12,8 @@
         uv_params       : nc
         uv_baseparams   : 5 + num_baseparams
         mappable_range  : (c, d)
-        lkm_colparams   : [Pe, t0, R_0, k_MT_0, R_1, k_MT_1, ..., R_{nc-1}, k_MT_{nc-1}]
+        lkm_colparams   : [Pe, t0, c_inj, R_0, k_MT_0, R_1, k_MT_1, ..., R_{nc-1}, k_MT_{nc-1}]
+                          (c_inj is shared injection concentration)
 
     Strategy: delegate to molass-library's LkmEstimator.estimate_lkm_init_params
     via a thin adapter.  This keeps the algorithm in a single place — any
@@ -91,19 +92,22 @@ class LkmEstimator(EghEstimator):
         uv_curve, xr_curve = self.ecurves
         x = xr_curve.x
 
-        # Delegate to library: moment-matching to estimate Pe, t0, R_i, k_MT_i.
-        # Returns Pe, t0, k_MT_list, R_list, scale_list (nc values each for lists).
+        # Delegate to library: moment-matching to estimate Pe, t0, R_i, k_MT_i, c_inj.
+        # Returns Pe, t0, k_MT_list, R_list, scale_list, c_inj (nc values for lists).
         adapters = [_EghCurveAdapterForLkm(x, init_xr_params[k]) for k in range(nc)]
         fake_decomp = _FakeDecomp(adapters)
-        Pe, t0, k_MT_list, R_list, scale_list = estimate_lkm_init_params(
-            fake_decomp, debug=debug)
+        
+        # Pass t_inj=1.0 as default (will be updated when we expose this parameter to users)
+        Pe, t0, k_MT_list, R_list, scale_list, c_inj = estimate_lkm_init_params(
+            fake_decomp, t_inj=1.0, debug=debug)
 
         progress += 1
         editor.pbar["value"] = progress
         editor.update()
 
-        # Build lkm_colparams: [Pe, t0, R_0, k_MT_0, R_1, k_MT_1, ...]
-        lkm_colparams = [Pe, t0]
+        # Build lkm_colparams: [Pe, t0, c_inj, R_0, k_MT_0, R_1, k_MT_1, ...]
+        # Note: c_inj is now inserted at position 2 (shared parameter)
+        lkm_colparams = [Pe, t0, c_inj]
         for i in range(nc):
             lkm_colparams.append(R_list[i])
             lkm_colparams.append(k_MT_list[i])

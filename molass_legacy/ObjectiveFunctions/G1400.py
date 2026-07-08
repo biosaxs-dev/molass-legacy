@@ -5,7 +5,8 @@
     Parameter layout:
         xr_params, xr_baseparams, rg_params, (a,b), uv_params, uv_baseparams,
         (c,d), lkmcol_params
-    lkmcol_params = [Pe, t0, R_0, k_MT_0, R_1, k_MT_1, ..., R_{nc-1}, k_MT_{nc-1}]
+    lkmcol_params = [Pe, t0, c_inj, R_0, k_MT_0, R_1, k_MT_1, ..., R_{nc-1}, k_MT_{nc-1}]
+                     (c_inj is shared injection concentration)
 
     Copyright (c) 2026, SAXS Team, KEK-PF
 """
@@ -26,7 +27,8 @@ class G1400(BasicOptimizer):
     """
     Lumped Kinetic Model (LKM) rigorous optimizer.
 
-    lkmcol_params layout: [Pe, t0, R_0, k_MT_0, R_1, k_MT_1, ..., R_{nc-1}, k_MT_{nc-1}]
+    lkmcol_params layout: [Pe, t0, c_inj, R_0, k_MT_0, R_1, k_MT_1, ..., R_{nc-1}, k_MT_{nc-1}]
+    (c_inj is shared injection concentration)
     """
 
     def __init__(self, dsets, n_components, **kwargs):
@@ -37,7 +39,7 @@ class G1400(BasicOptimizer):
         from molass_legacy.ModelParams.LkmParams import LkmParams
 
         nc = n_components - 1
-        num_col_params = 2 + 2 * nc
+        num_col_params = 3 + 2 * nc  # [Pe, t0, c_inj, R_0, k_MT_0, ...]
         params_type = LkmParams(n_components)
         BasicOptimizer.__init__(self, dsets, n_components, params_type, kwargs)
         self.exports_bounds = True
@@ -50,9 +52,10 @@ class G1400(BasicOptimizer):
         x = self.xr_curve.x
         y = self.xr_curve.y
 
-        # LKM column params: shared Pe, t0; per-component R_i, k_MT_i
-        Pe = lkmcol_params[0]
-        t0 = lkmcol_params[1]
+        # LKM column params: shared Pe, t0, c_inj; per-component R_i, k_MT_i
+        Pe    = lkmcol_params[0]
+        t0    = lkmcol_params[1]
+        c_inj = lkmcol_params[2]
         nc = self.n_components - 1
 
         uv_x = a * x + b
@@ -80,10 +83,11 @@ class G1400(BasicOptimizer):
 
         for i, (xr_w, rg_, uv_w) in enumerate(zip(xr_params, rg_params, uv_params)):
             negative_penalty += min(0, xr_w) ** 2 + min(0, uv_w) ** 2
-            R_i    = lkmcol_params[2 + 2 * i]
-            k_MT_i = lkmcol_params[2 + 2 * i + 1]
+            R_i    = lkmcol_params[3 + 2 * i]      # Position adjusted for c_inj at index 2
+            k_MT_i = lkmcol_params[3 + 2 * i + 1]
             # LKM: x is absolute frame axis; no tI subtraction needed
-            pd_cy  = lkm_pdf(x, Pe, t0, k_MT_i, R_i)
+            # Pass c_inj to lkm_pdf (default t_inj=1.0)
+            pd_cy  = lkm_pdf(x, Pe, t0, k_MT_i, R_i, c_inj=c_inj, t_inj=1.0)
             xr_cy  = xr_w * pd_cy
             uv_cy  = uv_w * pd_cy
             xr_ty += xr_cy
@@ -114,7 +118,8 @@ class G1400(BasicOptimizer):
 
             # R ordering constraint: R_0 <= R_1 <= ... <= R_{nc-1}
             # (peak elution time = t0 * R_i; SEC order = ascending R)
-            R_values = lkmcol_params[2::2]
+            # Position adjusted for c_inj at index 2
+            R_values = lkmcol_params[3::2]
             order_penalty = PENALTY_SCALE * float(np.sum(np.maximum(0.0, R_values[:-1] - R_values[1:]) ** 2))
 
             penalties = [mapping_penalty, negative_penalty, baseline_penalty,
