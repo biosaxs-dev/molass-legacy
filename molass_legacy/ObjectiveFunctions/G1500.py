@@ -61,11 +61,12 @@ class G1500(BasicOptimizer):
         x = self.xr_curve.x
         y = self.xr_curve.y
 
-        # GRM column params: shared Pe, t0, R_p, D_eff; per-component R_i, k_ext_i
+        # GRM column params: shared Pe, t0, R_p, D_eff, c_inj; per-component R_i, k_ext_i
         Pe    = grmcol_params[0]
         t0    = grmcol_params[1]
         R_p   = grmcol_params[2]
         D_eff = grmcol_params[3]
+        c_inj = grmcol_params[4]
         nc    = self.n_components - 1
 
         uv_x = a * x + b
@@ -94,11 +95,12 @@ class G1500(BasicOptimizer):
         F_ratio = self._F_ratio
         for i, (xr_w, rg_, uv_w) in enumerate(zip(xr_params, rg_params, uv_params)):
             negative_penalty += min(0, xr_w) ** 2 + min(0, uv_w) ** 2
-            R_i     = grmcol_params[4 + 2 * i]
-            k_ext_i = grmcol_params[4 + 2 * i + 1]
+            R_i     = grmcol_params[5 + 2 * i]
+            k_ext_i = grmcol_params[5 + 2 * i + 1]
             # a_star derived from R_i: R = 1 + F*a_star → a_star = (R-1)/F
             a_star_i = (R_i - 1.0) / F_ratio
-            pd_cy = grm_pdf(x, Pe, t0, k_ext_i, R_p, D_eff, a_star_i, F_ratio)
+            pd_cy = grm_pdf(x, Pe, t0, k_ext_i, R_p, D_eff, a_star_i, F_ratio,
+                           c_inj=c_inj, t_inj=1.0)
             xr_cy  = xr_w * pd_cy
             uv_cy  = uv_w * pd_cy
             xr_ty += xr_cy

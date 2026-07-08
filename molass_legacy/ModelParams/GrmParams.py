@@ -4,8 +4,8 @@
     Parameter layout for the GRM (General Rate Model) objective function.
 
     Column-params layout:
-      [Pe, t0, R_p, D_eff, R_0, k_ext_0, R_1, k_ext_1, ..., R_{nc-1}, k_ext_{nc-1}]
-    num_col_params = 4 + 2*nc   where nc = n_components - 1 (excluding baseline)
+      [Pe, t0, R_p, D_eff, c_inj, R_0, k_ext_0, R_1, k_ext_1, ..., R_{nc-1}, k_ext_{nc-1}]
+    num_col_params = 5 + 2*nc   where nc = n_components - 1 (excluding baseline)
 
     Copyright (c) 2026, SAXS Team, KEK-PF
 """
@@ -37,7 +37,7 @@ def get_common_parameter_names(nc):
     mapping_names = ["$mp_a$", "$mp_b$"]
     uv_names      = ["$uh_%d$" % k for k in range(nc)]
     mr_names      = ["$mr_a$", "$mr_b$"]
-    grmcol_names  = ["$Pe$", "$t_0$", "$R_p$", "$D_{eff}$"] + [
+    grmcol_names  = ["$Pe$", "$t_0$", "$R_p$", "$D_{eff}$", "$c_{inj}$"] + [
         f"$R_{k}$" if j == 0 else f"$k_{{ext,{k}}}$"
         for k in range(nc) for j in range(2)
     ]
@@ -51,7 +51,7 @@ class GrmParams(ParamsTypeBase):
         self.logger         = logging.getLogger(__name__)
         self.n_components   = n_components
         nc                  = n_components - 1           # pure components (excl. baseline)
-        self.num_col_params = 4 + 2 * nc
+        self.num_col_params = 5 + 2 * nc
         self.num_baseparams = get_num_baseparams()
         self.integral_baseline = (self.num_baseparams == 3)
         self.t0_upper_bound = get_setting("t0_upper_bound")
