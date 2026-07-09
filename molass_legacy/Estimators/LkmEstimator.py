@@ -118,15 +118,14 @@ class LkmEstimator(EghEstimator):
         # so xr_w should equal the total area under the component curve.
         xr_heights = np.array(scale_list)
 
-        # Per-component UV weights: preserve the UV/XR height ratio from EGH,
-        # scaled to the LKM area-based xr scale.
-        # uv_w[k] = scale_list[k] * (U_k / H_k)
-        # This gives area-unit UV weights consistent with xr_heights (= scale_list).
-        # Note: EDM/CEDM use the peak-lookup approach (different unit convention).
+        # Per-component UV/XR ratios: preserve the ratio from EGH.
+        # In unified architecture, uv_params are ratios, not absolute scales.
+        # The objective computes: uv_cy = uv_ratio * xr_cy
+        # This makes UV scales implicit (derived from XR via species-specific ratio).
         egh_xr_heights = np.array([p[0] for p in init_xr_params])  # H_k from EGH
         egh_uv_heights = np.array(init_uv_heights)
         safe_egh_xr = np.where(egh_xr_heights > 0, egh_xr_heights, 1.0)
-        uv_w = xr_heights * (egh_uv_heights / safe_egh_xr)
+        uv_ratio = egh_uv_heights / safe_egh_xr  # UV/XR ratio (species property)
 
         editor.update_status_bar("LKM initial parameters are ready.")
 
@@ -135,7 +134,7 @@ class LkmEstimator(EghEstimator):
             init_xr_baseparams,     # num_baseparams
             temp_rgs,               # nc
             init_mapping,           # (a_mp, b_mp)
-            uv_w,                   # nc
+            uv_ratio,               # nc: UV/XR ratios (unified architecture)
             init_uv_baseparams,     # 5 + num_baseparams
             init_mappable_range,    # (c, d)
             lkm_colparams,          # [Pe, t0, R_0, k_MT_0, ...]

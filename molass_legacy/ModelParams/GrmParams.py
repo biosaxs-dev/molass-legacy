@@ -7,6 +7,8 @@
       [Pe, t0, R_p, D_eff, c_inj, R_0, k_ext_0, R_1, k_ext_1, ..., R_{nc-1}, k_ext_{nc-1}]
     num_col_params = 5 + 2*nc   where nc = n_components - 1 (excluding baseline)
 
+    Phase 2E unified scale refactoring: c_inj is the 5th shared column param.
+
     Copyright (c) 2026, SAXS Team, KEK-PF
 """
 import logging
@@ -25,6 +27,8 @@ RP_LO_FACTOR   = 0.50    # R_p lower bound = init * RP_LO_FACTOR
 RP_HI_FACTOR   = 2.0     # R_p upper bound = init * RP_HI_FACTOR
 DEFF_LO_FACTOR = 0.01    # D_eff lower bound = init * DEFF_LO_FACTOR
 DEFF_HI_FACTOR = 100.0   # D_eff upper bound = init * DEFF_HI_FACTOR
+CINJ_LO_FACTOR = 0.30    # c_inj lower bound = init * CINJ_LO_FACTOR
+CINJ_HI_FACTOR = 5.0     # c_inj upper bound = init * CINJ_HI_FACTOR
 R_LO_FACTOR    = 0.30    # R lower bound  = init * R_LO_FACTOR (min 1.001)
 R_HI_FACTOR    = 5.0     # R upper bound  = init * R_HI_FACTOR
 KEXT_LO_FACTOR = 0.001   # k_ext lower bound = init * KEXT_LO_FACTOR
@@ -162,9 +166,9 @@ class GrmParams(ParamsTypeBase):
         a, b = init_mapping
         mapping_bounds = [(a * 0.8, a * 1.2), (-m_allow, m_allow)]
 
-        uv_h_max = np.max(init_uv_params)
-        uv_h_min = uv_h_max * AVOID_VANISHING_RATIO
-        uv_bounds = [(uv_h_min, uv_h_max * 2) for _ in init_uv_params]
+        # UV parameters are UV/XR ratios (species properties, unified architecture)
+        # Allow ±20% refinement (like mapping) but prevent wild deviations
+        uv_bounds = [(uv * 0.8, uv * 1.2) for uv in init_uv_params]
         for k, v in enumerate(init_uv_baseparams):
             v_allow = max(0.1, abs(v)) * 0.2
             if self.integral_baseline and k == 7:
@@ -180,17 +184,18 @@ class GrmParams(ParamsTypeBase):
         # ── Column-params bounds ───────────────────────────────────────────────
         if real_bounds is None:
             grmcol = self.split_params_simple(params)[-1]
-            Pe, t0, R_p, D_eff = grmcol[0], grmcol[1], grmcol[2], grmcol[3]
-            nc = (len(grmcol) - 4) // 2
+            Pe, t0, R_p, D_eff, c_inj = grmcol[0], grmcol[1], grmcol[2], grmcol[3], grmcol[4]
+            nc = (len(grmcol) - 5) // 2
             colparam_bounds = [
-                (Pe   * PE_LO_FACTOR,   Pe   * PE_HI_FACTOR),
-                (t0   * T0_LO_FACTOR,   t0   * T0_HI_FACTOR),
-                (R_p  * RP_LO_FACTOR,   R_p  * RP_HI_FACTOR),
+                (Pe    * PE_LO_FACTOR,   Pe    * PE_HI_FACTOR),
+                (t0    * T0_LO_FACTOR,   t0    * T0_HI_FACTOR),
+                (R_p   * RP_LO_FACTOR,   R_p   * RP_HI_FACTOR),
                 (D_eff * DEFF_LO_FACTOR, D_eff * DEFF_HI_FACTOR),
+                (c_inj * CINJ_LO_FACTOR, c_inj * CINJ_HI_FACTOR),
             ]
             for i in range(nc):
-                R     = grmcol[4 + 2 * i]
-                k_ext = grmcol[4 + 2 * i + 1]
+                R     = grmcol[5 + 2 * i]
+                k_ext = grmcol[5 + 2 * i + 1]
                 colparam_bounds.append((max(1.001, R * R_LO_FACTOR), R * R_HI_FACTOR))
                 colparam_bounds.append((k_ext * KEXT_LO_FACTOR, k_ext * KEXT_HI_FACTOR))
         else:
@@ -246,8 +251,8 @@ class GrmParams(ParamsTypeBase):
     def split_get_unified_sec_params(self, params):
         """Returns placeholder tuple for compatibility with display utilities."""
         grmcol = self.split_params_simple(params)[-1]
-        Pe, t0, R_p, D_eff = grmcol[0], grmcol[1], grmcol[2], grmcol[3]
-        return t0, t0, None, None, Pe, None, R_p, D_eff, None, None, None, None, None
+        Pe, t0, R_p, D_eff, c_inj = grmcol[0], grmcol[1], grmcol[2], grmcol[3], grmcol[4]
+        return t0, t0, None, None, Pe, None, R_p, D_eff, c_inj, None, None, None, None
 
     def get_peak_pos_array_list(self, x_array):
         """Return estimated peak positions for dashboard rendering (mean = t0 * R_i)."""
@@ -256,7 +261,7 @@ class GrmParams(ParamsTypeBase):
         for params in x_array:
             grmcol = params[-self.num_col_params:]
             t0     = grmcol[1]
-            trs    = np.array([t0 * grmcol[4 + 2 * i] for i in range(nc)])
+            trs    = np.array([t0 * grmcol[5 + 2 * i] for i in range(nc)])
             pos_array_list.append(trs)
         return np.array(pos_array_list).T
 

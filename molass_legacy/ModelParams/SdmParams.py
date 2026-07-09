@@ -137,9 +137,9 @@ class SdmParams:
         a, b = init_mapping
         mapping_bounds = [(a*0.8, a*1.2), (-m_allow, m_allow)]
 
-        uv_h_max = np.max(init_uv_params)
-        uv_h_min = uv_h_max*AVOID_VANISHING_RATIO
-        uv_bounds = [(uv_h_min, uv_h_max*2) for h in init_uv_params]
+        # UV parameters are UV/XR ratios (species properties, unified architecture)
+        # Allow ±20% refinement (like mapping) but prevent wild deviations
+        uv_bounds = [(uv * 0.8, uv * 1.2) for uv in init_uv_params]
         for k, v in enumerate(init_uv_baseparams):
             v_allow = max(0.1, abs(v))*0.2          # note that v may be zero
             if self.integral_baseline and k == 7:

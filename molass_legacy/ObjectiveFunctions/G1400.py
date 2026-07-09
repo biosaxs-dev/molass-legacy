@@ -86,10 +86,10 @@ class G1400(BasicOptimizer):
             R_i    = lkmcol_params[3 + 2 * i]      # Position adjusted for c_inj at index 2
             k_MT_i = lkmcol_params[3 + 2 * i + 1]
             # LKM: x is absolute frame axis; no tI subtraction needed
-            # Pass c_inj to lkm_pdf (default t_inj=1.0)
-            pd_cy  = lkm_pdf(x, Pe, t0, k_MT_i, R_i, c_inj=c_inj, t_inj=1.0)
+            # Get normalized pore distribution (c_inj=1.0), scale by component-specific xr_w
+            pd_cy  = lkm_pdf(x, Pe, t0, k_MT_i, R_i, c_inj=1.0, t_inj=1.0)
             xr_cy  = xr_w * pd_cy
-            uv_cy  = uv_w * pd_cy
+            uv_cy  = uv_w * xr_cy  # uv_w now interpreted as UV/XR ratio
             xr_ty += xr_cy
             xr_cy_list.append(xr_cy)
             uv_ty += uv_cy

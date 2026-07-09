@@ -99,10 +99,11 @@ class G1500(BasicOptimizer):
             k_ext_i = grmcol_params[5 + 2 * i + 1]
             # a_star derived from R_i: R = 1 + F*a_star → a_star = (R-1)/F
             a_star_i = (R_i - 1.0) / F_ratio
+            # Get normalized pore distribution (c_inj=1.0), scale by component-specific xr_w
             pd_cy = grm_pdf(x, Pe, t0, k_ext_i, R_p, D_eff, a_star_i, F_ratio,
-                           c_inj=c_inj, t_inj=1.0)
+                           c_inj=1.0, t_inj=1.0)
             xr_cy  = xr_w * pd_cy
-            uv_cy  = uv_w * pd_cy
+            uv_cy  = uv_w * xr_cy  # uv_w now interpreted as UV/XR ratio
             xr_ty += xr_cy
             xr_cy_list.append(xr_cy)
             uv_ty += uv_cy

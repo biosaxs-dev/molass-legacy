@@ -150,10 +150,16 @@ class SdmEstimator(BaseEstimator):
         if xr_scales is not None:
             non_col[:nc_xr] = xr_scales  # replace XR weights with Stage-2 scales
             # Refit UV with Stage-2 refined column params (library upgrade → UV conversion).
-            # adjust_to_uv_scales knows the SDM UV normalisation; running it with Stage-N
-            # params instead of the rough initial guess makes uv_w proportional and correct.
+            # adjust_to_uv_scales returns absolute UV scales; convert to ratios for unified architecture.
             uv_w_new = self._refit_uv_w(sdmcol_7[:6], xr_scales)
-            self._update_non_col_uv(non_col, nc_xr, uv_w_new)
+            if uv_w_new is not None:
+                # Convert absolute UV scales to UV/XR ratios
+                safe_xr = np.where(xr_scales > 0, xr_scales, 1.0)
+                uv_ratio = uv_w_new / safe_xr
+                self._update_non_col_uv(non_col, nc_xr, uv_ratio)
+            else:
+                # Fallback: keep rough UV values (already ratios from init_params_6)
+                pass
         return np.concatenate([non_col, sdmcol_7])
 
     def _refit_uv_w(self, sdm_col_params_6, xr_scales):
@@ -334,7 +340,14 @@ class SdmEstimator(BaseEstimator):
             col6_ln = np.array([sdmcol_8[0], sdmcol_8[1], sdmcol_8[2],
                                 np.exp(sdmcol_8[3]), sdmcol_8[5], sdmcol_8[6]])
             uv_w_new = self._refit_uv_w(col6_ln, xr_scales)
-            self._update_non_col_uv(non_col, nc_xr, uv_w_new)
+            if uv_w_new is not None:
+                # Convert absolute UV scales to UV/XR ratios (unified architecture)
+                safe_xr = np.where(xr_scales > 0, xr_scales, 1.0)
+                uv_ratio = uv_w_new / safe_xr
+                self._update_non_col_uv(non_col, nc_xr, uv_ratio)
+            else:
+                # Fallback: keep rough UV values (already ratios from init_params_6)
+                pass
         return np.concatenate([non_col, sdmcol_8])
 
     def compute_sdm_init_params(self, nc_b, lrf_src=None, edm_available=False, debug=False):

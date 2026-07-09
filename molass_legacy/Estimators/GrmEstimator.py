@@ -115,11 +115,11 @@ class GrmEstimator(EghEstimator):
         # xr heights: use c_inj for all components (embedded scale)
         xr_heights = np.full(nc, c_inj)
 
-        # Per-component UV weights: preserve UV/XR height ratio from EGH
+        # Per-component UV/XR ratios: preserve the ratio from EGH (unified architecture)
         egh_xr_heights = np.array([p[0] for p in init_xr_params])
         egh_uv_heights = np.array(init_uv_heights)
         safe_egh_xr    = np.where(egh_xr_heights > 0, egh_xr_heights, 1.0)
-        uv_w = xr_heights * (egh_uv_heights / safe_egh_xr)
+        uv_ratio = egh_uv_heights / safe_egh_xr  # UV/XR ratio (species property)
 
         editor.update_status_bar("GRM initial parameters are ready.")
 
@@ -128,7 +128,7 @@ class GrmEstimator(EghEstimator):
             init_xr_baseparams,     # num_baseparams
             temp_rgs,               # nc
             init_mapping,           # (a_mp, b_mp)
-            uv_w,                   # nc
+            uv_ratio,               # nc: UV/XR ratios (unified architecture)
             init_uv_baseparams,     # 5 + num_baseparams
             init_mappable_range,    # (c, d)
             grm_colparams,          # [Pe, t0, R_p, D_eff, R_0, k_ext_0, ...]

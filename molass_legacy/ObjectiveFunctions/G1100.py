@@ -96,7 +96,7 @@ class G1100(BasicOptimizer):
             tp_ = T_*(1 - r_)**mp
             pd_cy = elutionmodel_func(x_, np_, tp_, N0, t0)
             xr_cy = xr_w * pd_cy
-            uv_cy = uv_w * pd_cy
+            uv_cy = uv_w * xr_cy  # uv_w now interpreted as UV/XR ratio
 
             xr_ty += xr_cy
             xr_cy_list.append(xr_cy)
