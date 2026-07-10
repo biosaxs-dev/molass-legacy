@@ -132,7 +132,9 @@ class G1500(BasicOptimizer):
 
             # R ordering constraint: R_0 <= R_1 <= ... <= R_{nc-1}
             # (peak elution time = t0 * R_i; SEC order = ascending R)
-            R_values = grmcol_params[4::2]
+            # grmcol layout: [Pe, t0, R_p, D_eff, c_inj, R_0, k_0, R_1, k_1, ...]
+            # R values start at index 5 with step 2 (not 4::2 which would give c_inj, k_ext, ...)
+            R_values = grmcol_params[5::2]
             order_penalty = PENALTY_SCALE * float(np.sum(np.maximum(0.0, R_values[:-1] - R_values[1:]) ** 2))
 
             penalties = [mapping_penalty, negative_penalty, baseline_penalty,
