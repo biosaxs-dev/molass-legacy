@@ -95,6 +95,9 @@ class SdmEstimator(BaseEstimator):
                     from molass.Rigorous.LegacyBridgeUtils import make_basecurves_from_decomposition
                     _, baseparams = make_basecurves_from_decomposition(model_decomp)
                     init_params = model_decomp.make_rigorous_initparams(baseparams)
+                    # Store estimated K for adaptive bounds (molass-legacy#84)
+                    col_params = column.get_params()  # (N, T, me, mp, x0, tI, N0, poresize, ts, k)
+                    self._estimated_K = float(col_params[0] * col_params[1])  # N * T
                     self.logger.info(
                         "_estimate_mono: used library SDM upgrade result directly"
                     )
@@ -239,6 +242,9 @@ class SdmEstimator(BaseEstimator):
                     from molass.Rigorous.LegacyBridgeUtils import make_basecurves_from_decomposition
                     _, baseparams = make_basecurves_from_decomposition(model_decomp)
                     init_params = model_decomp.make_rigorous_initparams(baseparams)
+                    # Store estimated K for adaptive bounds (molass-legacy#84)
+                    col_params = column.get_params()  # (N, T, me, mp, x0, tI, N0, mu, sigma, k)
+                    self._estimated_K = float(col_params[0] * col_params[1])  # N * T
                     self.logger.info(
                         "_estimate_lognormal: used library SDM upgrade result directly"
                     )
