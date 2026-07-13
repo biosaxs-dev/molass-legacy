@@ -80,12 +80,12 @@ class G1300(BasicOptimizer):
         T_ = abs(T)
         x_ = x - tI
         t0 = x0 - tI
-        for xr_w, rg_, uv_w in zip(xr_params, rg_params, uv_params):
-            negative_penalty += min(0, xr_w)**2 + min(0, uv_w)**2
+        for xr_w, rg_, uv_ratio in zip(xr_params, rg_params, uv_params):
+            negative_penalty += min(0, xr_w)**2 + min(0, uv_ratio)**2
             # Lognormal pore: pass Rg directly to the PDF (no rho pre-computation)
             pd_cy = elutionmodel_func(x_, 1.0, N, T_, k_gamma, me, mp, mu, sigma, rg_, N0, t0)
             xr_cy = xr_w * pd_cy
-            uv_cy = uv_w * pd_cy
+            uv_cy = uv_ratio * xr_cy    # unified: ratio × XR curve (Phase 1c)
 
             xr_ty += xr_cy
             xr_cy_list.append(xr_cy)
