@@ -146,6 +146,9 @@ class SdmEstimator(BaseEstimator):
             )
             sdmcol_7 = np.array([N, K, x0, poresize, N0, tI, 2.0])
 
+        # Store estimated K so get_colparam_bounds() can adapt K bounds per-dataset (molass-legacy#84)
+        self._estimated_K = float(sdmcol_7[1])
+
         non_col = init_params_6[:-6].copy()
         if xr_scales is not None:
             non_col[:nc_xr] = xr_scales  # replace XR weights with Stage-2 scales
@@ -348,6 +351,8 @@ class SdmEstimator(BaseEstimator):
             else:
                 # Fallback: keep rough UV values (already ratios from init_params_6)
                 pass
+        # Store estimated K so get_colparam_bounds() can adapt K bounds per-dataset (molass-legacy#84)
+        self._estimated_K = float(sdmcol_8[1])
         return np.concatenate([non_col, sdmcol_8])
 
     def compute_sdm_init_params(self, nc_b, lrf_src=None, edm_available=False, debug=False):
@@ -456,15 +461,24 @@ class SdmEstimator(BaseEstimator):
         return est_col_bounds[0:4] + [(1600, 60000)] + est_col_bounds[4:]
 
     def get_colparam_bounds(self):
-        from molass_legacy.Models.Stochastic.ParamLimits import MNP_BOUNDS, LN_MU_BOUND, LN_SIGMA_BOUND
-        mnp_bounds = MNP_BOUNDS.copy()
+        from molass_legacy.Models.Stochastic.ParamLimits import MNP_BOUNDS, LN_MU_BOUND, LN_SIGMA_BOUND, KT_BOUND
+        mnp_bounds = list(MNP_BOUNDS).copy()  # shallow-copy list; tuples are immutable
+
+        # Adapt K bounds to the dataset-specific estimated K (molass-legacy#84).
+        # KT_BOUND=(500,2000) is too narrow for some datasets (e.g. SAMPLE1: K=228).
+        K_est = getattr(self, '_estimated_K', None)
+        if K_est is not None and K_est > 0:
+            K_lo = K_est * 0.3
+            K_hi = max(K_est * 4.0, float(KT_BOUND[1]))
+            mnp_bounds[1] = (K_lo, K_hi)
+
         if self.pore_dist == 'lognormal':
             # G1300: [N, K, x0, mu, sigma, N0, tI, k_gamma] (8 params)
             return list(mnp_bounds[:3]) + [LN_MU_BOUND, LN_SIGMA_BOUND,
                                            (1600, 60000), (-1000, 0), (0.5, 10.0)]
         else:
             # G1200: [N, K, x0, poresize, N0, tI, k_gamma] (7 params)
-            return mnp_bounds + [(1600, 60000), (-1000, 0), (0.5, 10.0)]
+            return list(mnp_bounds) + [(1600, 60000), (-1000, 0), (0.5, 10.0)]
 
 def onthefly_test(editor):
     estimator = SdmEstimator(editor)
