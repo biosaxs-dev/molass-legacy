@@ -432,6 +432,7 @@ ITEM_DEFAULTS = {
     'de_F'                  : None,     # DE mutation scale factor (None = default 0.5)
     'de_CR'                 : None,     # DE crossover probability (None = default 0.5)
     'de_niter'              : 800,      # DE iteration budget (overrides the GUI niter when DE is selected)
+    'de_tol'                : None,     # DE convergence tolerance (None = use SolverDE default 0.01)
 
     # See also Optimizer.OptimizerSettings.py on the items below
     't0_upper_bound'        : None,
@@ -460,6 +461,7 @@ SOLVER_SETTING_KEYS = [
     'de_F',
     'de_CR',
     'de_niter',
+    'de_tol',
 ]
 
 V2_TEMPORARY_ITEMS = [
