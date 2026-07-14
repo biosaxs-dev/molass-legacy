@@ -475,7 +475,7 @@ class SdmEstimator(BaseEstimator):
         K_est = getattr(self, '_estimated_K', None)
         if K_est is not None and K_est > 0:
             K_lo = K_est * 0.3
-            K_hi = max(K_est * 4.0, float(KT_BOUND[1]))
+            K_hi = K_est * 4.0   # ceiling max(..., KT_BOUND[1]) dropped: numerically safe (29l)
             mnp_bounds[1] = (K_lo, K_hi)
 
         if self.pore_dist == 'lognormal':
