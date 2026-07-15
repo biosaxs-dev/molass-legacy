@@ -103,6 +103,10 @@ class BasicOptimizer:
         # Issue #50: lock held by objective_func_wrapper during each BH evaluation,
         # allowing MplMonitor.update_plot() to acquire it safely between evaluations.
         self._objective_lock = threading.Lock()
+        # Pluggable constraint hooks (e.g. LumpingConstraint).
+        # Each entry must be callable: penalty = c(lrf_info) → float.
+        # Set by molass-library after construct_legacy_optimizer returns.
+        self._constraints = []
         if for_split_only:
             # as used in test_6690_BasinHopping.py
             return
@@ -743,6 +747,12 @@ class BasicOptimizer:
                 self.logger.info("fv is NaN: score_array=%s", str(score_array))
                 self.isnan_logged = True
             fv = np.inf
+
+        # Pluggable constraint penalties (e.g. LumpingConstraint).
+        # Each callable receives lrf_info and returns a float penalty.
+        for _c in getattr(self, '_constraints', []):
+            fv += _c(lrf_info)
+
         return fv, score_array
 
     def objective_func(self, p, plot=False, debug=False, fig_info=None, axis_info=None, return_full=False):
