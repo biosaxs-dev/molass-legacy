@@ -119,7 +119,17 @@ def draw_progress(self, plot_info, niter=20):
         if _de_n is not None:
             from molass.Solvers.DE.SolverDE import FEVALS_PER_NITER as _FPN
             _de_budget = int(_de_n) * _FPN
-            max_num_evals = max(max_num_evals, _de_budget)
+            # When current progress is below 20% of the full budget, show 2× the
+            # current eval count so the data fills at least half the plot area.
+            # Once beyond 20%, switch to the full budget range so the user can
+            # see overall progress.  (Issue: niter=100 → budget=660k, early data
+            # at ~27k would otherwise be squashed into the leftmost 4%.)
+            # NOTE: must assign (not max) — max_num_evals is already 660k from
+            # JobState.estimate_xmax, so max() can never reduce it.
+            if len(x_) > 0 and int(x_[-1]) < _de_budget * 0.2:
+                max_num_evals = int(x_[-1]) * 2
+            else:
+                max_num_evals = _de_budget
     except Exception:
         pass
     prog_ax.plot(x_, convert_score(y_))
