@@ -51,7 +51,7 @@ def plot_job_state(self, params, plot_info=None, niter=20, display_optimizer=Non
     reload(molass_legacy.Optimizer.ProgressChart)
     from molass_legacy.Optimizer.ProgressChart import draw_progress
 
-    self.fig = fig = plt.figure(figsize=(18, 7))
+    self.fig = fig = plt.figure(figsize=(18, 9))
     gs = GridSpec(33, 15, wspace=1.3, hspace=1.0)
     axes = []
     for j in range(3):

@@ -757,11 +757,12 @@ class MplMonitor:
             '<style>.widget-button:disabled { cursor: not-allowed !important; opacity: 0.5; }</style>'
         )
 
-        # dialog_output is only written when the terminate confirmation dialog fires.
-        # min_height='0px' prevents the VS Code ipywidgets renderer from allocating
-        # default height for this empty widget (which appears as blank space below
-        # the message_output text area at the bottom of the dashboard).
-        self.dialog_output = widgets.Output(layout=widgets.Layout(min_height='0px'))
+        # dialog_output is only written when the terminate confirmation dialog fires
+        # (subprocess path only — in-process terminate skips this entirely).
+        # Start hidden so it takes zero height in the VBox.  trigger_terminate()
+        # sets display='' before calling ask_user and the handle_response callback
+        # resets it to 'none' after the user answers.
+        self.dialog_output = widgets.Output(layout=widgets.Layout(display='none'))
         self.dashboard = widgets.VBox([self._button_css, self.plot_output, self.controls, self.message_output, self.dialog_output])
         self.dashboard_output = widgets.Output()
 
@@ -905,6 +906,8 @@ class MplMonitor:
                     clear_output(wait=True)
                     print("Stop requested. Waiting for the current Nelder-Mead trial to finish "
                           "before the optimizer exits — this may take up to ~30 seconds.")
+            self.dialog_output.layout.display = 'none'
+        self.dialog_output.layout.display = ''
         ask_user("Do you really want to terminate?", callback=handle_response, output_widget=self.dialog_output)
 
     def show(self, debug=False):
@@ -917,7 +920,7 @@ class MplMonitor:
         # the user can scroll within the container to see all parts of the dashboard.
         _scroll_container = widgets.VBox(
             [self.dashboard],
-            layout=widgets.Layout(height='720px', overflow_y='auto')
+            layout=widgets.Layout(height='800px', overflow_y='auto')
         )
         self._scroll_container = _scroll_container  # keep reference
         display(_scroll_container)
