@@ -49,6 +49,13 @@ def guess_ending_time(fv_array, niter=20):
         try:
             start_time = fv_array[0,3]
             curr_time = fv_array[-1,3]
+            # If the run is complete (all niter callbacks received, or DE converged
+            # early so callback count >= niter), the actual finish time is the last
+            # callback timestamp — no extrapolation needed.
+            if fv_array.shape[0] >= niter:
+                finish_time = curr_time
+                time = friendly_time_str(finish_time)
+                return time, finish_time
             # For DE (and other population-based solvers), extrapolate based on eval
             # count (fv_array[:,0]) rather than callback count (fv_array.shape[0]).
             # DE has few callbacks but many evals per callback; callback-based
@@ -84,8 +91,13 @@ def get_remaining_time(fv_array, finish_time):
         return ""
     try:
         curr_time = fv_array[-1,3]
+        remaining = finish_time - curr_time
+        # When the run is complete, finish_time == curr_time (set by guess_ending_time).
+        # Clamp to 0 rather than showing a spurious "0.01" from the +1 min buffer.
+        if remaining.total_seconds() <= 0:
+            return "  0.00"
         # add 1 minute so that it won't be too short
-        hhmmss = str(finish_time - curr_time + timedelta(minutes=1) ).split(":")
+        hhmmss = str(remaining + timedelta(minutes=1)).split(":")
         time = "%3d.%02d" % tuple([int(s) for s in hhmmss[0:2]])
         # %3d instead of %2d is just for positioning purpose with non-fixed-width fonts.
         # to be fixed: ValueError: invalid literal for int() with base 10: '-1 day, 23'
