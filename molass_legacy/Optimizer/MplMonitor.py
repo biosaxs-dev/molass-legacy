@@ -748,8 +748,8 @@ class MplMonitor:
         self.controls = widgets.HBox(controls_children)
 
         self.message_output = widgets.Output(layout=widgets.Layout(
-            border='1px solid gray', background_color='gray', padding='10px',
-            min_height='0px',   # collapse to near-zero when no messages
+            border='1px solid gray', padding='10px',
+            display='none',  # hidden until a message is written; avoids blank space
         ))
 
         # Fix cursor on disabled buttons (VS Code ipywidgets renderer doesn't enforce this)
@@ -765,6 +765,29 @@ class MplMonitor:
         self.dialog_output = widgets.Output(layout=widgets.Layout(display='none'))
         self.dashboard = widgets.VBox([self._button_css, self.plot_output, self.controls, self.message_output, self.dialog_output])
         self.dashboard_output = widgets.Output()
+
+    # ── message_output helpers ───────────────────────────────────────────────
+    # message_output starts with display='none' so it takes no space in the
+    # VBox when there are no messages (avoids blank space below the buttons).
+    # Always use _show_message / _show_messages to write to it; they make it
+    # visible before writing.
+
+    def _show_message(self, text):
+        """Show message_output and write a single-line message."""
+        self.message_output.layout.display = ''
+        with self.message_output:
+            clear_output(wait=True)
+            print(text)
+
+    def _show_messages(self, lines):
+        """Show message_output and write multiple lines."""
+        self.message_output.layout.display = ''
+        with self.message_output:
+            clear_output(wait=True)
+            for line in lines:
+                print(line)
+
+    # ────────────────────────────────────────────────────────────────────────
 
     def run(self, optimizer, init_params, niter=20, seed=1234, max_trials=30, work_folder=None, dummy=False, x_shifts=None, debug=False, devel=True):
         self.optimizer = optimizer
@@ -858,9 +881,7 @@ class MplMonitor:
             self.status_label.value = f"Status: Resume failed"
             set_label_color(self.status_label, "red")
             self.resume_button.disabled = False
-            with self.message_output:
-                clear_output(wait=True)
-                print(f"Resume failed: {e}")
+            self._show_message(f"Resume failed: {e}")
 
     def trigger_terminate(self, b):
         if self.terminate_button.disabled:
@@ -875,10 +896,8 @@ class MplMonitor:
             self.status_label.value = "Status: Terminating"
             set_label_color(self.status_label, "yellow")
             self.logger.info("Terminate job requested (in-process). id(self)=%d", id(self))
-            with self.message_output:
-                clear_output(wait=True)
-                print("Stop requested. Waiting for the current Nelder-Mead trial to finish "
-                      "before the optimizer exits — this may take up to ~30 seconds.")
+            self._show_message("Stop requested. Waiting for the current Nelder-Mead trial to finish "
+                               "before the optimizer exits — this may take up to ~30 seconds.")
             return
 
         try:
@@ -889,10 +908,8 @@ class MplMonitor:
             self.status_label.value = "Status: Terminating"
             set_label_color(self.status_label, "yellow")
             self.logger.info("Terminate job requested (no dialog). id(self)=%d", id(self))
-            with self.message_output:
-                clear_output(wait=True)
-                print("Stop requested. Waiting for the current Nelder-Mead trial to finish "
-                      "before the optimizer exits — this may take up to ~30 seconds.")
+            self._show_message("Stop requested. Waiting for the current Nelder-Mead trial to finish "
+                               "before the optimizer exits — this may take up to ~30 seconds.")
             return
 
         def handle_response(answer):
@@ -902,10 +919,8 @@ class MplMonitor:
                 self.status_label.value = "Status: Terminating"
                 set_label_color(self.status_label, "yellow")
                 self.logger.info("Terminate job requested. id(self)=%d", id(self))
-                with self.message_output:
-                    clear_output(wait=True)
-                    print("Stop requested. Waiting for the current Nelder-Mead trial to finish "
-                          "before the optimizer exits — this may take up to ~30 seconds.")
+                self._show_message("Stop requested. Waiting for the current Nelder-Mead trial to finish "
+                                   "before the optimizer exits — this may take up to ~30 seconds.")
             self.dialog_output.layout.display = 'none'
         self.dialog_output.layout.display = ''
         ask_user("Do you really want to terminate?", callback=handle_response, output_widget=self.dialog_output)
@@ -1077,10 +1092,7 @@ class MplMonitor:
 
             # Display warning messages in message_output
             if messages:
-                with self.message_output:
-                    clear_output(wait=True)
-                    for msg in messages:
-                        print(msg)
+                self._show_messages(messages)
         finally:
             if _held_lock is not None:
                 _held_lock.release()
@@ -1156,12 +1168,10 @@ class MplMonitor:
                             self.status_label.value = f"Status: Failed (exit {exit_str})"
                             set_label_color(self.status_label, "red")
                             self.terminate_button.disabled = True
-                            with self.message_output:
-                                clear_output(wait=True)
-                                print(
-                                    f"Optimization failed (exit {exit_str})."
-                                    " See optimizer.log for details."
-                                )
+                            self._show_message(
+                                f"Optimization failed (exit {exit_str})."
+                                " See optimizer.log for details."
+                            )
                             # Fall through: final redraw, save, cleanup all run
                             # normally; resume_loop stays False so the loop breaks.
                         else:
@@ -1624,6 +1634,7 @@ class MplMonitor:
         # dashboard.  Bare print() in a button callback is routed to a kernel
         # stream that is not connected to any notebook cell output, making
         # success/error messages completely invisible to the user.
+        self.message_output.layout.display = ''
         with self.message_output:
             from IPython.display import clear_output
             clear_output(wait=True)
