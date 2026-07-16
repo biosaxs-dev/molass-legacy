@@ -5,6 +5,16 @@
     Scores: same 7 as G0346
     Variant of G1100 using sdm_monopore_gamma_pdf from molass.SEC.Models.
 
+    Parameter layout (split_params_simple order):
+        xr_params (nc,)  : XR peak heights
+        xr_baseparams    : XR baseline parameters
+        rg_params (nc,)  : Rg values per component
+        (a, b)           : UV-XR frame mapping
+        uv_params (nc,)  : UV/XR intensity ratios ε_i/k (unified architecture)
+        uv_baseparams    : UV baseline parameters
+        (c, d)           : mappable range
+        sdmcol_params    : [N, K, x0, poresize, N0, tI]
+
     Copyright (c) 2026-2026, SAXS Team, KEK-PF
 """
 import numpy as np

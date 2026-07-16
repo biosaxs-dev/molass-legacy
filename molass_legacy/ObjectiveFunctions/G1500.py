@@ -2,11 +2,16 @@
     G1500.py — 7-score GRM (General Rate Model) objective function
 
     Elution model: GRM via PDE characteristic-function + FFT inversion
-    Parameter layout:
-        xr_params, xr_baseparams, rg_params, (a,b), uv_params, uv_baseparams,
-        (c,d), grmcol_params
-    grmcol_params = [Pe, t0, R_p, D_eff, R_0, k_ext_0, R_1, k_ext_1, ...,
-                     R_{nc-1}, k_ext_{nc-1}]
+    Parameter layout (split_params_simple order):
+        xr_params (nc,)  : XR peak heights
+        xr_baseparams    : XR baseline parameters
+        rg_params (nc,)  : Rg values per component
+        (a, b)           : UV-XR frame mapping
+        uv_params (nc,)  : UV/XR intensity ratios ε_i/k (unified architecture)
+        uv_baseparams    : UV baseline parameters
+        (c, d)           : mappable range
+        grmcol_params    : [Pe, t0, R_p, D_eff, c_inj, R_0, k_ext_0, ...,
+                            R_{nc-1}, k_ext_{nc-1}]
 
     Copyright (c) 2026, SAXS Team, KEK-PF
 """

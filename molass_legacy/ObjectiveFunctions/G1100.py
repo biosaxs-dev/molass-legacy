@@ -5,6 +5,16 @@
     Scores: same 7 as G0346
     Uses SdmParams and SdmStrategy for SEC column modeling.
 
+    Parameter layout (split_params_simple order):
+        xr_params (nc,)  : XR peak heights
+        xr_baseparams    : XR baseline parameters
+        rg_params (nc,)  : Rg values per component
+        (a, b)           : UV-XR frame mapping
+        uv_params (nc,)  : UV/XR intensity ratios ε_i/k (unified architecture)
+        uv_baseparams    : UV baseline parameters
+        (c, d)           : mappable range
+        sdmcol_params    : [N, K, x0, poresize, N0, tI]
+
     Copyright (c) 2024-2025, SAXS Team, KEK-PF
 """
 import numpy as np

@@ -70,7 +70,7 @@ class GrmParams(ParamsTypeBase):
         sep += nc
         self.pos.append(sep)                             # [3] mapping (a,b) start
         sep += 2
-        self.pos.append(sep)                             # [4] uv_params start
+        self.pos.append(sep)                             # [4] uv_params start (UV/XR intensity ratios, nc,)
         sep += nc
         self.pos.append(sep)                             # [5] uv_baseparams start
         sep += 5 + self.num_baseparams

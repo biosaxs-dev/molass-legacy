@@ -45,7 +45,7 @@ class SdmParams:
         sep += nc
         self.pos.append(sep)    # [3] mapping
         sep = sep+2
-        self.pos.append(sep)    # [4] uv_params
+        self.pos.append(sep)    # [4] uv_params  (UV/XR intensity ratios, nc,)
         sep += nc
         self.pos.append(sep)    # [5] uv_baseparams
         sep += 5 + self.num_baseparams

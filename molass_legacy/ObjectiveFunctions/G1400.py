@@ -2,11 +2,16 @@
     G1400.py — 7-score LKM (Lumped Kinetic Model) objective function
 
     Elution model: LKM via PDE characteristic-function + FFT inversion
-    Parameter layout:
-        xr_params, xr_baseparams, rg_params, (a,b), uv_params, uv_baseparams,
-        (c,d), lkmcol_params
-    lkmcol_params = [Pe, t0, c_inj, R_0, k_MT_0, R_1, k_MT_1, ..., R_{nc-1}, k_MT_{nc-1}]
-                     (c_inj is shared injection concentration)
+    Parameter layout (split_params_simple order):
+        xr_params (nc,)  : XR peak heights
+        xr_baseparams    : XR baseline parameters
+        rg_params (nc,)  : Rg values per component
+        (a, b)           : UV-XR frame mapping
+        uv_params (nc,)  : UV/XR intensity ratios ε_i/k (unified architecture)
+        uv_baseparams    : UV baseline parameters
+        (c, d)           : mappable range
+        lkmcol_params    : [Pe, t0, c_inj, R_0, k_MT_0, ..., R_{nc-1}, k_MT_{nc-1}]
+                           (c_inj is shared injection concentration)
 
     Copyright (c) 2026, SAXS Team, KEK-PF
 """
