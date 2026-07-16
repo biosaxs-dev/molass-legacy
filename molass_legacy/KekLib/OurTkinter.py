@@ -19,8 +19,15 @@ from molass_legacy.KekLib.TkSupplements      import tk_set_icon_portable     # f
 
 try:
     from idlelib.tooltip import Hovertip as ToolTip
-except:
-    from idlelib.ToolTip import ToolTip
+except ImportError:
+    try:
+        from idlelib.ToolTip import ToolTip
+    except ImportError:
+        # idlelib is not available (Linux without idle3 / python3-idlelib installed).
+        # ToolTip is only used in GUI mode; provide a no-op fallback for headless use.
+        class ToolTip:
+            def __init__(self, *args, **kwargs):
+                pass
 
 # from molass_legacy.KekLib.TkSupplements      import tk_set_icon_portable
 
