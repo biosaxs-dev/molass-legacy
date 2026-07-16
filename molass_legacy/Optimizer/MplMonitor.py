@@ -515,6 +515,7 @@ class MplMonitor:
         self.monitor_optimizer = None
         self.stop_watch_event = threading.Event()  # For graceful thread shutdown
         self.is_monitoring = False  # Flag to track active monitoring state
+        self._run_completed = False   # set True by watch_progress on completion
         # Minimum seconds between successive dashboard redraws.
         # BH accepts one point every ~10–30 s, so 5 s is no restriction.
         # CMA-ES accepts many points per second; without this the widget
@@ -789,6 +790,7 @@ class MplMonitor:
                             x_shifts=getattr(self, 'x_shifts', None))
             self.job_state = None   # reset; lazily re-initialized in watch_progress
             self.curr_index = None
+            self._run_completed = False  # reset for the new trial
             self.logger.info("Starting in-process optimizer resume")
             return
 
@@ -908,7 +910,7 @@ class MplMonitor:
         # the user can scroll within the container to see all parts of the dashboard.
         _scroll_container = widgets.VBox(
             [self.dashboard],
-            layout=widgets.Layout(height='800px', overflow_y='auto')
+            layout=widgets.Layout(height='720px', overflow_y='auto')
         )
         self._scroll_container = _scroll_container  # keep reference
         display(_scroll_container)
@@ -1198,6 +1200,9 @@ class MplMonitor:
                         try:
                             self.job_state.last_mod_time = None  # force fresh read
                             self.job_state.update()
+                            # Signal guess_ending_time to return actual end time
+                            # regardless of callback count (handles early tol convergence)
+                            self._run_completed = True
                             self.update_plot()
                         except Exception as _fe:
                             self.logger.warning("Final update_plot failed: %s", _fe)

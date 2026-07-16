@@ -40,7 +40,7 @@ def get_time_elapsed(fv_array):
         time = ""
     return time
 
-def guess_ending_time(fv_array, niter=20):
+def guess_ending_time(fv_array, niter=20, is_completed=False):
     finish_time = None
     time = ""
 
@@ -49,6 +49,13 @@ def guess_ending_time(fv_array, niter=20):
         try:
             start_time = fv_array[0,3]
             curr_time = fv_array[-1,3]
+            # Explicit completion flag: set by MplMonitor when the optimizer thread
+            # has stopped (handles early tol convergence where callback count may be
+            # far below de_niter and the heuristic checks below would mis-estimate).
+            if is_completed:
+                finish_time = curr_time
+                time = friendly_time_str(finish_time)
+                return time, finish_time
             # For DE: use de_niter as the expected number of callbacks.
             # DE fires one callback per scipy generation; de_niter≈100 approximates
             # the convergence point (typically ~100-130 callbacks before tol exits).
@@ -106,7 +113,7 @@ def get_remaining_time(fv_array, finish_time):
         time = ""
     return time
 
-def draw_progress(self, plot_info, niter=20):
+def draw_progress(self, plot_info, niter=20, is_completed=False):
 
     for ax in self.prog_axes:
         ax.cla()
@@ -244,7 +251,7 @@ def draw_progress(self, plot_info, niter=20):
     map_ax.text(tx, ty, "Ending Time", ha="center")
 
     # guess_ending_time() must be called before get_remaining_time()
-    time_str, finish_time = guess_ending_time(fv, niter=niter)
+    time_str, finish_time = guess_ending_time(fv, niter=niter, is_completed=is_completed)
     w = 0.2
     ty = ymin*(1-w) + ymax*w
     map_ax.text(tx, ty, time_str, ha="center", va="center")
