@@ -900,8 +900,18 @@ class MplMonitor:
 
     def show(self, debug=False):
         self.update_plot()
-        # with self.dashboard_output:
-        display(self.dashboard)
+        # Wrap the dashboard in a fixed-height scrollable container so that VS Code's
+        # notebook auto-scroll (triggered on each periodic plot_output update) scrolls
+        # the *inner* container rather than jumping the notebook viewport.
+        # Without this, every update moves the view to the bottom of the 900px+ figure,
+        # overriding the user's scroll position.  800px fits most VS Code windows;
+        # the user can scroll within the container to see all parts of the dashboard.
+        _scroll_container = widgets.VBox(
+            [self.dashboard],
+            layout=widgets.Layout(height='800px', overflow_y='auto')
+        )
+        self._scroll_container = _scroll_container  # keep reference
+        display(_scroll_container)
         inject_label_color_css()
         set_label_color(self.status_label, "green")
 
