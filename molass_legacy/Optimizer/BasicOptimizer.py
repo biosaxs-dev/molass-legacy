@@ -768,6 +768,7 @@ class BasicOptimizer:
         # MplMonitor.update_plot() acquires the same lock to get a safe window
         # between evaluations for its objective_func re-evaluation (display only).
         with self._objective_lock:
+            self.eval_counter += 1  # track total objective calls for progress charts
             return self.objective_func(self.to_real_params(norm_params), **kwargs)
 
     def get_score_names(self, major_only=False):

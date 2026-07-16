@@ -57,7 +57,10 @@ def guess_ending_time(fv_array, niter=20):
                 from molass_legacy._MOLASS.SerialSettings import get_setting as _gs
                 _de_n = _gs('de_niter')
                 if _de_n is not None:
-                    _DE_FEVALS_PER_NITER = 200
+                    try:
+                        from molass.Solvers.DE.SolverDE import FEVALS_PER_NITER as _DE_FEVALS_PER_NITER
+                    except ImportError:
+                        _DE_FEVALS_PER_NITER = 6600  # matches molass.Solvers.DE.SolverDE
                     total_evals = int(_de_n) * _DE_FEVALS_PER_NITER
                     curr_evals = float(fv_array[-1, 0])
                     if curr_evals > 0:
@@ -126,7 +129,14 @@ def draw_progress(self, plot_info, niter=20):
             # at ~27k would otherwise be squashed into the leftmost 4%.)
             # NOTE: must assign (not max) — max_num_evals is already 660k from
             # JobState.estimate_xmax, so max() can never reduce it.
-            if len(x_) > 0 and int(x_[-1]) < _de_budget * 0.2:
+            # At completion (all niter callbacks received), fit the axis to
+            # the actual data range so the chart is fully occupied.
+            # During the run, use 2× scaling so early data is not squashed
+            # into the leftmost few percent of a 660k-wide axis.
+            is_completed = fv.shape[0] >= niter
+            if is_completed:
+                max_num_evals = max(1, int(x_[-1]))
+            elif len(x_) > 0 and int(x_[-1]) < _de_budget * 0.2:
                 max_num_evals = int(x_[-1]) * 2
             else:
                 max_num_evals = _de_budget
