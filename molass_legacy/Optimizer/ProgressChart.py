@@ -213,7 +213,11 @@ def draw_progress(self, plot_info, niter=20):
             ax.plot([x, x], [ymin, ymax], color='gray', alpha=0.3)
 
     ymin_, ymax_ = map_ax.get_ylim()
-    dy = (ymax_ - ymin_) * 1.0
+    # dy=0: text reference frame starts at the data range, so the lowest label
+    # (w=0.2) sits near the bottom of map_ax rather than one full axis-height
+    # above it. Eliminates the large blank space in the right column below the
+    # time labels. (Previous: dy = (ymax_-ymin_)*1.0 left ~120% of map_ax height empty.)
+    dy = 0
     ymin, ymax = ymin_ + dy, ymax_ + dy
     tx = xmax*1.07
 
