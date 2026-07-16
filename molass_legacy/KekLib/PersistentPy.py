@@ -7,10 +7,26 @@ import os
 import platform
 from molass_legacy.KekLib.BasicUtils import home_dir, exe_name
 ON_WINDOWS = platform.system() == "Windows"
-if ON_WINDOWS:
-    import molass_legacy.KekLib.CustomMessageBox as MessageBox
-else:
-    import molass_legacy.KekLib.OurMessageBox as MessageBox
+
+class _LazyMessageBox:
+    """Deferred import of the MessageBox module.
+
+    On Linux, OurMessageBox → OurTkinter → tkinter, which is a GUI-only
+    dependency.  Importing it at module level would prevent headless use of
+    molass_legacy (e.g. on a server or in a Jupyter notebook on a fresh Linux
+    install that lacks python3-tk / idle3).  This proxy imports the real
+    module only when a dialog method is actually called.
+    """
+    def __getattr__(self, name):
+        if ON_WINDOWS:
+            import molass_legacy.KekLib.CustomMessageBox as _mb
+        else:
+            import molass_legacy.KekLib.OurMessageBox as _mb
+        # Cache on self to avoid repeated imports
+        object.__setattr__(self, '_module', _mb)
+        return getattr(_mb, name)
+
+MessageBox = _LazyMessageBox()
 
 def kek_tools_folder():
     return '%s/.KekTools' % (home_dir())
