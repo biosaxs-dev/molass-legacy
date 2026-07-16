@@ -747,14 +747,21 @@ class MplMonitor:
                                   self.export_button]
         self.controls = widgets.HBox(controls_children)
 
-        self.message_output = widgets.Output(layout=widgets.Layout(border='1px solid gray', background_color='gray', padding='10px'))
+        self.message_output = widgets.Output(layout=widgets.Layout(
+            border='1px solid gray', background_color='gray', padding='10px',
+            min_height='0px',   # collapse to near-zero when no messages
+        ))
 
         # Fix cursor on disabled buttons (VS Code ipywidgets renderer doesn't enforce this)
         self._button_css = widgets.HTML(
             '<style>.widget-button:disabled { cursor: not-allowed !important; opacity: 0.5; }</style>'
         )
 
-        self.dialog_output = widgets.Output()
+        # dialog_output is only written when the terminate confirmation dialog fires.
+        # min_height='0px' prevents the VS Code ipywidgets renderer from allocating
+        # default height for this empty widget (which appears as blank space below
+        # the message_output text area at the bottom of the dashboard).
+        self.dialog_output = widgets.Output(layout=widgets.Layout(min_height='0px'))
         self.dashboard = widgets.VBox([self._button_css, self.plot_output, self.controls, self.message_output, self.dialog_output])
         self.dashboard_output = widgets.Output()
 
