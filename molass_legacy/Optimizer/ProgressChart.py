@@ -49,35 +49,33 @@ def guess_ending_time(fv_array, niter=20):
         try:
             start_time = fv_array[0,3]
             curr_time = fv_array[-1,3]
-            # If the run is complete (all niter callbacks received, or DE converged
-            # early so callback count >= niter), the actual finish time is the last
-            # callback timestamp — no extrapolation needed.
-            if fv_array.shape[0] >= niter:
-                finish_time = curr_time
-                time = friendly_time_str(finish_time)
-                return time, finish_time
-            # For DE (and other population-based solvers), extrapolate based on eval
-            # count (fv_array[:,0]) rather than callback count (fv_array.shape[0]).
-            # DE has few callbacks but many evals per callback; callback-based
-            # extrapolation over-estimates the remaining time by ~10-20×.
+            # For DE: use de_niter as the expected number of callbacks.
+            # DE fires one callback per scipy generation; de_niter≈100 approximates
+            # the convergence point (typically ~100-130 callbacks before tol exits).
+            # Using the eval budget (de_niter * FEVALS_PER_NITER = 660,000) is wrong
+            # because DE converges at ~8% of that budget, making the fraction_done
+            # perpetually ~1% during the run and projecting 12-hour finish times.
             try:
                 from molass_legacy._MOLASS.SerialSettings import get_setting as _gs
                 _de_n = _gs('de_niter')
                 if _de_n is not None:
-                    try:
-                        from molass.Solvers.DE.SolverDE import FEVALS_PER_NITER as _DE_FEVALS_PER_NITER
-                    except ImportError:
-                        _DE_FEVALS_PER_NITER = 6600  # matches molass.Solvers.DE.SolverDE
-                    total_evals = int(_de_n) * _DE_FEVALS_PER_NITER
-                    curr_evals = float(fv_array[-1, 0])
-                    if curr_evals > 0:
-                        fraction_done = curr_evals / total_evals
-                        finish_time = start_time + (curr_time - start_time) / fraction_done
-                        time = friendly_time_str(finish_time + timedelta(minutes=1))
+                    expected_callbacks = int(_de_n)
+                    if fv_array.shape[0] >= expected_callbacks:
+                        # Completed: return actual end time
+                        finish_time = curr_time
+                        time = friendly_time_str(finish_time)
                         return time, finish_time
+                    # In-progress: callback-count extrapolation with de_niter
+                    finish_time = start_time + (curr_time - start_time) * (expected_callbacks / fv_array.shape[0])
+                    time = friendly_time_str(finish_time + timedelta(minutes=1))
+                    return time, finish_time
             except Exception:
                 pass
             # Default: callback-count extrapolation (works well for BH/NS)
+            if fv_array.shape[0] >= niter:
+                finish_time = curr_time
+                time = friendly_time_str(finish_time)
+                return time, finish_time
             finish_time = start_time + (curr_time - start_time)*(niter/fv_array.shape[0])
             # add 1 minute so that it won't be too early
             time = friendly_time_str(finish_time + timedelta(minutes=1))
