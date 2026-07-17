@@ -749,7 +749,6 @@ class BasicOptimizer:
             fv = np.inf
 
         # Pluggable constraint penalties (e.g. LumpingConstraint).
-        # Each callable receives lrf_info and returns a float penalty.
         for _c in getattr(self, '_constraints', []):
             fv += _c(lrf_info)
 
