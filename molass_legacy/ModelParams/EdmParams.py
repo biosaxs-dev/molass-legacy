@@ -7,7 +7,7 @@ import logging
 import numpy as np
 from .BaselineParams import get_num_baseparams
 from molass_legacy._MOLASS.SerialSettings import get_setting
-from molass_legacy.Models.RateTheory.EDM import edm_impl, MIN_CINJ, MAX_CINJ
+from molass_legacy.Models.RateTheory.EDM import edm_impl, MIN_C_INJ, MAX_C_INJ
 from molass_legacy.Optimizer.BasicOptimizer import AVOID_VANISHING_RATIO
 
 NUM_COL_PARAMS = 1
@@ -16,7 +16,7 @@ NUM_ELEMENT_PARAMS = 7
 def get_common_parameter_names(nc):
     xr_names = []
     for k in range(nc):
-        xr_names += ["$t0_%d$" % k, "$u_%d$" % k, "$a_%d$" % k, r"$\b_%d$" % k, r"$\e_%d$" % k, r"$\Dz_%d$" % k, r"cinj_%d" % k]
+        xr_names += ["$t0_%d$" % k, "$u_%d$" % k, "$a_%d$" % k, r"$\b_%d$" % k, r"$\e_%d$" % k, r"$\Dz_%d$" % k, r"c_inj_%d" % k]
 
     rg_names = ["$R_{g%d}$" % k for k in range(nc)]
     mapping_names = ["$mp_a$", "$mp_b$"]
@@ -96,17 +96,17 @@ class EdmParams:
 
     def get_xr_param_bounds(self, xr_params):
 
-        xr_h_max = np.max(xr_params[:,-1])      # cinj
+        xr_h_max = np.max(xr_params[:,-1])      # c_inj
         xr_h_min = xr_h_max*AVOID_VANISHING_RATIO
         xr_bounds = []
-        for t0, u, a, b, e, Dz, cinj in xr_params:
+        for t0, u, a, b, e, Dz, c_inj in xr_params:
             xr_bounds.append((-500, 1000))      # t0
             xr_bounds.append((0.00001, 50.0))   # u
             xr_bounds.append((0.0001, 1.0))     # a
             xr_bounds.append((-20.0, +20.0))    # b
             xr_bounds.append((0.001,  1.0))     # e
             xr_bounds.append((0.001, 40.0))     # Dz
-            xr_bounds.append((max(MIN_CINJ, xr_h_min), min(MAX_CINJ, xr_h_max*2)))      # cinj
+            xr_bounds.append((max(MIN_C_INJ, xr_h_min), min(MAX_C_INJ, xr_h_max*2)))      # c_inj
 
         return xr_bounds
 
@@ -180,8 +180,8 @@ class EdmParams:
             xr_params = params[0:nc*NUM_ELEMENT_PARAMS].reshape((nc,NUM_ELEMENT_PARAMS))
 
             pos = []
-            for t0, u, a, b, e, Dz, cinj in xr_params:
-                xr_cy = edm_impl(x, t0, u, a, b, e, Dz, cinj)
+            for t0, u, a, b, e, Dz, c_inj in xr_params:
+                xr_cy = edm_impl(x, t0, u, a, b, e, Dz, c_inj)
                 j = np.argmax(xr_cy)
                 pos.append(x[j])
             pos_array_list.append(pos)

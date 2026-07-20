@@ -15,19 +15,19 @@ from molass_legacy.Models.ElutionModelUtils import compute_4moments, x_from_heig
 from molass_legacy.KekLib.BasicUtils import Struct
 
 VERY_SMALL_VALUE = 1e-8
-MIN_CINJ = 1e-6
-MAX_CINJ = 5.0
+MIN_C_INJ = 1e-6
+MAX_C_INJ = 5.0
 
 if False:
     save_reg_data_fh = open("reg-data.csv", "w")
 else:
     save_reg_data_fh = None
 
-def edm_impl(x, t0, u, a, b, e, Dz, cinj):
-    return edm_func(x-t0, u, a, b, e, Dz, cinj)
+def edm_impl(x, t0, u, a, b, e, Dz, c_inj):
+    return edm_func(x-t0, u, a, b, e, Dz, c_inj)
 
-def edm_full_impl(x, t0, u, a, b, e, Dz, cinj, cinit=0, c0=0.0001, tinj=2.0, L=30, z=30):
-    return edm_func(x-t0, u, a, b, e, Dz, cinj, cinit, c0, tinj, L, z)
+def edm_full_impl(x, t0, u, a, b, e, Dz, c_inj, cinit=0, c0=0.0001, t_inj=1.0, L=30, z=30):
+    return edm_func(x-t0, u, a, b, e, Dz, c_inj, cinit, c0, t_inj, L, z)
 
 def debug_plot_with_sliders_impl(x, y, init_params, title=None):
     plot_params = init_params.copy()
@@ -37,7 +37,7 @@ def debug_plot_with_sliders_impl(x, y, init_params, title=None):
                         ("b", -4, 1, plot_params[3]),
                         ("e", 0, 2, plot_params[4]),
                         ("Dz", 0, 1, plot_params[5]),
-                        ("cinj", 0, 3, plot_params[6]),
+                        ("c_inj", 0, 3, plot_params[6]),
                         # ("tinj", 0, 10, init_params[7]),
                         ]
 
@@ -100,18 +100,18 @@ def guess_params_from_sdm(x, y, n1, t1, Nd, t0, debug=True):
     b = -4.0
     e = 0.4
     Dz = 0.02
-    cinj = 0.1
+    c_inj = 0.1
     """
-    t0, u, a, b, e, Dz, cinj
+    t0, u, a, b, e, Dz, c_inj
     init_params= [ 5.e+01  5.e-01  5.e-01 -4.e+00  4.e-01  2.e-02  1.e-01]
     params= [ 5.00122462e+01  2.63754524e-01  5.29024183e-02 -3.80947097e+00   5.70061653e-01  2.04147889e-02  4.78377216e-01]
     """
     def objective(params):
-        t0, u, a, b, e, Dz, cinj = params
-        y_ = edm_impl(x, t0, u, a, b, e, Dz, cinj)
+        t0, u, a, b, e, Dz, c_inj = params
+        y_ = edm_impl(x, t0, u, a, b, e, Dz, c_inj)
         return np.sum((y_ - y)**2)
     
-    init_params = np.array([t0, u, a, b, e, Dz, cinj])
+    init_params = np.array([t0, u, a, b, e, Dz, c_inj])
     if debug:
         print("init_params=", init_params)
         debug_plot_with_sliders_impl(x, y, init_params, title="guess_params_from_sdm: before minimize")
@@ -134,8 +134,8 @@ def guess_init_params_better(x, y, M):
             b = -4.0
         e = 0.4
         Dz = 0.02
-        cinj = M[0]/2.0 * 0.2
-        params = np.array([t0, u, a, b, e, Dz, cinj])
+        c_inj = M[0]/2.0 * 0.2
+        params = np.array([t0, u, a, b, e, Dz, c_inj])
         params_list.append(params)
         y_ = edm_impl(x, *params)
         area_ = np.sum(y_)
@@ -186,7 +186,7 @@ def guess(x, y, init_params=None, debug=False, debug_info=None):
     if init_params is None:
         M = compute_4moments(x, y)
         # init_params = guess_init_params_better(x, y, M)
-        init_params = guess_init_params(M)
+        init_params = guess_init_params(M, t_inj=1.0)
         area = np.sum(y)
         y_i = edm_impl(x, *init_params)
         area_i = np.sum(y_i)
@@ -333,9 +333,9 @@ def guess_multiple_impl(x, y, num_peaks, respect_egh=False, debug=False):
                 ret = plt.show()
             return ret
 
-        draw_edm_cy_list("guess_multiple: EDM decomposition before cinj optimization", edm_cy_list)
+        draw_edm_cy_list("guess_multiple: EDM decomposition before c_inj optimization", edm_cy_list)
     # 
-    def cinj_ovjective(p, return_cy_list=False):
+    def c_inj_objective(p, return_cy_list=False):
         cy_list = []
         for i, params in enumerate(edm_params_list):
             params_ = params.copy()
@@ -347,12 +347,12 @@ def guess_multiple_impl(x, y, num_peaks, respect_egh=False, debug=False):
         ty = np.sum(cy_list, axis=0)
         return np.sum((y - ty)**2)
 
-    init_cinjs = [p[6] for p in edm_params_list]
-    bounds = [(MIN_CINJ, MAX_CINJ)] * num_peaks
-    ret = minimize(cinj_ovjective, init_cinjs, method="Nelder-Mead", bounds=bounds)
-    edm_cy_list = cinj_ovjective(ret.x, return_cy_list=True)
+    init_c_injs = [p[6] for p in edm_params_list]
+    bounds = [(MIN_C_INJ, MAX_C_INJ)] * num_peaks
+    ret = minimize(c_inj_objective, init_c_injs, method="Nelder-Mead", bounds=bounds)
+    edm_cy_list = c_inj_objective(ret.x, return_cy_list=True)
     if debug:
-        draw_edm_cy_list("guess_multiple: EDM decomposition after cinj optimization", edm_cy_list)
+        draw_edm_cy_list("guess_multiple: EDM decomposition after c_inj optimization", edm_cy_list)
 
     peak_pos = []
     for i, params in enumerate(edm_params_list):
@@ -400,7 +400,7 @@ class EDM(Model):
         return x_from_height_ratio_impl(edm_impl, ecurve, ratio, *params, needs_ymax=True, full_params=True)
 
     def get_params_string(self, params):
-        return 't0=%g, u=%g, a=%g, b=%g, e=%g, Dz=%g, cinj=%g' % tuple(params)
+        return 't0=%g, u=%g, a=%g, b=%g, e=%g, Dz=%g, c_inj=%g' % tuple(params)
 
     def adjust_to_xy(self, params_list, x, y, props=None, devel=False):
         if props is None:

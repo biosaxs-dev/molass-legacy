@@ -14,7 +14,7 @@ qm = 1.
 nr = 10
 nz = 20
 
-def grm_impl(x, zl, rp, ec, ep, kf, Dax, Dp, Ds, u, ka, kd, tinj, cinj):
+def grm_impl(x, zl, rp, ec, ep, kf, Dax, Dp, Ds, u, ka, kd, tinj, c_inj):
 
     # tmax = len(x) * minute  #[min]
     tmax = len(x)
@@ -22,7 +22,7 @@ def grm_impl(x, zl, rp, ec, ep, kf, Dax, Dp, Ds, u, ka, kd, tinj, cinj):
     def step(t: float, tinj: float) -> float:
         return float(t <= tinj)
 
-    parameters0 = grm.ModelParameters(c0=cinj,
+    parameters0 = grm.ModelParameters(c0=c_inj,
                                           Dax=Dax,
                                           Dp=Dp,
                                           Ds=Ds,
@@ -59,9 +59,9 @@ def guess(x, y):
     ka = 2.5  #[s^-1]
     kd = 1  #[s^-1]
     tinj = 50 * minute  #[min]
-    cinj = 1  #[mol /m^-3]
+    c_inj = 1  #[mol /m^-3]
 
-    init_params = (zl, rp, ec, ep, kf, Dax, Dp, Ds, u, ka, kd, tinj, cinj)
+    init_params = (zl, rp, ec, ep, kf, Dax, Dp, Ds, u, ka, kd, tinj, c_inj)
 
     def objective(p):
         y_ = grm_impl(x, *p)

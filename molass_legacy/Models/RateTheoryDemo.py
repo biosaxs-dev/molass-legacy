@@ -119,7 +119,7 @@ def edm_inspect(in_folder, sd):
                         ("b", -4, 1, fullparams[3]),
                         ("e", 0, 2, fullparams[4]),
                         ("Dz", 0, 1, fullparams[5]),
-                        ("cinj", 0, 10, fullparams[6]),
+                        ("c_inj", 0, 10, fullparams[6]),
                         ("cinit", 0, 1, fullparams[7]),
                         ("c0", 0, 3, fullparams[8]),
                         ("tinj", 0, 3, fullparams[9]),

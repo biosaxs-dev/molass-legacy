@@ -31,7 +31,7 @@ def main():
     ka = 2.5  #[s^-1]
     kd = 1  #[s^-1]
     tinj = 20 * minute  #[min]
-    cinj = 1  #[mol /m^-3]
+    c_inj = 1  #[mol /m^-3]
     tmax = 100 * minute  #[min]
     qm = 1.
     nr = 10
@@ -41,7 +41,7 @@ def main():
     def step(t: float, tinj: float) -> float:
         return float(t <= tinj)
 
-    parameters0 = grm.ModelParameters(c0=cinj,
+    parameters0 = grm.ModelParameters(c0=c_inj,
                                           Dax=Dax,
                                           Dp=Dp,
                                           Ds=Ds,

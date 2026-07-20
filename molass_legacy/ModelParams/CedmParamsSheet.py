@@ -3,7 +3,7 @@
 
     Parameter inspection sheet for Constrained-EDM (G2020 / CedmParams).
 
-    XR layout per component: [a, b, cinj]   (no per-component t0/u/e/Dz)
+    XR layout per component: [a, b, c_inj]   (no per-component t0/u/e/Dz)
     Shared column params appended at end: [t0_sh, u_sh, e_sh, Dz_sh]
 
     Copyright (c) 2025, SAXS Team, KEK-PF
@@ -58,8 +58,8 @@ class CedmParamsSheet(ParamsSheetBase):
             xr_x = xr_curve.x
             xr_proportions = []
             uv_proportions = []
-            for k, (a_k, b_k, cinj_k) in enumerate(xr_params):
-                xr_cy = edm_impl(xr_x, t0_sh, u_sh, a_k, b_k, e_sh, Dz_sh, cinj_k)
+            for k, (a_k, b_k, c_inj_k) in enumerate(xr_params):
+                xr_cy = edm_impl(xr_x, t0_sh, u_sh, a_k, b_k, e_sh, Dz_sh, c_inj_k)
                 xr_proportions.append(np.sum(xr_cy))
                 uv_cy = uv_params[k] * xr_cy
                 uv_proportions.append(np.sum(uv_cy))
@@ -74,8 +74,8 @@ class CedmParamsSheet(ParamsSheetBase):
         row_offset = 0
 
         # --- XR header row ---
-        xr_col_size = xr_params.shape[1]   # 3: a, b, cinj
-        for j, name in enumerate(["a", "b", "cinj", "", "rg"], start=1):
+        xr_col_size = xr_params.shape[1]   # 3: a, b, c_inj
+        for j, name in enumerate(["a", "b", "c_inj", "", "rg"], start=1):
             data_list[row_offset][j] = name
         if xr_proportions is not None:
             data_list[row_offset][xr_col_size + 4] = "xr area"

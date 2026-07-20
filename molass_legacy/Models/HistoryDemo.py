@@ -36,8 +36,8 @@ def demo():
     ax3.plot(x, egh_y, ":", label="EGH", color="C2")
     ax3.plot(x, edm_y, label="EDM", color="C3")
 
-    a, b, e, Dz, cinj = params
-    edm_y2 = edm_func(x, u, a/3.5, -3*b, e, Dz, cinj)
+    a, b, e, Dz, c_inj = params
+    edm_y2 = edm_func(x, u, a/3.5, -3*b, e, Dz, c_inj)
     k = np.argmax(edm_y2)
     ax3.plot(x, edm_y2/edm_y2[k], label="fronting EDM", color="C4")
 

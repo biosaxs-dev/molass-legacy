@@ -15,7 +15,7 @@ from scipy.special import erfc
 from scipy.optimize import minimize, basinhopping
 
 class Edm:
-    def __init__(self, z=30, L=30, a=1.5, b=0.5, u=1.2, e=0.4, Dz=0.02, cinit=0, cinj=1.0, c0=0.0001, tinj=2.0):
+    def __init__(self, z=30, L=30, a=1.5, b=0.5, u=1.2, e=0.4, Dz=0.02, cinit=0, c_inj=1.0, c0=0.0001, t_inj=1.0):
         """
         Parameters
         ----------
@@ -41,7 +41,7 @@ class Edm:
             Mobile-phase velocity (column lengths per time unit).
         Dz : float
             Axial dispersion coefficient.
-        cinj : float
+        c_inj : float
             Injected concentration.
         c0 : float
             Reference concentration for linearising the isotherm (keep small).
@@ -50,7 +50,7 @@ class Edm:
         self.b = b
         self.e = e
         self.Dz = Dz
-        self.cinj = cinj
+        self.c_inj = c_inj
         self.F = F = (1 - e)/e      # phase ratio
         self.L = L
         self.x = z/L
@@ -63,12 +63,12 @@ class Edm:
         gam3 = (-a*b) / denominator
         self.R = R = 1 + gam2*F
         self.lam = lam = 2*F*gam3/R
-        tau_inj = u*tinj/L
-        self.Beta = lam*Pe/2 * cinj * tau_inj
+        tau_inj = u*t_inj/L
+        self.Beta = lam*Pe/2 * c_inj * tau_inj
         self.RPe = R*Pe
 
     def get_comp_params(self):
-        return self.a, self.b, self.e, self.Dz, self.cinj
+        return self.a, self.b, self.e, self.Dz, self.c_inj
 
     def __call__(self, t):
         x = self.x
@@ -99,8 +99,8 @@ def guess_single_edm(x, y, init_params=None, debug=False):
     u = 0.5
 
     def objective(p):
-        a, b, e, Dz, cinj = p
-        edm = Edm(z=z, L=L, a=a, b=b, u=u, e=e, Dz=Dz, cinj=cinj)
+        a, b, e, Dz, c_inj = p
+        edm = Edm(z=z, L=L, a=a, b=b, u=u, e=e, Dz=Dz, c_inj=c_inj)
         y_ = edm(x)
         negative = NEGATIVE_PENALTY_SCALE*min(0, Dz)**2
         fv = np.sum((y_ - y)**2) + negative
@@ -110,11 +110,11 @@ def guess_single_edm(x, y, init_params=None, debug=False):
         init_params = (1.5, -3.0, 0.4, 0.06, 0.5)
 
     ret = minimize(objective, init_params)
-    a, b, e, Dz,cinj = ret.x
-    print("params=", (a, b, e, Dz, cinj))
+    a, b, e, Dz,c_inj = ret.x
+    print("params=", (a, b, e, Dz, c_inj))
     # [1]  (1.5047442427375226, -2.627270376342513,  0.3861655349460303,  0.05006483813658697,  0.584771571520628)
     # [2]  (1.4479395094650214, -3.0295291424530553, 0.25816194967491296, 0.011396843248255373, 0.052114693543924236)
-    edm = Edm(z=z, L=L, a=a, b=b, u=u, e=e, Dz=Dz, cinj=cinj)
+    edm = Edm(z=z, L=L, a=a, b=b, u=u, e=e, Dz=Dz, c_inj=c_inj)
 
     if debug:
         import molass_legacy.KekLib.DebugPlot as plt
@@ -141,22 +141,22 @@ def guess_multiple_edms(x, y, num_components, debug=False):
         y_ -= cy
     return models
 
-def edm_func(t, u, a, b, e, Dz, cinj, cinit=0, c0=0.0001, tinj=2.0, L=30, z=30):
+def edm_func(t, u, a, b, e, Dz, c_inj, cinit=0, c0=0.0001, t_inj=1.0, L=30, z=30):
     # Linear isotherm limit: b=0 → lam=0 → ZeroDivisionError in the main formula.
-    # Handled analytically: as lam→0, U*Beta → cinj*tau_inj and exp(Beta)→1,
+    # Handled analytically: as lam→0, U*Beta → c_inj*tau_inj and exp(Beta)→1,
     # so the formula reduces to a Gaussian (advection-dispersion with linear isotherm).
     if abs(b) < 1e-9:
         _F = (1 - e)/e
         _x = z/L
         _R = 1 + a*_F
         _RPe = _R*L*u/Dz
-        _tau_inj = u*tinj/L
+        _tau_inj = u*t_inj/L
         _tau = u*t/L
         _xi = _x - _tau/_R
         with np.errstate(divide='ignore', invalid='ignore'):
             _V = _xi**2 * _RPe / (4*_tau)
             _W = np.sqrt(np.pi*_tau/_RPe)
-            ret_y = cinj * _tau_inj * np.exp(-_V) / (2*_W)
+            ret_y = c_inj * _tau_inj * np.exp(-_V) / (2*_W)
         ret_y[np.isnan(ret_y)] = 0
         return ret_y
     F = (1 - e)/e      # phase ratio
@@ -168,8 +168,8 @@ def edm_func(t, u, a, b, e, Dz, cinj, cinit=0, c0=0.0001, tinj=2.0, L=30, z=30):
     gam3 = (-a*b) / denominator
     R = 1 + gam2*F
     lam = 2*F*gam3/R
-    tau_inj = u*tinj/L
-    Beta = lam*Pe/2 * cinj * tau_inj
+    tau_inj = u*t_inj/L
+    Beta = lam*Pe/2 * c_inj * tau_inj
     RPe = R*Pe
 
     tau = u*t/L

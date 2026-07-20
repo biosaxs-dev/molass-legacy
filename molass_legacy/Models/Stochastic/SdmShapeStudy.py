@@ -21,11 +21,11 @@ def study():
     b = 1.0
     e = 0.3
     Dz = 0.2
-    cinj = 1
+    c_inj = 1
 
     x = np.arange(500)
 
-    cinj = 1
+    c_inj = 1
     Dz = 0.5
     timescale = 0.25
 
@@ -34,7 +34,7 @@ def study():
         fig.suptitle("SDM-EDM Correspondence Study", fontsize=20)
         for ax, b, title in zip(axes, [2, 0.0001, -2], ["Tailing Peak", "Symmetic Peak", "Fronting Peak"]):
             ax.set_title(title, fontsize=16)
-            y = edm_impl(x, t0, u, a, b, e, Dz, cinj)
+            y = edm_impl(x, t0, u, a, b, e, Dz, c_inj)
             ax.plot(x, y, label="EDM, b=%g" % b)
             K, N, t0, N0, rho, me, mp, scale = guess_sdm_params(x, y, timescale=timescale)
             T = K/N

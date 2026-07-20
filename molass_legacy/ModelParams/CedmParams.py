@@ -2,7 +2,7 @@
     CedmParams.py — parameter class for Constrained-EDM (G2020)
 
     Parameter layout (all but colparams inside split_params):
-        xr_params       : (nc × 3)  — [a_k, b_k, cinj_k]  per component
+        xr_params       : (nc × 3)  — [a_k, b_k, c_inj_k]  per component
         xr_baseparams   : num_baseparams
         rg_params       : nc
         mapping         : (a_mp, b_mp)
@@ -18,18 +18,18 @@ import logging
 import numpy as np
 from .BaselineParams import get_num_baseparams
 from molass_legacy._MOLASS.SerialSettings import get_setting
-from molass_legacy.Models.RateTheory.EDM import edm_impl, MIN_CINJ, MAX_CINJ
+from molass_legacy.Models.RateTheory.EDM import edm_impl, MIN_C_INJ, MAX_C_INJ
 from molass_legacy.Optimizer.BasicOptimizer import AVOID_VANISHING_RATIO
 
 NUM_COL_PARAMS = 4       # t0_sh, u_sh, e_sh, Dz_sh
-NUM_ELEMENT_PARAMS = 3   # a, b, cinj  per component
+NUM_ELEMENT_PARAMS = 3   # a, b, c_inj  per component
 
 
 class CedmParams:
     """Parameter type for Constrained-EDM rigorous optimisation (G2020).
 
     The four column parameters (t0, u, e, Dz) are shared across all
-    components; only the per-component physical parameters (a = K_SEC, b, cinj)
+    components; only the per-component physical parameters (a = K_SEC, b, c_inj)
     are free per component.
     """
 
@@ -114,7 +114,7 @@ class CedmParams:
     # ------------------------------------------------------------------
 
     def get_xr_per_comp_bounds(self, xr_params_abc):
-        """Return per-component bounds: [(a_lo, a_hi), (b_lo, b_hi), (cinj_lo, cinj_hi)] × nc.
+        """Return per-component bounds: [(a_lo, a_hi), (b_lo, b_hi), (c_inj_lo, c_inj_hi)] × nc.
 
         Bounds mirror EdmOptimizer.py conventions, but must be finite (BasicOptimizer
         converts them to a numpy array for parameter scaling):
@@ -123,13 +123,13 @@ class CedmParams:
         - b: wide symmetric range that comfortably covers extreme values (e.g. b ≈ -30)
           that arise when L-BFGS-B finds flexible asymmetric curve shapes.
         """
-        cinj_max = np.max(xr_params_abc[:, 2])       # cinj is column 2
-        cinj_min = cinj_max * AVOID_VANISHING_RATIO
+        c_inj_max = np.max(xr_params_abc[:, 2])       # c_inj is column 2
+        c_inj_min = c_inj_max * AVOID_VANISHING_RATIO
         bounds = []
-        for a_k, b_k, cinj_k in xr_params_abc:
+        for a_k, b_k, c_inj_k in xr_params_abc:
             bounds.append((0.0001, 5.0))                        # a  (K_SEC; finite upper for BasicOptimizer)
             bounds.append((-50.0, 50.0))                        # b  (wide; covers fitted ≈ ±31)
-            bounds.append((max(MIN_CINJ, cinj_min), min(MAX_CINJ, cinj_max * 2)))  # cinj
+            bounds.append((max(MIN_C_INJ, c_inj_min), min(MAX_C_INJ, c_inj_max * 2)))  # c_inj
         return bounds
 
     def get_cedm_col_bounds(self, cedm_colparams):
@@ -218,7 +218,7 @@ class CedmParams:
         total = self.num_params + NUM_COL_PARAMS
         bounds_mask = np.zeros(total, dtype=bool)
         nc = self.n_components - 1
-        bounds_mask[0: nc * NUM_ELEMENT_PARAMS] = True   # xr_params (a, b, cinj)
+        bounds_mask[0: nc * NUM_ELEMENT_PARAMS] = True   # xr_params (a, b, c_inj)
         if self.integral_baseline:
             sep = nc * NUM_ELEMENT_PARAMS + self.num_baseparams
             bounds_mask[sep - 1] = True                  # xr baseline fouling
@@ -259,7 +259,7 @@ class CedmParams:
         nc = self.n_components - 1
         xr_names = []
         for k in range(nc):
-            xr_names += [f"$a_{k}$", f"$b_{k}$", f"cinj_{k}"]
+            xr_names += [f"$a_{k}$", f"$b_{k}$", f"c_inj_{k}"]
 
         rg_names = [f"$R_{{g{k}}}$" for k in range(nc)]
         mapping_names = ["$mp_a$", "$mp_b$"]
@@ -290,8 +290,8 @@ class CedmParams:
             cedm_colparams = params[-NUM_COL_PARAMS:]
             t0_sh, u_sh, e_sh, Dz_sh = cedm_colparams
             pos = []
-            for a_k, b_k, cinj_k in xr_params_abc:
-                cy = edm_impl(x, t0_sh, u_sh, a_k, b_k, e_sh, Dz_sh, cinj_k)
+            for a_k, b_k, c_inj_k in xr_params_abc:
+                cy = edm_impl(x, t0_sh, u_sh, a_k, b_k, e_sh, Dz_sh, c_inj_k)
                 cy = np.nan_to_num(cy, nan=0.0, posinf=0.0, neginf=0.0)
                 j = np.argmax(cy)
                 pos.append(x[j])
