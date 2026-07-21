@@ -719,6 +719,16 @@ class PeakEditor(FullBatch, Dialog):
             log_exception(self.logger, "draw_scores: ", n=10)
             fv = np.inf
 
+        # diagnostic: print score breakdown to diagnose SV=-100 (molass-legacy#85)
+        try:
+            _fv2, _scores = self.fullopt.objective_func(self.fullopt.init_params, return_full=True)[:2]
+            _names = self.fullopt.get_score_names()
+            print(f"[draw_scores] fv={_fv2:.4g}  SV={convert_score(_fv2):.1f}", flush=True)
+            for _n, _s in zip(_names, _scores):
+                print(f"  {_n}: {_s:.4g}", flush=True)
+        except Exception as _e:
+            print(f"[draw_scores] score breakdown failed: {_e}", flush=True)
+
         ax3 = self.axes[2]
         ax3.set_title("Objective Function Scores in SV=%.3g" % convert_score(fv), fontsize=16)
         self.fig.tight_layout()
