@@ -393,15 +393,29 @@ class PeakEditor(FullBatch, Dialog):
     def _build_library_decomposition(self, ssd):
         """Build a library Decomposition from an already-constructed ssd.
 
-        Uses the same num_components as the legacy pre_recog with equal proportions,
-        so the library EGH curves match the optimizer's component count and give
-        better seeds for column model estimators (SDM, EDM, LKM, GRM).
+        For EGH (G0346/G0367): uses default decomp WITHOUT proportions so that
+        EGH tau/sigma values stay within BoundedSecParams bounds.  Proportional
+        path can produce |tau| > sigma*TAU_BOUND_RATIO → negative_penalty ≈ 1000
+        and first-come-first-leave violations → order_penalty ≈ 15, both causing
+        SV=-100 on draw_scores.  (molass-legacy#85)
+
+        For column models (SDM/LKM/etc.): uses equal proportions + upgrade, which
+        is needed for column-model param estimation.
         """
         try:
             num_components = len(self.peak_params_set[1])
+
+            # Determine model class early so we can choose decomposition strategy.
+            # EGH uses default (non-proportional); column models use proportional+upgrade.
+            try:
+                _, _pre_class_code = self.get_function_class()
+            except Exception:
+                _pre_class_code = 'G0346'   # safe EGH default
+            _is_egh = _pre_class_code in ('G0346', 'G0367')
+
             decomposition = ssd.quick_decomposition(
                 num_components=num_components,
-                proportions=[1] * num_components,
+                **({} if _is_egh else {'proportions': [1] * num_components}),
                 rgcurve=ssd._rgcurve,
             )
             # Inject the cached Rg curve so Decomposition.get_rg_curve() never
@@ -445,7 +459,7 @@ class PeakEditor(FullBatch, Dialog):
                 'G2020': ('EDM',  {}),
             }
             try:
-                _, class_code = self.get_function_class()
+                class_code = _pre_class_code   # already determined above
                 if class_code in ('G0346', 'G0367'):
                     # EGH: decomposition already has model='egh' — use directly.
                     self.model_decomposition = decomposition
@@ -478,7 +492,7 @@ class PeakEditor(FullBatch, Dialog):
             self._library_decomp_ready = True
 
     def _update_display_from_library_decomp(self):
-        """Refresh UV/XR panels with library (proportional) EGH decomposition.
+        """Refresh UV/XR panels with library EGH decomposition.
 
         Called on the main Tk thread after _build_library_decomposition completes.
         Updates peak_params_set so column model estimators also see library params.
@@ -669,8 +683,6 @@ class PeakEditor(FullBatch, Dialog):
         self.uv_base_curve = uv_base_curve
 
         dsets = self._lib_dsets if self._lib_dsets is not None else self.dsets
-        # diagnostic: confirm which dsets path is taken (molass-legacy#85)
-        print(f"[PeakEditor.construct_optimizer] _lib_dsets={'set' if self._lib_dsets is not None else 'None (fallback to legacy)'}  xr_curve.x[0] will be determined from dsets", flush=True)
 
         self.optimizer = fullopt_class(
             dsets,
@@ -713,21 +725,9 @@ class PeakEditor(FullBatch, Dialog):
         try:
             fv = self.fullopt.objective_func(self.fullopt.init_params, plot=True, axis_info=axis_info)
         except:
-            import traceback as _tb
-            print("[draw_scores] objective_func raised:", _tb.format_exc(limit=8), flush=True)  # print bypasses cp932 logger (molass-legacy#85)
             from molass_legacy.KekLib.ExceptionTracebacker import log_exception
             log_exception(self.logger, "draw_scores: ", n=10)
             fv = np.inf
-
-        # diagnostic: print score breakdown to diagnose SV=-100 (molass-legacy#85)
-        try:
-            _fv2, _scores = self.fullopt.objective_func(self.fullopt.init_params, return_full=True)[:2]
-            _names = self.fullopt.get_score_names()
-            print(f"[draw_scores] fv={_fv2:.4g}  SV={convert_score(_fv2):.1f}", flush=True)
-            for _n, _s in zip(_names, _scores):
-                print(f"  {_n}: {_s:.4g}", flush=True)
-        except Exception as _e:
-            print(f"[draw_scores] score breakdown failed: {_e}", flush=True)
 
         ax3 = self.axes[2]
         ax3.set_title("Objective Function Scores in SV=%.3g" % convert_score(fv), fontsize=16)
