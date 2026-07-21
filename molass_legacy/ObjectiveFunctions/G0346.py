@@ -114,6 +114,8 @@ class G0346(BasicOptimizer):
         uv_cy_list.append(uv_cy)
 
         lrf_info = None     # initialize before try so plot branch can reference it even if exception occurs (molass-legacy#85)
+        penalties = []      # initialize before try so plot branch can reference it if exception occurs before penalties = [...]
+        score_list = [0] * self.get_num_scores([])  # initialize before try for same reason
         try:
             lrf_info = self.compute_LRF_matrices(x, y, xr_cy_list, xr_ty, uv_x, uv_y, uv_cy_list, uv_ty, debug=lrf_debug)
             if return_lrf_info:
@@ -143,6 +145,8 @@ class G0346(BasicOptimizer):
             fv, score_list = self.compute_fv(lrf_info, xr_params, rg_params, seccol_params, penalties, p, debug=debug)
         except:
             # e.g., numpy.linalg.LinAlgError: SVD did not converge
+            import traceback as _tb
+            print("[G0346] error in objective_func:", _tb.format_exc(limit=5), flush=True)  # print bypasses cp932 logger (molass-legacy#85)
             log_exception(self.logger, "error in objective_func", n=5)
             fv = BAD_PARAMS_RETURN
             score_list = [0] * self.get_num_scores([])
@@ -154,6 +158,8 @@ class G0346(BasicOptimizer):
 
         if plot:
             from molass_legacy.ModelParams.EghPlotUtils import plot_objective_state
+            if lrf_info is None:  # exception before compute_LRF_matrices succeeded — skip plotting (molass-legacy#85)
+                return fv
             debug_fv = plot_objective_state((score_list, penalties), fv,
                 lrf_info,
                 overlap, self.rg_curve, rg_params,

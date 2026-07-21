@@ -451,7 +451,7 @@ class PeakEditor(FullBatch, Dialog):
                     self.model_decomposition = decomposition
                     import logging as _lg
                     _lg.getLogger(__name__).info(
-                        "_build_library_decomposition: EGH — using decomposition directly"
+                        "_build_library_decomposition: EGH -- using decomposition directly"
                     )
                 elif class_code in _UPGRADE_MAP:
                     model_name, upgrade_kwargs = _UPGRADE_MAP[class_code]
