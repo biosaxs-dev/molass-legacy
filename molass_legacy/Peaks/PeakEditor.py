@@ -69,6 +69,7 @@ class PeakEditor(FullBatch, Dialog):
         assert self.advanced
         
         self.dsets = None
+        self._lib_dsets = None           # library dsets (uncorrected sd data) — set by _build_library_decomposition (molass-legacy#85)
         self.decomposition = None        # library EGH Decomposition (for display)
         self.model_decomposition = None  # library upgraded Decomposition for the selected model (for init-params)
         self._library_decomp_ready = False  # set True when _build_library_decomposition finishes (or is skipped)
@@ -407,6 +408,26 @@ class PeakEditor(FullBatch, Dialog):
             # triggers a second full Rg scan (it would recompute from decomp.ssd.xr).
             decomposition._rgcurve = ssd._rgcurve
             self.decomposition = decomposition
+
+            # Build library dsets from UNCORRECTED sd so compute_LRF_matrices sees
+            # non-negative intensities at all q.  The corrected_sd path (used by
+            # self.dsets) can have negative values at low q after baseline subtraction,
+            # causing the Guinier analysis to crash and return SV=-100.  (molass-legacy#85)
+            try:
+                from molass.Rigorous.LegacyBridgeUtils import make_dsets_from_decomposition
+                from molass.Bridge.SdAdapter import make_ssd_from_corrected_sd as _make_ssd_from_sd
+                ssd_uncorrected = _make_ssd_from_sd(self.sd)   # uncorrected intensities, same q-range
+                self._lib_dsets = make_dsets_from_decomposition(
+                    decomposition, ssd._rgcurve, data_ssd=ssd_uncorrected
+                )
+            except Exception:
+                import logging as _lg
+                _lg.getLogger(__name__).warning(
+                    "_build_library_decomposition: lib_dsets build failed; construct_optimizer will use legacy dsets",
+                    exc_info=True
+                )
+                self._lib_dsets = None
+
             # Schedule a display update on the main thread so the UV/XR panels
             # show the proportional EGH curves instead of the legacy pre_recog peaks.
             self.after(0, self._update_display_from_library_decomp)
@@ -631,6 +652,35 @@ class PeakEditor(FullBatch, Dialog):
         self.construct_optimizer()
         init_params = self.compute_init_params(developing=True)  # to enable developing version features
         self.fullopt.prepare_for_optimization(init_params)
+
+    def construct_optimizer(self, fullopt_class=None):
+        """Override FullBatch.construct_optimizer to use library dsets when available.
+
+        The parent's implementation passes corrected_sd data as dsets, which can have
+        negative intensities at low q after baseline subtraction → compute_LRF_matrices
+        crashes → SV = -100 in draw_scores.  Using uncorrected sd data (stored in
+        self._lib_dsets by _build_library_decomposition) avoids this.  (molass-legacy#85)
+        """
+        if fullopt_class is None:
+            fullopt_class, class_code = self.get_function_class()
+        n_components = self.get_n_components()
+        uv_base_curve = self.baseline_objects[0]
+        xr_base_curve = self.baseline_objects[1]
+        self.uv_base_curve = uv_base_curve
+
+        dsets = self._lib_dsets if self._lib_dsets is not None else self.dsets
+
+        self.optimizer = fullopt_class(
+            dsets,
+            n_components,
+            uv_base_curve=uv_base_curve,
+            xr_base_curve=xr_base_curve,
+            qvector=self.sd.qvector,    # trimmed sd
+            wvector=self.sd.lvector,
+        )
+
+        self.fullopt = self.optimizer   # for backward compatibility
+        self.params_type = self.fullopt.params_type
 
     def draw_scores(self, init_params=None, draw_rg_curve=True, create_new_optimizer=True):
 

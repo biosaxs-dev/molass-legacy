@@ -113,6 +113,7 @@ class G0346(BasicOptimizer):
         uv_ty += uv_cy
         uv_cy_list.append(uv_cy)
 
+        lrf_info = None     # initialize before try so plot branch can reference it even if exception occurs (molass-legacy#85)
         try:
             lrf_info = self.compute_LRF_matrices(x, y, xr_cy_list, xr_ty, uv_x, uv_y, uv_cy_list, uv_ty, debug=lrf_debug)
             if return_lrf_info:
