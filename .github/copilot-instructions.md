@@ -119,4 +119,13 @@ This repo is part of the 7-repo VS Code workspace. See `molass-library/.github/c
 
 ---
 
+## 🤖 AI-Friendliness Candidates
+
+| Issue | Description | Effort |
+|-------|-------------|--------|
+| `draw_scores` score breakdown | SV=-100 gave no diagnosis. Root cause (which penalty, what value) required adding temporary print statements and multiple GUI runs. A `optimizer.get_score_breakdown()` call exposed in the GUI title or log at `draw_scores` time would halve future debug cycles. | Small |
+| EGH param bounds validation | `_build_library_decomposition` silently produced params violating `BoundedSecParams` (tau/sigma ratio, first-come-first-leave). A pre-flight check logging a warning when any penalty > threshold would surface this immediately instead of after SV=-100. | Small |
+
+---
+
 **License**: GNU General Public License v3.0 — Part of molass-legacy
