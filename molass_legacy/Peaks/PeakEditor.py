@@ -669,6 +669,8 @@ class PeakEditor(FullBatch, Dialog):
         self.uv_base_curve = uv_base_curve
 
         dsets = self._lib_dsets if self._lib_dsets is not None else self.dsets
+        # diagnostic: confirm which dsets path is taken (molass-legacy#85)
+        print(f"[PeakEditor.construct_optimizer] _lib_dsets={'set' if self._lib_dsets is not None else 'None (fallback to legacy)'}  xr_curve.x[0] will be determined from dsets", flush=True)
 
         self.optimizer = fullopt_class(
             dsets,
@@ -711,6 +713,8 @@ class PeakEditor(FullBatch, Dialog):
         try:
             fv = self.fullopt.objective_func(self.fullopt.init_params, plot=True, axis_info=axis_info)
         except:
+            import traceback as _tb
+            print("[draw_scores] objective_func raised:", _tb.format_exc(limit=8), flush=True)  # print bypasses cp932 logger (molass-legacy#85)
             from molass_legacy.KekLib.ExceptionTracebacker import log_exception
             log_exception(self.logger, "draw_scores: ", n=10)
             fv = np.inf
