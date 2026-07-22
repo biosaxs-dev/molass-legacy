@@ -552,10 +552,20 @@ class PeakEditor(FullBatch, Dialog):
             rg_curve_ok = RG_CURVE_OK - STOCH_INIT_STEPS
 
         try:
-            from molass.Bridge.SdAdapter import make_ssd_from_corrected_sd
+            from molass.Bridge.SdAdapter import make_ssd_from_sd
             from molass.Bridge.LegacyRgCurve import LegacyRgCurve
 
-            ssd = make_ssd_from_corrected_sd(self.corrected_sd)
+            # Build ssd via the library pipeline (molass-legacy#86):
+            #   make_ssd_from_sd → trimmed_copy → corrected_copy
+            # This gives library-standard q-range (trimmed_copy clips bad low-q points)
+            # and library baseline correction, matching what optimize_rigorously() uses.
+            # Previously make_ssd_from_corrected_sd(self.corrected_sd) preserved the
+            # legacy q-range (6 extra low-q points vs library trimmed), causing a
+            # ~3 SV gap in the SDM/LKM init quality.
+            _raw_ssd = make_ssd_from_sd(self.sd)
+            _raw_ssd.trimmed = False
+            _raw_ssd.corrected = False
+            ssd = _raw_ssd.trimmed_copy().corrected_copy()
 
             # Build a ProgressCallback-compatible callable that wraps the queue.
             # The library calls progress_cb(rg_buffer, j) with the same signature
