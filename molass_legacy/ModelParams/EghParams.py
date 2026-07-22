@@ -40,6 +40,11 @@ def get_common_parameter_names(n, nc_rg=None, seccol=True):
     return xr_names, rg_names, mapping_names, uv_names, mr_names, seccol_names
 
 class EghParamsBase:
+    """Base parameter layout for EGH-family elution models (EGH, LjEGH, RtEMG, FdEMG).
+
+    .. note:: n_components includes the baseline component;
+              biological component count = n_components - 1.
+    """
     def __init__(self, n_components, poresize, poreexponent, sec_class=None):
         self.n_components = n_components
         self.num_baseparams = get_num_baseparams()

@@ -38,7 +38,11 @@ def get_common_parameter_names(nc):
 
 
 class LkmParams:
-    """Parameter layout manager for LKM rigorous optimization (G1400)."""
+    """Parameter layout manager for LKM rigorous optimization (G1400).
+
+    .. note:: n_components includes the baseline component;
+              biological component count = n_components - 1.
+    """
 
     def __init__(self, n_components):
         self.logger         = logging.getLogger(__name__)

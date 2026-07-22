@@ -27,6 +27,11 @@ def get_common_parameter_names(nc):
     return xr_names, rg_names, mapping_names, uv_names, mr_names, edmcol_names
 
 class EdmParams:
+    """Parameter layout for EDM (Equilibrium Dispersive Model) rigorous optimization.
+
+    .. note:: n_components includes the baseline component;
+              biological component count = n_components - 1.
+    """
     def __init__(self, n_components):
         self.logger = logging.getLogger(__name__)
         self.n_components = n_components

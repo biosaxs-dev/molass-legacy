@@ -49,7 +49,11 @@ def get_common_parameter_names(nc):
 
 
 class GrmParams(ParamsTypeBase):
-    """Parameter layout manager for GRM rigorous optimization (G1500)."""
+    """Parameter layout manager for GRM rigorous optimization (G1500).
+
+    .. note:: n_components includes the baseline component;
+              biological component count = n_components - 1.
+    """
 
     def __init__(self, n_components):
         self.logger         = logging.getLogger(__name__)

@@ -31,6 +31,9 @@ class CedmParams:
     The four column parameters (t0, u, e, Dz) are shared across all
     components; only the per-component physical parameters (a = K_SEC, b, c_inj)
     are free per component.
+
+    .. note:: n_components includes the baseline component;
+              biological component count = n_components - 1.
     """
 
     def __init__(self, n_components):
