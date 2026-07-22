@@ -64,7 +64,8 @@ class LkmEstimator(EghEstimator):
         if model_decomp is not None and getattr(model_decomp, 'model', None) == 'lkm':
             try:
                 from molass.Rigorous.LegacyBridgeUtils import make_basecurves_from_decomposition
-                _, baseparams = make_basecurves_from_decomposition(model_decomp)
+                _ssd_unc = getattr(editor, '_ssd_uncorrected', None)   # molass-legacy#87 pattern
+                _, baseparams = make_basecurves_from_decomposition(model_decomp, data_ssd=_ssd_unc)
                 init_params = model_decomp.make_rigorous_initparams(baseparams)
                 self.logger.info("LkmEstimator: used library LKM upgrade result directly")
                 return init_params
