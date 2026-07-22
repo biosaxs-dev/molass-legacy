@@ -71,7 +71,7 @@ class MockEditor:
     editor.logger                      -- stdlib logger
     editor.peak_params_set             -- [uv_peaks, xr_peaks] fallback
     """
-    def __init__(self, decomposition, dsets, baseparams):
+    def __init__(self, decomposition, dsets, baseparams, model_decomposition=None):
         self.logger = logging.getLogger('MockEditor')
         self.decomposition = decomposition
         self.dsets = dsets
@@ -81,6 +81,11 @@ class MockEditor:
         self.sd = None
         self.corrected_sd = None
         self.ecurves = None
+
+        # Model-specific upgraded decomposition (SDM, LKM, EDM, GRM).
+        # SdmEstimator._estimate_mono reads editor.model_decomposition to use the
+        # library fast path (make_rigorous_initparams).  None → legacy stage-wise path.
+        self.model_decomposition = model_decomposition
 
         # Default peak_params_set (caller may overwrite for specific tests)
         if decomposition is not None:
@@ -112,6 +117,10 @@ class MockEditor:
         """Returns UV baseline parameter array."""
         return np.array(self.baseline_params[0])
 
+    def update_status_bar(self, message):
+        """No-op: GuiSimUtils does not show a Tkinter status bar."""
+        pass
+
 
 def evaluate_init(optimizer, init_params, label):
     """
@@ -119,6 +128,11 @@ def evaluate_init(optimizer, init_params, label):
 
     Calls prepare_for_optimization before objective_func so that init_mapping
     and other cached state are set on the optimizer object.
+
+    The score breakdown (return_full=True) is shown for any non-zero term —
+    this is the primary diagnostic for catching estimator regressions without
+    running a real GUI.  Example: negative_penalty=1087 ⚠️  flags the
+    tau/sigma ratio violation that caused SV=-100 in molass-legacy#85.
 
     Parameters
     ----------
@@ -136,13 +150,30 @@ def evaluate_init(optimizer, init_params, label):
     seccol : np.ndarray
     """
     optimizer.prepare_for_optimization(init_params)
-    fv = optimizer.objective_func(init_params)
+    try:
+        fv, scores, *_ = optimizer.objective_func(init_params, return_full=True)
+    except TypeError:
+        fv = optimizer.objective_func(init_params)
+        scores = None
     sv = fv_to_sv(fv)
     split = optimizer.split_params_simple(init_params)
     xr_params, xr_base, rgs, mapping, uv_params, uv_base, mr, seccol = split
     print(f"\n=== {label} ===")
     print(f"  fv = {fv:.5f}   SV = {sv:.2f}")
+    if scores is not None:
+        try:
+            names = optimizer.get_score_names()
+            nonzero = [(n, v) for n, v in zip(names, scores) if abs(v) > 0.001]
+            if nonzero:
+                print("  Score breakdown (non-zero terms):")
+                for name, val in nonzero:
+                    penalty_flag = "  ⚠️" if name in ('negative_penalty', 'order_penalty') and val > 0.1 else ""
+                    print(f"    {name}: {val:.4f}{penalty_flag}")
+            else:
+                print("  Score breakdown: all terms ≈ 0  ✅")
+        except AttributeError:
+            print(f"  scores: {scores}")
     print(f"  xr sigmas: {xr_params[:, 2]}")
-    print(f"  seccol (Npc, rp, tI, t0, P, m): {seccol}")
+    print(f"  seccol: {seccol}")
     print(f"  Rg values: {rgs}")
     return sv, xr_params, seccol
