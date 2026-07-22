@@ -24,6 +24,21 @@ def get_common_parameter_names(nc):
     return xr_names, rg_names, mapping_names, uv_names, mr_names, seccol_names
 
 class SdmParams:
+    """Parameter layout for the SDM (Size Distribution Model) elution model.
+
+    .. note:: **n_components convention** (legacy throughout molass-legacy)
+
+        ``n_components`` includes the baseline component.  Biological
+        component count = ``n_components - 1``.
+
+        Examples:
+          - 3 proteins  →  ``n_components = 4``  (3 bio + 1 baseline)
+          - CLI flag ``-n 4``  →  3 biological components
+          - ``FullOptDialog`` displays ``n_components - 1`` to the user
+
+        Renaming is deferred; for now search for ``nc = n_components - 1``
+        to find all translation points in the codebase.
+    """
     def __init__(self, n_components, num_col_params=None):
         self.logger = logging.getLogger(__name__)
         self.n_components = n_components
@@ -34,7 +49,7 @@ class SdmParams:
         self.use_K = False      # use_K was used for the deprecated stochastic model
         self.estimator = None
 
-        nc = n_components - 1
+        nc = n_components - 1  # biological component count (excludes baseline)
 
         self.pos = []
         self.pos.append(0)      # [0] xr_params

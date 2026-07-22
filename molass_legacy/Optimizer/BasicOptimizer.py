@@ -86,6 +86,15 @@ COERCE_BOUNDED_BQ = True
 USE_RGCURVE_DEVIATION = True
 ADJUST_2D_TARGET = 1
 class BasicOptimizer:
+    """Core optimizer that evaluates the objective function for all elution models.
+
+    .. note:: **n_components convention** (legacy throughout molass-legacy)
+
+        ``n_components`` includes the baseline component.
+        Biological component count = ``n_components - 1``  (see ``num_pure_components``).
+        The CLI flag ``-n`` carries this total; e.g. ``-n 4`` = 3 biological components.
+        Renaming is deferred — search ``nc = n_components - 1`` to find translation points.
+    """
     def __init__(self, dsets, n_components, params_type, kwargs):
         self.NUM_MAJOR_SCORES = get_setting("NUM_MAJOR_SCORES")
 
