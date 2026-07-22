@@ -434,8 +434,8 @@ class PeakEditor(FullBatch, Dialog):
             # causing the Guinier analysis to crash and return SV=-100.  (molass-legacy#85)
             try:
                 from molass.Rigorous.LegacyBridgeUtils import make_dsets_from_decomposition
-                from molass.Bridge.SdAdapter import make_ssd_from_corrected_sd as _make_ssd_from_sd
-                ssd_uncorrected = _make_ssd_from_sd(self.sd)   # uncorrected intensities, same q-range
+                from molass.Bridge.SdAdapter import make_ssd_from_sd
+                ssd_uncorrected = make_ssd_from_sd(self.sd)    # uncorrected intensities, same q-range
                 self._lib_dsets = make_dsets_from_decomposition(
                     decomposition, ssd._rgcurve, data_ssd=ssd_uncorrected
                 )
