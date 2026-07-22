@@ -405,8 +405,14 @@ class PeakEditor(FullBatch, Dialog):
         try:
             num_components = len(self.peak_params_set[1])
 
-            # Determine model class early so we can choose decomposition strategy.
-            # EGH uses default (non-proportional); column models use proportional+upgrade.
+            # Determine model class early so we can check it later for the upgrade map.
+            # All models use non-proportional (default) EGH as the base decomposition.
+            # Using proportional EGH for column models was the original strategy, but it
+            # produces wider-than-true elution curves (visually: 2nd component covers both
+            # peaks) that degrade the SDM/LKM/etc. upgrade quality (N≈379 instead of ≈728
+            # for SAMPLE1).  Non-proportional matches the library pipeline
+            # (decomp_egh.upgrade('SDM')) and gives better column-model init params
+            # (+0.5 SV, measured in molass-researcher/experiments/33_gui_consistency/33b).
             try:
                 _, _pre_class_code = self.get_function_class()
             except Exception:
@@ -415,7 +421,6 @@ class PeakEditor(FullBatch, Dialog):
 
             decomposition = ssd.quick_decomposition(
                 num_components=num_components,
-                **({} if _is_egh else {'proportions': [1] * num_components}),
                 rgcurve=ssd._rgcurve,
             )
             # Inject the cached Rg curve so Decomposition.get_rg_curve() never
