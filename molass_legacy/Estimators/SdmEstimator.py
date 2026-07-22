@@ -93,7 +93,9 @@ class SdmEstimator(BaseEstimator):
                 column = model_decomp.xr_ccurves[0].column
                 if getattr(column, 'pore_dist', 'mono') == 'mono':
                     from molass.Rigorous.LegacyBridgeUtils import make_basecurves_from_decomposition
-                    _, baseparams = make_basecurves_from_decomposition(model_decomp)
+                    # Use same uncorrected ssd as _lib_dsets for consistent UV scale (molass-legacy#87)
+                    _ssd_unc = getattr(editor, '_ssd_uncorrected', None)
+                    _, baseparams = make_basecurves_from_decomposition(model_decomp, data_ssd=_ssd_unc)
                     init_params = model_decomp.make_rigorous_initparams(baseparams)
                     # Store estimated K for adaptive bounds (molass-legacy#84)
                     col_params = column.get_params()  # (N, T, me, mp, x0, tI, N0, poresize, ts, k)

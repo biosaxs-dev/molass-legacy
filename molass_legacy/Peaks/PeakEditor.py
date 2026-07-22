@@ -436,6 +436,7 @@ class PeakEditor(FullBatch, Dialog):
                 from molass.Rigorous.LegacyBridgeUtils import make_dsets_from_decomposition
                 from molass.Bridge.SdAdapter import make_ssd_from_sd
                 ssd_uncorrected = make_ssd_from_sd(self.sd)    # uncorrected intensities, same q-range
+                self._ssd_uncorrected = ssd_uncorrected         # shared with _estimate_mono for baseparams consistency (molass-legacy#87)
                 self._lib_dsets = make_dsets_from_decomposition(
                     decomposition, ssd._rgcurve, data_ssd=ssd_uncorrected
                 )
@@ -446,6 +447,7 @@ class PeakEditor(FullBatch, Dialog):
                     exc_info=True
                 )
                 self._lib_dsets = None
+                self._ssd_uncorrected = None
 
             # Schedule a display update on the main thread so the UV/XR panels
             # show the proportional EGH curves instead of the legacy pre_recog peaks.
