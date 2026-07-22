@@ -71,7 +71,7 @@ class MockEditor:
     editor.logger                      -- stdlib logger
     editor.peak_params_set             -- [uv_peaks, xr_peaks] fallback
     """
-    def __init__(self, decomposition, dsets, baseparams, model_decomposition=None):
+    def __init__(self, decomposition, dsets, baseparams, model_decomposition=None, ssd_uncorrected=None):
         self.logger = logging.getLogger('MockEditor')
         self.decomposition = decomposition
         self.dsets = dsets
@@ -86,6 +86,12 @@ class MockEditor:
         # SdmEstimator._estimate_mono reads editor.model_decomposition to use the
         # library fast path (make_rigorous_initparams).  None → legacy stage-wise path.
         self.model_decomposition = model_decomposition
+
+        # Uncorrected SSD for baseparams consistency (molass-legacy#87 pattern).
+        # SdmEstimator._estimate_mono and CedmEstimator.estimate_params pass this as
+        # data_ssd to make_basecurves_from_decomposition so baseline params are computed
+        # from the same (uncorrected) data as the dsets used by the optimizer.
+        self._ssd_uncorrected = ssd_uncorrected
 
         # Default peak_params_set (caller may overwrite for specific tests)
         if decomposition is not None:
