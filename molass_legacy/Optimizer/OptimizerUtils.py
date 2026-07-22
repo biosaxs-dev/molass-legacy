@@ -19,9 +19,9 @@ def get_model_name(class_code):
     return MODEL_NAME_DICT.get(class_code, str(class_code))
 
 def get_function_code(model_name):
-    model_name = model_name.upper()
+    model_name_upper = model_name.upper()
     for code, name in MODEL_NAME_DICT.items():
-        if name == model_name:
+        if name.upper() == model_name_upper:
             return code
     return None
 

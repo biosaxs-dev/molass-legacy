@@ -173,7 +173,7 @@ def evaluate_init(optimizer, init_params, label):
                 print("  Score breakdown: all terms ≈ 0  ✅")
         except AttributeError:
             print(f"  scores: {scores}")
-    print(f"  xr sigmas: {xr_params[:, 2]}")
+    print(f"  xr_params shape={xr_params.shape}: {xr_params[:8] if xr_params.ndim == 1 else xr_params[:, 2]}")
     print(f"  seccol: {seccol}")
     print(f"  Rg values: {rgs}")
     return sv, xr_params, seccol
