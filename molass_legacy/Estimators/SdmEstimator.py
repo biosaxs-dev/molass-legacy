@@ -305,10 +305,11 @@ class SdmEstimator(BaseEstimator):
             #   1. T_ln = T_mono / k_optimizer  (k_optimizer=2.0 is lognormal optimizer default
             #      k_init, NOT k_mono which can differ, e.g. 0.66 for SAMPLE1)
             #   2. mu_max = ln(3 × Rg_max)  (prevents K_SEC compression and degenerate basin)
-            #   3. sigma_init = 0.05  (within σ < 5% L2-error convergence zone, 33i sweet spot)
+            #   3. sigma_init = 0.10  (best with position anchor: SV=75.0 vs σ=0.05 SV=74.5, 33g 2026-07-23)
+            #      Without anchor σ=0.05 was sweet spot (SV=74.5); anchor prevents drift at σ=0.10
             editor.update_status_bar("SDM lognormal init (3/4): building mono-seeded lognormal environment...")
             _K_OPTIMIZER = 2.0   # default k_init in optimize_sdm_lognormal_xr_decomposition
-            _SIGMA_INIT   = 0.05  # sweet spot: SV=74.5 vs σ=0.3 SV=72.1 (experiment 33g)
+            _SIGMA_INIT   = 0.10  # sweet spot with position anchor: SV=75.0 (experiment 33g, 2026-07-23)
             N2s, T2s, me2, mp2, x0_2s, tI_2s, N0_2s, poresize_2, _ts2, _k2 = mono_ccurves[0].column.get_params()
             mu_init    = np.log(max(float(poresize_2), 1.0))
             T_ln       = T2s / _K_OPTIMIZER
