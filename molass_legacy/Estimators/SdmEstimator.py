@@ -248,7 +248,30 @@ class SdmEstimator(BaseEstimator):
                     init_params = model_decomp.make_rigorous_initparams(baseparams)
                     # Store estimated K for adaptive bounds (molass-legacy#84)
                     col_params = column.get_params()  # (N, T, me, mp, x0, tI, N0, mu, sigma, k)
+                    N0_col    = float(col_params[6])
+                    mu_col    = float(col_params[7])
+                    poresize_col = float(np.exp(mu_col))
+                    if N0_col < 1.0 or poresize_col < 10.0:
+                        # Degenerate model_decomp (e.g. N0=0.3, rp=4.77 Å) — skip fast
+                        # path so the 4-stage pipeline can produce a proper init.
+                        raise ValueError(
+                            f"Degenerate G1300 model_decomp: N0={N0_col:.2g}, "
+                            f"poresize={poresize_col:.1f} Å — using 4-stage path"
+                        )
                     self._estimated_K = float(col_params[0] * col_params[1])  # N * T
+                    # LumpingConstraint for G1300 BH (fast path) — from library model_decomp.
+                    # model_decomp curves are good (passed degenerate check above).
+                    try:
+                        from molass.Rigorous.LumpingConstraint import LumpingConstraint
+                        editor._lognormal_lumping_constraint = LumpingConstraint(
+                            model_decomp, n_groups=len(model_decomp.xr_ccurves))
+                        self.logger.info(
+                            "LumpingConstraint created from model_decomp fast path (n_comp=%d)",
+                            len(model_decomp.xr_ccurves))
+                    except Exception as _lc_err:
+                        self.logger.warning(
+                            "LumpingConstraint setup skipped (fast path): %s", _lc_err)
+                        editor._lognormal_lumping_constraint = None
                     self.logger.info(
                         "_estimate_lognormal: used library SDM upgrade result directly"
                     )
