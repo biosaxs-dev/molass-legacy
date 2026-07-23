@@ -14,9 +14,49 @@
     Copyright (c) 2026, SAXS Team, KEK-PF
 """
 import logging
+from collections import namedtuple
 import numpy as np
 
 from molass_legacy.Optimizer.FvScoreConverter import convert_score as fv_to_sv
+
+
+# ---------------------------------------------------------------------------
+# Progress-bar mock — absorbs the configure/setitem/getitem calls that the
+# estimator 4-stage pipeline makes on editor.pbar without Tkinter.
+# ---------------------------------------------------------------------------
+class MockProgressBar:
+    """Silent ttk.Progressbar replacement for MockEditor."""
+    def __init__(self):
+        self._state = {'value': 0, 'maximum': 100}
+    def configure(self, **kwargs):
+        self._state.update(kwargs)
+    def __setitem__(self, key, value):
+        self._state[key] = value
+    def __getitem__(self, key):
+        return self._state[key]
+
+
+# ---------------------------------------------------------------------------
+# Upgrade map mirrors PeakEditor._build_library_decomposition._UPGRADE_MAP.
+# Kept here so simulate_build_library_decomposition can stay in sync.
+# ---------------------------------------------------------------------------
+_UPGRADE_MAP = {
+    'G1200': ('SDM',  {'pore_dist': 'mono'}),
+    'G1300': ('SDM',  {'pore_dist': 'lognormal'}),
+    'G1400': ('LKM',  {}),
+    'G1500': ('GRM',  {}),
+    'G2010': ('CEDM', {}),
+    'G2020': ('EDM',  {}),
+}
+
+# Fields returned by simulate_build_library_decomposition.
+BuildResult = namedtuple('BuildResult', [
+    'decomp_egh',       # EGH Decomposition (quick_decomposition result)
+    'model_decomp',     # Upgraded Decomposition (or decomp_egh for EGH models; None on failure)
+    'ssd_uncorrected',  # Library SSD wrapping uncorrected sd
+    'lib_dsets',        # OptDataSets from make_dsets_from_decomposition
+    'baseparams',       # [uv_base_array, xr_base_array]
+])
 
 
 class SimpleLrfSource:
@@ -92,6 +132,12 @@ class MockEditor:
         # data_ssd to make_basecurves_from_decomposition so baseline params are computed
         # from the same (uncorrected) data as the dsets used by the optimizer.
         self._ssd_uncorrected = ssd_uncorrected
+
+        # Progress bar mock — required by estimator 4-stage pipelines
+        # (e.g. _estimate_lognormal stages 1-4 call editor.pbar.configure,
+        # editor.pbar["value"] = N, editor.update()).
+        self.pbar = MockProgressBar()
+        self.update = lambda: None
 
         # Default peak_params_set (caller may overwrite for specific tests)
         if decomposition is not None:
@@ -183,3 +229,103 @@ def evaluate_init(optimizer, init_params, label):
     print(f"  seccol: {seccol}")
     print(f"  Rg values: {rgs}")
     return sv, xr_params, seccol
+
+
+# ---------------------------------------------------------------------------
+# Warm-start simulation
+# ---------------------------------------------------------------------------
+
+def simulate_build_library_decomposition(sd, nc, class_code):
+    """Replicate PeakEditor._build_library_decomposition() without Tkinter.
+
+    Produces the *warm-start* state that the real GUI has when any estimator
+    is called after the dialog opens — i.e. the state where
+    ``editor.model_decomposition`` is already set from a prior ``upgrade()``
+    call.  The cold-start (``model_decomposition=None``) is what plain
+    ``MockEditor(decomp, dsets, baseparams)`` gives; this function provides
+    the complementary warm-start state.
+
+    Typical notebook pattern for catching path-divergence regressions::
+
+        result, editor_warm = build_warm_editor(sd, nc='G1300', class_code=3)
+        editor_cold = MockEditor(result.decomp_egh, result.lib_dsets,
+                                 result.baseparams)
+        # Build optimizers and compare init SV:
+        opt_warm = construct_legacy_optimizer(editor_warm, ...)
+        opt_cold = construct_legacy_optimizer(editor_cold, ...)
+        init_warm = SdmEstimator(editor_warm, ...).estimate_params()
+        init_cold = SdmEstimator(editor_cold, ...).estimate_params()
+        evaluate_init(opt_warm, init_warm, 'warm (fast path)')
+        evaluate_init(opt_cold, init_cold, 'cold (4-stage path)')
+
+    Parameters
+    ----------
+    sd : molass_legacy SerialData
+        Uncorrected legacy data object (from e.g. read_serial_data()).
+    nc : int
+        Number of elution components.
+    class_code : str
+        Legacy model class code, e.g. ``'G1300'``, ``'G1200'``, ``'G1400'``.
+
+    Returns
+    -------
+    BuildResult
+        Namedtuple with fields ``decomp_egh``, ``model_decomp``,
+        ``ssd_uncorrected``, ``lib_dsets``, ``baseparams``.
+    """
+    from molass.Bridge.SdAdapter import make_ssd_from_sd
+    from molass.Rigorous.LegacyBridgeUtils import (
+        make_dsets_from_decomposition, make_basecurves_from_decomposition)
+
+    ssd = make_ssd_from_sd(sd).trimmed_copy().corrected_copy()
+    ssd_uncorrected = make_ssd_from_sd(sd)
+
+    decomp_egh = ssd.quick_decomposition(num_components=nc)
+
+    _is_egh = class_code in ('G0346', 'G0367')
+    if _is_egh:
+        model_decomp = decomp_egh
+    elif class_code in _UPGRADE_MAP:
+        model_name, upgrade_kwargs = _UPGRADE_MAP[class_code]
+        try:
+            model_decomp = decomp_egh.upgrade(model_name, **upgrade_kwargs)
+        except Exception as _e:
+            logging.getLogger(__name__).warning(
+                "simulate_build_library_decomposition: upgrade(%s) failed: %s",
+                model_name, _e)
+            model_decomp = None
+    else:
+        model_decomp = None
+
+    rgcurve = ssd.get_rg_curve()
+    lib_dsets = make_dsets_from_decomposition(
+        decomp_egh, rgcurve, data_ssd=ssd_uncorrected)
+
+    decomp_for_base = model_decomp if model_decomp is not None else decomp_egh
+    _, baseparams = make_basecurves_from_decomposition(
+        decomp_for_base, data_ssd=ssd_uncorrected)
+
+    return BuildResult(decomp_egh, model_decomp, ssd_uncorrected, lib_dsets, baseparams)
+
+
+def build_warm_editor(sd, nc, class_code):
+    """One-stop warm-start MockEditor builder.
+
+    Equivalent to calling ``simulate_build_library_decomposition`` and then
+    constructing ``MockEditor`` with the result.  Returns both so the caller
+    can inspect individual fields when needed.
+
+    Returns
+    -------
+    result : BuildResult
+    editor : MockEditor
+    """
+    result = simulate_build_library_decomposition(sd, nc, class_code)
+    editor = MockEditor(
+        result.decomp_egh,
+        result.lib_dsets,
+        result.baseparams,
+        model_decomposition=result.model_decomp,
+        ssd_uncorrected=result.ssd_uncorrected,
+    )
+    return result, editor
