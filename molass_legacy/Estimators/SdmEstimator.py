@@ -278,10 +278,7 @@ class SdmEstimator(BaseEstimator):
         editor.pbar.configure(maximum=4, value=0, style='Phase2.Horizontal.TProgressbar')
         try:
             editor.update_status_bar("SDM lognormal init (1/4): estimating mono-pore column parameters...")
-            from molass.SEC.Models.SdmEstimator import (
-                estimate_sdm_column_params,
-                estimate_sdm_lognormal_from_monopore,
-            )
+            from molass.SEC.Models.SdmEstimator import estimate_sdm_column_params
             from molass.SEC.Models.SdmOptimizer import optimize_sdm_xr_decomposition
             # Stage 1: multi-start mono-pore column param estimation.
             # Pass the column-specific poresize_bounds from SerialSettings so
@@ -303,24 +300,40 @@ class SdmEstimator(BaseEstimator):
             mono_ccurves = optimize_sdm_xr_decomposition(proxy, mono_env)
             editor.pbar["value"] = 2
             editor.update()
-            # Stage 3: lognormal (mu, sigma, t0, k) refined by moment matching
-            editor.update_status_bar("SDM lognormal init (3/4): moment matching to lognormal distribution...")
-            ln_env = estimate_sdm_lognormal_from_monopore(
-                mono_ccurves, proxy.xr_icurve, decomposition=proxy
+            # Stage 3: mono-seeded lognormal env (replaces moment matching, Issue molass-legacy#88).
+            # Constraints from experiments 33g/33h/33i:
+            #   1. T_ln = T_mono / k_optimizer  (k_optimizer=2.0 is lognormal optimizer default
+            #      k_init, NOT k_mono which can differ, e.g. 0.66 for SAMPLE1)
+            #   2. mu_max = ln(3 × Rg_max)  (prevents K_SEC compression and degenerate basin)
+            #   3. sigma_init = 0.05  (within σ < 5% L2-error convergence zone, 33i sweet spot)
+            editor.update_status_bar("SDM lognormal init (3/4): building mono-seeded lognormal environment...")
+            _K_OPTIMIZER = 2.0   # default k_init in optimize_sdm_lognormal_xr_decomposition
+            _SIGMA_INIT   = 0.05  # sweet spot: SV=74.5 vs σ=0.3 SV=72.1 (experiment 33g)
+            N2s, T2s, me2, mp2, x0_2s, tI_2s, N0_2s, poresize_2, _ts2, _k2 = mono_ccurves[0].column.get_params()
+            mu_init    = np.log(max(float(poresize_2), 1.0))
+            T_ln       = T2s / _K_OPTIMIZER
+            rg_max     = max(self.peak_rgs) if len(self.peak_rgs) > 0 else 100.0
+            mu_max_bound = np.log(3.0 * max(float(rg_max), 1.0))
+            ln_env = (N2s, T_ln, me2, mp2, N0_2s, x0_2s, mu_init, _SIGMA_INIT)
+            self.logger.info(
+                "Mono-seeded lognormal env: N=%g, T_ln=%g (T_mono=%g / k_opt=%g), "
+                "poresize=%g Å, mu_init=%g, sigma=%g, mu_max=%g (Rg_max=%g Å)",
+                N2s, T_ln, T2s, _K_OPTIMIZER, poresize_2, mu_init, _SIGMA_INIT, mu_max_bound, rg_max,
             )
             editor.pbar["value"] = 3
             editor.update()
             # Stage 4: converged lognormal NM — mirrors upgrade()'s final optimization step.
-            # Lifts init fv from Stage-3 ≈-0.76 (SV≈52) to ≈-1.21 (SV≈72),
-            # matching the library notebook's starting point for BH.
+            # mu_max passed via model_params to prevent poresize drift (molass-library#243).
             editor.update_status_bar("SDM lognormal init (4/4): refining lognormal parameters; may take more than 10 minutes...")
             from molass.SEC.Models.SdmOptimizer import optimize_sdm_lognormal_xr_decomposition
-            ln_pore_sigma_setting = get_setting("sdm_pore_sigma")
-            ln_ccurves = optimize_sdm_lognormal_xr_decomposition(proxy, ln_env, ln_pore_sigma=ln_pore_sigma_setting)
+            ln_ccurves = optimize_sdm_lognormal_xr_decomposition(
+                proxy, ln_env,
+                model_params={'ln_pore_sigma': _SIGMA_INIT, 'mu_max': mu_max_bound},
+            )
             # Extract Stage-4 converged column params (shared across all components)
             N4, T4, _me4, _mp4, x0_4, tI_4, N0_4, mu_4, sigma_4, k_4 = ln_ccurves[0].column.get_params()
             K_lib = N4 * T4   # Legacy K = N*T  (see DispersiveMonopore.py: "T_ = K_/N_")
-            _SIGMA_FIXED = sigma_4  # 0.3 — ln_pore_sigma is fixed in Stage 4 by default
+            _SIGMA_FIXED = sigma_4  # fixed at _SIGMA_INIT (0.05) by the model_params passed to Stage 4
             self.logger.info(
                 "Library lognormal init (stage4): N=%g, T=%g, K=%g, N0=%g, t0=%g, mu=%g (poresize=%g Å), sigma=%g, k=%g",
                 N4, T4, K_lib, N0_4, x0_4, mu_4, np.exp(mu_4), _SIGMA_FIXED, k_4,
