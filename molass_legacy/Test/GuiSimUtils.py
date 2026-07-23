@@ -56,6 +56,7 @@ BuildResult = namedtuple('BuildResult', [
     'ssd_uncorrected',  # Library SSD wrapping uncorrected sd
     'lib_dsets',        # OptDataSets from make_dsets_from_decomposition
     'baseparams',       # [uv_base_array, xr_base_array]
+    'basecurves',       # [uv_base_curve, xr_base_curve] — for construct_legacy_optimizer
 ])
 
 
@@ -312,10 +313,10 @@ def simulate_build_library_decomposition(sd, nc, class_code):
         decomp_egh, rgcurve, data_ssd=ssd_uncorrected)
 
     decomp_for_base = model_decomp if model_decomp is not None else decomp_egh
-    _, baseparams = make_basecurves_from_decomposition(
+    basecurves, baseparams = make_basecurves_from_decomposition(
         decomp_for_base, data_ssd=ssd_uncorrected)
 
-    return BuildResult(decomp_egh, model_decomp, ssd_uncorrected, lib_dsets, baseparams)
+    return BuildResult(decomp_egh, model_decomp, ssd_uncorrected, lib_dsets, baseparams, basecurves)
 
 
 def build_warm_editor(sd, nc, class_code):
