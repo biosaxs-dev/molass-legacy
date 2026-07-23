@@ -117,28 +117,44 @@ class G1300(BasicOptimizer):
         # Position anchor: lazy-initialize from initial params on first call
         # Prevents component drift across lump boundaries (same mechanism as SdmOptimizer.py).
         # init_params is set by prepare_for_optimization(); fall back to p for standalone calls.
+        # Safety: if the initial params are already degenerate (all components collapsed to
+        # the same frame, lump_sep < threshold), disable the anchor rather than making it
+        # infinitely tight — a collapsed start needs optimizer freedom, not constraints.
+        _MIN_LUMP_SEP = 10.0   # frames; below this, initial params are considered degenerate
         if self._position_anchor_frames is None:
             init_p = getattr(self, 'init_params', p)
             _, _, rg_init, _, _, _, _, sdmcol_init = self.split_params_simple(init_p)
             N_i, K_i, x0_i, mu_i, sigma_i, N0_i, tI_i, k_i = sdmcol_init
             T_i = K_i / N_i
             t0_i = x0_i - tI_i
-            frames = np.array([
-                tI_i + sdm_lognormal_model_moments(rg_, N_i, T_i, N0_i, t0_i, k_i, mu_i, sigma_i)[0]
-                for rg_ in rg_init
-            ], dtype=float)
+            try:
+                frames = np.array([
+                    tI_i + sdm_lognormal_model_moments(rg_, N_i, T_i, N0_i, t0_i, k_i, mu_i, sigma_i)[0]
+                    for rg_ in rg_init
+                ], dtype=float)
+            except Exception:
+                frames = np.zeros(len(rg_init), dtype=float)  # fallback: disabled below
             self._position_anchor_frames = frames
-            initial_error = float(np.sum(self.xr_curve.y ** 2))
-            lump_sep = max(float(np.max(frames) - np.min(frames)), 1.0)
-            self._position_anchor_scale = initial_error / (lump_sep ** 2)
+            lump_sep = float(np.max(frames) - np.min(frames))
+            if lump_sep < _MIN_LUMP_SEP:
+                # Degenerate or collapsed initial params — disable anchor to allow recovery
+                self._position_anchor_scale = 0.0
+            else:
+                initial_error = float(np.sum(self.xr_curve.y ** 2))
+                self._position_anchor_scale = initial_error / (lump_sep ** 2)
 
         # M_1 position penalty — same formula as library SdmOptimizer.py (commit e7c8488)
-        positions_ = np.array([
-            tI + sdm_lognormal_model_moments(rg_, N, T_, N0, t0, k_gamma, mu, sigma)[0]
-            for rg_ in rg_params
-        ], dtype=float)
-        position_penalty = float(np.sum((positions_ - self._position_anchor_frames) ** 2)
-                                 * self._position_anchor_scale)
+        if self._position_anchor_scale > 0.0:
+            positions_ = np.array([
+                tI + sdm_lognormal_model_moments(rg_, N, T_, N0, t0, k_gamma, mu, sigma)[0]
+                for rg_ in rg_params
+            ], dtype=float)
+            position_penalty = float(np.sum((positions_ - self._position_anchor_frames) ** 2)
+                                     * self._position_anchor_scale)
+            if not np.isfinite(position_penalty):
+                position_penalty = 0.0
+        else:
+            position_penalty = 0.0
 
         lrf_info = None     # initialize before try so plot branch can reference it even if exception occurs (molass-legacy#85)
         penalties = []      # initialize before try so plot branch can reference it if exception occurs before penalties = [...]
