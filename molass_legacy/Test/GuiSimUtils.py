@@ -236,7 +236,7 @@ def evaluate_init(optimizer, init_params, label):
 # Warm-start simulation
 # ---------------------------------------------------------------------------
 
-def simulate_build_library_decomposition(sd, nc, class_code):
+def simulate_build_library_decomposition(sd, nc, class_code, verbose=True):
     """Replicate PeakEditor._build_library_decomposition() without Tkinter.
 
     Produces the *warm-start* state that the real GUI has when any estimator
@@ -270,6 +270,9 @@ def simulate_build_library_decomposition(sd, nc, class_code):
         Number of elution components.
     class_code : str
         Legacy model class code, e.g. ``'G1300'``, ``'G1200'``, ``'G1400'``.
+    verbose : bool, default True
+        Print one-line progress messages before each major step so the notebook
+        shows the stage being computed rather than appearing to hang silently.
 
     Returns
     -------
@@ -277,20 +280,33 @@ def simulate_build_library_decomposition(sd, nc, class_code):
         Namedtuple with fields ``decomp_egh``, ``model_decomp``,
         ``ssd_uncorrected``, ``lib_dsets``, ``baseparams``.
     """
+    import time
+    _t0 = time.time()
+    def _step(msg):
+        if verbose:
+            elapsed = time.time() - _t0
+            print(f"  [{elapsed:5.1f}s] {msg}", flush=True)
+
     from molass.Bridge.SdAdapter import make_ssd_from_sd
     from molass.Rigorous.LegacyBridgeUtils import (
         make_dsets_from_decomposition, make_basecurves_from_decomposition)
+
+    if verbose:
+        print(f"simulate_build_library_decomposition: {class_code}, nc={nc}", flush=True)
 
     # Accept legacy SerialData or library SecSaxsData (uncorrected).
     if hasattr(sd, 'trimmed_copy'):
         # Library SecSaxsData passed directly (e.g. SSD(SAMPLE1))
         ssd_uncorrected = sd
+        _step("trimmed_copy().corrected_copy()...")
         ssd = sd.trimmed_copy().corrected_copy()
     else:
         # Legacy SerialData
         ssd_uncorrected = make_ssd_from_sd(sd)
+        _step("trimmed_copy().corrected_copy()...")
         ssd = ssd_uncorrected.trimmed_copy().corrected_copy()
 
+    _step(f"quick_decomposition(nc={nc})...")
     decomp_egh = ssd.quick_decomposition(num_components=nc)
 
     _is_egh = class_code in ('G0346', 'G0367')
@@ -298,6 +314,7 @@ def simulate_build_library_decomposition(sd, nc, class_code):
         model_decomp = decomp_egh
     elif class_code in _UPGRADE_MAP:
         model_name, upgrade_kwargs = _UPGRADE_MAP[class_code]
+        _step(f"upgrade('{model_name}', {upgrade_kwargs})...  ← may take a few minutes")
         try:
             model_decomp = decomp_egh.upgrade(model_name, **upgrade_kwargs)
         except Exception as _e:
@@ -308,18 +325,23 @@ def simulate_build_library_decomposition(sd, nc, class_code):
     else:
         model_decomp = None
 
+    _step("get_rg_curve()...  ← Guinier fit on all frames, may take ~30 s")
     rgcurve = ssd.get_rg_curve()
+    _step("make_dsets_from_decomposition()...")
     lib_dsets = make_dsets_from_decomposition(
         decomp_egh, rgcurve, data_ssd=ssd_uncorrected)
 
+    _step("make_basecurves_from_decomposition()...")
     decomp_for_base = model_decomp if model_decomp is not None else decomp_egh
     basecurves, baseparams = make_basecurves_from_decomposition(
         decomp_for_base, data_ssd=ssd_uncorrected)
 
+    if verbose:
+        print(f"  done ({time.time() - _t0:.1f}s total)", flush=True)
     return BuildResult(decomp_egh, model_decomp, ssd_uncorrected, lib_dsets, baseparams, basecurves)
 
 
-def build_warm_editor(sd, nc, class_code):
+def build_warm_editor(sd, nc, class_code, verbose=True):
     """One-stop warm-start MockEditor builder.
 
     Equivalent to calling ``simulate_build_library_decomposition`` and then
@@ -331,7 +353,7 @@ def build_warm_editor(sd, nc, class_code):
     result : BuildResult
     editor : MockEditor
     """
-    result = simulate_build_library_decomposition(sd, nc, class_code)
+    result = simulate_build_library_decomposition(sd, nc, class_code, verbose=verbose)
     editor = MockEditor(
         result.decomp_egh,
         result.lib_dsets,
