@@ -260,8 +260,11 @@ def simulate_build_library_decomposition(sd, nc, class_code):
 
     Parameters
     ----------
-    sd : molass_legacy SerialData
-        Uncorrected legacy data object (from e.g. read_serial_data()).
+    sd : molass_legacy SerialData  *or*  molass SecSaxsData (uncorrected)
+        Either a legacy ``SerialData`` object or a library ``SecSaxsData``
+        wrapping the raw (uncorrected) data (e.g. the result of ``SSD(SAMPLE1)``).
+        When a library SSD is passed, ``trimmed_copy().corrected_copy()`` is used
+        for the decomposition and the SSD itself becomes ``ssd_uncorrected``.
     nc : int
         Number of elution components.
     class_code : str
@@ -277,8 +280,15 @@ def simulate_build_library_decomposition(sd, nc, class_code):
     from molass.Rigorous.LegacyBridgeUtils import (
         make_dsets_from_decomposition, make_basecurves_from_decomposition)
 
-    ssd = make_ssd_from_sd(sd).trimmed_copy().corrected_copy()
-    ssd_uncorrected = make_ssd_from_sd(sd)
+    # Accept legacy SerialData or library SecSaxsData (uncorrected).
+    if hasattr(sd, 'trimmed_copy'):
+        # Library SecSaxsData passed directly (e.g. SSD(SAMPLE1))
+        ssd_uncorrected = sd
+        ssd = sd.trimmed_copy().corrected_copy()
+    else:
+        # Legacy SerialData
+        ssd_uncorrected = make_ssd_from_sd(sd)
+        ssd = ssd_uncorrected.trimmed_copy().corrected_copy()
 
     decomp_egh = ssd.quick_decomposition(num_components=nc)
 
