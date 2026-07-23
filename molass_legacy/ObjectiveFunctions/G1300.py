@@ -172,9 +172,10 @@ class G1300(BasicOptimizer):
             negative_penalty = PENALTY_SCALE * (negative_penalty + intercept_penalty)
             order_penalty = 0       # common order_penalty will be added in compute_fv
 
-            penalties = [mapping_penalty, negative_penalty, baseline_penalty, outofbounds_penalty, order_penalty, position_penalty]
+            penalties = [mapping_penalty, negative_penalty, baseline_penalty, outofbounds_penalty, order_penalty]
 
             fv, score_list = self.compute_fv(lrf_info, xr_params, rg_params, sdmcol_params, penalties, p, debug=debug)
+            fv += position_penalty  # position anchor: added to fv directly (not in penalties list, same pattern as LumpingConstraint)
         except:
             etb = ExceptionTracebacker()
             last_lines = etb.last_lines(n=2)
@@ -193,7 +194,7 @@ class G1300(BasicOptimizer):
             # can still rank-order failed proposals; np.inf would terminate
             # the run after a single iteration.
             fv = 1e8
-            penalties = [0] * 6     # above penalties + [control_penalty]
+            penalties = [0] * 7     # 5 static + control_penalty + consistency_penalty
             score_list = [0] * self.get_num_scores([])      # score_list does not include penalties here
 
             if svd_error and not avoid_pinv and debug:
