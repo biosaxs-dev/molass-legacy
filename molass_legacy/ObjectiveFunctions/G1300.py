@@ -21,7 +21,6 @@ import numpy as np
 from molass_legacy.KekLib.ExceptionTracebacker import ExceptionTracebacker
 from molass.SEC.Models.LognormalPore import (
     sdm_lognormal_pore_gamma_pdf_fast as elutionmodel_func,
-    sdm_lognormal_model_moments,
 )
 from molass_legacy.Optimizer.BasicOptimizer import BasicOptimizer, PENALTY_SCALE, UV_XR_RATIO_ALLOW, UV_XR_RATIO_SCALE
 from molass_legacy.Optimizer.NumericalUtils import safe_ratios
@@ -48,8 +47,6 @@ class G1300(BasicOptimizer):
     """
     def __init__(self, dsets, n_components, **kwargs):
         self.elutionmodel_func = elutionmodel_func
-        self._position_anchor_frames = None   # lazy-initialized on first objective call
-        self._position_anchor_scale = None
         if True:
             from importlib import reload
             import molass_legacy.ModelParams.SdmParams
@@ -114,48 +111,6 @@ class G1300(BasicOptimizer):
         uv_ty += uv_cy
         uv_cy_list.append(uv_cy)
 
-        # Position anchor: lazy-initialize from initial params on first call
-        # Prevents component drift across lump boundaries (same mechanism as SdmOptimizer.py).
-        # init_params is set by prepare_for_optimization(); fall back to p for standalone calls.
-        # Safety: if the initial params are already degenerate (all components collapsed to
-        # the same frame, lump_sep < threshold), disable the anchor rather than making it
-        # infinitely tight — a collapsed start needs optimizer freedom, not constraints.
-        _MIN_LUMP_SEP = 10.0   # frames; below this, initial params are considered degenerate
-        if self._position_anchor_frames is None:
-            init_p = getattr(self, 'init_params', p)
-            _, _, rg_init, _, _, _, _, sdmcol_init = self.split_params_simple(init_p)
-            N_i, K_i, x0_i, mu_i, sigma_i, N0_i, tI_i, k_i = sdmcol_init
-            T_i = K_i / N_i
-            t0_i = x0_i - tI_i
-            try:
-                frames = np.array([
-                    tI_i + sdm_lognormal_model_moments(rg_, N_i, T_i, N0_i, t0_i, k_i, mu_i, sigma_i)[0]
-                    for rg_ in rg_init
-                ], dtype=float)
-            except Exception:
-                frames = np.zeros(len(rg_init), dtype=float)  # fallback: disabled below
-            self._position_anchor_frames = frames
-            lump_sep = float(np.max(frames) - np.min(frames))
-            if lump_sep < _MIN_LUMP_SEP:
-                # Degenerate or collapsed initial params — disable anchor to allow recovery
-                self._position_anchor_scale = 0.0
-            else:
-                initial_error = float(np.sum(self.xr_curve.y ** 2))
-                self._position_anchor_scale = initial_error / (lump_sep ** 2)
-
-        # M_1 position penalty — same formula as library SdmOptimizer.py (commit e7c8488)
-        if self._position_anchor_scale > 0.0:
-            positions_ = np.array([
-                tI + sdm_lognormal_model_moments(rg_, N, T_, N0, t0, k_gamma, mu, sigma)[0]
-                for rg_ in rg_params
-            ], dtype=float)
-            position_penalty = float(np.sum((positions_ - self._position_anchor_frames) ** 2)
-                                     * self._position_anchor_scale)
-            if not np.isfinite(position_penalty):
-                position_penalty = 0.0
-        else:
-            position_penalty = 0.0
-
         lrf_info = None     # initialize before try so plot branch can reference it even if exception occurs (molass-legacy#85)
         penalties = []      # initialize before try so plot branch can reference it if exception occurs before penalties = [...]
         score_list = [0] * self.get_num_scores([])  # initialize before try for same reason
@@ -175,7 +130,7 @@ class G1300(BasicOptimizer):
             penalties = [mapping_penalty, negative_penalty, baseline_penalty, outofbounds_penalty, order_penalty]
 
             fv, score_list = self.compute_fv(lrf_info, xr_params, rg_params, sdmcol_params, penalties, p, debug=debug)
-            fv += position_penalty  # position anchor: added to fv directly (not in penalties list, same pattern as LumpingConstraint)
+            # LumpingConstraint (if set) is applied automatically inside compute_fv via self._constraints.
         except:
             etb = ExceptionTracebacker()
             last_lines = etb.last_lines(n=2)

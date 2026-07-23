@@ -710,6 +710,15 @@ class PeakEditor(FullBatch, Dialog):
             wvector=self.sd.lvector,
         )
 
+        # Inject LumpingConstraint for G1300 lognormal BH if one was prepared by
+        # SdmEstimator._estimate_lognormal (stored as editor._lognormal_lumping_constraint).
+        # Parallels the library path where constraints=[LumpingConstraint(...)] is passed
+        # to optimize_rigorously() and injected via BasicOptimizer._constraints.
+        _lc = getattr(self, '_lognormal_lumping_constraint', None)
+        if _lc is not None:
+            self.optimizer._constraints = [_lc]
+            self._lognormal_lumping_constraint = None  # consume once
+
         self.fullopt = self.optimizer   # for backward compatibility
         self.params_type = self.fullopt.params_type
 

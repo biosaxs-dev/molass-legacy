@@ -344,10 +344,24 @@ class SdmEstimator(BaseEstimator):
             nc_xr = len(ln_ccurves)
             # Map → G1300 sdmcol_8: [N, K, x0, mu, sigma_fixed, N0, tI, k_gamma]
             sdmcol_8 = np.array([N4, K_lib, x0_4, mu_4, _SIGMA_FIXED, N0_4, tI_4, k_4])
+            # LumpingConstraint for G1300 BH — parallels SDM(mono) via BasicOptimizer._constraints.
+            # Built from EGH proxy curves (always well-separated) so the reference positions
+            # are correct even when Stage 4 drifts with the lognormal model.
+            # Stored on editor; PeakEditor.construct_optimizer injects it into the optimizer.
+            try:
+                from molass.Rigorous.LumpingConstraint import LumpingConstraint
+                editor._lognormal_lumping_constraint = LumpingConstraint(
+                    proxy, n_groups=len(proxy.xr_ccurves))
+                self.logger.info("LumpingConstraint created from EGH proxy (n_comp=%d)",
+                                 len(proxy.xr_ccurves))
+            except Exception as _lc_err:
+                self.logger.warning("LumpingConstraint setup skipped: %s", _lc_err)
+                editor._lognormal_lumping_constraint = None
         except Exception as e:
             self.logger.warning(
                 "Library lognormal init failed (%s); falling back to legacy rough estimate.", e
             )
+            editor._lognormal_lumping_constraint = None
             N0 = 50000.0
             mu = np.log(max(float(poresize), 1.0))
             sdmcol_8 = np.array([N, K, x0, mu, 0.3, N0, tI, 2.0])
