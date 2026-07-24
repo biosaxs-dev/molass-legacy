@@ -377,14 +377,14 @@ def simulate_build_library_decomposition(sd, nc, class_code, verbose=True):
                     _rg_max = max(_valid)
                     _mu_max = float(np.log(3.0 * _rg_max))
                     upgrade_kwargs = dict(upgrade_kwargs)   # don't mutate _UPGRADE_MAP
-                    _mp = {'ln_pore_sigma': 0.05, 'mu_max': _mu_max}
-                    # mu_min: pore must be bigger than the largest protein.
-                    # Use poresize_bounds[0] from column spec when available;
-                    # fall back to ln(Rg_max) (just inside physical limit).
+                    _mp = {'ln_pore_sigma': 0.05, 'mu_max': _mu_max}  # sigma default; overridden below
+                    # mu_min and ln_pore_sigma from SerialSettings when available;
+                    # fall back to ln(Rg_max) for mu_min, 0.05 for sigma.
                     try:
                         from molass_legacy._MOLASS.SerialSettings import get_setting as _gs
                         _pb = _gs('poresize_bounds')
                         _mp['mu_min'] = float(np.log(_pb[0]))
+                        _mp['ln_pore_sigma'] = float(_gs('sdm_pore_sigma'))
                     except Exception:
                         _mp['mu_min'] = float(np.log(_rg_max))
                     upgrade_kwargs['model_params'] = _mp

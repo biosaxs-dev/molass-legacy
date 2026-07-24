@@ -495,6 +495,7 @@ class PeakEditor(FullBatch, Dialog):
                                     from molass_legacy._MOLASS.SerialSettings import get_setting as _gs
                                     _pb = _gs('poresize_bounds')
                                     _mp['mu_min'] = float(_np.log(_pb[0]))
+                                    _mp['ln_pore_sigma'] = float(_gs('sdm_pore_sigma'))
                                 except Exception:
                                     _mp['mu_min'] = float(_np.log(_rg_max))
                                 upgrade_kwargs = dict(upgrade_kwargs)   # don't mutate _UPGRADE_MAP

@@ -331,11 +331,11 @@ class SdmEstimator(BaseEstimator):
             #   1. T_ln = T_mono / k_optimizer  (k_optimizer=2.0 is lognormal optimizer default
             #      k_init, NOT k_mono which can differ, e.g. 0.66 for SAMPLE1)
             #   2. mu_max = ln(3 × Rg_max)  (prevents K_SEC compression and degenerate basin)
-            #   3. sigma_init = 0.10  (best with position anchor: SV=75.0 vs σ=0.05 SV=74.5, 33g 2026-07-23)
-            #      Without anchor σ=0.05 was sweet spot (SV=74.5); anchor prevents drift at σ=0.10
+            #   3. sigma_init from sdm_pore_sigma setting (default 0.3); LumpingConstraint prevents
+            #      drift regardless of sigma value, so the user setting is now active here.
             editor.update_status_bar("SDM lognormal init (3/4): building mono-seeded lognormal environment...")
             _K_OPTIMIZER = 2.0   # default k_init in optimize_sdm_lognormal_xr_decomposition
-            _SIGMA_INIT   = 0.10  # sweet spot with position anchor: SV=75.0 (experiment 33g, 2026-07-23)
+            _SIGMA_INIT   = float(get_setting('sdm_pore_sigma'))  # user-configurable (GUI: OptStrategyDialog)
             N2s, T2s, me2, mp2, x0_2s, tI_2s, N0_2s, poresize_2, _ts2, _k2 = mono_ccurves[0].column.get_params()
             mu_init    = np.log(max(float(poresize_2), 1.0))
             T_ln       = T2s / _K_OPTIMIZER
@@ -360,7 +360,7 @@ class SdmEstimator(BaseEstimator):
             # Extract Stage-4 converged column params (shared across all components)
             N4, T4, _me4, _mp4, x0_4, tI_4, N0_4, mu_4, sigma_4, k_4 = ln_ccurves[0].column.get_params()
             K_lib = N4 * T4   # Legacy K = N*T  (see DispersiveMonopore.py: "T_ = K_/N_")
-            _SIGMA_FIXED = sigma_4  # fixed at _SIGMA_INIT (0.05) by the model_params passed to Stage 4
+            _SIGMA_FIXED = sigma_4  # fixed at Stage-4 converged value (started from _SIGMA_INIT)
             self.logger.info(
                 "Library lognormal init (stage4): N=%g, T=%g, K=%g, N0=%g, t0=%g, mu=%g (poresize=%g Å), sigma=%g, k=%g",
                 N4, T4, K_lib, N0_4, x0_4, mu_4, np.exp(mu_4), _SIGMA_FIXED, k_4,
