@@ -264,11 +264,15 @@ class SdmEstimator(BaseEstimator):
                     # BH/DE but cannot pull back an init that starts > 30 frames from the
                     # correct basin.
                     _DRIFT_THRESHOLD = 30.0
+                    # Use get_peak_top_x() — available on both ComponentCurve (EGH)
+                    # and SdmComponentCurve (SDM lognormal). Previously used cc.max_x
+                    # which does not exist on either class, causing AttributeError that
+                    # silently skipped the check every time.
                     try:
                         _egh_peaks = sorted(
-                            float(cc.max_x) for cc in editor.decomposition.xr_ccurves)
+                            cc.get_peak_top_x() for cc in editor.decomposition.xr_ccurves)
                         _model_peaks = sorted(
-                            float(cc.max_x) for cc in model_decomp.xr_ccurves)
+                            cc.get_peak_top_x() for cc in model_decomp.xr_ccurves)
                         _max_drift = max(
                             abs(m - e) for m, e in zip(_model_peaks, _egh_peaks))
                         self.logger.info(
@@ -279,9 +283,9 @@ class SdmEstimator(BaseEstimator):
                                 f"Drifted G1300 model_decomp: max component drift = "
                                 f"{_max_drift:.1f} frames; using 4-stage path"
                             )
-                    except AttributeError:
+                    except (TypeError, IndexError) as _dc_err:
                         self.logger.debug(
-                            "G1300 warm path drift check skipped (cc.max_x unavailable)")
+                            "G1300 warm path drift check skipped: %s", _dc_err)
                     self._estimated_K = float(col_params[0] * col_params[1])  # N * T
                     # LumpingConstraint for G1300 (fast path) — MUST use EGH decomp
                     # as reference, not model_decomp. If model_decomp is drifted
