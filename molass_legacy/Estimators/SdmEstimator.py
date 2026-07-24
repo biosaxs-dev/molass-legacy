@@ -259,14 +259,17 @@ class SdmEstimator(BaseEstimator):
                             f"poresize={poresize_col:.1f} Å — using 4-stage path"
                         )
                     self._estimated_K = float(col_params[0] * col_params[1])  # N * T
-                    # LumpingConstraint for G1300 BH (fast path) — from library model_decomp.
-                    # model_decomp curves are good (passed degenerate check above).
+                    # LumpingConstraint for G1300 (fast path) — MUST use EGH decomp
+                    # as reference, not model_decomp. If model_decomp is drifted
+                    # (component peak at wrong lump), building from model_decomp would
+                    # lock DE to the drifted positions. EGH positions are always correct.
                     try:
                         from molass.Rigorous.LumpingConstraint import LumpingConstraint
+                        _egh_ref = editor.decomposition  # EGH reference — always correct
                         editor._lognormal_lumping_constraint = LumpingConstraint(
-                            model_decomp, n_groups=len(model_decomp.xr_ccurves))
+                            _egh_ref, n_groups=len(model_decomp.xr_ccurves))
                         self.logger.info(
-                            "LumpingConstraint created from model_decomp fast path (n_comp=%d)",
+                            "LumpingConstraint created from EGH ref (fast path, n_comp=%d)",
                             len(model_decomp.xr_ccurves))
                     except Exception as _lc_err:
                         self.logger.warning(
