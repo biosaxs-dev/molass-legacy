@@ -18,6 +18,7 @@ from collections import namedtuple
 import numpy as np
 
 from molass_legacy.Optimizer.FvScoreConverter import convert_score as fv_to_sv
+from molass_legacy.Batch.FullBatch import FullBatch
 
 
 # ---------------------------------------------------------------------------
@@ -57,6 +58,7 @@ BuildResult = namedtuple('BuildResult', [
     'lib_dsets',        # OptDataSets from make_dsets_from_decomposition
     'baseparams',       # [uv_base_array, xr_base_array]
     'basecurves',       # [uv_base_curve, xr_base_curve] — for construct_legacy_optimizer
+    'corrected_ssd',    # Library SSD after trimmed_copy().corrected_copy() — for get_lrf_source()
 ])
 
 
@@ -81,9 +83,15 @@ class SimpleLrfSource:
             self.uv_peaks = np.ones((nc, 1))
 
 
-class MockEditor:
+class MockEditor(FullBatch):
     """
     Minimal editor mock for calling legacy estimators without Tkinter.
+
+    Inherits from FullBatch to gain ``get_lrf_source()`` for the cold estimator
+    path (4-stage lognormal pipeline).  When ``corrected_ssd`` is provided,
+    FullBatch attributes (``corrected_sd``, ``lrf_src_args1``, ``peak_params_set``,
+    ``pre_recog``) are initialised from library objects so that the inherited
+    method works without any legacy SerialData.
 
     Provides exactly the interface that BaseEstimator / EghEstimator /
     SdmEstimator / LkmEstimator expect from a PeakEditor, without
@@ -98,10 +106,15 @@ class MockEditor:
         Prepared dsets from make_dsets_from_decomposition().
     baseparams : list of [uv_base_array, xr_base_array]
         Baseline parameter arrays.  baseparams[0] = UV, baseparams[1] = XR.
+    corrected_ssd : molass.DataObjects.SecSaxsData or None
+        Library SSD after ``trimmed_copy().corrected_copy()``.  Used by the
+        inherited ``get_lrf_source()`` to provide ``corrected_sd`` (via
+        ``SdProxy``) for ``compute_rgs_from_lrf_source``.  Pass
+        ``result.corrected_ssd`` from ``build_warm_editor`` / the BuildResult.
 
     Attributes provided (mirrors PeakEditor interface)
     ---------------------------------------------------
-    editor.sd, editor.corrected_sd     -- None (not used by estimation paths)
+    editor.sd, editor.corrected_sd     -- SdProxy(corrected_ssd) when available, else None
     editor.ecurves                     -- None
     editor.get_n_components()          -- n_components + 1 (includes baseline)
     editor.get_pre_recog_mapping_params()  -- (a, b) UV-XR frame mapping
@@ -110,9 +123,11 @@ class MockEditor:
     editor.decomposition               -- library Decomposition
     editor.dsets                       -- OptDataSets object
     editor.logger                      -- stdlib logger
-    editor.peak_params_set             -- [uv_peaks, xr_peaks] fallback
+    editor.peak_params_set             -- PeakParamsSet or [uv_peaks, xr_peaks] list
     """
-    def __init__(self, decomposition, dsets, baseparams, model_decomposition=None, ssd_uncorrected=None):
+    def __init__(self, decomposition, dsets, baseparams, model_decomposition=None,
+                 ssd_uncorrected=None, corrected_ssd=None, basecurves=None):
+        FullBatch.__init__(self)  # sets unified_baseline_type, elution_model, ecurve_info
         self.logger = logging.getLogger('MockEditor')
         self.decomposition = decomposition
         self.dsets = dsets
@@ -140,7 +155,7 @@ class MockEditor:
         self.pbar = MockProgressBar()
         self.update = lambda: None
 
-        # Default peak_params_set (caller may overwrite for specific tests)
+        # Build EGH peak arrays used by peak_params_set and PeakParamsSet.
         if decomposition is not None:
             _xr = np.array([cc.params[:4] for cc in decomposition.xr_ccurves])
             _uv_curves = decomposition.uv_ccurves or []
@@ -150,7 +165,43 @@ class MockEditor:
         else:
             _xr = np.zeros((3, 4))   # placeholder; caller must set peak_params_set
             _uv = np.ones((3, 1))
-        self.peak_params_set = [_uv, _xr]   # [0]=UV, [1]=XR — matches PeakEditor layout
+
+        # Initialise FullBatch.get_lrf_source() attributes from library data when
+        # corrected_ssd is available.  SdProxy wraps the corrected SSD to provide
+        # get_xr_data_separate_ly() — which compute_rgs_from_lrf_source() needs for
+        # the Guinier Rg computation — without requiring a legacy SerialData object.
+        if corrected_ssd is not None:
+            from molass.Bridge.SdProxy import SdProxy
+            from molass_legacy.Peaks.PeakParamsSet import PeakParamsSet
+            sd_proxy = SdProxy(corrected_ssd)
+            self.corrected_sd = sd_proxy   # used by compute_rgs_from_lrf_source
+            self.sd = sd_proxy             # also set so LrfSource.__init__ stores it
+            (xr_curve, _D), _rg, (uv_curve, _U) = dsets
+            baselines = [np.zeros_like(uv_curve.y), np.zeros_like(xr_curve.y)]
+            self.lrf_src_args1 = (uv_curve.x, uv_curve.y, xr_curve.x, xr_curve.y, baselines)
+            # Pre-populate ecurve_info / baselines so get_curve_xy() returns library
+            # data directly without calling get_curve_xy_impl(SdProxy(…)).  This:
+            #   - avoids SdProxy compatibility issues with get_curve_xy_impl
+            #   - preserves self.baseline_params (from baseparams constructor arg)
+            #   - enables get_curve_xy(return_baselines=True) in edit_to_full_sdmparams
+            self.ecurve_info = self.lrf_src_args1   # (uv_x, uv_y, xr_x, xr_y, baselines)
+            self.baselines = baselines              # same object as lrf_src_args1[4]
+            # base_curve_info = (uv_base_curve, uv_baseparams) needed by
+            # get_uv_baseline_deprecated → called from edit_to_full_sdmparams
+            # (compute_sdm_init_params Stage 1 in cold path).
+            if basecurves is not None:
+                self.base_curve_info = (basecurves[0], np.array(baseparams[0]))
+            else:
+                self.base_curve_info = None
+            a, b = self.get_pre_recog_mapping_params()
+            # PeakParamsSet supports __getitem__ so get_n_components() still works.
+            self.peak_params_set = PeakParamsSet(_uv, _xr, a, b)
+            self.pre_recog = None
+        else:
+            # Fallback: plain list compatible with get_n_components() indexing.
+            # get_lrf_source() will raise AttributeError if called without corrected_ssd.
+            self.base_curve_info = None
+            self.peak_params_set = [_uv, _xr]   # [0]=UV, [1]=XR — matches PeakEditor layout
 
     def get_n_components(self):
         """Returns number of components + 1 (the baseline 'component')."""
@@ -166,8 +217,9 @@ class MockEditor:
         # Neutral identity-like mapping when decomposition is unavailable
         return 1.0, 0.0
 
-    def get_uv_base_params(self, debug=False):
-        """Returns UV baseline parameter array."""
+    def get_uv_base_params(self, xyt=None, debug=False):
+        """Returns UV baseline parameter array.
+        xyt is accepted but ignored — library baseparams are already fully computed."""
         return np.array(self.baseline_params[0])
 
     def update_status_bar(self, message):
@@ -314,7 +366,32 @@ def simulate_build_library_decomposition(sd, nc, class_code, verbose=True):
         model_decomp = decomp_egh
     elif class_code in _UPGRADE_MAP:
         model_name, upgrade_kwargs = _UPGRADE_MAP[class_code]
-        _step(f"upgrade('{model_name}', {upgrade_kwargs})...  ← may take a few minutes")
+        # G1300 (SDM lognormal): inject mu_max=ln(3*Rg_max) and sigma=0.05 constraints.
+        # Without them the optimizer finds a suboptimal basin (SV≈54 vs ≈68 with constraints).
+        # Mirrors the constraint logic in 33f and molass-library#243 / molass-legacy#88.
+        if class_code == 'G1300':
+            try:
+                _rgs = decomp_egh.get_rgs()
+                _valid = [float(r) for r in _rgs if r is not None and not np.isnan(float(r)) and float(r) > 0]
+                if _valid:
+                    _rg_max = max(_valid)
+                    _mu_max = float(np.log(3.0 * _rg_max))
+                    upgrade_kwargs = dict(upgrade_kwargs)   # don't mutate _UPGRADE_MAP
+                    _mp = {'ln_pore_sigma': 0.05, 'mu_max': _mu_max}
+                    # mu_min: pore must be bigger than the largest protein.
+                    # Use poresize_bounds[0] from column spec when available;
+                    # fall back to ln(Rg_max) (just inside physical limit).
+                    try:
+                        from molass_legacy._MOLASS.SerialSettings import get_setting as _gs
+                        _pb = _gs('poresize_bounds')
+                        _mp['mu_min'] = float(np.log(_pb[0]))
+                    except Exception:
+                        _mp['mu_min'] = float(np.log(_rg_max))
+                    upgrade_kwargs['model_params'] = _mp
+                    _step(f"G1300: Rg_max={_rg_max:.1f} Å → mu in [{np.exp(_mp['mu_min']):.1f}, {np.exp(_mu_max):.1f}] Å (molass-library#243)")
+            except Exception as _e:
+                logging.getLogger(__name__).warning("G1300 mu_max computation failed: %s", _e)
+        _step(f"upgrade('{model_name}', ...)...  ← may take a few minutes")
         try:
             model_decomp = decomp_egh.upgrade(model_name, **upgrade_kwargs)
         except Exception as _e:
@@ -338,7 +415,51 @@ def simulate_build_library_decomposition(sd, nc, class_code, verbose=True):
 
     if verbose:
         print(f"  done ({time.time() - _t0:.1f}s total)", flush=True)
-    return BuildResult(decomp_egh, model_decomp, ssd_uncorrected, lib_dsets, baseparams, basecurves)
+    return BuildResult(decomp_egh, model_decomp, ssd_uncorrected, lib_dsets, baseparams, basecurves, ssd)
+
+
+def score_model_decomp(result, optimizer, pore_dist='lognormal', t0_upper_bound=None,
+                       label='Library upgrade (direct)'):
+    """Score the model_decomp params through the fast-path estimator.
+
+    Creates a warm MockEditor (model_decomposition=result.model_decomp), runs the
+    SdmEstimator fast path, and calls evaluate_init.  Gives the 'theoretical ceiling':
+    the SV achievable if the upgrade quality is good and param extraction is perfect.
+
+    Useful for diagnosing whether a warm-path SV gap is due to (a) upgrade quality
+    (constrained vs unconstrained) or (b) estimator extraction logic.
+
+    Parameters
+    ----------
+    result : BuildResult
+        From build_warm_editor or simulate_build_library_decomposition.
+    optimizer : BasicOptimizer subclass
+        From construct_legacy_optimizer.
+    pore_dist : str
+        ``'lognormal'`` (G1300) or ``'mono'`` (G1200).
+    t0_upper_bound : float or None
+        Passed to SdmEstimator.
+    label : str
+        Display label for the evaluate_init output block.
+
+    Returns
+    -------
+    sv : float
+    xr_params : np.ndarray
+    seccol : np.ndarray
+    """
+    from molass_legacy.Estimators.SdmEstimator import SdmEstimator
+    editor = MockEditor(
+        result.decomp_egh, result.lib_dsets, result.baseparams,
+        model_decomposition=result.model_decomp,
+        ssd_uncorrected=result.ssd_uncorrected,
+        corrected_ssd=result.corrected_ssd,
+        basecurves=result.basecurves,
+    )
+    editor.fullopt = optimizer
+    init_params = SdmEstimator(editor, pore_dist=pore_dist,
+                               t0_upper_bound=t0_upper_bound).estimate_params()
+    return evaluate_init(optimizer, init_params, label)
 
 
 def build_warm_editor(sd, nc, class_code, verbose=True):
@@ -360,5 +481,7 @@ def build_warm_editor(sd, nc, class_code, verbose=True):
         result.baseparams,
         model_decomposition=result.model_decomp,
         ssd_uncorrected=result.ssd_uncorrected,
+        corrected_ssd=result.corrected_ssd,
+        basecurves=result.basecurves,
     )
     return result, editor

@@ -475,7 +475,32 @@ class PeakEditor(FullBatch, Dialog):
                         "_build_library_decomposition: EGH -- using decomposition directly"
                     )
                 elif class_code in _UPGRADE_MAP:
+                    import numpy as _np
                     model_name, upgrade_kwargs = _UPGRADE_MAP[class_code]
+                    # G1300 (SDM lognormal): inject mu_max=ln(3*Rg_max) and sigma=0.05.
+                    # Without constraints the optimizer finds a suboptimal basin
+                    # (SV≈54 instead of ≈68).  See molass-library#243 / molass-legacy#88.
+                    if class_code == 'G1300':
+                        try:
+                            _rgs = decomposition.get_rgs()
+                            _valid = [float(r) for r in _rgs
+                                      if r is not None and not _np.isnan(float(r)) and float(r) > 0]
+                            if _valid:
+                                _rg_max = max(_valid)
+                                _mp = {
+                                    'ln_pore_sigma': 0.05,
+                                    'mu_max': float(_np.log(3.0 * _rg_max)),
+                                }
+                                try:
+                                    from molass_legacy._MOLASS.SerialSettings import get_setting as _gs
+                                    _pb = _gs('poresize_bounds')
+                                    _mp['mu_min'] = float(_np.log(_pb[0]))
+                                except Exception:
+                                    _mp['mu_min'] = float(_np.log(_rg_max))
+                                upgrade_kwargs = dict(upgrade_kwargs)   # don't mutate _UPGRADE_MAP
+                                upgrade_kwargs['model_params'] = _mp
+                        except Exception:
+                            pass
                     self.model_decomposition = decomposition.upgrade(model_name, **upgrade_kwargs)
                     import logging as _lg
                     _lg.getLogger(__name__).info(
