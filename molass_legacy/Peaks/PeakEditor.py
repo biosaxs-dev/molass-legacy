@@ -496,6 +496,11 @@ class PeakEditor(FullBatch, Dialog):
                                     _pb = _gs('poresize_bounds')
                                     _mp['mu_min'] = float(_np.log(_pb[0]))
                                     _mp['ln_pore_sigma'] = float(_gs('sdm_pore_sigma'))
+                                    # Tighten mu_max to poresize_bounds[1]: prevents upgrade NM
+                                    # from producing poresize > optimizer upper bound, which
+                                    # causes SV=-100 when init params are tested directly.
+                                    _mp['mu_max'] = float(_np.log(
+                                        min(3.0 * _rg_max, float(_pb[1]))))
                                 except Exception:
                                     _mp['mu_min'] = float(_np.log(_rg_max))
                                 upgrade_kwargs = dict(upgrade_kwargs)   # don't mutate _UPGRADE_MAP
