@@ -60,6 +60,26 @@ class EghEstimator(BaseEstimator):
                     "estimate_egh_params: replaced legacy UV heights with library uv_ccurves (n=%d)",
                     len(init_uv_heights),
                 )
+                # Validate UV heights using the XrUvScaleRatio principle:
+                # log(uv/xr) ratios should cluster across components; an outlier
+                # (including near-zero or negative UV) signals a bad init value.
+                # Correct degenerate UV heights by imputing from the average log-ratio
+                # of the valid (positive) components.  (molass-legacy fix 2026-07-29)
+                xr_heights = init_xr_params[:, 0]
+                MIN_UV_SCALE = 1e-4   # below this the UV height is considered degenerate
+                valid = (init_uv_heights > MIN_UV_SCALE) & (xr_heights > 0)
+                if valid.any() and not valid.all():
+                    log_ratios = np.log(init_uv_heights[valid] / xr_heights[valid])
+                    mean_log_ratio = np.mean(log_ratios)
+                    corrected = ~valid
+                    init_uv_heights[corrected] = xr_heights[corrected] * np.exp(mean_log_ratio)
+                    editor.logger.info(
+                        "estimate_egh_params: corrected degenerate UV heights at indices %s"
+                        " using mean log-ratio=%.3g; corrected=%s",
+                        str(np.where(corrected)[0].tolist()),
+                        mean_log_ratio,
+                        str(init_uv_heights[corrected].tolist()),
+                    )
 
         init_uv_baseparams = temp_uv_baseparams.copy()
         init_uv_baseparams[4:6] /=SLOPE_SCALE
