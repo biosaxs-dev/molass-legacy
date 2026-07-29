@@ -287,6 +287,19 @@ class RgCurve:
         ux_, first_idx = np.unique(x_sorted, return_index=True)
         uy_ = y_sorted[first_idx]
 
+        # np.unique does NOT deduplicate NaN (NaN != NaN), so NaN Rg values
+        # from failed Guinier fits survive as multiple NaN entries in ux_,
+        # making it non-strictly-increasing → UnivariateSpline fails.
+        # Filter to finite (x, y) pairs only.
+        finite_mask = np.isfinite(ux_) & np.isfinite(uy_)
+        n_nan = np.sum(~finite_mask)
+        if n_nan > 0:
+            self.logger.warning(
+                "add_exclspline: dropping %d non-finite (x,y) pairs out of %d "
+                "(likely NaN Rg from failed Guinier fits).", n_nan, len(ux_))
+            ux_ = ux_[finite_mask]
+            uy_ = uy_[finite_mask]
+
         self.excl_info = poresize, t0, K
         self.excl_spline = UnivariateSpline(ux_, uy_)
 
