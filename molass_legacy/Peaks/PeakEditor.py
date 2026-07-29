@@ -601,6 +601,12 @@ class PeakEditor(FullBatch, Dialog):
             ssd = _raw_ssd.trimmed_copy().corrected_copy()
 
             # Build a ProgressCallback-compatible callable that wraps the queue.
+            # Store the library ssd's frame-number axis BEFORE starting get_rg_curve
+            # so watch_rg_curve_thread can use it immediately on the first callback.
+            # (progress_cb fires during get_rg_curve; setting _rg_compute_x after
+            # get_rg_curve completes is too late — all callbacks have already fired.)
+            self._rg_compute_x = ssd.xr.jv
+
             # The library calls progress_cb(rg_buffer, j) with the same signature
             # the legacy ProgressCallback uses, so watch_rg_curve_thread works unchanged.
             progress_cb = ProgressCallback(queue, STARTED, rg_curve_ok)
@@ -636,12 +642,6 @@ class PeakEditor(FullBatch, Dialog):
             # Pass dsets= directly (no rg-folder lookup) and E= explicitly.
             from molass_legacy.Optimizer.OptDataSets import OptDataSets
             self.dsets = OptDataSets(self.sd, self.corrected_sd, dsets=raw_tuple, E=E)
-
-            # Store the library ssd's frame-number axis so watch_rg_curve_thread
-            # passes the correct x-array to draw_rg_bufer.  The rg_buffer produced
-            # by ssd.get_rg_curve() has len = ssd.xr.jv size (library-trimmed,
-            # typically fewer frames than the legacy xr_curve.x).
-            self._rg_compute_x = ssd.xr.jv
 
             # quick_decomposition() can reuse the cached ssd._rgcurve at no cost.
             from threading import Thread as _Thread
