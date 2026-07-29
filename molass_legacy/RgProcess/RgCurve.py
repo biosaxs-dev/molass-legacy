@@ -278,7 +278,14 @@ class RgCurve:
 
         x_ = np.flip(excl_x)
         y_ = np.flip(excl_y)
-        ux_, uy_ = np.unique(np.array([x_, y_]), axis=1)        
+        # np.unique(..., axis=1) deduplicates on (x,y) pairs — duplicate x with
+        # different y remain, making x non-strictly-increasing → UnivariateSpline fails.
+        # Instead: sort by x, then deduplicate on x alone (keep first y per x).
+        sort_idx = np.argsort(x_, kind='stable')
+        x_sorted = x_[sort_idx]
+        y_sorted = y_[sort_idx]
+        ux_, first_idx = np.unique(x_sorted, return_index=True)
+        uy_ = y_sorted[first_idx]
 
         self.excl_info = poresize, t0, K
         self.excl_spline = UnivariateSpline(ux_, uy_)

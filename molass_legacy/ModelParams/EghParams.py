@@ -301,7 +301,7 @@ class EghAdvansedParams(EghParamsBase):
 
         self.num_params = sep   # note that this does not include sec params
 
-    def get_estimator(self, editor, debug=True):
+    def get_estimator(self, editor, developing=False, debug=True):
         if debug:
             from importlib import reload
             import molass_legacy.Estimators.EghEstimator
