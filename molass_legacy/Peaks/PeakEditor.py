@@ -789,8 +789,17 @@ class PeakEditor(FullBatch, Dialog):
         ax1.set_title("UV Decomposition", fontsize=16)
         ax2.set_title("Xray Decomposition", fontsize=16)
 
+        lrf_info = None
         try:
-            fv = self.fullopt.objective_func(self.fullopt.init_params, plot=True, axis_info=axis_info)
+            fv, score_list, *_ = self.fullopt.objective_func(
+                self.fullopt.init_params, plot=True, axis_info=axis_info, return_full=True)
+            # Log score breakdown so Layer 1 of the debug cycle shows which term dominates.
+            # This avoids the need for GuiSimUtils just to identify the dominant penalty.
+            sv = convert_score(fv)
+            score_names = self.fullopt.get_score_names()
+            breakdown_parts = ["%s: %.4g" % (n, v) for n, v in zip(score_names, score_list) if abs(v) > 1e-6]
+            self.logger.info("draw_scores: fv=%.5g  SV=%.3g", fv, sv)
+            self.logger.info("draw_scores breakdown: %s", "  ".join(breakdown_parts))
         except:
             from molass_legacy.KekLib.ExceptionTracebacker import log_exception
             log_exception(self.logger, "draw_scores: ", n=10)
