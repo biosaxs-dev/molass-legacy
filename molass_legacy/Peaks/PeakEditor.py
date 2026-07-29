@@ -637,6 +637,12 @@ class PeakEditor(FullBatch, Dialog):
             from molass_legacy.Optimizer.OptDataSets import OptDataSets
             self.dsets = OptDataSets(self.sd, self.corrected_sd, dsets=raw_tuple, E=E)
 
+            # Store the library ssd's frame-number axis so watch_rg_curve_thread
+            # passes the correct x-array to draw_rg_bufer.  The rg_buffer produced
+            # by ssd.get_rg_curve() has len = ssd.xr.jv size (library-trimmed,
+            # typically fewer frames than the legacy xr_curve.x).
+            self._rg_compute_x = ssd.xr.jv
+
             # quick_decomposition() can reuse the cached ssd._rgcurve at no cost.
             from threading import Thread as _Thread
             _Thread(target=self._build_library_decomposition, args=[ssd], daemon=True,
@@ -664,7 +670,11 @@ class PeakEditor(FullBatch, Dialog):
 
             if p_info is not None and type(p_info) == tuple:
                 xr_curve = self.ecurves[1]
-                drawn = draw_rg_bufer(self.axt, p_info, self, xr_curve.x)   # this updates self.rg_line
+                # Use the library ssd's frame-number axis if available (library path
+                # stores it as _rg_compute_x).  Falls back to xr_curve.x on the
+                # legacy path where sizes always match.
+                rg_x = getattr(self, '_rg_compute_x', xr_curve.x)
+                drawn = draw_rg_bufer(self.axt, p_info, self, rg_x)   # this updates self.rg_line
                 if drawn:
                     j = p_info[1]
                     self.update_status_bar("Computing Rg values near the %d-th elution." % j)
