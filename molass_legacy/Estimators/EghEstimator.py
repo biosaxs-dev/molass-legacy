@@ -67,7 +67,31 @@ class EghEstimator(BaseEstimator):
 
         (xr_curve, D), rg_curve = editor.dsets[0:2]
 
-        init_rgs = rg_curve.get_rgs_from_trs(init_xr_params[:,1])
+        if decomp is not None and len(decomp.xr_ccurves) == len(init_xr_params):
+            # EghPeeler replacement was active: init_xr_params[:,1] are library frame
+            # positions (e.g. 808, 874, 973) that may lie beyond the legacy RgCurve's
+            # frame coverage (e.g. 0-644 for 20230705).  Using the legacy
+            # rg_curve.get_rgs_from_trs here extrapolates and returns garbage Rg (~7 Å)
+            # which causes a huge Guinier-deviation penalty (SV=-87).
+            # Instead, interpolate directly from the library RgCurve which covers the
+            # full frame range.
+            try:
+                lib_rgcurve = decomp.ssd.get_rg_curve()
+                lib_rg_x = lib_rgcurve.indeces.astype(float)
+                lib_rg_y = lib_rgcurve.rgvalues.astype(float)
+                init_rgs = np.interp(init_xr_params[:,1], lib_rg_x, lib_rg_y)
+                editor.logger.info(
+                    "estimate_egh_params: using library RgCurve for init_rgs=%s",
+                    str(init_rgs),
+                )
+            except Exception as e:
+                editor.logger.warning(
+                    "estimate_egh_params: library RgCurve lookup failed (%s); falling back to legacy rg_curve",
+                    str(e),
+                )
+                init_rgs = rg_curve.get_rgs_from_trs(init_xr_params[:,1])
+        else:
+            init_rgs = rg_curve.get_rgs_from_trs(init_xr_params[:,1])
         Npc, rp, tI, t0, P, m = guess_initial_secparams(init_xr_params, init_rgs)
         init_sec_params = np.array([Npc, rp, tI, t0, P, m])
     
