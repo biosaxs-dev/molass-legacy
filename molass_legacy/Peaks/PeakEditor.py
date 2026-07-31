@@ -769,9 +769,11 @@ class PeakEditor(FullBatch, Dialog):
         self.params_type = self.fullopt.params_type
 
     def get_pre_recog_mapping_params(self):
-        if self._lib_dsets is not None:
-            # library UV is already registered to XR frames — identity mapping
-            return 1.0, 0.0
+        if self._lib_dsets is not None and self.decomposition is not None:
+            # use library-computed UV↔XR mapping (slope, intercept) from ssd.get_mapping();
+            # the legacy pre_recog mapping was calibrated on the original SD frame space and
+            # gives the wrong intercept for the SSD-native absolute-frame coordinate system.
+            return self.decomposition.ssd.get_mapping()
         return super().get_pre_recog_mapping_params()
 
     def draw_scores(self, init_params=None, draw_rg_curve=True, create_new_optimizer=True):
