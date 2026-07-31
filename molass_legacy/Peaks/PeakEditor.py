@@ -69,7 +69,8 @@ class PeakEditor(FullBatch, Dialog):
         assert self.advanced
         
         self.dsets = None
-        self._lib_dsets = None           # library dsets (uncorrected sd data) — set by _build_library_decomposition (molass-legacy#85)
+        self._lib_dsets = None           # library dsets — set by _build_library_decomposition (molass-legacy#85)
+        self._ssd_uncorrected = None     # set by prepare_rg_curve (SSD-native path); used by estimators via getattr (molass-legacy#87)
         self.decomposition = None        # library EGH Decomposition (for display)
         self.model_decomposition = None  # library upgraded Decomposition for the selected model (for init-params)
         self._library_decomp_ready = False  # set True when _build_library_decomposition finishes (or is skipped)
@@ -428,15 +429,11 @@ class PeakEditor(FullBatch, Dialog):
             decomposition._rgcurve = ssd._rgcurve
             self.decomposition = decomposition
 
-            # Build library dsets from UNCORRECTED sd so compute_LRF_matrices sees
-            # non-negative intensities at all q.  The corrected_sd path (used by
-            # self.dsets) can have negative values at low q after baseline subtraction,
-            # causing the Guinier analysis to crash and return SV=-100.  (molass-legacy#85)
+            # Build library dsets from UNCORRECTED ssd (set by prepare_rg_curve before
+            # this thread starts — SSD-native path, absolute jv).  (molass-legacy#85, #87)
             try:
                 from molass.Rigorous.LegacyBridgeUtils import make_dsets_from_decomposition
-                from molass.Bridge.SdAdapter import make_ssd_from_sd
-                ssd_uncorrected = make_ssd_from_sd(self.sd)    # uncorrected intensities, same q-range
-                self._ssd_uncorrected = ssd_uncorrected         # shared with _estimate_mono for baseparams consistency (molass-legacy#87)
+                ssd_uncorrected = self._ssd_uncorrected  # already set in prepare_rg_curve
                 self._lib_dsets = make_dsets_from_decomposition(
                     decomposition, ssd._rgcurve, data_ssd=ssd_uncorrected
                 )
@@ -447,7 +444,7 @@ class PeakEditor(FullBatch, Dialog):
                     exc_info=True
                 )
                 self._lib_dsets = None
-                self._ssd_uncorrected = None
+                # _ssd_uncorrected already set by prepare_rg_curve — do not overwrite with None
 
             # Schedule a display update on the main thread so the UV/XR panels
             # show the proportional EGH curves instead of the legacy pre_recog peaks.
@@ -585,20 +582,22 @@ class PeakEditor(FullBatch, Dialog):
             rg_curve_ok = RG_CURVE_OK - STOCH_INIT_STEPS
 
         try:
-            from molass.Bridge.SdAdapter import make_ssd_from_sd
+            from molass.DataObjects.SecSaxsData import SecSaxsData as _SSD
             from molass.Bridge.LegacyRgCurve import LegacyRgCurve
+            from molass_legacy._MOLASS.SerialSettings import get_setting as _get_setting
 
-            # Build ssd via the library pipeline (molass-legacy#86):
-            #   make_ssd_from_sd → trimmed_copy → corrected_copy
-            # This gives library-standard q-range (trimmed_copy clips bad low-q points)
-            # and library baseline correction, matching what optimize_rigorously() uses.
-            # Previously make_ssd_from_corrected_sd(self.corrected_sd) preserved the
-            # legacy q-range (6 extra low-q points vs library trimmed), causing a
-            # ~3 SV gap in the SDM/LKM init quality.
-            _raw_ssd = make_ssd_from_sd(self.sd)
-            _raw_ssd.trimmed = False
-            _raw_ssd.corrected = False
-            ssd = _raw_ssd.trimmed_copy().corrected_copy()
+            # Build ssd from the raw data folder so jv carries ABSOLUTE frame numbers.
+            # Previously make_ssd_from_sd(self.sd) wrapped the already-trimmed legacy SD
+            # (0-based jv), causing frame coordinate mismatch in all estimators that read
+            # decomp.ssd.xr.jv (EghEstimator init_rgs, UV-height derivation, etc.).
+            # SSD-native path: SSD(folder) → trimmed_copy → corrected_copy.
+            _in_folder = _get_setting('in_folder')
+            _ssd_uncorrected = _SSD(_in_folder).trimmed_copy()   # trimmed, not corrected
+            ssd = _ssd_uncorrected.corrected_copy()
+
+            # Store BEFORE starting the decomposition thread so estimators that read
+            # self._ssd_uncorrected (molass-legacy#87 pattern) never see None.
+            self._ssd_uncorrected = _ssd_uncorrected
 
             # Build a ProgressCallback-compatible callable that wraps the queue.
             # Store the library ssd's frame-number axis BEFORE starting get_rg_curve
