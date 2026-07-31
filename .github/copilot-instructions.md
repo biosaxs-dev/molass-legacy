@@ -173,7 +173,17 @@ discrepancy) is a symptom of this structural issue.
 5. Set `self._ssd_uncorrected` from the passed-in value (remove internal re-derivation)
 
 **Scope**: molass-legacy PeakEditor + FullBatch/GUI call site. Naive LRF/Excel stays SD-based.
-**Status**: Planned — next implementation target after 33m investigation.
+**Status**: IMPLEMENTED — commit `ea94c36d` (2026-07-31)
+
+### What was done
+
+The fix was simpler than the original 5-step plan. Steps 2+3 (passing SSD via `PeakEditor.__init__`) were not needed; the change was entirely within `prepare_rg_curve`:
+
+- Replaced `make_ssd_from_sd(self.sd).trimmed_copy().corrected_copy()` (0-based jv) with `SSD(in_folder).trimmed_copy().corrected_copy()` (absolute jv)
+- `_ssd_uncorrected` now set in `prepare_rg_curve` BEFORE the decomposition thread starts, eliminating the `make_ssd_from_sd` call inside `_build_library_decomposition`
+- Added `self._ssd_uncorrected = None` init in `__init__`
+
+**Next step**: Verify in actual GUI (20230705 EGH): expect init SV ~76 (was 70.71 before fix).
 
 ---
 
