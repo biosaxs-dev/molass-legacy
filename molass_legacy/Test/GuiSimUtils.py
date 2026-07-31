@@ -254,6 +254,14 @@ def evaluate_init(optimizer, init_params, label):
     xr_params : np.ndarray
     seccol : np.ndarray
     """
+    from molass_legacy.SecTheory.SecEstimator import NUM_SEC_PARAMS
+    expected = optimizer.params_type.num_params + NUM_SEC_PARAMS
+    if len(init_params) != expected:
+        raise ValueError(
+            f"init_params length {len(init_params)} != expected {expected} "
+            f"(num_params={optimizer.params_type.num_params} + seccol={NUM_SEC_PARAMS}). "
+            f"Check unified_baseline_type setting."
+        )
     optimizer.prepare_for_optimization(init_params)
     try:
         fv, scores, *_ = optimizer.objective_func(init_params, return_full=True)
