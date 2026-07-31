@@ -41,6 +41,11 @@ class DataSet:
         self.xr_curve = None
         self.uv_curve = None
         self.cd_slice = None
+
+    @property
+    def jvector(self):
+        """Alias for xr_ex — mirrors SerialData.jvector for compatibility."""
+        return self.xr_ex
         if sd is None:
             self.xr_index = None
         else:

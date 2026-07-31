@@ -26,6 +26,11 @@ def guess_initial_secparams(init_xr_params, rgs, poresize=None):
     tI = tR - np.sqrt(Npc)*sigma
     if poresize is None:
         poresize = get_setting('poresize')
+    if poresize is None:
+        raise ValueError(
+            "poresize is not set. Call set_setting('poresize', <value>) before using EghEstimator. "
+            "Typical value: 100 (Å) for Superdex 200. See molass-legacy#91."
+        )
 
     print("----------------- guess_initial_secparams: poresize=", poresize)
     rg = rgs[k]
