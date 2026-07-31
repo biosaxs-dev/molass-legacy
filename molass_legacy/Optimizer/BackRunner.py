@@ -157,6 +157,17 @@ class BackRunner:
             _np.save(os.path.join(_opt_folder, 'ip_uv_U.npy'),          optimizer.uvD)
             _np.save(os.path.join(_opt_folder, 'ip_xr_E.npy'),          optimizer.xrE)
             _np.save(os.path.join(_opt_folder, 'ip_xr_qvector.npy'),    optimizer.qvector)
+            # Export in-process UV diff_spline so subprocess uses identical baseline shape.
+            # Subprocess re-derives diff_spline from full raw UV [0,2399]; in-process uses
+            # trimmed legacy SD [0,633]. Same params[-1] + different spline → ~5.5 SV gap.
+            _ds = getattr(getattr(optimizer, 'uv_base_curve', None), 'diff_spline', None)
+            if _ds is not None:
+                try:
+                    _ds_x = _ds.get_knots()
+                    _np.save(os.path.join(_opt_folder, 'uv_diff_spline_x.npy'), _ds_x)
+                    _np.save(os.path.join(_opt_folder, 'uv_diff_spline_y.npy'), _ds(_ds_x))
+                except Exception as _dse:
+                    self.logger.warning("BackRunner: uv_diff_spline export failed (%s)", _dse)
             self.logger.info("BackRunner: exported ip_*.npy override files to %s", _opt_folder)
         except Exception as _e:
             self.logger.warning("BackRunner: ip_*.npy export failed (%s); subprocess will use legacy-derived data", _e)
