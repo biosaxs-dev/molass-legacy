@@ -612,8 +612,25 @@ class PeakEditor(FullBatch, Dialog):
             library_rgcurve = ssd.get_rg_curve(progress_cb=progress_cb)
 
             # Wrap the library RgCurve into the legacy format the optimizer reads.
-            xr_curve = self.ecurves[1]   # ElutionCurve — already set by body()
-            legacy_rgcurve = LegacyRgCurve(xr_curve, library_rgcurve)
+            # IMPORTANT: use the SSD-native elution curve (x=absolute jv, e.g. [59..1557])
+            # NOT the legacy self.ecurves[1] (x=[0..644]).  library_rgcurve.indeces are in
+            # absolute frame space; LegacyRgCurve uses frame_offset=x[0] to map them to
+            # relative indices.  With the legacy curve, frame_offset=0 and most absolute
+            # indices (59..1557) fall outside [0,644] → masked out → NaN Rg values →
+            # wrong slices exported → subprocess Guinier deviation inflated by ~0.155 fv
+            # → ~5.5 SV gap (molass-legacy#94).
+            # Use ssd's XR elution curve (x = ssd.xr.jv = absolute frame numbers).
+            xr_icurve = ssd.xr.get_icurve()
+
+            class _SsdXrCurveAdapter:
+                """Minimal adapter to satisfy LegacyRgCurve(ecurve, ...) interface."""
+                def __init__(self, icurve):
+                    self.x = icurve.x
+                    self.y = icurve.y
+                    self.max_y = float(icurve.y.max())
+
+            xr_curve_ssd = _SsdXrCurveAdapter(xr_icurve)
+            legacy_rgcurve = LegacyRgCurve(xr_curve_ssd, library_rgcurve)
 
             # Export the rg-curve folder so the subprocess can find it —
             # this mirrors what get_dsets_impl(compute_rg=True) normally does.
