@@ -150,6 +150,7 @@ class BackRunner:
             _opt_folder = os.path.dirname(self.optjob_folder)  # analysis_folder/optimized (parent of jobs/)
             _np = __import__('numpy')
             _np.save(os.path.join(_opt_folder, 'ip_xr_elcurve_y.npy'),  optimizer.xr_curve.y)
+            _np.save(os.path.join(_opt_folder, 'ip_xr_elcurve_x.npy'),  optimizer.xr_curve.x)
             _np.save(os.path.join(_opt_folder, 'ip_uv_elcurve_y.npy'),  optimizer.uv_curve.y)
             _np.save(os.path.join(_opt_folder, 'ip_uv_elcurve_x.npy'),  optimizer.uv_curve.x)
             _np.save(os.path.join(_opt_folder, 'ip_xr_D.npy'),          optimizer.xrD)

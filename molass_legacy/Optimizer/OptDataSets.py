@@ -89,7 +89,16 @@ def get_dsets_impl(sd, corrected_sd, progress_cb=None, rg_folder=None, rg_info=T
         # This ensures subprocess uses the EGH-fitted curve, not the legacy-smoothed one.
         _ip_xr_path = os.path.join(optimizer_folder, 'ip_xr_elcurve_y.npy')
         if os.path.exists(_ip_xr_path):
-            xr_curve.y = np.load(_ip_xr_path)
+            _new_xr_y = np.load(_ip_xr_path)
+            _ip_xr_x_path = os.path.join(optimizer_folder, 'ip_xr_elcurve_x.npy')
+            if os.path.exists(_ip_xr_x_path) and len(_new_xr_y) != len(xr_curve.x):
+                _old_xr_x_len = len(xr_curve.x)
+                xr_curve.x = np.load(_ip_xr_x_path)
+                if logger is not None:
+                    logger.info("xr_curve.x overridden from parent's XR frame axis "
+                                "(length %d → %d, SSD-native path)",
+                                _old_xr_x_len, len(xr_curve.x))
+            xr_curve.y = _new_xr_y
             if logger is not None:
                 logger.info("xr_curve.y overridden from parent's EGH-fitted curve (molass-legacy#38)")
 
