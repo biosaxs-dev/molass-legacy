@@ -147,4 +147,34 @@ This repo is part of the 7-repo VS Code workspace. See `molass-library/.github/c
 
 ---
 
+## 🏗️ Architecture Migration Plans
+
+### SSD-Native Rigorous Optimization Path (planned 2026-07-31)
+
+**Goal**: Eliminate the SD→SSD bridge inside `_build_library_decomposition`. Make PeakEditor's
+rigorous optimization path use a pre-built SSD (absolute jv, from the raw data path) instead of
+re-deriving SSD from SD on every call.
+
+**Root cause**: `_build_library_decomposition` calls `make_ssd_from_sd(self.sd)`, which inherits
+the SD's 0-based jv. Every downstream fix (#86, #87, #89, #244, frame-coord mismatch, UV height
+discrepancy) is a symptom of this structural issue.
+
+**Evidence** (33m notebook, 20230705, EGH model):
+- Library sim using pre-built SSD (GuiSimUtils): SV = 76.25
+- Actual GUI (0-based SD-derived): SV = 70.71
+- UV heights: GUI=[0.034, 0.205, 0.565] vs library=[0.015, 0.049, 0.268] (2–4× gap)
+- Frame offset: GUI EGH mu=203–363 vs library mu=808–973 (offset ≈ +604 abs frames)
+
+**Implementation (5 steps)**:
+1. Find PeakEditor call site in main GUI (FullBatch or similar)
+2. At that site, build SSD from raw data: `SSD(folder).trimmed_copy().corrected_copy()`
+3. Pass `ssd_corrected` and `ssd_uncorrected` (=trimmed) into `PeakEditor.__init__`
+4. In `_build_library_decomposition`: replace `make_ssd_from_sd(self.sd).trimmed_copy().corrected_copy()` → `self._ssd_corrected`
+5. Set `self._ssd_uncorrected` from the passed-in value (remove internal re-derivation)
+
+**Scope**: molass-legacy PeakEditor + FullBatch/GUI call site. Naive LRF/Excel stays SD-based.
+**Status**: Planned — next implementation target after 33m investigation.
+
+---
+
 **License**: GNU General Public License v3.0 — Part of molass-legacy
