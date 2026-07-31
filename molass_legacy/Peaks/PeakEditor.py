@@ -768,6 +768,12 @@ class PeakEditor(FullBatch, Dialog):
         self.fullopt = self.optimizer   # for backward compatibility
         self.params_type = self.fullopt.params_type
 
+    def get_pre_recog_mapping_params(self):
+        if self._lib_dsets is not None:
+            # library UV is already registered to XR frames — identity mapping
+            return 1.0, 0.0
+        return super().get_pre_recog_mapping_params()
+
     def draw_scores(self, init_params=None, draw_rg_curve=True, create_new_optimizer=True):
 
         if create_new_optimizer:
