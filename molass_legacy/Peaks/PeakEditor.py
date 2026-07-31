@@ -741,12 +741,18 @@ class PeakEditor(FullBatch, Dialog):
 
         dsets = self._lib_dsets if self._lib_dsets is not None else self.dsets
 
+        # qvector must match dsets.xrD q-axis; lib_dsets has a different q-count
+        # than self.sd when built from SSD(in_folder).trimmed_copy() (full raw data).
+        _ssd_unc = getattr(self, '_ssd_uncorrected', None)
+        qvector = (_ssd_unc.xr.q_values
+                   if self._lib_dsets is not None and _ssd_unc is not None
+                   else self.sd.qvector)
         self.optimizer = fullopt_class(
             dsets,
             n_components,
             uv_base_curve=uv_base_curve,
             xr_base_curve=xr_base_curve,
-            qvector=self.sd.qvector,    # trimmed sd
+            qvector=qvector,
             wvector=self.sd.lvector,
         )
 
