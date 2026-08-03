@@ -215,6 +215,17 @@ def get_dsets_impl(sd, corrected_sd, progress_cb=None, rg_folder=None, rg_info=T
             fig.tight_layout()
             plt.show()
 
+    # Override U matrix with parent's library UV data if exported (molass-legacy#39 missing implementation).
+    # The subprocess derives U from sd.get_uv_data_separate_ly() (legacy source, ~634 frames);
+    # the parent uses ssd_uncorrected.uv.M (library source, ~2399 frames).
+    # Different U frame count causes UV_LRF_residual mismatch even when uv_curve.x is overridden.
+    if optimizer_folder is not None:
+        _ip_uv_U_path = os.path.join(optimizer_folder, 'ip_uv_U.npy')
+        if os.path.exists(_ip_uv_U_path):
+            U = np.load(_ip_uv_U_path)
+            if logger is not None:
+                logger.info("U matrix overridden from parent's library UV data (molass-legacy#39)")
+
     # Load E matrix override if exported by parent (molass-legacy#39).
     # The subprocess derives E from sd.intensity_array[:,:,2].T (legacy source); the parent
     # uses ssd.xr.E (molass-library). Different E causes different W_ in compute_weight_info
