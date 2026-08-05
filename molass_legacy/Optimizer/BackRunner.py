@@ -94,7 +94,22 @@ class BackRunner:
             np.savetxt(os.path.join(folder, bounds_txt), optimizer.real_bounds)
 
         this_folder = os.path.dirname(os.path.abspath( __file__ ))
-        optimizer_py = os.path.join(this_folder, 'optimizer-dummy.py' if dummy else 'optimizer.py')
+        
+        # Detect Option E (recipe-based subprocess): check for recipe.json in optimizer_folder
+        optimizer_folder_parent = os.path.dirname(self.optjob_folder)  # analysis_folder/optimized
+        recipe_file = os.path.join(optimizer_folder_parent, 'recipe.json')
+        use_recipe_mode = os.path.exists(recipe_file) and not dummy
+        
+        if use_recipe_mode:
+            optimizer_py = os.path.join(this_folder, 'optimizer_recipe.py')
+            self.logger.info("BackRunner: Using recipe mode (found %s)", recipe_file)
+        else:
+            optimizer_py = os.path.join(this_folder, 'optimizer-dummy.py' if dummy else 'optimizer.py')
+            if dummy:
+                self.logger.info("BackRunner: Using dummy mode")
+            else:
+                self.logger.info("BackRunner: Using standard mode (no recipe.json)")
+
 
         in_folder = get_setting('in_folder')
         if in_folder is None:
@@ -139,14 +154,9 @@ class BackRunner:
         stderr_path = os.path.join(folder, 'optimizer_stderr.txt')
         self._stderr_file = open(stderr_path, 'w')
 
-        # Export ip_*.npy override files so the subprocess reads the same
-        # in-process-prepared data as the parent (molass-library#206).
-        # These are the same 6 files that prepare_rigorous_folders() writes when
-        # called via the notebook path (make_rigorous_decomposition_impl).
-        # Without them, the subprocess re-derives all data from disk via the legacy
-        # loader (get_sd_from_folder_impl), reproducing the pre-#38 divergence
-        # (~5-6 SV gap for all solvers from the GUI).
-        try:
+        # Skip ip_*.npy export in recipe mode — subprocess rebuilds from recipe instead.
+        if not use_recipe_mode:
+          try:
             _opt_folder = os.path.dirname(self.optjob_folder)  # analysis_folder/optimized (parent of jobs/)
             _np = __import__('numpy')
             _np.save(os.path.join(_opt_folder, 'ip_xr_elcurve_y.npy'),  optimizer.xr_curve.y)
@@ -169,7 +179,7 @@ class BackRunner:
                 except Exception as _dse:
                     self.logger.warning("BackRunner: uv_diff_spline export failed (%s)", _dse)
             self.logger.info("BackRunner: exported ip_*.npy override files to %s", _opt_folder)
-        except Exception as _e:
+          except Exception as _e:
             self.logger.warning("BackRunner: ip_*.npy export failed (%s); subprocess will use legacy-derived data", _e)
 
         # Phase 2 — Library-quality rg_curve for LEG-GUI path (molass-library#211).
