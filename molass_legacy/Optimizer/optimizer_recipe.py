@@ -64,8 +64,6 @@ def main_recipe():
     # Re-prepare with the parent's init_params so both processes start identically.
     optimizer.prepare_for_optimization(init_params)
 
-    with open("callback.txt", "w") as fh:
-        pass
     with open("pid.txt", "w") as fh:
         fh.write("pid=%d\n" % os.getpid())
     with open("seed.txt", "w") as fh:

@@ -232,6 +232,11 @@ class _RunInfoSource:
     def __init__(self, run_info):
         self._ri = run_info
 
+    @property
+    def is_inprocess(self):
+        """True for in-process runs; False when RunInfo wraps a subprocess (Step 5)."""
+        return getattr(self._ri, '_subprocess_process', None) is None
+
     def is_alive(self):
         """True while the in-process optimizer thread is running."""
         return self._ri.is_alive
@@ -275,7 +280,11 @@ class _RunInfoSource:
         bytecode boundary (~50 ms).  This is best-effort: if ctypes
         injection fails the thread runs to completion normally.
         """
-        if hasattr(self._ri, 'request_stop'):
+        # RunInfo.stop() handles both cases: sets stop_event for threads AND
+        # calls p.terminate() when _subprocess_process is set (Step 5 path).
+        if hasattr(self._ri, 'stop'):
+            self._ri.stop()
+        elif hasattr(self._ri, 'request_stop'):
             self._ri.request_stop()
 
     def run(self, optimizer, init_params, niter=20, seed=1234, work_folder=None,
@@ -706,13 +715,14 @@ class MplMonitor:
 
     def _running_status(self):
         """Return the 'Status: Running' label with path annotation (in-process vs subprocess)."""
-        suffix = '(in-process)' if isinstance(self.source, _RunInfoSource) else '(subprocess)'
+        in_proc = getattr(self.source, 'is_inprocess', not isinstance(self.source, _RunInfoSource))
+        suffix = '(in-process)' if in_proc else '(subprocess)'
         return f'Status: Running {suffix}'
 
     def create_dashboard(self):
         self.plot_output = widgets.Output()
 
-        in_process = isinstance(self.source, _RunInfoSource)
+        in_process = getattr(self.source, 'is_inprocess', not isinstance(self.source, _RunInfoSource))
 
         self.status_label = widgets.Label(value=self._running_status())
         self.space_label1 = widgets.Label(value="　　　　")
@@ -887,17 +897,26 @@ class MplMonitor:
         if self.terminate_button.disabled:
             return
 
-        # For in-process runs the kernel stays alive, so re-running is cheap.
-        # Skip the confirmation dialog — it renders at the bottom of the VBox
-        # (below the SV plot) and is invisible to the user, making the button
-        # appear broken.  Terminate immediately and show a status message.
-        if isinstance(self.source, _RunInfoSource):
+        _is_inprocess = getattr(self.source, 'is_inprocess', not isinstance(self.source, _RunInfoSource))
+
+        if _is_inprocess:
+            # In-process: skip dialog (rendered below SV plot, invisible).
+            # Cooperative stop via ctypes KI injection — may take up to ~30 s.
             self.terminate_event.set()
             self.status_label.value = "Status: Terminating"
             set_label_color(self.status_label, "yellow")
             self.logger.info("Terminate job requested (in-process). id(self)=%d", id(self))
             self._show_message("Stop requested. Waiting for the current Nelder-Mead trial to finish "
                                "before the optimizer exits — this may take up to ~30 seconds.")
+            return
+
+        if isinstance(self.source, _RunInfoSource):
+            # Subprocess via _RunInfoSource (Step 5): p.terminate() kills immediately.
+            self.terminate_event.set()
+            self.status_label.value = "Status: Terminating"
+            set_label_color(self.status_label, "yellow")
+            self.logger.info("Terminate job requested (subprocess via RunInfo). id(self)=%d", id(self))
+            self._show_message("Stop requested — subprocess will be terminated.")
             return
 
         try:

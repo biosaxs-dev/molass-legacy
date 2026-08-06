@@ -154,10 +154,11 @@ class BackRunner:
         stderr_path = os.path.join(folder, 'optimizer_stderr.txt')
         self._stderr_file = open(stderr_path, 'w')
 
+        _opt_folder = os.path.dirname(self.optjob_folder)  # analysis_folder/optimized (parent of jobs/)
+
         # Skip ip_*.npy export in recipe mode — subprocess rebuilds from recipe instead.
         if not use_recipe_mode:
           try:
-            _opt_folder = os.path.dirname(self.optjob_folder)  # analysis_folder/optimized (parent of jobs/)
             _np = __import__('numpy')
             _np.save(os.path.join(_opt_folder, 'ip_xr_elcurve_y.npy'),  optimizer.xr_curve.y)
             _np.save(os.path.join(_opt_folder, 'ip_xr_elcurve_x.npy'),  optimizer.xr_curve.x)
