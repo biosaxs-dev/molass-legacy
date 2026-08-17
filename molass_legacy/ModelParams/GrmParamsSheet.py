@@ -5,7 +5,7 @@
 
     XR layout: xr_params = [scale_0, ..., scale_{nc-1}]   (one scale per component)
     GRM column params appended at end:
-        [Pe, t0, R_p, D_eff, R_0, k_ext_0, R_1, k_ext_1, ..., R_{nc-1}, k_ext_{nc-1}]
+        [Pe, t0, R_p, D_eff, c_inj, R_0, k_ext_0, R_1, k_ext_1, ..., R_{nc-1}, k_ext_{nc-1}]
     num_col_params = 4 + 2*nc
 
     Copyright (c) 2026, SAXS Team, KEK-PF
@@ -51,8 +51,8 @@ class GrmParamsSheet(ParamsSheetBase):
 
         # 9 columns: 0=label, 1..8 for UV baseline (up to 8 params with fouling)
         num_columns = 9
-        # grm_colparams: [Pe, t0, R_p, D_eff, R_0, k_ext_0, ..., R_{nc-1}, k_ext_{nc-1}]
-        num_colparam_rows = len(grm_colparams)    # = 4 + 2*nc
+        # grm_colparams: [Pe, t0, R_p, D_eff, c_inj, R_0, k_ext_0, ..., R_{nc-1}, k_ext_{nc-1}]
+        num_colparam_rows = len(grm_colparams)    # = 5 + 2*nc
         num_extended_rows = 1 + num_colparam_rows  # 1 blank separator + param rows
 
         num_rows = self.n * 2 + 2 + 8 + num_extended_rows + 4
@@ -133,8 +133,9 @@ class GrmParamsSheet(ParamsSheetBase):
             data_list[row_offset][4 + j] = "%g" % mappable_range[j]
             self.set_params_addr(mr_base + j, (row_offset, 4 + j))
 
-        # --- GRM column params: Pe, t0, R_p, D_eff, R_0, k_ext_0, ..., R_{nc-1}, k_ext_{nc-1} ---
-        colparam_names = ["Pe", "t0", "R_p", "D_eff"] + [
+        # --- GRM column params: Pe, t0, R_p, D_eff, c_inj, R_0, k_ext_0, ..., R_{nc-1}, k_ext_{nc-1} ---
+        # GrmParams.py: num_col_params = 5 + 2*nc
+        colparam_names = ["Pe", "t0", "R_p", "D_eff", "c_inj"] + [
             f"R_{k}" if j == 0 else f"k_ext_{k}"
             for k in range(nc)
             for j in range(2)

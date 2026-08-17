@@ -5,7 +5,7 @@
 
     XR layout: xr_params = [scale_0, ..., scale_{nc-1}]   (one scale per component)
     LKM column params appended at end:
-        [Pe, t0, R_0, k_MT_0, R_1, k_MT_1, ..., R_{nc-1}, k_MT_{nc-1}]
+        [Pe, t0, c_inj, R_0, k_MT_0, R_1, k_MT_1, ..., R_{nc-1}, k_MT_{nc-1}]
 
     Copyright (c) 2025, SAXS Team, KEK-PF
 """
@@ -50,8 +50,8 @@ class LkmParamsSheet(ParamsSheetBase):
 
         # 9 columns: 0=label, 1..8 for UV baseline (up to 8 params with fouling)
         num_columns = 9
-        # lkm_colparams: [Pe, t0, R_0, k_MT_0, ..., R_{nc-1}, k_MT_{nc-1}]
-        num_colparam_rows = len(lkm_colparams)    # = 2 + 2*nc
+        # lkm_colparams: [Pe, t0, c_inj, R_0, k_MT_0, ..., R_{nc-1}, k_MT_{nc-1}]
+        num_colparam_rows = len(lkm_colparams)    # = 3 + 2*nc
         num_extended_rows = 1 + num_colparam_rows  # 1 blank separator + param rows
 
         # Row budget: self.n*2 + 2 + 8 + num_extended_rows + 4
@@ -136,9 +136,10 @@ class LkmParamsSheet(ParamsSheetBase):
             data_list[row_offset][4 + j] = "%g" % mappable_range[j]
             self.set_params_addr(mr_base + j, (row_offset, 4 + j))
 
-        # --- LKM column params: Pe, t0, R_0, k_MT_0, ..., R_{nc-1}, k_MT_{nc-1} ---
+        # --- LKM column params: Pe, t0, c_inj, R_0, k_MT_0, ..., R_{nc-1}, k_MT_{nc-1} ---
         # Build human-readable names matching lkm_colparams layout
-        colparam_names = ["Pe", "t0"] + [
+        # LkmParams.py: num_col_params = 3 + 2*nc, layout = [Pe, t0, c_inj, R_0, k_MT_0, ...]
+        colparam_names = ["Pe", "t0", "c_inj"] + [
             f"R_{k}" if j == 0 else f"k_MT_{k}"
             for k in range(nc)
             for j in range(2)
