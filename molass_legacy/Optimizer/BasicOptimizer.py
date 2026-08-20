@@ -765,6 +765,10 @@ class BasicOptimizer:
 
     def objective_func(self, p, plot=False, debug=False, fig_info=None, axis_info=None, return_full=False):
         # override this
+        # Thread safety (molass-library#252): subclasses draw into matplotlib/Tk
+        # artists when plot=True. This must be called from the main thread if an
+        # interactive backend (e.g. TkAgg) is active -- calling it from a
+        # background thread can crash the whole process instead of raising.
         assert False
 
     def debug_plot_params(self, norm_params, **kwargs):
