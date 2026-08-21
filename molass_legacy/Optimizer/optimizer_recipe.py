@@ -84,6 +84,13 @@ def main_recipe():
         debug=False,
     )
     logger.info("Optimization complete: best_fv=%.6f", result.fun)
+    # scipy solvers (BH, DE, ...) expose why they stopped (converged vs. maxiter
+    # reached) via .message/.nit; without this, diagnosing premature convergence
+    # requires reverse-engineering it from callback.txt generation counts.
+    _stop_message = getattr(result, 'message', None)
+    _stop_nit = getattr(result, 'nit', None)
+    if _stop_message is not None or _stop_nit is not None:
+        logger.info("Solver stop reason: message=%s, nit=%s", _stop_message, _stop_nit)
 
 
 if __name__ == '__main__':
