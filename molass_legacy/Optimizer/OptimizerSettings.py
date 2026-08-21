@@ -53,6 +53,10 @@ def delayed_settings_init():
         ("de_strategy", None),               # DE strategy (None = default 'best1bin')
         ("de_mutation", None),               # DE mutation scale factor F (None = default 0.5)
         ("de_recombination", None),          # DE crossover probability CR (None = default 0.7)
+        ("de_tol", None),                     # DE convergence tolerance (None = SolverDE default 0.01);
+                                               # was missing here, so RigorousImplement's de_tol=0
+                                               # override (for constrained DE) never survived
+                                               # opt_settings.txt serialization to the subprocess.
         # SEC parameters
         ("exclusion_limit", default_columntype.excl_limit),
         ("poresize", poresize),
