@@ -868,8 +868,9 @@ class MplMonitor:
         self.logger.info("Resume requested by user")
 
         try:
-            # Get best params from the completed job
-            best_params = self.get_best_params()
+            # Get best params across the entire job history, not just the
+            # completed job (molass-library#257)
+            best_params = self._get_global_best_params()
             self.init_params = best_params
 
             # Reset termination flag
@@ -1208,7 +1209,7 @@ class MplMonitor:
                                 set_label_color(self.status_label, "blue")
                                 if self.num_trials < self.max_trials:
                                     self.logger.info("Starting a new optimization trial (%d/%d).", self.num_trials, self.max_trials)
-                                    best_params = self.get_best_params()
+                                    best_params = self._get_global_best_params()
                                     # Issue #71: increment seed per trial so each CMA run uses a
                                     # different RNG trajectory.  num_trials is incremented *after*
                                     # run_impl returns, so at this point it holds the count of
@@ -1413,6 +1414,33 @@ class MplMonitor:
         self.curr_index = k
         best_params = x_array[k]
         return best_params
+
+    def _get_global_best_params(self):
+        """Reseed source for ``max_trials`` auto-resume and the "Resume Job" button.
+
+        Scans ALL completed jobs under ``optimizer_folder/jobs`` for the global
+        best -- not just the just-completed trial's own state, which is what
+        ``get_best_params()`` looks at. Mirrors
+        ``RigorousImplement._load_best_init_params()``'s ``clear_jobs=False``
+        resume path via the shared ``find_global_best_params()`` helper, so both
+        reseed mechanisms are monotonic across the entire job history
+        (molass-library#257). Falls back to ``get_best_params()`` (the
+        just-completed trial only) if the shared scan finds nothing, so
+        behavior degrades gracefully rather than raising.
+        """
+        try:
+            from molass.Rigorous.RigorousImplement import find_global_best_params
+            jobs_dir = os.path.join(self.optimizer_folder, "jobs")
+            best, best_fv, best_job = find_global_best_params(jobs_dir, self.init_params)
+            if best is not None:
+                self.logger.info(
+                    "Auto-resume: reseeding from global best %s (fv=%.4f).",
+                    os.path.basename(best_job), best_fv,
+                )
+                return best
+        except Exception as e:
+            self.logger.warning("Global-best scan failed (%s); falling back to local best.", e)
+        return self.get_best_params()
 
     def get_progress_info(self):
         """Return current optimization progress as a dictionary.
