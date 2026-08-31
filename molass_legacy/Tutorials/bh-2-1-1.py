@@ -54,7 +54,7 @@ class CustomTakestep(AdaptiveStepsize):
     def __init__(self, stepsize=0.5, interval=50, disp=False, seed=None):
         # set up the np.random generator
         self.rng = check_random_state(seed)
-        displace = RandomDisplacement(stepsize=stepsize, random_gen=self.rng)
+        displace = RandomDisplacement(stepsize=stepsize, rng=self.rng)
         AdaptiveStepsize.__init__(self, displace, interval=interval, verbose=disp)
 
     def take_step(self, x):

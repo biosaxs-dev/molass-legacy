@@ -29,8 +29,8 @@ def guess_init_params_better(x, y, M):
             b = -4.0
         e = 0.4
         Dz = 0.02
-        cinj = M[0]/2.0 * 0.2
-        params = np.array([t0, u, a, b, e, Dz, cinj])
+        c_inj = M[0]/2.0 * 0.2
+        params = np.array([t0, u, a, b, e, Dz, c_inj])
         params_list.append(params)
         y_ = lognormal_pore_func(x, *params)
         area_ = np.sum(y_)

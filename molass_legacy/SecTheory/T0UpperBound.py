@@ -17,6 +17,9 @@ def estimate_t0upper_bound(ecurve, debug=False):
     y = ecurve.y
 
     m = ecurve.peak_info[0][1]
+    # peak_info may contain frame numbers (ElCurve) rather than 0-based indices
+    # (ElutionCurve). Normalise to a 0-based array index in both cases.
+    m = int(round(m - x[0]))
     y_ = y[0:m]
     i = rotated_argmin(SMALL_ANGLE, y_)
 

@@ -50,9 +50,13 @@ def delayed_settings_init():
         ("ns_nsteps", None),                 # NS slice sampler: override nsteps (None = auto min(2*ndim,16))
         ("de_niter", 800),                   # DE evaluation budget override (niter × 200 fevals); default 800
         ("de_pop_size", None),               # DE population size (None = auto max(20, 5*n_var))
-        ("de_variant", None),                # DE variant e.g. 'DE/best/1/bin' (None = default)
-        ("de_F", None),                      # DE mutation scale factor (None = default 0.5)
-        ("de_CR", None),                     # DE crossover probability (None = default 0.5)
+        ("de_strategy", None),               # DE strategy (None = default 'best1bin')
+        ("de_mutation", None),               # DE mutation scale factor F (None = default 0.5)
+        ("de_recombination", None),          # DE crossover probability CR (None = default 0.7)
+        ("de_tol", None),                     # DE convergence tolerance (None = SolverDE default 0.01);
+                                               # was missing here, so RigorousImplement's de_tol=0
+                                               # override (for constrained DE) never survived
+                                               # opt_settings.txt serialization to the subprocess.
         # SEC parameters
         ("exclusion_limit", default_columntype.excl_limit),
         ("poresize", poresize),

@@ -7,7 +7,7 @@ from .BaseSliderInfo import BaseSliderInfo
 
 class EdmSliderInfo(BaseSliderInfo):
     def __init__(self, nc): 
-        cmpparam_names = ["t0", "u", "a", "b", "e", "Dz", "cinj", "Rg"]
+        cmpparam_names = ["t0", "u", "a", "b", "e", "Dz", "c_inj", "Rg"]
 
         cmpparam_indeces = []
         n_ = 7

@@ -57,7 +57,7 @@ class G2010(BasicOptimizer):
         uv_y = self.uv_curve.spline(uv_x)
 
         mapping_penalty = compute_mapping_penalty(self.uv_curve, self.xr_curve, self.init_mapping, (a, b), len(self.uv_curve.x),
-                                                  xr_params[:,-1], uv_params)        # xr_params[:,-1] : cinj
+                                                  xr_params[:,-1], uv_params)        # xr_params[:,-1] : c_inj
 
         xr_cy_list = []
         uv_cy_list = []
@@ -83,8 +83,8 @@ class G2010(BasicOptimizer):
 
         Tz = edm_colparams[0]
         k = 0
-        for t0, u, a, b, e, Dz, cinj in xr_params:
-            xr_cy = edm_impl(x, t0, u, a, b, e, Dz, cinj)
+        for t0, u, a, b, e, Dz, c_inj in xr_params:
+            xr_cy = edm_impl(x, t0, u, a, b, e, Dz, c_inj)
             uv_cy = uv_params[k]*xr_cy
 
             if k > 0:

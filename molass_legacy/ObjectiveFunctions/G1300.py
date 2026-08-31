@@ -5,11 +5,23 @@
     Scores: same 7 as G0346
     Extension of G1200: replaces single poresize with lognormal distribution (mu, sigma)
 
+    Parameter layout (split_params_simple order):
+        xr_params (nc,)  : XR peak heights
+        xr_baseparams    : XR baseline parameters
+        rg_params (nc,)  : Rg values per component
+        (a, b)           : UV-XR frame mapping
+        uv_params (nc,)  : UV/XR intensity ratios ε_i/k (unified architecture)
+        uv_baseparams    : UV baseline parameters
+        (c, d)           : mappable range
+        sdmcol_params    : [N, K, x0, mu, sigma, N0, tI, k]  (lognormal pore)
+
     Copyright (c) 2026-2026, SAXS Team, KEK-PF
 """
 import numpy as np
 from molass_legacy.KekLib.ExceptionTracebacker import ExceptionTracebacker
-from molass.SEC.Models.LognormalPore import sdm_lognormal_pore_gamma_pdf_fast as elutionmodel_func
+from molass.SEC.Models.LognormalPore import (
+    sdm_lognormal_pore_gamma_pdf_fast as elutionmodel_func,
+)
 from molass_legacy.Optimizer.BasicOptimizer import BasicOptimizer, PENALTY_SCALE, UV_XR_RATIO_ALLOW, UV_XR_RATIO_SCALE
 from molass_legacy.Optimizer.NumericalUtils import safe_ratios
 from molass_legacy._MOLASS.SerialSettings import get_setting
@@ -80,12 +92,12 @@ class G1300(BasicOptimizer):
         T_ = abs(T)
         x_ = x - tI
         t0 = x0 - tI
-        for xr_w, rg_, uv_w in zip(xr_params, rg_params, uv_params):
-            negative_penalty += min(0, xr_w)**2 + min(0, uv_w)**2
+        for xr_w, rg_, uv_ratio in zip(xr_params, rg_params, uv_params):
+            negative_penalty += min(0, xr_w)**2 + min(0, uv_ratio)**2
             # Lognormal pore: pass Rg directly to the PDF (no rho pre-computation)
             pd_cy = elutionmodel_func(x_, 1.0, N, T_, k_gamma, me, mp, mu, sigma, rg_, N0, t0)
             xr_cy = xr_w * pd_cy
-            uv_cy = uv_w * pd_cy
+            uv_cy = uv_ratio * xr_cy    # unified: ratio × XR curve (Phase 1c)
 
             xr_ty += xr_cy
             xr_cy_list.append(xr_cy)
@@ -99,6 +111,9 @@ class G1300(BasicOptimizer):
         uv_ty += uv_cy
         uv_cy_list.append(uv_cy)
 
+        lrf_info = None     # initialize before try so plot branch can reference it even if exception occurs (molass-legacy#85)
+        penalties = []      # initialize before try so plot branch can reference it if exception occurs before penalties = [...]
+        score_list = [0] * self.get_num_scores([])  # initialize before try for same reason
         try:
             lrf_info = self.compute_LRF_matrices(x, y, xr_cy_list, xr_ty, uv_x, uv_y, uv_cy_list, uv_ty, debug=debug)
             if return_lrf_info:
@@ -115,6 +130,7 @@ class G1300(BasicOptimizer):
             penalties = [mapping_penalty, negative_penalty, baseline_penalty, outofbounds_penalty, order_penalty]
 
             fv, score_list = self.compute_fv(lrf_info, xr_params, rg_params, sdmcol_params, penalties, p, debug=debug)
+            # LumpingConstraint (if set) is applied automatically inside compute_fv via self._constraints.
         except:
             etb = ExceptionTracebacker()
             last_lines = etb.last_lines(n=2)
@@ -133,7 +149,7 @@ class G1300(BasicOptimizer):
             # can still rank-order failed proposals; np.inf would terminate
             # the run after a single iteration.
             fv = 1e8
-            penalties = [0] * 6     # above penalties + [control_penalty]
+            penalties = [0] * 7     # 5 static + control_penalty + consistency_penalty
             score_list = [0] * self.get_num_scores([])      # score_list does not include penalties here
 
             if svd_error and not avoid_pinv and debug:

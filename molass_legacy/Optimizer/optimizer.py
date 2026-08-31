@@ -1,6 +1,13 @@
 """
     optimizer.py
 """
+# Headless subprocess -- never displays anything, but without forcing Agg,
+# matplotlib auto-resolves to TkAgg (Windows default) since Tkinter is always
+# importable. Any plotting inside the legacy pipeline that isn't strictly on
+# the main thread then risks Tcl_AsyncDelete. Must run before any other
+# import that could trigger matplotlib's lazy backend resolution.
+import matplotlib
+matplotlib.use('Agg')
 
 def main():
     import os

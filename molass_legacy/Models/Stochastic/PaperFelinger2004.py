@@ -35,9 +35,9 @@ def felinger_sdm_cf_proof():
     ax1.legend()
     params = guess_params_from_sdm(x, y_dondi, n1, t1, Nd, t0)
     print("params=", params)
-    # t0, u, a, b, e, Dz, cinj
-    t0, u, a, b, e, Dz, cinj = params
-    edm_y = edm_func(x-t0, u, a, b, e, Dz, cinj)
+    # t0, u, a, b, e, Dz, c_inj
+    t0, u, a, b, e, Dz, c_inj = params
+    edm_y = edm_func(x-t0, u, a, b, e, Dz, c_inj)
 
     ax2.set_title("Dondi-2002 SDM and Rehman-2021 EDM Formulae")
     ax2.plot(x, y_dondi, label="Dondi-2002 SDM")
@@ -51,7 +51,7 @@ def demo():
     from molass_legacy.Models.ElutionCurveModels import egh
     from SecTheory.Edm import guess_single_edm, edm_func
 
-    # t, u, a, b, e, Dz, cinj
+    # t, u, a, b, e, Dz, c_inj
     x = np.arange(300)
     egh_y = egh(x, 1, 120, 20, 20)
     edm = guess_single_edm(x, egh_y)

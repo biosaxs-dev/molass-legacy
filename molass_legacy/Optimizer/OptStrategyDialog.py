@@ -470,7 +470,7 @@ class OptStrategyDialog(Dialog):
         # DE variant selector — shown on the same row, only meaningful when DE is selected
         de_variants = ["DE/best/1/bin", "DE/rand/1/bin"]
         self.de_variant_var = Tk.StringVar()
-        self.de_variant_var.set(get_setting("de_variant") or "DE/best/1/bin")
+        self.de_variant_var.set(get_setting("de_strategy") or "DE/best/1/bin")
         de_label = Tk.Label(grid_frame, text="DE variant:")
         de_label.grid(row=gf_row, column=3, sticky=Tk.E)
         import tkinter.ttk as ttk
@@ -970,7 +970,7 @@ class OptStrategyDialog(Dialog):
         set_setting("optimization_method", self.optimization_method.get())
         # DE hyperparameters
         if self.optimization_method.get() == 6:
-            set_setting("de_variant", self.de_variant_var.get())
+            set_setting("de_strategy", self.de_variant_var.get())
             set_setting("de_niter", self.de_niter_var.get())
         set_setting("try_model_composing", self.try_model_composing.get())
         set_setting("separate_eoii", self.separate_eoii.get())

@@ -19,6 +19,11 @@ def get_common_parameter_names(nc):
     return xr_names, rg_names, mapping_names, uv_names, mr_names, seccol_names
 
 class StcParamsBase:
+    """Base parameter layout for Stochastic/Monopore SEC elution models.
+
+    .. note:: n_components includes the baseline component;
+              biological component count = n_components - 1.
+    """
     def __init__(self, n_components, poresize, poreexponent, use_K=False):
         self.n_components = n_components
         self.num_baseparams = get_num_baseparams()

@@ -101,7 +101,8 @@ def plot_job_state(self, params, plot_info=None, niter=20, display_optimizer=Non
     _draw_monitor_anomaly_bands(self)
 
     if plot_info is not None:
-        draw_progress(self, plot_info, niter=niter)
+        _is_completed = getattr(self, '_run_completed', False)
+        draw_progress(self, plot_info, niter=niter, is_completed=_is_completed)
 
 def plot_objective_func(optimizer, params, axis_info=None, best_sv=None):
     from .FvScoreConverter import convert_score

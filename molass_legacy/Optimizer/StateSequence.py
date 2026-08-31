@@ -82,41 +82,43 @@ def read_callback_txt_impl(cb_file):
     time = None
 
     if os.path.exists(cb_file):
-        fh = open(cb_file)
-        for k, line in enumerate(fh):
-            # print([k], line)
-            if line[0:2] == "t=":
-                m = time_re.search(line)
-                if m:
-                    year = int(m.group(1))
-                    month = int(m.group(2))
-                    day = int(m.group(3))
-                    hour = int(m.group(4))
-                    minute = int(m.group(5))
-                    second = int(m.group(6))
-                    time = datetime(year, month, day, hour, minute, second)
-            elif line[0:2] == "x=":
-                pass
-            elif line[0] == "[":
-                x_str = line
-            elif line[0] == " ":
-                x_str += line
-            elif line[0:2] == "f=":
-                m = fv_re.search(line)
-                if m:
-                    fv = float(m.group(1))
-            elif line[0:2] == "a=":
-                m = accept_re.search(line)
-                if m:
-                    accept = m.group(1) == 'True'
-            elif line[0:2] == "c=":
-                m = counter_re.search(line)
-                if m:
-                    counter = int(m.group(1))
-                    fv_list.append((counter, fv, accept, time))
-                    x = from_space_separated_list_string(x_str)
-                    x_list.append(x)
-        fh.close()
+        # 'with' guarantees the handle closes even if a mid-loop exception hits --
+        # this file may be actively appended to by a live subprocess while polled
+        # here, so a transient partial/malformed line is a real possibility.
+        with open(cb_file) as fh:
+            for k, line in enumerate(fh):
+                # print([k], line)
+                if line[0:2] == "t=":
+                    m = time_re.search(line)
+                    if m:
+                        year = int(m.group(1))
+                        month = int(m.group(2))
+                        day = int(m.group(3))
+                        hour = int(m.group(4))
+                        minute = int(m.group(5))
+                        second = int(m.group(6))
+                        time = datetime(year, month, day, hour, minute, second)
+                elif line[0:2] == "x=":
+                    pass
+                elif line[0] == "[":
+                    x_str = line
+                elif line[0] == " ":
+                    x_str += line
+                elif line[0:2] == "f=":
+                    m = fv_re.search(line)
+                    if m:
+                        fv = float(m.group(1))
+                elif line[0:2] == "a=":
+                    m = accept_re.search(line)
+                    if m:
+                        accept = m.group(1) == 'True'
+                elif line[0:2] == "c=":
+                    m = counter_re.search(line)
+                    if m:
+                        counter = int(m.group(1))
+                        fv_list.append((counter, fv, accept, time))
+                        x = from_space_separated_list_string(x_str)
+                        x_list.append(x)
     else:
         assert False, "callback.txt file not found: %s" % cb_file
 

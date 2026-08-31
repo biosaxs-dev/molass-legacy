@@ -232,6 +232,11 @@ class _RunInfoSource:
     def __init__(self, run_info):
         self._ri = run_info
 
+    @property
+    def is_inprocess(self):
+        """True for in-process runs; False when RunInfo wraps a subprocess (Step 5)."""
+        return getattr(self._ri, '_subprocess_process', None) is None
+
     def is_alive(self):
         """True while the in-process optimizer thread is running."""
         return self._ri.is_alive
@@ -275,7 +280,11 @@ class _RunInfoSource:
         bytecode boundary (~50 ms).  This is best-effort: if ctypes
         injection fails the thread runs to completion normally.
         """
-        if hasattr(self._ri, 'request_stop'):
+        # RunInfo.stop() handles both cases: sets stop_event for threads AND
+        # calls p.terminate() when _subprocess_process is set (Step 5 path).
+        if hasattr(self._ri, 'stop'):
+            self._ri.stop()
+        elif hasattr(self._ri, 'request_stop'):
             self._ri.request_stop()
 
     def run(self, optimizer, init_params, niter=20, seed=1234, work_folder=None,
@@ -515,6 +524,7 @@ class MplMonitor:
         self.monitor_optimizer = None
         self.stop_watch_event = threading.Event()  # For graceful thread shutdown
         self.is_monitoring = False  # Flag to track active monitoring state
+        self._run_completed = False   # set True by watch_progress on completion
         # Minimum seconds between successive dashboard redraws.
         # BH accepts one point every ~10–30 s, so 5 s is no restriction.
         # CMA-ES accepts many points per second; without this the widget
@@ -705,13 +715,14 @@ class MplMonitor:
 
     def _running_status(self):
         """Return the 'Status: Running' label with path annotation (in-process vs subprocess)."""
-        suffix = '(in-process)' if isinstance(self.source, _RunInfoSource) else '(subprocess)'
+        in_proc = getattr(self.source, 'is_inprocess', not isinstance(self.source, _RunInfoSource))
+        suffix = '(in-process)' if in_proc else '(subprocess)'
         return f'Status: Running {suffix}'
 
     def create_dashboard(self):
         self.plot_output = widgets.Output()
 
-        in_process = isinstance(self.source, _RunInfoSource)
+        in_process = getattr(self.source, 'is_inprocess', not isinstance(self.source, _RunInfoSource))
 
         self.status_label = widgets.Label(value=self._running_status())
         self.space_label1 = widgets.Label(value="　　　　")
@@ -746,16 +757,47 @@ class MplMonitor:
                                   self.export_button]
         self.controls = widgets.HBox(controls_children)
 
-        self.message_output = widgets.Output(layout=widgets.Layout(border='1px solid gray', background_color='gray', padding='10px'))
+        self.message_output = widgets.Output(layout=widgets.Layout(
+            border='1px solid gray', padding='10px',
+            display='none',  # hidden until a message is written; avoids blank space
+        ))
 
         # Fix cursor on disabled buttons (VS Code ipywidgets renderer doesn't enforce this)
         self._button_css = widgets.HTML(
             '<style>.widget-button:disabled { cursor: not-allowed !important; opacity: 0.5; }</style>'
         )
 
-        self.dialog_output = widgets.Output()
+        # dialog_output is only written when the terminate confirmation dialog fires
+        # (subprocess path only — in-process terminate skips this entirely).
+        # Start hidden so it takes zero height in the VBox.  trigger_terminate()
+        # sets display='' before calling ask_user and the handle_response callback
+        # resets it to 'none' after the user answers.
+        self.dialog_output = widgets.Output(layout=widgets.Layout(display='none'))
         self.dashboard = widgets.VBox([self._button_css, self.plot_output, self.controls, self.message_output, self.dialog_output])
         self.dashboard_output = widgets.Output()
+
+    # ── message_output helpers ───────────────────────────────────────────────
+    # message_output starts with display='none' so it takes no space in the
+    # VBox when there are no messages (avoids blank space below the buttons).
+    # Always use _show_message / _show_messages to write to it; they make it
+    # visible before writing.
+
+    def _show_message(self, text):
+        """Show message_output and write a single-line message."""
+        self.message_output.layout.display = ''
+        with self.message_output:
+            clear_output(wait=True)
+            print(text)
+
+    def _show_messages(self, lines):
+        """Show message_output and write multiple lines."""
+        self.message_output.layout.display = ''
+        with self.message_output:
+            clear_output(wait=True)
+            for line in lines:
+                print(line)
+
+    # ────────────────────────────────────────────────────────────────────────
 
     def run(self, optimizer, init_params, niter=20, seed=1234, max_trials=30, work_folder=None, dummy=False, x_shifts=None, debug=False, devel=True):
         self.optimizer = optimizer
@@ -789,6 +831,7 @@ class MplMonitor:
                             x_shifts=getattr(self, 'x_shifts', None))
             self.job_state = None   # reset; lazily re-initialized in watch_progress
             self.curr_index = None
+            self._run_completed = False  # reset for the new trial
             self.logger.info("Starting in-process optimizer resume")
             return
 
@@ -825,8 +868,9 @@ class MplMonitor:
         self.logger.info("Resume requested by user")
 
         try:
-            # Get best params from the completed job
-            best_params = self.get_best_params()
+            # Get best params across the entire job history, not just the
+            # completed job (molass-library#257)
+            best_params = self._get_global_best_params()
             self.init_params = best_params
 
             # Reset termination flag
@@ -848,27 +892,32 @@ class MplMonitor:
             self.status_label.value = f"Status: Resume failed"
             set_label_color(self.status_label, "red")
             self.resume_button.disabled = False
-            with self.message_output:
-                clear_output(wait=True)
-                print(f"Resume failed: {e}")
+            self._show_message(f"Resume failed: {e}")
 
     def trigger_terminate(self, b):
         if self.terminate_button.disabled:
             return
 
-        # For in-process runs the kernel stays alive, so re-running is cheap.
-        # Skip the confirmation dialog — it renders at the bottom of the VBox
-        # (below the SV plot) and is invisible to the user, making the button
-        # appear broken.  Terminate immediately and show a status message.
-        if isinstance(self.source, _RunInfoSource):
+        _is_inprocess = getattr(self.source, 'is_inprocess', not isinstance(self.source, _RunInfoSource))
+
+        if _is_inprocess:
+            # In-process: skip dialog (rendered below SV plot, invisible).
+            # Cooperative stop via ctypes KI injection — may take up to ~30 s.
             self.terminate_event.set()
             self.status_label.value = "Status: Terminating"
             set_label_color(self.status_label, "yellow")
             self.logger.info("Terminate job requested (in-process). id(self)=%d", id(self))
-            with self.message_output:
-                clear_output(wait=True)
-                print("Stop requested. Waiting for the current Nelder-Mead trial to finish "
-                      "before the optimizer exits — this may take up to ~30 seconds.")
+            self._show_message("Stop requested. Waiting for the current Nelder-Mead trial to finish "
+                               "before the optimizer exits — this may take up to ~30 seconds.")
+            return
+
+        if isinstance(self.source, _RunInfoSource):
+            # Subprocess via _RunInfoSource (Step 5): p.terminate() kills immediately.
+            self.terminate_event.set()
+            self.status_label.value = "Status: Terminating"
+            set_label_color(self.status_label, "yellow")
+            self.logger.info("Terminate job requested (subprocess via RunInfo). id(self)=%d", id(self))
+            self._show_message("Stop requested — subprocess will be terminated.")
             return
 
         try:
@@ -879,10 +928,8 @@ class MplMonitor:
             self.status_label.value = "Status: Terminating"
             set_label_color(self.status_label, "yellow")
             self.logger.info("Terminate job requested (no dialog). id(self)=%d", id(self))
-            with self.message_output:
-                clear_output(wait=True)
-                print("Stop requested. Waiting for the current Nelder-Mead trial to finish "
-                      "before the optimizer exits — this may take up to ~30 seconds.")
+            self._show_message("Stop requested. Waiting for the current Nelder-Mead trial to finish "
+                               "before the optimizer exits — this may take up to ~30 seconds.")
             return
 
         def handle_response(answer):
@@ -892,16 +939,26 @@ class MplMonitor:
                 self.status_label.value = "Status: Terminating"
                 set_label_color(self.status_label, "yellow")
                 self.logger.info("Terminate job requested. id(self)=%d", id(self))
-                with self.message_output:
-                    clear_output(wait=True)
-                    print("Stop requested. Waiting for the current Nelder-Mead trial to finish "
-                          "before the optimizer exits — this may take up to ~30 seconds.")
+                self._show_message("Stop requested. Waiting for the current Nelder-Mead trial to finish "
+                                   "before the optimizer exits — this may take up to ~30 seconds.")
+            self.dialog_output.layout.display = 'none'
+        self.dialog_output.layout.display = ''
         ask_user("Do you really want to terminate?", callback=handle_response, output_widget=self.dialog_output)
 
     def show(self, debug=False):
         self.update_plot()
-        # with self.dashboard_output:
-        display(self.dashboard)
+        # Wrap the dashboard in a fixed-height scrollable container so that VS Code's
+        # notebook auto-scroll (triggered on each periodic plot_output update) scrolls
+        # the *inner* container rather than jumping the notebook viewport.
+        # Without this, every update moves the view to the bottom of the 900px+ figure,
+        # overriding the user's scroll position.  800px fits most VS Code windows;
+        # the user can scroll within the container to see all parts of the dashboard.
+        _scroll_container = widgets.VBox(
+            [self.dashboard],
+            layout=widgets.Layout(height='800px', overflow_y='auto')
+        )
+        self._scroll_container = _scroll_container  # keep reference
+        display(_scroll_container)
         inject_label_color_css()
         set_label_color(self.status_label, "green")
 
@@ -1055,10 +1112,7 @@ class MplMonitor:
 
             # Display warning messages in message_output
             if messages:
-                with self.message_output:
-                    clear_output(wait=True)
-                    for msg in messages:
-                        print(msg)
+                self._show_messages(messages)
         finally:
             if _held_lock is not None:
                 _held_lock.release()
@@ -1134,12 +1188,10 @@ class MplMonitor:
                             self.status_label.value = f"Status: Failed (exit {exit_str})"
                             set_label_color(self.status_label, "red")
                             self.terminate_button.disabled = True
-                            with self.message_output:
-                                clear_output(wait=True)
-                                print(
-                                    f"Optimization failed (exit {exit_str})."
-                                    " See optimizer.log for details."
-                                )
+                            self._show_message(
+                                f"Optimization failed (exit {exit_str})."
+                                " See optimizer.log for details."
+                            )
                             # Fall through: final redraw, save, cleanup all run
                             # normally; resume_loop stays False so the loop breaks.
                         else:
@@ -1157,7 +1209,7 @@ class MplMonitor:
                                 set_label_color(self.status_label, "blue")
                                 if self.num_trials < self.max_trials:
                                     self.logger.info("Starting a new optimization trial (%d/%d).", self.num_trials, self.max_trials)
-                                    best_params = self.get_best_params()
+                                    best_params = self._get_global_best_params()
                                     # Issue #71: increment seed per trial so each CMA run uses a
                                     # different RNG trajectory.  num_trials is incremented *after*
                                     # run_impl returns, so at this point it holds the count of
@@ -1188,6 +1240,9 @@ class MplMonitor:
                         try:
                             self.job_state.last_mod_time = None  # force fresh read
                             self.job_state.update()
+                            # Signal guess_ending_time to return actual end time
+                            # regardless of callback count (handles early tol convergence)
+                            self._run_completed = True
                             self.update_plot()
                         except Exception as _fe:
                             self.logger.warning("Final update_plot failed: %s", _fe)
@@ -1359,6 +1414,33 @@ class MplMonitor:
         self.curr_index = k
         best_params = x_array[k]
         return best_params
+
+    def _get_global_best_params(self):
+        """Reseed source for ``max_trials`` auto-resume and the "Resume Job" button.
+
+        Scans ALL completed jobs under ``optimizer_folder/jobs`` for the global
+        best -- not just the just-completed trial's own state, which is what
+        ``get_best_params()`` looks at. Mirrors
+        ``RigorousImplement._load_best_init_params()``'s ``clear_jobs=False``
+        resume path via the shared ``find_global_best_params()`` helper, so both
+        reseed mechanisms are monotonic across the entire job history
+        (molass-library#257). Falls back to ``get_best_params()`` (the
+        just-completed trial only) if the shared scan finds nothing, so
+        behavior degrades gracefully rather than raising.
+        """
+        try:
+            from molass.Rigorous.RigorousImplement import find_global_best_params
+            jobs_dir = os.path.join(self.optimizer_folder, "jobs")
+            best, best_fv, best_job = find_global_best_params(jobs_dir, self.init_params)
+            if best is not None:
+                self.logger.info(
+                    "Auto-resume: reseeding from global best %s (fv=%.4f).",
+                    os.path.basename(best_job), best_fv,
+                )
+                return best
+        except Exception as e:
+            self.logger.warning("Global-best scan failed (%s); falling back to local best.", e)
+        return self.get_best_params()
 
     def get_progress_info(self):
         """Return current optimization progress as a dictionary.
@@ -1599,6 +1681,7 @@ class MplMonitor:
         # dashboard.  Bare print() in a button callback is routed to a kernel
         # stream that is not connected to any notebook cell output, making
         # success/error messages completely invisible to the user.
+        self.message_output.layout.display = ''
         with self.message_output:
             from IPython.display import clear_output
             clear_output(wait=True)

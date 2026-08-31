@@ -428,10 +428,11 @@ ITEM_DEFAULTS = {
     'ns_adaptive_nsteps'    : False,    # NS slice sampler: adaptively grow nsteps
     'ns_nsteps'             : None,     # NS slice sampler: override nsteps (None = auto min(2*ndim,16))
     'de_pop_size'           : None,     # DE population size (None = auto: max(20, 5*n_var))
-    'de_variant'            : None,     # DE variant string e.g. 'DE/rand/1/bin' (None = default)
-    'de_F'                  : None,     # DE mutation scale factor (None = default 0.5)
-    'de_CR'                 : None,     # DE crossover probability (None = default 0.5)
+    'de_strategy'           : None,     # DE strategy string e.g. 'best1bin' (None = default)
+    'de_mutation'            : None,     # DE mutation scale factor F (None = default 0.5)
+    'de_recombination'      : None,     # DE crossover probability CR (None = default 0.7)
     'de_niter'              : 800,      # DE iteration budget (overrides the GUI niter when DE is selected)
+    'de_tol'                : None,     # DE convergence tolerance (None = use SolverDE default 0.01)
 
     # See also Optimizer.OptimizerSettings.py on the items below
     't0_upper_bound'        : None,
@@ -456,10 +457,11 @@ SOLVER_SETTING_KEYS = [
     'ns_adaptive_nsteps',
     'ns_nsteps',
     'de_pop_size',
-    'de_variant',
-    'de_F',
-    'de_CR',
+    'de_strategy',
+    'de_mutation',
+    'de_recombination',
     'de_niter',
+    'de_tol',
 ]
 
 V2_TEMPORARY_ITEMS = [

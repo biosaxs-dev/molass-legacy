@@ -12,7 +12,7 @@
         uv_params       : nc
         uv_baseparams   : 5 + num_baseparams
         mappable_range  : (c, d)
-        grm_colparams   : [Pe, t0, R_p, D_eff, R_0, k_ext_0, R_1, k_ext_1, ...,
+        grm_colparams   : [Pe, t0, R_p, D_eff, c_inj, R_0, k_ext_0, R_1, k_ext_1, ...,
                            R_{nc-1}, k_ext_{nc-1}]
 
     Strategy: delegate to molass-library's GrmEstimator.estimate_grm_init_params
@@ -23,9 +23,9 @@
       2. Wrap each EGH component as an _EghCurveAdapterForGrm (has get_xy()).
       3. Wrap adapters in _FakeDecomp (has xr_ccurves attribute).
       4. Call molass.SEC.Models.GrmEstimator.estimate_grm_init_params →
-         (Pe, t0, R_p, D_eff, a_star, F_ratio, k_ext_list, R_list, scale_list).
-      5. Build grm_colparams: [Pe, t0, R_p, D_eff, R_0, k_ext_0, ...].
-      6. Use scale_list as xr heights.
+         (Pe, t0, R_p, D_eff, a_star, F_ratio, k_ext_list, R_list, c_inj).
+      5. Build grm_colparams: [Pe, t0, R_p, D_eff, c_inj, R_0, k_ext_0, ...].
+      6. Use library c_inj for all components as xr heights.
 
     Copyright (c) 2026, SAXS Team, KEK-PF
 """
@@ -67,7 +67,8 @@ class GrmEstimator(EghEstimator):
         if model_decomp is not None and getattr(model_decomp, 'model', None) == 'grm':
             try:
                 from molass.Rigorous.LegacyBridgeUtils import make_basecurves_from_decomposition
-                _, baseparams = make_basecurves_from_decomposition(model_decomp)
+                _ssd_unc = getattr(editor, '_ssd_uncorrected', None)   # molass-legacy#87 pattern
+                _, baseparams = make_basecurves_from_decomposition(model_decomp, data_ssd=_ssd_unc)
                 init_params = model_decomp.make_rigorous_initparams(baseparams)
                 self.logger.info("GrmEstimator: used library GRM upgrade result directly")
                 return init_params
@@ -98,28 +99,28 @@ class GrmEstimator(EghEstimator):
         # Delegate to library: moment-matching to estimate Pe, t0, R_p, D_eff, k_ext_i, R_i
         adapters = [_EghCurveAdapterForGrm(x, init_xr_params[k]) for k in range(nc)]
         fake_decomp = _FakeDecomp(adapters)
-        Pe, t0, R_p, D_eff, a_star_list, F_ratio, k_ext_list, R_list, scale_list = \
+        Pe, t0, R_p, D_eff, a_star_list, F_ratio, k_ext_list, R_list, c_inj = \
             estimate_grm_init_params(fake_decomp, debug=debug)
 
         progress += 1
         editor.pbar["value"] = progress
         editor.update()
 
-        # Build grm_colparams: [Pe, t0, R_p, D_eff, R_0, k_ext_0, R_1, k_ext_1, ...]
-        grm_colparams = [Pe, t0, R_p, D_eff]
+        # Build grm_colparams: [Pe, t0, R_p, D_eff, c_inj, R_0, k_ext_0, R_1, k_ext_1, ...]
+        grm_colparams = [Pe, t0, R_p, D_eff, c_inj]
         for i in range(nc):
             grm_colparams.append(R_list[i])
             grm_colparams.append(k_ext_list[i])
         grm_colparams = np.array(grm_colparams)
 
-        # xr heights: area under each component curve (GRM PDF integrates to ~1)
-        xr_heights = np.array(scale_list)
+        # xr heights: use c_inj for all components (embedded scale)
+        xr_heights = np.full(nc, c_inj)
 
-        # Per-component UV weights: preserve UV/XR height ratio from EGH
+        # Per-component UV/XR ratios: preserve the ratio from EGH (unified architecture)
         egh_xr_heights = np.array([p[0] for p in init_xr_params])
         egh_uv_heights = np.array(init_uv_heights)
         safe_egh_xr    = np.where(egh_xr_heights > 0, egh_xr_heights, 1.0)
-        uv_w = xr_heights * (egh_uv_heights / safe_egh_xr)
+        uv_ratio = egh_uv_heights / safe_egh_xr  # UV/XR ratio (species property)
 
         editor.update_status_bar("GRM initial parameters are ready.")
 
@@ -128,7 +129,7 @@ class GrmEstimator(EghEstimator):
             init_xr_baseparams,     # num_baseparams
             temp_rgs,               # nc
             init_mapping,           # (a_mp, b_mp)
-            uv_w,                   # nc
+            uv_ratio,               # nc: UV/XR ratios (unified architecture)
             init_uv_baseparams,     # 5 + num_baseparams
             init_mappable_range,    # (c, d)
             grm_colparams,          # [Pe, t0, R_p, D_eff, R_0, k_ext_0, ...]

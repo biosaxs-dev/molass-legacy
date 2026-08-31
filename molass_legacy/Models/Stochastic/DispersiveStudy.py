@@ -72,7 +72,7 @@ def study(x, y, baseline, model, peaks, peak_rgs, qualities, props, curent_info=
 
             # N, K, x0, poresize, N0, tI
             poresize = sdm_params[3]
-            # t0, u, a, b, e, Dz, cinj
+            # t0, u, a, b, e, Dz, c_inj
             porosities = params_array[:,4]
             edm_rgs = poresize * (1 - np.power(porosities, 1/3))
 

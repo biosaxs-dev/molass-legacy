@@ -22,8 +22,8 @@ def guess_init_params(M):
     b = 0.2
     e = 0.4
     Dz = 0.02
-    cinj = M[0]/2.0 * 0.2
-    return np.array([t0, u, a, b, e, Dz, cinj])
+    c_inj = M[0]/2.0 * 0.2
+    return np.array([t0, u, a, b, e, Dz, c_inj])
 
 def save_training_data():
     from molass_legacy.Batch.StandardProcedure import StandardProcedure
@@ -79,7 +79,7 @@ def try_optimize(x, y, init_params, debug=True):
                                 ("b", -4, 1, slider_params[3]),
                                 ("e", 0, 2, slider_params[4]),
                                 ("Dz", 0, 1, slider_params[5]),
-                                ("cinj", 0, 3, slider_params[6]),
+                                ("c_inj", 0, 3, slider_params[6]),
                                 # ("tinj", 0, 10, slider_params[7]),
                                 ]
 

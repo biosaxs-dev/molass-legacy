@@ -41,11 +41,18 @@ class Logger:
         self.logger.addHandler( self.fileh )
 
         # コンソールへのログを追加する。
-        self.ch = logging.StreamHandler()
-        self.ch.setLevel( logging.DEBUG )
-        self.formatter_ssv_ = logging.Formatter( format_ssv_, datefmt_ )
-        self.ch.setFormatter( self.formatter_ssv_ )
-        self.logger.addHandler( self.ch )
+        # Suppress the stderr StreamHandler in subprocess mode: BackRunner already
+        # captures stderr to optimizer_stderr.txt, so a second StreamHandler on
+        # the root logger would produce duplicate lines in that file.
+        _in_subprocess = os.environ.get('MOLASS_NS_SUBPROCESS') == '1'
+        if not _in_subprocess:
+            self.ch = logging.StreamHandler()
+            self.ch.setLevel( logging.DEBUG )
+            self.formatter_ssv_ = logging.Formatter( format_ssv_, datefmt_ )
+            self.ch.setFormatter( self.formatter_ssv_ )
+            self.logger.addHandler( self.ch )
+        else:
+            self.ch = None
 
     def get_final_log_path( self ):
         this_dir = os.path.dirname( os.path.abspath( __file__ ) )
@@ -60,7 +67,8 @@ class Logger:
         # print( 'Logger.__del__' )
         if self.stream is not None:
             self.moveto( self.get_final_log_path() )
-        self.logger.removeHandler( self.ch )
+        if self.ch is not None:
+            self.logger.removeHandler( self.ch )
         self.logger.removeHandler( self.fileh )
 
     def changeto( self, path ):

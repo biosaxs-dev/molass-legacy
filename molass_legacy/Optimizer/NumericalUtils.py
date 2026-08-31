@@ -29,7 +29,11 @@ def safe_ratios_debug_plot(x, y, xr_ty, xr_cy_list, rg_curve, rg_params):
         plt.show()
 
 def safe_ratios(ones, cy, ty, debug=False):
-    ratios = cy/ty
+    # ty can be zero/near-zero at the edges of the elution range; the resulting
+    # nan/inf is intentionally overwritten below, so the divide-by-zero and
+    # invalid-value RuntimeWarnings are expected noise, not a real problem.
+    with np.errstate(divide='ignore', invalid='ignore'):
+        ratios = cy/ty
     ratios[ty==0] = 1
 
     if debug:

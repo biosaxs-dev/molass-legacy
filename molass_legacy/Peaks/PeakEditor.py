@@ -69,6 +69,8 @@ class PeakEditor(FullBatch, Dialog):
         assert self.advanced
         
         self.dsets = None
+        self._lib_dsets = None           # library dsets — set by _build_library_decomposition (molass-legacy#85)
+        self._ssd_uncorrected = None     # set by prepare_rg_curve (SSD-native path); used by estimators via getattr (molass-legacy#87)
         self.decomposition = None        # library EGH Decomposition (for display)
         self.model_decomposition = None  # library upgraded Decomposition for the selected model (for init-params)
         self._library_decomp_ready = False  # set True when _build_library_decomposition finishes (or is skipped)
@@ -392,21 +394,58 @@ class PeakEditor(FullBatch, Dialog):
     def _build_library_decomposition(self, ssd):
         """Build a library Decomposition from an already-constructed ssd.
 
-        Uses the same num_components as the legacy pre_recog with equal proportions,
-        so the library EGH curves match the optimizer's component count and give
-        better seeds for column model estimators (SDM, EDM, LKM, GRM).
+        For EGH (G0346/G0367): uses default decomp WITHOUT proportions so that
+        EGH tau/sigma values stay within BoundedSecParams bounds.  Proportional
+        path can produce |tau| > sigma*TAU_BOUND_RATIO → negative_penalty ≈ 1000
+        and first-come-first-leave violations → order_penalty ≈ 15, both causing
+        SV=-100 on draw_scores.  (molass-legacy#85)
+
+        For column models (SDM/LKM/etc.): uses equal proportions + upgrade, which
+        is needed for column-model param estimation.
         """
         try:
             num_components = len(self.peak_params_set[1])
+
+            # Determine model class early so we can check it later for the upgrade map.
+            # All models use non-proportional (default) EGH as the base decomposition.
+            # Using proportional EGH for column models was the original strategy, but it
+            # produces wider-than-true elution curves (visually: 2nd component covers both
+            # peaks) that degrade the SDM/LKM/etc. upgrade quality (N≈379 instead of ≈728
+            # for SAMPLE1).  Non-proportional matches the library pipeline
+            # (decomp_egh.upgrade('SDM')) and gives better column-model init params
+            # (+0.5 SV, measured in molass-researcher/experiments/33_gui_consistency/33b).
+            try:
+                _, _pre_class_code = self.get_function_class()
+            except Exception:
+                _pre_class_code = 'G0346'   # safe EGH default
+            _is_egh = _pre_class_code in ('G0346', 'G0367')
+
             decomposition = ssd.quick_decomposition(
                 num_components=num_components,
-                proportions=[1] * num_components,
                 rgcurve=ssd._rgcurve,
             )
             # Inject the cached Rg curve so Decomposition.get_rg_curve() never
             # triggers a second full Rg scan (it would recompute from decomp.ssd.xr).
             decomposition._rgcurve = ssd._rgcurve
             self.decomposition = decomposition
+
+            # Build library dsets from UNCORRECTED ssd (set by prepare_rg_curve before
+            # this thread starts — SSD-native path, absolute jv).  (molass-legacy#85, #87)
+            try:
+                from molass.Rigorous.LegacyBridgeUtils import make_dsets_from_decomposition
+                ssd_uncorrected = self._ssd_uncorrected  # already set in prepare_rg_curve
+                self._lib_dsets = make_dsets_from_decomposition(
+                    decomposition, ssd._rgcurve, data_ssd=ssd_uncorrected
+                )
+            except Exception:
+                import logging as _lg
+                _lg.getLogger(__name__).warning(
+                    "_build_library_decomposition: lib_dsets build failed; construct_optimizer will use legacy dsets",
+                    exc_info=True
+                )
+                self._lib_dsets = None
+                # _ssd_uncorrected already set by prepare_rg_curve — do not overwrite with None
+
             # Schedule a display update on the main thread so the UV/XR panels
             # show the proportional EGH curves instead of the legacy pre_recog peaks.
             self.after(0, self._update_display_from_library_decomp)
@@ -424,16 +463,47 @@ class PeakEditor(FullBatch, Dialog):
                 'G2020': ('EDM',  {}),
             }
             try:
-                _, class_code = self.get_function_class()
+                class_code = _pre_class_code   # already determined above
                 if class_code in ('G0346', 'G0367'):
                     # EGH: decomposition already has model='egh' — use directly.
                     self.model_decomposition = decomposition
                     import logging as _lg
                     _lg.getLogger(__name__).info(
-                        "_build_library_decomposition: EGH — using decomposition directly"
+                        "_build_library_decomposition: EGH -- using decomposition directly"
                     )
                 elif class_code in _UPGRADE_MAP:
+                    import numpy as _np
                     model_name, upgrade_kwargs = _UPGRADE_MAP[class_code]
+                    # G1300 (SDM lognormal): inject mu_max=ln(3*Rg_max) and sigma=0.05.
+                    # Without constraints the optimizer finds a suboptimal basin
+                    # (SV≈54 instead of ≈68).  See molass-library#243 / molass-legacy#88.
+                    if class_code == 'G1300':
+                        try:
+                            _rgs = decomposition.get_rgs()
+                            _valid = [float(r) for r in _rgs
+                                      if r is not None and not _np.isnan(float(r)) and float(r) > 0]
+                            if _valid:
+                                _rg_max = max(_valid)
+                                _mp = {
+                                    'ln_pore_sigma': 0.05,
+                                    'mu_max': float(_np.log(3.0 * _rg_max)),
+                                }
+                                try:
+                                    from molass_legacy._MOLASS.SerialSettings import get_setting as _gs
+                                    _pb = _gs('poresize_bounds')
+                                    _mp['mu_min'] = float(_np.log(_pb[0]))
+                                    _mp['ln_pore_sigma'] = float(_gs('sdm_pore_sigma'))
+                                    # Tighten mu_max to poresize_bounds[1]: prevents upgrade NM
+                                    # from producing poresize > optimizer upper bound, which
+                                    # causes SV=-100 when init params are tested directly.
+                                    _mp['mu_max'] = float(_np.log(
+                                        min(3.0 * _rg_max, float(_pb[1]))))
+                                except Exception:
+                                    _mp['mu_min'] = float(_np.log(_rg_max))
+                                upgrade_kwargs = dict(upgrade_kwargs)   # don't mutate _UPGRADE_MAP
+                                upgrade_kwargs['model_params'] = _mp
+                        except Exception:
+                            pass
                     self.model_decomposition = decomposition.upgrade(model_name, **upgrade_kwargs)
                     import logging as _lg
                     _lg.getLogger(__name__).info(
@@ -457,7 +527,7 @@ class PeakEditor(FullBatch, Dialog):
             self._library_decomp_ready = True
 
     def _update_display_from_library_decomp(self):
-        """Refresh UV/XR panels with library (proportional) EGH decomposition.
+        """Refresh UV/XR panels with library EGH decomposition.
 
         Called on the main Tk thread after _build_library_decomposition completes.
         Updates peak_params_set so column model estimators also see library params.
@@ -512,20 +582,55 @@ class PeakEditor(FullBatch, Dialog):
             rg_curve_ok = RG_CURVE_OK - STOCH_INIT_STEPS
 
         try:
-            from molass.Bridge.SdAdapter import make_ssd_from_corrected_sd
+            from molass.DataObjects.SecSaxsData import SecSaxsData as _SSD
             from molass.Bridge.LegacyRgCurve import LegacyRgCurve
+            from molass_legacy._MOLASS.SerialSettings import get_setting as _get_setting
 
-            ssd = make_ssd_from_corrected_sd(self.corrected_sd)
+            # Build ssd from the raw data folder so jv carries ABSOLUTE frame numbers.
+            # Previously make_ssd_from_sd(self.sd) wrapped the already-trimmed legacy SD
+            # (0-based jv), causing frame coordinate mismatch in all estimators that read
+            # decomp.ssd.xr.jv (EghEstimator init_rgs, UV-height derivation, etc.).
+            # SSD-native path: SSD(folder) → trimmed_copy → corrected_copy.
+            _in_folder = _get_setting('in_folder')
+            _ssd_uncorrected = _SSD(_in_folder).trimmed_copy()   # trimmed, not corrected
+            ssd = _ssd_uncorrected.corrected_copy()
+
+            # Store BEFORE starting the decomposition thread so estimators that read
+            # self._ssd_uncorrected (molass-legacy#87 pattern) never see None.
+            self._ssd_uncorrected = _ssd_uncorrected
 
             # Build a ProgressCallback-compatible callable that wraps the queue.
+            # Store the library ssd's frame-number axis BEFORE starting get_rg_curve
+            # so watch_rg_curve_thread can use it immediately on the first callback.
+            # (progress_cb fires during get_rg_curve; setting _rg_compute_x after
+            # get_rg_curve completes is too late — all callbacks have already fired.)
+            self._rg_compute_x = ssd.xr.jv
+
             # The library calls progress_cb(rg_buffer, j) with the same signature
             # the legacy ProgressCallback uses, so watch_rg_curve_thread works unchanged.
             progress_cb = ProgressCallback(queue, STARTED, rg_curve_ok)
             library_rgcurve = ssd.get_rg_curve(progress_cb=progress_cb)
 
             # Wrap the library RgCurve into the legacy format the optimizer reads.
-            xr_curve = self.ecurves[1]   # ElutionCurve — already set by body()
-            legacy_rgcurve = LegacyRgCurve(xr_curve, library_rgcurve)
+            # IMPORTANT: use the SSD-native elution curve (x=absolute jv, e.g. [59..1557])
+            # NOT the legacy self.ecurves[1] (x=[0..644]).  library_rgcurve.indeces are in
+            # absolute frame space; LegacyRgCurve uses frame_offset=x[0] to map them to
+            # relative indices.  With the legacy curve, frame_offset=0 and most absolute
+            # indices (59..1557) fall outside [0,644] → masked out → NaN Rg values →
+            # wrong slices exported → subprocess Guinier deviation inflated by ~0.155 fv
+            # → ~5.5 SV gap (molass-legacy#94).
+            # Use ssd's XR elution curve (x = ssd.xr.jv = absolute frame numbers).
+            xr_icurve = ssd.xr.get_icurve()
+
+            class _SsdXrCurveAdapter:
+                """Minimal adapter to satisfy LegacyRgCurve(ecurve, ...) interface."""
+                def __init__(self, icurve):
+                    self.x = icurve.x
+                    self.y = icurve.y
+                    self.max_y = float(icurve.y.max())
+
+            xr_curve_ssd = _SsdXrCurveAdapter(xr_icurve)
+            legacy_rgcurve = LegacyRgCurve(xr_curve_ssd, library_rgcurve)
 
             # Export the rg-curve folder so the subprocess can find it —
             # this mirrors what get_dsets_impl(compute_rg=True) normally does.
@@ -581,7 +686,11 @@ class PeakEditor(FullBatch, Dialog):
 
             if p_info is not None and type(p_info) == tuple:
                 xr_curve = self.ecurves[1]
-                drawn = draw_rg_bufer(self.axt, p_info, self, xr_curve.x)   # this updates self.rg_line
+                # Use the library ssd's frame-number axis if available (library path
+                # stores it as _rg_compute_x).  Falls back to xr_curve.x on the
+                # legacy path where sizes always match.
+                rg_x = getattr(self, '_rg_compute_x', xr_curve.x)
+                drawn = draw_rg_bufer(self.axt, p_info, self, rg_x)   # this updates self.rg_line
                 if drawn:
                     j = p_info[1]
                     self.update_status_bar("Computing Rg values near the %d-th elution." % j)
@@ -632,6 +741,58 @@ class PeakEditor(FullBatch, Dialog):
         init_params = self.compute_init_params(developing=True)  # to enable developing version features
         self.fullopt.prepare_for_optimization(init_params)
 
+    def construct_optimizer(self, fullopt_class=None):
+        """Override FullBatch.construct_optimizer to use library dsets when available.
+
+        The parent's implementation passes corrected_sd data as dsets, which can have
+        negative intensities at low q after baseline subtraction → compute_LRF_matrices
+        crashes → SV = -100 in draw_scores.  Using uncorrected sd data (stored in
+        self._lib_dsets by _build_library_decomposition) avoids this.  (molass-legacy#85)
+        """
+        if fullopt_class is None:
+            fullopt_class, class_code = self.get_function_class()
+        n_components = self.get_n_components()
+        uv_base_curve = self.baseline_objects[0]
+        xr_base_curve = self.baseline_objects[1]
+        self.uv_base_curve = uv_base_curve
+
+        dsets = self._lib_dsets if self._lib_dsets is not None else self.dsets
+
+        # qvector must match dsets.xrD q-axis; lib_dsets has a different q-count
+        # than self.sd when built from SSD(in_folder).trimmed_copy() (full raw data).
+        _ssd_unc = getattr(self, '_ssd_uncorrected', None)
+        qvector = (_ssd_unc.xr.q_values
+                   if self._lib_dsets is not None and _ssd_unc is not None
+                   else self.sd.qvector)
+        self.optimizer = fullopt_class(
+            dsets,
+            n_components,
+            uv_base_curve=uv_base_curve,
+            xr_base_curve=xr_base_curve,
+            qvector=qvector,
+            wvector=self.sd.lvector,
+        )
+
+        # Inject LumpingConstraint for G1300 lognormal BH if one was prepared by
+        # SdmEstimator._estimate_lognormal (stored as editor._lognormal_lumping_constraint).
+        # Parallels the library path where constraints=[LumpingConstraint(...)] is passed
+        # to optimize_rigorously() and injected via BasicOptimizer._constraints.
+        _lc = getattr(self, '_lognormal_lumping_constraint', None)
+        if _lc is not None:
+            self.optimizer._constraints = [_lc]
+            self._lognormal_lumping_constraint = None  # consume once
+
+        self.fullopt = self.optimizer   # for backward compatibility
+        self.params_type = self.fullopt.params_type
+
+    def get_pre_recog_mapping_params(self):
+        if self._lib_dsets is not None and self.decomposition is not None:
+            # use library-computed UV↔XR mapping (slope, intercept) from ssd.get_mapping();
+            # the legacy pre_recog mapping was calibrated on the original SD frame space and
+            # gives the wrong intercept for the SSD-native absolute-frame coordinate system.
+            return self.decomposition.ssd.get_mapping()
+        return super().get_pre_recog_mapping_params()
+
     def draw_scores(self, init_params=None, draw_rg_curve=True, create_new_optimizer=True):
 
         if create_new_optimizer:
@@ -658,8 +819,17 @@ class PeakEditor(FullBatch, Dialog):
         ax1.set_title("UV Decomposition", fontsize=16)
         ax2.set_title("Xray Decomposition", fontsize=16)
 
+        lrf_info = None
         try:
-            fv = self.fullopt.objective_func(self.fullopt.init_params, plot=True, axis_info=axis_info)
+            fv, score_list, *_ = self.fullopt.objective_func(
+                self.fullopt.init_params, plot=True, axis_info=axis_info, return_full=True)
+            # Log score breakdown so Layer 1 of the debug cycle shows which term dominates.
+            # This avoids the need for GuiSimUtils just to identify the dominant penalty.
+            sv = convert_score(fv)
+            score_names = self.fullopt.get_score_names()
+            breakdown_parts = ["%s: %.4g" % (n, v) for n, v in zip(score_names, score_list) if abs(v) > 1e-6]
+            self.logger.info("draw_scores: fv=%.5g  SV=%.3g", fv, sv)
+            self.logger.info("draw_scores breakdown: %s", "  ".join(breakdown_parts))
         except:
             from molass_legacy.KekLib.ExceptionTracebacker import log_exception
             log_exception(self.logger, "draw_scores: ", n=10)

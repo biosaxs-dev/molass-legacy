@@ -2,11 +2,16 @@
     G1500.py — 7-score GRM (General Rate Model) objective function
 
     Elution model: GRM via PDE characteristic-function + FFT inversion
-    Parameter layout:
-        xr_params, xr_baseparams, rg_params, (a,b), uv_params, uv_baseparams,
-        (c,d), grmcol_params
-    grmcol_params = [Pe, t0, R_p, D_eff, R_0, k_ext_0, R_1, k_ext_1, ...,
-                     R_{nc-1}, k_ext_{nc-1}]
+    Parameter layout (split_params_simple order):
+        xr_params (nc,)  : XR peak heights
+        xr_baseparams    : XR baseline parameters
+        rg_params (nc,)  : Rg values per component
+        (a, b)           : UV-XR frame mapping
+        uv_params (nc,)  : UV/XR intensity ratios ε_i/k (unified architecture)
+        uv_baseparams    : UV baseline parameters
+        (c, d)           : mappable range
+        grmcol_params    : [Pe, t0, R_p, D_eff, c_inj, R_0, k_ext_0, ...,
+                            R_{nc-1}, k_ext_{nc-1}]
 
     Copyright (c) 2026, SAXS Team, KEK-PF
 """
@@ -61,11 +66,12 @@ class G1500(BasicOptimizer):
         x = self.xr_curve.x
         y = self.xr_curve.y
 
-        # GRM column params: shared Pe, t0, R_p, D_eff; per-component R_i, k_ext_i
+        # GRM column params: shared Pe, t0, R_p, D_eff, c_inj; per-component R_i, k_ext_i
         Pe    = grmcol_params[0]
         t0    = grmcol_params[1]
         R_p   = grmcol_params[2]
         D_eff = grmcol_params[3]
+        c_inj = grmcol_params[4]
         nc    = self.n_components - 1
 
         uv_x = a * x + b
@@ -94,13 +100,15 @@ class G1500(BasicOptimizer):
         F_ratio = self._F_ratio
         for i, (xr_w, rg_, uv_w) in enumerate(zip(xr_params, rg_params, uv_params)):
             negative_penalty += min(0, xr_w) ** 2 + min(0, uv_w) ** 2
-            R_i     = grmcol_params[4 + 2 * i]
-            k_ext_i = grmcol_params[4 + 2 * i + 1]
+            R_i     = grmcol_params[5 + 2 * i]
+            k_ext_i = grmcol_params[5 + 2 * i + 1]
             # a_star derived from R_i: R = 1 + F*a_star → a_star = (R-1)/F
             a_star_i = (R_i - 1.0) / F_ratio
-            pd_cy = grm_pdf(x, Pe, t0, k_ext_i, R_p, D_eff, a_star_i, F_ratio)
+            # Get normalized pore distribution (c_inj=1.0), scale by component-specific xr_w
+            pd_cy = grm_pdf(x, Pe, t0, k_ext_i, R_p, D_eff, a_star_i, F_ratio,
+                           c_inj=1.0, t_inj=1.0)
             xr_cy  = xr_w * pd_cy
-            uv_cy  = uv_w * pd_cy
+            uv_cy  = uv_w * xr_cy  # uv_w now interpreted as UV/XR ratio
             xr_ty += xr_cy
             xr_cy_list.append(xr_cy)
             uv_ty += uv_cy
@@ -129,7 +137,9 @@ class G1500(BasicOptimizer):
 
             # R ordering constraint: R_0 <= R_1 <= ... <= R_{nc-1}
             # (peak elution time = t0 * R_i; SEC order = ascending R)
-            R_values = grmcol_params[4::2]
+            # grmcol layout: [Pe, t0, R_p, D_eff, c_inj, R_0, k_0, R_1, k_1, ...]
+            # R values start at index 5 with step 2 (not 4::2 which would give c_inj, k_ext, ...)
+            R_values = grmcol_params[5::2]
             order_penalty = PENALTY_SCALE * float(np.sum(np.maximum(0.0, R_values[:-1] - R_values[1:]) ** 2))
 
             penalties = [mapping_penalty, negative_penalty, baseline_penalty,

@@ -89,7 +89,16 @@ def get_dsets_impl(sd, corrected_sd, progress_cb=None, rg_folder=None, rg_info=T
         # This ensures subprocess uses the EGH-fitted curve, not the legacy-smoothed one.
         _ip_xr_path = os.path.join(optimizer_folder, 'ip_xr_elcurve_y.npy')
         if os.path.exists(_ip_xr_path):
-            xr_curve.y = np.load(_ip_xr_path)
+            _new_xr_y = np.load(_ip_xr_path)
+            _ip_xr_x_path = os.path.join(optimizer_folder, 'ip_xr_elcurve_x.npy')
+            if os.path.exists(_ip_xr_x_path) and len(_new_xr_y) != len(xr_curve.x):
+                _old_xr_x_len = len(xr_curve.x)
+                xr_curve.x = np.load(_ip_xr_x_path)
+                if logger is not None:
+                    logger.info("xr_curve.x overridden from parent's XR frame axis "
+                                "(length %d → %d, SSD-native path)",
+                                _old_xr_x_len, len(xr_curve.x))
+            xr_curve.y = _new_xr_y
             if logger is not None:
                 logger.info("xr_curve.y overridden from parent's EGH-fitted curve (molass-legacy#38)")
 
@@ -171,6 +180,18 @@ def get_dsets_impl(sd, corrected_sd, progress_cb=None, rg_folder=None, rg_info=T
         if os.path.exists(_ip_uv_path):
             from scipy.interpolate import InterpolatedUnivariateSpline
             _new_uv_y = np.load(_ip_uv_path)
+            # Override uv_curve.x if the parent exported a UV frame axis and the lengths
+            # differ (SSD-native path: in-process UV spans ~2249 UV-native absolute frames
+            # while the legacy subprocess loads only ~645 frames).  Must be done before
+            # setting .y/.sy so the spline rebuild uses the correct matching x-axis.
+            _ip_uv_x_path = os.path.join(optimizer_folder, 'ip_uv_elcurve_x.npy')
+            if os.path.exists(_ip_uv_x_path) and len(_new_uv_y) != len(uv_curve.x):
+                _old_uv_x_len = len(uv_curve.x)
+                uv_curve.x = np.load(_ip_uv_x_path)
+                if logger is not None:
+                    logger.info("uv_curve.x overridden from parent's UV frame axis "
+                                "(length %d → %d, SSD-native path)",
+                                _old_uv_x_len, len(uv_curve.x))
             uv_curve.y = _new_uv_y
             # Also update sy (molass-legacy#43): ElCurve stores uv_curve.sy as the legacy-smoothed
             # elution curve.  BasicOptimizer.__init__ rebuilds uv_curve.spline (molass-legacy#34
@@ -193,6 +214,17 @@ def get_dsets_impl(sd, corrected_sd, progress_cb=None, rg_folder=None, rg_info=T
                 ax2.plot(xr_curve_.x, xr_curve_.y)
             fig.tight_layout()
             plt.show()
+
+    # Override U matrix with parent's library UV data if exported (molass-legacy#39 missing implementation).
+    # The subprocess derives U from sd.get_uv_data_separate_ly() (legacy source, ~634 frames);
+    # the parent uses ssd_uncorrected.uv.M (library source, ~2399 frames).
+    # Different U frame count causes UV_LRF_residual mismatch even when uv_curve.x is overridden.
+    if optimizer_folder is not None:
+        _ip_uv_U_path = os.path.join(optimizer_folder, 'ip_uv_U.npy')
+        if os.path.exists(_ip_uv_U_path):
+            U = np.load(_ip_uv_U_path)
+            if logger is not None:
+                logger.info("U matrix overridden from parent's library UV data (molass-legacy#39)")
 
     # Load E matrix override if exported by parent (molass-legacy#39).
     # The subprocess derives E from sd.intensity_array[:,:,2].T (legacy source); the parent

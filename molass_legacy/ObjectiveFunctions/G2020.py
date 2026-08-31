@@ -3,7 +3,7 @@
 
     Elution model: Constrained EDM (CEDM)
     Column parameters t0, u, e, Dz are SHARED across all components.
-    Per-component free parameters: a (K_SEC), b, cinj.
+    Per-component free parameters: a (K_SEC), b, c_inj.
 
     Scores: XR_2D_fitting, XR_LRF_residual, UV_2D_fitting, UV_LRF_residual,
             Guinier_deviation, Kratky_smoothness, SEC_conformance
@@ -28,7 +28,7 @@ class G2020(BasicOptimizer):
     Constrained Equilibrium Dispersive Model (CEDM).
 
     Four column parameters (t0, u, e, Dz) are shared across all
-    components; only a (K_SEC), b, and cinj are free per component.
+    components; only a (K_SEC), b, and c_inj are free per component.
     """
 
     def __init__(self, dsets, n_components, **kwargs):
@@ -66,11 +66,11 @@ class G2020(BasicOptimizer):
         uv_x = map_a * x + map_b
         uv_y = self.uv_curve.spline(uv_x)
 
-        # mapping_penalty: pass cinj (last column of xr_params_abc) as heights
+        # mapping_penalty: pass c_inj (last column of xr_params_abc) as heights
         mapping_penalty = compute_mapping_penalty(
             self.uv_curve, self.xr_curve, self.init_mapping,
             (map_a, map_b), len(self.uv_curve.x),
-            xr_params_abc[:, -1],   # cinj
+            xr_params_abc[:, -1],   # c_inj
             uv_params
         )
 
@@ -95,17 +95,40 @@ class G2020(BasicOptimizer):
         # In SEC, earlier-eluting components have larger Rg → more excluded → smaller a.
         # Components are ordered by initial EGH peak position (stored during init).
         order_penalty = 0
-        a_values = [a_k for a_k, b_k, cinj_k in xr_params_abc]
+        a_values = [a_k for a_k, b_k, c_inj_k in xr_params_abc]
         for i in range(len(a_values) - 1):
             if a_values[i] > a_values[i+1]:
                 # Wrong order: penalize the squared violation
                 order_penalty += (a_values[i] - a_values[i+1]) ** 2
 
-        for a_k, b_k, cinj_k in xr_params_abc:
-            full = np.array([t0_sh, u_sh, a_k, b_k, e_sh, Dz_sh, cinj_k])
+        # Non-negativity penalties: NOT NEEDED (investigation 2026-07-08)
+        #
+        # Previously, this code penalized negative XR concentration and UV scale values.
+        # Investigation in molass-researcher/experiments/29_five_model_approach/29c showed:
+        #
+        #   1. EDM model (edm_impl) naturally enforces non-negativity:
+        #      - Tested 2500 parameter combinations across realistic and extreme ranges
+        #      - Zero negative curves found (a: 0.1-100.0, b: -20.0-20.0)
+        #      - Mathematical structure prevents negative concentrations
+        #
+        #   2. UV scale bounds already enforce positivity:
+        #      - CedmParams.py sets uv_bounds = [(0.02*uv_h_max, 2.0*uv_h_max), ...]
+        #      - Lower bound is always positive (AVOID_VANISHING_RATIO = 0.02)
+        #
+        # The negative UV components observed in Issue #225 were caused by Issue #226
+        # (division bug in get_scale_param), not by the model producing negative values.
+        # With #226 fixed, these penalties serve no purpose.
+        #
+        # See: https://github.com/biosaxs-dev/molass-library/issues/225
+        #      https://github.com/biosaxs-dev/molass-library/issues/226
+        negative_xr_penalty = 0  # EDM model never produces negative curves
+
+        for a_k, b_k, c_inj_k in xr_params_abc:
+            full = np.array([t0_sh, u_sh, a_k, b_k, e_sh, Dz_sh, c_inj_k])
             xr_cy = np.nan_to_num(
                 edm_impl(x, *full), nan=0.0, posinf=0.0, neginf=0.0
             )
+            
             uv_cy = uv_params[len(xr_cy_list)] * xr_cy
             xr_ty += xr_cy
             xr_cy_list.append(xr_cy)
@@ -118,6 +141,8 @@ class G2020(BasicOptimizer):
         xr_cy_list.append(xr_bl)
         uv_ty += uv_bl
         uv_cy_list.append(uv_bl)
+
+        negative_uv_penalty = 0  # UV scale bounds enforce positivity (>= 0.02*uv_h_max)
 
         lrf_info = None
         penalties = []
@@ -134,7 +159,8 @@ class G2020(BasicOptimizer):
             y2_penalty = max(self.y2_allowance, (y2 - self.init_y2) ** 2) - self.y2_allowance
             baseline_penalty += y1_penalty * self.y1_penalty_scale + y2_penalty * self.y2_penalty_scale
 
-            negative_penalty = PENALTY_SCALE * min(0, np.min(uv_params[:])) ** 2
+            # Non-negativity penalties are now always zero (see comment above)
+            negative_penalty = PENALTY_SCALE * (negative_xr_penalty + negative_uv_penalty)
             order_penalty *= PENALTY_SCALE
             penalties = [
                 mapping_penalty, negative_penalty, baseline_penalty,

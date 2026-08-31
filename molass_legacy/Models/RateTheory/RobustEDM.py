@@ -13,10 +13,25 @@ from molass_legacy.Models.ElutionModelUtils import compute_4moments, get_xies_fr
 
 VERY_SMALL_VALUE = 1e-8
 
-def edm_impl(x, t0, u, a, b, e, Dz, cinj):
-    return edm_func(x-t0, u, a, b, e, Dz, cinj)
+def edm_impl(x, t0, u, a, b, e, Dz, c_inj):
+    return edm_func(x-t0, u, a, b, e, Dz, c_inj)
 
-def guess_init_params(M):
+def guess_init_params(M, t_inj=1.0):
+    """Guess initial EDM parameters from moments.
+    
+    Parameters
+    ----------
+    M : array-like
+        Moments [M0, M1, M2, ...] where M0 is area.
+    t_inj : float, optional
+        Injection duration (default 1.0). The EDM output area is proportional
+        to c_inj × t_inj, so c_inj estimation must account for this.
+    
+    Returns
+    -------
+    params : ndarray
+        Initial guess [t0, u, a, b, e, Dz, c_inj].
+    """
     M1 = M[1]
     M2 = M[2]
     t0 = M1/2
@@ -26,8 +41,12 @@ def guess_init_params(M):
     e = 0.4
     print("guess_init_params: M2=", M2)
     Dz = 0.2
-    cinj = M[0]/2.0 * 0.2
-    return np.array([t0, u, a, b, e, Dz, cinj])
+    # c_inj estimation accounts for t_inj (EDM area ∝ c_inj × t_inj)
+    # Factor 0.2 was calibrated with t_inj=2.0 implicit, so we need to scale:
+    # Original: c_inj = M[0]/2.0 * 0.2 with t_inj=2.0 implicit
+    # New:      c_inj = M[0]/2.0 * 0.2 * (2.0 / t_inj) to preserve area
+    c_inj = M[0] / 2.0 * 0.2 * (2.0 / t_inj)
+    return np.array([t0, u, a, b, e, Dz, c_inj])
 
 def try_optimize(x, y, init_params, debug=False):
 
@@ -51,7 +70,7 @@ def try_optimize(x, y, init_params, debug=False):
                                 ("b", -4, 1, slider_params[3]),
                                 ("e", 0, 2, slider_params[4]),
                                 ("Dz", 0, 1.5, slider_params[5]),
-                                ("cinj", 0, 3, slider_params[6]),
+                                ("c_inj", 0, 3, slider_params[6]),
                                 # ("tinj", 0, 10, slider_params[7]),
                                 ]
 
@@ -90,7 +109,7 @@ def try_optimize(x, y, init_params, debug=False):
 
 def guess_multiple(x, y, debug=False):
     M = compute_4moments(x, y)
-    init_params = guess_init_params(M)
+    init_params = guess_init_params(M, t_inj=1.0)
     params, score = try_optimize(x, y, init_params, debug=True)
 
     y_ = edm_impl(x, *params)
@@ -150,4 +169,4 @@ class EDM(Model):
         return x_from_height_ratio_impl(edm_impl, ecurve, ratio, *params, needs_ymax=True, full_params=True)
 
     def get_params_string(self, params):
-        return 't0=%g, u=%g, a=%g, b=%g, e=%g, Dz=%g, cinj=%g' % tuple(params)
+        return 't0=%g, u=%g, a=%g, b=%g, e=%g, Dz=%g, c_inj=%g' % tuple(params)

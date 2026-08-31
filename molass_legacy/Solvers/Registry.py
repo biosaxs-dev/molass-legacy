@@ -39,7 +39,7 @@ SOLVER_REGISTRY = {
     'SMC':   SolverEntry('pyabc',     3, 'molass_legacy.Solvers.ABC.SolverPyABC',                'SolverPyABC',    []),
     'PYMC':  SolverEntry('pymc',      4, 'molass_legacy.Solvers.SMC.SolverPyMC',                 'SolverPyMC',     []),
     'CMA':   SolverEntry('cma',       5, 'molass.Solvers.CMA.SolverCMA',                         'SolverCMA',      []),
-    'DE':    SolverEntry('de',        6, 'molass.Solvers.DE.SolverDE',                           'SolverDE',       ['de_pop_size', 'de_variant', 'de_F', 'de_CR']),
+    'DE':    SolverEntry('de',        6, 'molass.Solvers.DE.SolverDE',                           'SolverDE',       ['de_pop_size', 'de_strategy', 'de_mutation', 'de_recombination', 'de_tol']),
     'NSGA2': SolverEntry('nsga2',     7, 'molass.Solvers.NSGA2.SolverNSGA2',                     'SolverNSGA2',    []),
 }
 

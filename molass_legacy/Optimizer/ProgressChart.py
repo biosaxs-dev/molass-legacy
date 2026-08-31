@@ -40,7 +40,7 @@ def get_time_elapsed(fv_array):
         time = ""
     return time
 
-def guess_ending_time(fv_array, niter=20):
+def guess_ending_time(fv_array, niter=20, is_completed=False):
     finish_time = None
     time = ""
 
@@ -49,25 +49,40 @@ def guess_ending_time(fv_array, niter=20):
         try:
             start_time = fv_array[0,3]
             curr_time = fv_array[-1,3]
-            # For DE (and other population-based solvers), extrapolate based on eval
-            # count (fv_array[:,0]) rather than callback count (fv_array.shape[0]).
-            # DE has few callbacks but many evals per callback; callback-based
-            # extrapolation over-estimates the remaining time by ~10-20×.
+            # Explicit completion flag: set by MplMonitor when the optimizer thread
+            # has stopped (handles early tol convergence where callback count may be
+            # far below de_niter and the heuristic checks below would mis-estimate).
+            if is_completed:
+                finish_time = curr_time
+                time = friendly_time_str(finish_time)
+                return time, finish_time
+            # For DE: use de_niter as the expected number of callbacks.
+            # DE fires one callback per scipy generation; de_niter≈100 approximates
+            # the convergence point (typically ~100-130 callbacks before tol exits).
+            # Using the eval budget (de_niter * FEVALS_PER_NITER = 660,000) is wrong
+            # because DE converges at ~8% of that budget, making the fraction_done
+            # perpetually ~1% during the run and projecting 12-hour finish times.
             try:
                 from molass_legacy._MOLASS.SerialSettings import get_setting as _gs
                 _de_n = _gs('de_niter')
                 if _de_n is not None:
-                    _DE_FEVALS_PER_NITER = 200
-                    total_evals = int(_de_n) * _DE_FEVALS_PER_NITER
-                    curr_evals = float(fv_array[-1, 0])
-                    if curr_evals > 0:
-                        fraction_done = curr_evals / total_evals
-                        finish_time = start_time + (curr_time - start_time) / fraction_done
-                        time = friendly_time_str(finish_time + timedelta(minutes=1))
+                    expected_callbacks = int(_de_n)
+                    if fv_array.shape[0] >= expected_callbacks:
+                        # Completed: return actual end time
+                        finish_time = curr_time
+                        time = friendly_time_str(finish_time)
                         return time, finish_time
+                    # In-progress: callback-count extrapolation with de_niter
+                    finish_time = start_time + (curr_time - start_time) * (expected_callbacks / fv_array.shape[0])
+                    time = friendly_time_str(finish_time + timedelta(minutes=1))
+                    return time, finish_time
             except Exception:
                 pass
             # Default: callback-count extrapolation (works well for BH/NS)
+            if fv_array.shape[0] >= niter:
+                finish_time = curr_time
+                time = friendly_time_str(finish_time)
+                return time, finish_time
             finish_time = start_time + (curr_time - start_time)*(niter/fv_array.shape[0])
             # add 1 minute so that it won't be too early
             time = friendly_time_str(finish_time + timedelta(minutes=1))
@@ -81,8 +96,13 @@ def get_remaining_time(fv_array, finish_time):
         return ""
     try:
         curr_time = fv_array[-1,3]
+        remaining = finish_time - curr_time
+        # When the run is complete, finish_time == curr_time (set by guess_ending_time).
+        # Clamp to 0 rather than showing a spurious "0.01" from the +1 min buffer.
+        if remaining.total_seconds() <= 0:
+            return "  0.00"
         # add 1 minute so that it won't be too short
-        hhmmss = str(finish_time - curr_time + timedelta(minutes=1) ).split(":")
+        hhmmss = str(remaining + timedelta(minutes=1)).split(":")
         time = "%3d.%02d" % tuple([int(s) for s in hhmmss[0:2]])
         # %3d instead of %2d is just for positioning purpose with non-fixed-width fonts.
         # to be fixed: ValueError: invalid literal for int() with base 10: '-1 day, 23'
@@ -93,7 +113,7 @@ def get_remaining_time(fv_array, finish_time):
         time = ""
     return time
 
-def draw_progress(self, plot_info, niter=20):
+def draw_progress(self, plot_info, niter=20, is_completed=False):
 
     for ax in self.prog_axes:
         ax.cla()
@@ -119,7 +139,24 @@ def draw_progress(self, plot_info, niter=20):
         if _de_n is not None:
             from molass.Solvers.DE.SolverDE import FEVALS_PER_NITER as _FPN
             _de_budget = int(_de_n) * _FPN
-            max_num_evals = max(max_num_evals, _de_budget)
+            # When current progress is below 20% of the full budget, show 2× the
+            # current eval count so the data fills at least half the plot area.
+            # Once beyond 20%, switch to the full budget range so the user can
+            # see overall progress.  (Issue: niter=100 → budget=660k, early data
+            # at ~27k would otherwise be squashed into the leftmost 4%.)
+            # NOTE: must assign (not max) — max_num_evals is already 660k from
+            # JobState.estimate_xmax, so max() can never reduce it.
+            # At completion (all niter callbacks received), fit the axis to
+            # the actual data range so the chart is fully occupied.
+            # During the run, use 2× scaling so early data is not squashed
+            # into the leftmost few percent of a 660k-wide axis.
+            is_completed = fv.shape[0] >= niter
+            if is_completed:
+                max_num_evals = max(1, int(x_[-1]))
+            elif len(x_) > 0 and int(x_[-1]) < _de_budget * 0.2:
+                max_num_evals = int(x_[-1]) * 2
+            else:
+                max_num_evals = _de_budget
     except Exception:
         pass
     prog_ax.plot(x_, convert_score(y_))
@@ -183,7 +220,11 @@ def draw_progress(self, plot_info, niter=20):
             ax.plot([x, x], [ymin, ymax], color='gray', alpha=0.3)
 
     ymin_, ymax_ = map_ax.get_ylim()
-    dy = (ymax_ - ymin_) * 1.0
+    # dy=0: text reference frame starts at the data range, so the lowest label
+    # (w=0.2) sits near the bottom of map_ax rather than one full axis-height
+    # above it. Eliminates the large blank space in the right column below the
+    # time labels. (Previous: dy = (ymax_-ymin_)*1.0 left ~120% of map_ax height empty.)
+    dy = 0
     ymin, ymax = ymin_ + dy, ymax_ + dy
     tx = xmax*1.07
 
@@ -210,7 +251,7 @@ def draw_progress(self, plot_info, niter=20):
     map_ax.text(tx, ty, "Ending Time", ha="center")
 
     # guess_ending_time() must be called before get_remaining_time()
-    time_str, finish_time = guess_ending_time(fv, niter=niter)
+    time_str, finish_time = guess_ending_time(fv, niter=niter, is_completed=is_completed)
     w = 0.2
     ty = ymin*(1-w) + ymax*w
     map_ax.text(tx, ty, time_str, ha="center", va="center")

@@ -86,6 +86,15 @@ COERCE_BOUNDED_BQ = True
 USE_RGCURVE_DEVIATION = True
 ADJUST_2D_TARGET = 1
 class BasicOptimizer:
+    """Core optimizer that evaluates the objective function for all elution models.
+
+    .. note:: **n_components convention** (legacy throughout molass-legacy)
+
+        ``n_components`` includes the baseline component.
+        Biological component count = ``n_components - 1``  (see ``num_pure_components``).
+        The CLI flag ``-n`` carries this total; e.g. ``-n 4`` = 3 biological components.
+        Renaming is deferred — search ``nc = n_components - 1`` to find translation points.
+    """
     def __init__(self, dsets, n_components, params_type, kwargs):
         self.NUM_MAJOR_SCORES = get_setting("NUM_MAJOR_SCORES")
 
@@ -103,6 +112,10 @@ class BasicOptimizer:
         # Issue #50: lock held by objective_func_wrapper during each BH evaluation,
         # allowing MplMonitor.update_plot() to acquire it safely between evaluations.
         self._objective_lock = threading.Lock()
+        # Pluggable constraint hooks (e.g. LumpingConstraint).
+        # Each entry must be callable: penalty = c(lrf_info) → float.
+        # Set by molass-library after construct_legacy_optimizer returns.
+        self._constraints = []
         if for_split_only:
             # as used in test_6690_BasinHopping.py
             return
@@ -420,13 +433,6 @@ class BasicOptimizer:
                 _reload(molass_legacy.Solvers.Registry)
                 from molass_legacy.Solvers.Registry import get_solver_instance
                 solver = get_solver_instance(method, self)
-                # DE uses de_niter as its budget (niter=20 from GUI is too small).
-                # Use de_niter if set and method is DE; otherwise fall through with niter.
-                if method == "de":
-                    from molass_legacy._MOLASS.SerialSettings import get_setting as _gs
-                    _de_niter = _gs('de_niter')
-                    if _de_niter is not None:
-                        niter = int(_de_niter)
                 result = solver.minimize(self.objective_func_wrapper, norm_params, niter=niter, seed=seed, bounds=bounds)
             except (ImportError, ValueError):
                 raise ValueError("Unknown method: %s" % method)
@@ -476,36 +482,8 @@ class BasicOptimizer:
         self.zero_bounds = np.zeros(masked_init_params.shape)
         self.sf_bounds = None   # referenced in objective_func, but is this ok?
 
-        # Refine UV scales using the objective function (avoids near-zero scales under high overlap)
-        # Only for SDM and similar models where UV scale optimization is meaningful
-        if hasattr(self, '_refine_uv_scales') and self._refine_uv_scales:
-            print(f"[DEBUG] Attempting UV scale refinement...")
-            try:
-                from molass_legacy.Models.Stochastic.DispersiveUvScaler import optimize_uv_scales_via_objective
-                print(f"[DEBUG]   Function imported successfully")
-                uv_params_refined = optimize_uv_scales_via_objective(
-                    self, init_params, self._uv_scale_indices, 
-                    uv_params, xr_params, debug=True
-                )
-                print(f"[DEBUG]   Result: {uv_params_refined}")
-                if uv_params_refined is not None:
-                    # Update init params with refined UV scales
-                    init_params = init_params.copy()
-                    init_params[self._uv_scale_indices] = uv_params_refined
-                    self.init_params = init_params
-                    # Re-split with refined params
-                    self.init_separate_params = self.split_params_simple(init_params)
-                    uv_params, uv_baseparams = self.init_separate_params[4:6]
-                    self.init_uv_params = uv_params
-                    self.logger.info("UV scales refined via objective: %s", str(uv_params))
-                    print(f"[DEBUG]   Updated UV scales: {uv_params}")
-            except Exception as e:
-                print(f"[DEBUG]   Error: {e}")
-                import traceback
-                traceback.print_exc()
-                self.logger.warning("UV scale refinement failed: %s (continuing with initial estimate)", str(e))
-        else:
-            print(f"[DEBUG] UV scale refinement disabled (hasattr={hasattr(self, '_refine_uv_scales')}, _refine_uv_scales={getattr(self, '_refine_uv_scales', None)})")
+        # Phase 1c: UV scale refinement workaround removed.
+        # All objective functions now use uv_cy = uv_ratio * xr_cy directly.
 
         self.update_minima_props(init_params)
 
@@ -778,10 +756,19 @@ class BasicOptimizer:
                 self.logger.info("fv is NaN: score_array=%s", str(score_array))
                 self.isnan_logged = True
             fv = np.inf
+
+        # Pluggable constraint penalties (e.g. LumpingConstraint).
+        for _c in getattr(self, '_constraints', []):
+            fv += _c(lrf_info)
+
         return fv, score_array
 
     def objective_func(self, p, plot=False, debug=False, fig_info=None, axis_info=None, return_full=False):
         # override this
+        # Thread safety (molass-library#252): subclasses draw into matplotlib/Tk
+        # artists when plot=True. This must be called from the main thread if an
+        # interactive backend (e.g. TkAgg) is active -- calling it from a
+        # background thread can crash the whole process instead of raising.
         assert False
 
     def debug_plot_params(self, norm_params, **kwargs):
@@ -793,6 +780,7 @@ class BasicOptimizer:
         # MplMonitor.update_plot() acquires the same lock to get a safe window
         # between evaluations for its objective_func re-evaluation (display only).
         with self._objective_lock:
+            self.eval_counter += 1  # track total objective calls for progress charts
             return self.objective_func(self.to_real_params(norm_params), **kwargs)
 
     def get_score_names(self, major_only=False):

@@ -24,6 +24,21 @@ def get_common_parameter_names(nc):
     return xr_names, rg_names, mapping_names, uv_names, mr_names, seccol_names
 
 class SdmParams:
+    """Parameter layout for the SDM (Size Distribution Model) elution model.
+
+    .. note:: **n_components convention** (legacy throughout molass-legacy)
+
+        ``n_components`` includes the baseline component.  Biological
+        component count = ``n_components - 1``.
+
+        Examples:
+          - 3 proteins  →  ``n_components = 4``  (3 bio + 1 baseline)
+          - CLI flag ``-n 4``  →  3 biological components
+          - ``FullOptDialog`` displays ``n_components - 1`` to the user
+
+        Renaming is deferred; for now search for ``nc = n_components - 1``
+        to find all translation points in the codebase.
+    """
     def __init__(self, n_components, num_col_params=None):
         self.logger = logging.getLogger(__name__)
         self.n_components = n_components
@@ -34,7 +49,7 @@ class SdmParams:
         self.use_K = False      # use_K was used for the deprecated stochastic model
         self.estimator = None
 
-        nc = n_components - 1
+        nc = n_components - 1  # biological component count (excludes baseline)
 
         self.pos = []
         self.pos.append(0)      # [0] xr_params
@@ -45,7 +60,7 @@ class SdmParams:
         sep += nc
         self.pos.append(sep)    # [3] mapping
         sep = sep+2
-        self.pos.append(sep)    # [4] uv_params
+        self.pos.append(sep)    # [4] uv_params  (UV/XR intensity ratios, nc,)
         sep += nc
         self.pos.append(sep)    # [5] uv_baseparams
         sep += 5 + self.num_baseparams
@@ -137,9 +152,9 @@ class SdmParams:
         a, b = init_mapping
         mapping_bounds = [(a*0.8, a*1.2), (-m_allow, m_allow)]
 
-        uv_h_max = np.max(init_uv_params)
-        uv_h_min = uv_h_max*AVOID_VANISHING_RATIO
-        uv_bounds = [(uv_h_min, uv_h_max*2) for h in init_uv_params]
+        # UV parameters are UV/XR ratios (species properties, unified architecture)
+        # Allow ±20% refinement (like mapping) but prevent wild deviations
+        uv_bounds = [(uv * 0.8, uv * 1.2) for uv in init_uv_params]
         for k, v in enumerate(init_uv_baseparams):
             v_allow = max(0.1, abs(v))*0.2          # note that v may be zero
             if self.integral_baseline and k == 7:

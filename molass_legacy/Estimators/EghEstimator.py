@@ -60,6 +60,26 @@ class EghEstimator(BaseEstimator):
                     "estimate_egh_params: replaced legacy UV heights with library uv_ccurves (n=%d)",
                     len(init_uv_heights),
                 )
+                # Validate UV heights using the XrUvScaleRatio principle:
+                # log(uv/xr) ratios should cluster across components; an outlier
+                # (including near-zero or negative UV) signals a bad init value.
+                # Correct degenerate UV heights by imputing from the average log-ratio
+                # of the valid (positive) components.  (molass-legacy fix 2026-07-29)
+                xr_heights = init_xr_params[:, 0]
+                MIN_UV_SCALE = 1e-4   # below this the UV height is considered degenerate
+                valid = (init_uv_heights > MIN_UV_SCALE) & (xr_heights > 0)
+                if valid.any() and not valid.all():
+                    log_ratios = np.log(init_uv_heights[valid] / xr_heights[valid])
+                    mean_log_ratio = np.mean(log_ratios)
+                    corrected = ~valid
+                    init_uv_heights[corrected] = xr_heights[corrected] * np.exp(mean_log_ratio)
+                    editor.logger.info(
+                        "estimate_egh_params: corrected degenerate UV heights at indices %s"
+                        " using mean log-ratio=%.3g; corrected=%s",
+                        str(np.where(corrected)[0].tolist()),
+                        mean_log_ratio,
+                        str(init_uv_heights[corrected].tolist()),
+                    )
 
         init_uv_baseparams = temp_uv_baseparams.copy()
         init_uv_baseparams[4:6] /=SLOPE_SCALE
@@ -67,7 +87,31 @@ class EghEstimator(BaseEstimator):
 
         (xr_curve, D), rg_curve = editor.dsets[0:2]
 
-        init_rgs = rg_curve.get_rgs_from_trs(init_xr_params[:,1])
+        if decomp is not None and len(decomp.xr_ccurves) == len(init_xr_params):
+            # EghPeeler replacement was active: init_xr_params[:,1] are library frame
+            # positions (e.g. 808, 874, 973) that may lie beyond the legacy RgCurve's
+            # frame coverage (e.g. 0-644 for 20230705).  Using the legacy
+            # rg_curve.get_rgs_from_trs here extrapolates and returns garbage Rg (~7 Å)
+            # which causes a huge Guinier-deviation penalty (SV=-87).
+            # Instead, interpolate directly from the library RgCurve which covers the
+            # full frame range.
+            try:
+                lib_rgcurve = decomp.ssd.get_rg_curve()
+                lib_rg_x = lib_rgcurve.indeces.astype(float)
+                lib_rg_y = lib_rgcurve.rgvalues.astype(float)
+                init_rgs = np.interp(init_xr_params[:,1], lib_rg_x, lib_rg_y)
+                editor.logger.info(
+                    "estimate_egh_params: using library RgCurve for init_rgs=%s",
+                    str(init_rgs),
+                )
+            except Exception as e:
+                editor.logger.warning(
+                    "estimate_egh_params: library RgCurve lookup failed (%s); falling back to legacy rg_curve",
+                    str(e),
+                )
+                init_rgs = rg_curve.get_rgs_from_trs(init_xr_params[:,1])
+        else:
+            init_rgs = rg_curve.get_rgs_from_trs(init_xr_params[:,1])
         Npc, rp, tI, t0, P, m = guess_initial_secparams(init_xr_params, init_rgs)
         init_sec_params = np.array([Npc, rp, tI, t0, P, m])
     

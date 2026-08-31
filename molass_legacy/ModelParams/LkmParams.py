@@ -3,8 +3,9 @@
 
     Parameter layout for the LKM (Lumped Kinetic Model) objective function.
 
-    Column-params layout: [Pe, t0, R_0, k_MT_0, R_1, k_MT_1, ..., R_{nc-1}, k_MT_{nc-1}]
-    num_col_params = 2 + 2*nc   where nc = n_components - 1 (excluding baseline)
+    Column-params layout: [Pe, t0, c_inj, R_0, k_MT_0, R_1, k_MT_1, ..., R_{nc-1}, k_MT_{nc-1}]
+    num_col_params = 3 + 2*nc   where nc = n_components - 1 (excluding baseline)
+    (c_inj is shared injection concentration)
 
     Copyright (c) 2024, SAXS Team, KEK-PF
 """
@@ -31,19 +32,23 @@ def get_common_parameter_names(nc):
     mapping_names = ["$mp_a$", "$mp_b$"]
     uv_names     = ["$uh_%d$" % k for k in range(nc)]
     mr_names     = ["$mr_a$", "$mr_b$"]
-    lkmcol_names = ["$Pe$", "$t_0$"] + [f"$R_{k}$" if j == 0 else f"$k_{{MT,{k}}}$"
+    lkmcol_names = ["$Pe$", "$t_0$", "$c_{inj}$"] + [f"$R_{k}$" if j == 0 else f"$k_{{MT,{k}}}$"
                     for k in range(nc) for j in range(2)]
     return xr_names, rg_names, mapping_names, uv_names, mr_names, lkmcol_names
 
 
 class LkmParams:
-    """Parameter layout manager for LKM rigorous optimization (G1400)."""
+    """Parameter layout manager for LKM rigorous optimization (G1400).
+
+    .. note:: n_components includes the baseline component;
+              biological component count = n_components - 1.
+    """
 
     def __init__(self, n_components):
         self.logger         = logging.getLogger(__name__)
         self.n_components   = n_components
         nc                  = n_components - 1            # pure components (excl. baseline)
-        self.num_col_params = 2 + 2 * nc
+        self.num_col_params = 3 + 2 * nc                  # [Pe, t0, c_inj, R_0, k_MT_0, ...]
         self.num_baseparams = get_num_baseparams()
         self.integral_baseline = (self.num_baseparams == 3)
         self.t0_upper_bound = get_setting("t0_upper_bound")
@@ -58,7 +63,7 @@ class LkmParams:
         sep += nc
         self.pos.append(sep)                              # [3] mapping (a,b) start
         sep += 2
-        self.pos.append(sep)                              # [4] uv_params start
+        self.pos.append(sep)                              # [4] uv_params start (UV/XR intensity ratios, nc,)
         sep += nc
         self.pos.append(sep)                              # [5] uv_baseparams start
         sep += 5 + self.num_baseparams
@@ -157,9 +162,9 @@ class LkmParams:
         a, b = init_mapping
         mapping_bounds = [(a * 0.8, a * 1.2), (-m_allow, m_allow)]
 
-        uv_h_max = np.max(init_uv_params)
-        uv_h_min = uv_h_max * AVOID_VANISHING_RATIO
-        uv_bounds = [(uv_h_min, uv_h_max * 2) for _ in init_uv_params]
+        # UV parameters are UV/XR ratios (species properties, unified architecture)
+        # Allow ±20% refinement (like mapping) but prevent wild deviations
+        uv_bounds = [(uv * 0.8, uv * 1.2) for uv in init_uv_params]
         for k, v in enumerate(init_uv_baseparams):
             v_allow = max(0.1, abs(v)) * 0.2
             if self.integral_baseline and k == 7:
@@ -175,15 +180,16 @@ class LkmParams:
         # ── Column-params bounds ───────────────────────────────────────────────
         if real_bounds is None:
             lkmcol = self.split_params_simple(params)[-1]
-            Pe, t0 = lkmcol[0], lkmcol[1]
-            nc     = (len(lkmcol) - 2) // 2
+            Pe, t0, c_inj = lkmcol[0], lkmcol[1], lkmcol[2]
+            nc            = (len(lkmcol) - 3) // 2
             colparam_bounds = [
                 (Pe * PE_LO_FACTOR,            Pe * PE_HI_FACTOR),
                 (t0 * T0_LO_FACTOR,            t0 * T0_HI_FACTOR),
+                (c_inj * 0.1,                  c_inj * 10.0),     # c_inj bounds (±1 order of magnitude)
             ]
             for i in range(nc):
-                R    = lkmcol[2 + 2 * i]
-                k_MT = lkmcol[2 + 2 * i + 1]
+                R    = lkmcol[3 + 2 * i]
+                k_MT = lkmcol[3 + 2 * i + 1]
                 colparam_bounds.append((max(1.001, R * R_LO_FACTOR), R * R_HI_FACTOR))
                 colparam_bounds.append((K_MT_LO, min(K_MT_HI, k_MT * 20.0)))
         else:
@@ -251,7 +257,8 @@ class LkmParams:
         for params in x_array:
             lkmcol  = params[-self.num_col_params:]
             t0      = lkmcol[1]
-            trs     = np.array([t0 * lkmcol[2 + 2 * i] for i in range(nc)])
+            # R values now start at position 3 (after Pe, t0, c_inj)
+            trs     = np.array([t0 * lkmcol[3 + 2 * i] for i in range(nc)])
             pos_array_list.append(trs)
         return np.array(pos_array_list).T
 

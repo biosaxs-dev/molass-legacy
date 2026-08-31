@@ -93,8 +93,13 @@ class SdmEstimator(BaseEstimator):
                 column = model_decomp.xr_ccurves[0].column
                 if getattr(column, 'pore_dist', 'mono') == 'mono':
                     from molass.Rigorous.LegacyBridgeUtils import make_basecurves_from_decomposition
-                    _, baseparams = make_basecurves_from_decomposition(model_decomp)
+                    # Use same uncorrected ssd as _lib_dsets for consistent UV scale (molass-legacy#87)
+                    _ssd_unc = getattr(editor, '_ssd_uncorrected', None)
+                    _, baseparams = make_basecurves_from_decomposition(model_decomp, data_ssd=_ssd_unc)
                     init_params = model_decomp.make_rigorous_initparams(baseparams)
+                    # Store estimated K for adaptive bounds (molass-legacy#84)
+                    col_params = column.get_params()  # (N, T, me, mp, x0, tI, N0, poresize, ts, k)
+                    self._estimated_K = float(col_params[0] * col_params[1])  # N * T
                     self.logger.info(
                         "_estimate_mono: used library SDM upgrade result directly"
                     )
@@ -146,14 +151,23 @@ class SdmEstimator(BaseEstimator):
             )
             sdmcol_7 = np.array([N, K, x0, poresize, N0, tI, 2.0])
 
+        # Store estimated K so get_colparam_bounds() can adapt K bounds per-dataset (molass-legacy#84)
+        self._estimated_K = float(sdmcol_7[1])
+
         non_col = init_params_6[:-6].copy()
         if xr_scales is not None:
             non_col[:nc_xr] = xr_scales  # replace XR weights with Stage-2 scales
             # Refit UV with Stage-2 refined column params (library upgrade → UV conversion).
-            # adjust_to_uv_scales knows the SDM UV normalisation; running it with Stage-N
-            # params instead of the rough initial guess makes uv_w proportional and correct.
+            # adjust_to_uv_scales returns absolute UV scales; convert to ratios for unified architecture.
             uv_w_new = self._refit_uv_w(sdmcol_7[:6], xr_scales)
-            self._update_non_col_uv(non_col, nc_xr, uv_w_new)
+            if uv_w_new is not None:
+                # Convert absolute UV scales to UV/XR ratios
+                safe_xr = np.where(xr_scales > 0, xr_scales, 1.0)
+                uv_ratio = uv_w_new / safe_xr
+                self._update_non_col_uv(non_col, nc_xr, uv_ratio)
+            else:
+                # Fallback: keep rough UV values (already ratios from init_params_6)
+                pass
         return np.concatenate([non_col, sdmcol_7])
 
     def _refit_uv_w(self, sdm_col_params_6, xr_scales):
@@ -228,8 +242,67 @@ class SdmEstimator(BaseEstimator):
                 column = model_decomp.xr_ccurves[0].column
                 if getattr(column, 'pore_dist', 'mono') == 'lognormal':
                     from molass.Rigorous.LegacyBridgeUtils import make_basecurves_from_decomposition
-                    _, baseparams = make_basecurves_from_decomposition(model_decomp)
+                    # Use same uncorrected ssd as _lib_dsets for consistent UV scale (molass-legacy#87)
+                    _ssd_unc = getattr(editor, '_ssd_uncorrected', None)
+                    _, baseparams = make_basecurves_from_decomposition(model_decomp, data_ssd=_ssd_unc)
                     init_params = model_decomp.make_rigorous_initparams(baseparams)
+                    # Store estimated K for adaptive bounds (molass-legacy#84)
+                    col_params = column.get_params()  # (N, T, me, mp, x0, tI, N0, mu, sigma, k)
+                    N0_col    = float(col_params[6])
+                    mu_col    = float(col_params[7])
+                    poresize_col = float(np.exp(mu_col))
+                    if N0_col < 1.0 or poresize_col < 10.0:
+                        # Degenerate model_decomp (e.g. N0=0.3, rp=4.77 Å) — skip fast
+                        # path so the 4-stage pipeline can produce a proper init.
+                        raise ValueError(
+                            f"Degenerate G1300 model_decomp: N0={N0_col:.2g}, "
+                            f"poresize={poresize_col:.1f} Å — using 4-stage path"
+                        )
+                    # Drift check: component peaks must be within DRIFT_THRESHOLD frames of
+                    # the EGH reference. sigma values like 0.1 cause the upgrade NM to drift
+                    # a component to the wrong lump; LumpingConstraint prevents drift during
+                    # BH/DE but cannot pull back an init that starts > 30 frames from the
+                    # correct basin.
+                    _DRIFT_THRESHOLD = 30.0
+                    # Use get_peak_top_x() — available on both ComponentCurve (EGH)
+                    # and SdmComponentCurve (SDM lognormal). Previously used cc.max_x
+                    # which does not exist on either class, causing AttributeError that
+                    # silently skipped the check every time.
+                    try:
+                        _egh_peaks = sorted(
+                            cc.get_peak_top_x() for cc in editor.decomposition.xr_ccurves)
+                        _model_peaks = sorted(
+                            cc.get_peak_top_x() for cc in model_decomp.xr_ccurves)
+                        _max_drift = max(
+                            abs(m - e) for m, e in zip(_model_peaks, _egh_peaks))
+                        self.logger.info(
+                            "G1300 warm path drift check: max_drift=%.1f frames "
+                            "(threshold=%.1f)", _max_drift, _DRIFT_THRESHOLD)
+                        if _max_drift > _DRIFT_THRESHOLD:
+                            raise ValueError(
+                                f"Drifted G1300 model_decomp: max component drift = "
+                                f"{_max_drift:.1f} frames; using 4-stage path"
+                            )
+                    except (TypeError, IndexError) as _dc_err:
+                        self.logger.debug(
+                            "G1300 warm path drift check skipped: %s", _dc_err)
+                    self._estimated_K = float(col_params[0] * col_params[1])  # N * T
+                    # LumpingConstraint for G1300 (fast path) — MUST use EGH decomp
+                    # as reference, not model_decomp. If model_decomp is drifted
+                    # (component peak at wrong lump), building from model_decomp would
+                    # lock DE to the drifted positions. EGH positions are always correct.
+                    try:
+                        from molass.Rigorous.LumpingConstraint import LumpingConstraint
+                        _egh_ref = editor.decomposition  # EGH reference — always correct
+                        editor._lognormal_lumping_constraint = LumpingConstraint(
+                            _egh_ref, n_groups=len(model_decomp.xr_ccurves))
+                        self.logger.info(
+                            "LumpingConstraint created from EGH ref (fast path, n_comp=%d)",
+                            len(model_decomp.xr_ccurves))
+                    except Exception as _lc_err:
+                        self.logger.warning(
+                            "LumpingConstraint setup skipped (fast path): %s", _lc_err)
+                        editor._lognormal_lumping_constraint = None
                     self.logger.info(
                         "_estimate_lognormal: used library SDM upgrade result directly"
                     )
@@ -259,10 +332,7 @@ class SdmEstimator(BaseEstimator):
         editor.pbar.configure(maximum=4, value=0, style='Phase2.Horizontal.TProgressbar')
         try:
             editor.update_status_bar("SDM lognormal init (1/4): estimating mono-pore column parameters...")
-            from molass.SEC.Models.SdmEstimator import (
-                estimate_sdm_column_params,
-                estimate_sdm_lognormal_from_monopore,
-            )
+            from molass.SEC.Models.SdmEstimator import estimate_sdm_column_params
             from molass.SEC.Models.SdmOptimizer import optimize_sdm_xr_decomposition
             # Stage 1: multi-start mono-pore column param estimation.
             # Pass the column-specific poresize_bounds from SerialSettings so
@@ -284,24 +354,41 @@ class SdmEstimator(BaseEstimator):
             mono_ccurves = optimize_sdm_xr_decomposition(proxy, mono_env)
             editor.pbar["value"] = 2
             editor.update()
-            # Stage 3: lognormal (mu, sigma, t0, k) refined by moment matching
-            editor.update_status_bar("SDM lognormal init (3/4): moment matching to lognormal distribution...")
-            ln_env = estimate_sdm_lognormal_from_monopore(
-                mono_ccurves, proxy.xr_icurve, decomposition=proxy
+            # Stage 3: mono-seeded lognormal env (replaces moment matching, Issue molass-legacy#88).
+            # Constraints from experiments 33g/33h/33i:
+            #   1. T_ln = T_mono / k_optimizer  (k_optimizer=2.0 is lognormal optimizer default
+            #      k_init, NOT k_mono which can differ, e.g. 0.66 for SAMPLE1)
+            #   2. mu_max = ln(3 × Rg_max)  (prevents K_SEC compression and degenerate basin)
+            #   3. sigma_init from sdm_pore_sigma setting (default 0.3); LumpingConstraint prevents
+            #      drift regardless of sigma value, so the user setting is now active here.
+            editor.update_status_bar("SDM lognormal init (3/4): building mono-seeded lognormal environment...")
+            _K_OPTIMIZER = 2.0   # default k_init in optimize_sdm_lognormal_xr_decomposition
+            _SIGMA_INIT   = float(get_setting('sdm_pore_sigma'))  # user-configurable (GUI: OptStrategyDialog)
+            N2s, T2s, me2, mp2, x0_2s, tI_2s, N0_2s, poresize_2, _ts2, _k2 = mono_ccurves[0].column.get_params()
+            mu_init    = np.log(max(float(poresize_2), 1.0))
+            T_ln       = T2s / _K_OPTIMIZER
+            rg_max     = max(self.peak_rgs) if len(self.peak_rgs) > 0 else 100.0
+            mu_max_bound = np.log(3.0 * max(float(rg_max), 1.0))
+            ln_env = (N2s, T_ln, me2, mp2, N0_2s, x0_2s, mu_init, _SIGMA_INIT)
+            self.logger.info(
+                "Mono-seeded lognormal env: N=%g, T_ln=%g (T_mono=%g / k_opt=%g), "
+                "poresize=%g Å, mu_init=%g, sigma=%g, mu_max=%g (Rg_max=%g Å)",
+                N2s, T_ln, T2s, _K_OPTIMIZER, poresize_2, mu_init, _SIGMA_INIT, mu_max_bound, rg_max,
             )
             editor.pbar["value"] = 3
             editor.update()
             # Stage 4: converged lognormal NM — mirrors upgrade()'s final optimization step.
-            # Lifts init fv from Stage-3 ≈-0.76 (SV≈52) to ≈-1.21 (SV≈72),
-            # matching the library notebook's starting point for BH.
+            # mu_max passed via model_params to prevent poresize drift (molass-library#243).
             editor.update_status_bar("SDM lognormal init (4/4): refining lognormal parameters; may take more than 10 minutes...")
             from molass.SEC.Models.SdmOptimizer import optimize_sdm_lognormal_xr_decomposition
-            ln_pore_sigma_setting = get_setting("sdm_pore_sigma")
-            ln_ccurves = optimize_sdm_lognormal_xr_decomposition(proxy, ln_env, ln_pore_sigma=ln_pore_sigma_setting)
+            ln_ccurves = optimize_sdm_lognormal_xr_decomposition(
+                proxy, ln_env,
+                model_params={'ln_pore_sigma': _SIGMA_INIT, 'mu_max': mu_max_bound},
+            )
             # Extract Stage-4 converged column params (shared across all components)
             N4, T4, _me4, _mp4, x0_4, tI_4, N0_4, mu_4, sigma_4, k_4 = ln_ccurves[0].column.get_params()
             K_lib = N4 * T4   # Legacy K = N*T  (see DispersiveMonopore.py: "T_ = K_/N_")
-            _SIGMA_FIXED = sigma_4  # 0.3 — ln_pore_sigma is fixed in Stage 4 by default
+            _SIGMA_FIXED = sigma_4  # fixed at Stage-4 converged value (started from _SIGMA_INIT)
             self.logger.info(
                 "Library lognormal init (stage4): N=%g, T=%g, K=%g, N0=%g, t0=%g, mu=%g (poresize=%g Å), sigma=%g, k=%g",
                 N4, T4, K_lib, N0_4, x0_4, mu_4, np.exp(mu_4), _SIGMA_FIXED, k_4,
@@ -311,10 +398,24 @@ class SdmEstimator(BaseEstimator):
             nc_xr = len(ln_ccurves)
             # Map → G1300 sdmcol_8: [N, K, x0, mu, sigma_fixed, N0, tI, k_gamma]
             sdmcol_8 = np.array([N4, K_lib, x0_4, mu_4, _SIGMA_FIXED, N0_4, tI_4, k_4])
+            # LumpingConstraint for G1300 BH — parallels SDM(mono) via BasicOptimizer._constraints.
+            # Built from EGH proxy curves (always well-separated) so the reference positions
+            # are correct even when Stage 4 drifts with the lognormal model.
+            # Stored on editor; PeakEditor.construct_optimizer injects it into the optimizer.
+            try:
+                from molass.Rigorous.LumpingConstraint import LumpingConstraint
+                editor._lognormal_lumping_constraint = LumpingConstraint(
+                    proxy, n_groups=len(proxy.xr_ccurves))
+                self.logger.info("LumpingConstraint created from EGH proxy (n_comp=%d)",
+                                 len(proxy.xr_ccurves))
+            except Exception as _lc_err:
+                self.logger.warning("LumpingConstraint setup skipped: %s", _lc_err)
+                editor._lognormal_lumping_constraint = None
         except Exception as e:
             self.logger.warning(
                 "Library lognormal init failed (%s); falling back to legacy rough estimate.", e
             )
+            editor._lognormal_lumping_constraint = None
             N0 = 50000.0
             mu = np.log(max(float(poresize), 1.0))
             sdmcol_8 = np.array([N, K, x0, mu, 0.3, N0, tI, 2.0])
@@ -334,7 +435,16 @@ class SdmEstimator(BaseEstimator):
             col6_ln = np.array([sdmcol_8[0], sdmcol_8[1], sdmcol_8[2],
                                 np.exp(sdmcol_8[3]), sdmcol_8[5], sdmcol_8[6]])
             uv_w_new = self._refit_uv_w(col6_ln, xr_scales)
-            self._update_non_col_uv(non_col, nc_xr, uv_w_new)
+            if uv_w_new is not None:
+                # Convert absolute UV scales to UV/XR ratios (unified architecture)
+                safe_xr = np.where(xr_scales > 0, xr_scales, 1.0)
+                uv_ratio = uv_w_new / safe_xr
+                self._update_non_col_uv(non_col, nc_xr, uv_ratio)
+            else:
+                # Fallback: keep rough UV values (already ratios from init_params_6)
+                pass
+        # Store estimated K so get_colparam_bounds() can adapt K bounds per-dataset (molass-legacy#84)
+        self._estimated_K = float(sdmcol_8[1])
         return np.concatenate([non_col, sdmcol_8])
 
     def compute_sdm_init_params(self, nc_b, lrf_src=None, edm_available=False, debug=False):
@@ -443,15 +553,24 @@ class SdmEstimator(BaseEstimator):
         return est_col_bounds[0:4] + [(1600, 60000)] + est_col_bounds[4:]
 
     def get_colparam_bounds(self):
-        from molass_legacy.Models.Stochastic.ParamLimits import MNP_BOUNDS, LN_MU_BOUND, LN_SIGMA_BOUND
-        mnp_bounds = MNP_BOUNDS.copy()
+        from molass_legacy.Models.Stochastic.ParamLimits import MNP_BOUNDS, LN_MU_BOUND, LN_SIGMA_BOUND, KT_BOUND
+        mnp_bounds = list(MNP_BOUNDS).copy()  # shallow-copy list; tuples are immutable
+
+        # Adapt K bounds to the dataset-specific estimated K (molass-legacy#84).
+        # KT_BOUND=(500,2000) is too narrow for some datasets (e.g. SAMPLE1: K=228).
+        K_est = getattr(self, '_estimated_K', None)
+        if K_est is not None and K_est > 0:
+            K_lo = K_est * 0.3
+            K_hi = K_est * 4.0   # ceiling max(..., KT_BOUND[1]) dropped: numerically safe (29l)
+            mnp_bounds[1] = (K_lo, K_hi)
+
         if self.pore_dist == 'lognormal':
             # G1300: [N, K, x0, mu, sigma, N0, tI, k_gamma] (8 params)
             return list(mnp_bounds[:3]) + [LN_MU_BOUND, LN_SIGMA_BOUND,
                                            (1600, 60000), (-1000, 0), (0.5, 10.0)]
         else:
             # G1200: [N, K, x0, poresize, N0, tI, k_gamma] (7 params)
-            return mnp_bounds + [(1600, 60000), (-1000, 0), (0.5, 10.0)]
+            return list(mnp_bounds) + [(1600, 60000), (-1000, 0), (0.5, 10.0)]
 
 def onthefly_test(editor):
     estimator = SdmEstimator(editor)

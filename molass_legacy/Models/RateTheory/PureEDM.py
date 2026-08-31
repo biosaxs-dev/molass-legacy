@@ -17,8 +17,8 @@ from molass_legacy.Peaks.ElutionModels import compute_moments
 
 VERY_SMALL_VALUE = 1e-8
 
-def edm_impl(x, t0, u, a, b, e, Dz, cinj):
-    return edm_func(x-t0, u, a, b, e, Dz, cinj)
+def edm_impl(x, t0, u, a, b, e, Dz, c_inj):
+    return edm_func(x-t0, u, a, b, e, Dz, c_inj)
 
 """
 GI      params= [  0.11655683  0.79493376  1.41901069  -0.38470116  0.29435237  0.15273794  1.33639523 ]
@@ -61,8 +61,8 @@ def guess(x, y, moments=None, init_params=None, debug=False):
             top_x = x[j]
             print("top_y=", top_y)
             x0, u = guess_x0_u(x[0], top_x, top_y)
-            cinj_init = min(1.0, 1.32 * top_y/0.291)
-            init_params = [x0, u, 1.5, -3.0, 0.4, 0.06, cinj_init]
+            c_inj_init = min(1.0, 1.32 * top_y/0.291)
+            init_params = [x0, u, 1.5, -3.0, 0.4, 0.06, c_inj_init]
     else:
         init_params = guess_init_params(moments)
 
@@ -75,7 +75,7 @@ def guess(x, y, moments=None, init_params=None, debug=False):
                             ("b", -4, 1, init_params[3]),
                             ("e", 0, 2, init_params[4]),
                             ("Dz", 0, 1, init_params[5]),
-                            ("cinj", 0, 3, init_params[6]),
+                            ("c_inj", 0, 3, init_params[6]),
                             # ("tinj", 0, 10, init_params[7]),
                             ]
 
@@ -154,4 +154,4 @@ class EDM(Model):
         return x_from_height_ratio_impl(edm_impl, ecurve, ratio, *params, needs_ymax=True, full_params=True)
 
     def get_params_string(self, params):
-        return 't0=%g, u=%g, a=%g, b=%g, e=%g, Dz=%g, cinj=%g' % tuple(params)
+        return 't0=%g, u=%g, a=%g, b=%g, e=%g, Dz=%g, c_inj=%g' % tuple(params)

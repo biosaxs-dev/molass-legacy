@@ -7,9 +7,9 @@ from .BaseSliderInfo import BaseSliderInfo
 
 class CedmSliderInfo(BaseSliderInfo):
     def __init__(self, nc):
-        # CEDM per-component params: [a, b, cinj]  (n_=3)
+        # CEDM per-component params: [a, b, c_inj]  (n_=3)
         # Rg params follow at nc*n_ (same convention as EdmSliderInfo)
-        cmpparam_names = ["a", "b", "cinj", "Rg"]
+        cmpparam_names = ["a", "b", "c_inj", "Rg"]
 
         n_ = 3
         rg_base = nc * n_

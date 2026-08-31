@@ -28,6 +28,13 @@ class DataSet:
         self.xr_qv = xr_qv
         self.qvector = xr_qv                # for backward compatibility in Optimizer.LrfExporter
         self.absorbance = None if sd is None else sd.absorbance
+        if sd is None:
+            self.xr_index = None
+        else:
+            try:
+                self.xr_index = sd.xr_index
+            except AttributeError:
+                self.xr_index = sd.xray_index
         self.uv_array = uv_array
         self.uv_ex = uv_ex
         if uv_ey is not None:
@@ -41,13 +48,11 @@ class DataSet:
         self.xr_curve = None
         self.uv_curve = None
         self.cd_slice = None
-        if sd is None:
-            self.xr_index = None
-        else:
-            try:
-                self.xr_index = sd.xr_index
-            except:
-                self.xr_index = sd.xray_index
+
+    @property
+    def jvector(self):
+        """Alias for xr_ex — mirrors SerialData.jvector for compatibility."""
+        return self.xr_ex
 
     def copy(self, pre_recog=None):
         ds = DataSet(
