@@ -10,6 +10,14 @@
 
 ---
 
+## Branching Policy
+
+**JOSS review concluded**: The paper was accepted (2026-08-30, DOI [10.21105/joss.10403](https://doi.org/10.21105/joss.10403)). `dev/ongoing-work` was merged into `main` and all work now happens directly on `main`, same as `molass-library`.
+
+**For AI assistants**: commit new fixes/features directly to `main`. No need to create `dev/ongoing-work` or other holding branches going forward.
+
+---
+
 ## What This Repo Is
 
 Molass Legacy is the original GUI-based MOLASS tool, refactored into a library that `molass-library` imports at runtime. It contains ~80 sub-packages covering the full SEC-SAXS analysis pipeline from data loading to 3D reconstruction.
