@@ -85,7 +85,14 @@ def get_solver_instance(impl_name, optimizer):
     entry = SOLVER_REGISTRY[user_name]
 
     # Reload for development convenience (mirrors existing pattern)
-    mod = import_module(entry.module)
+    try:
+        mod = import_module(entry.module)
+    except ImportError as exc:
+        raise ImportError(
+            f"Solver {user_name!r} requires the optional package {entry.impl_name!r}, "
+            f"which is not installed ({exc}). Install it with: "
+            f"pip install molass_legacy[{entry.impl_name}]"
+        ) from exc
     _reload(mod)
     cls = getattr(mod, entry.class_name)
 

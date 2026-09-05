@@ -392,9 +392,16 @@ class BasicOptimizer:
 
         elif method == "ultranest":
             from importlib import reload
-            import molass_legacy.Solvers.UltraNest.SolverUltraNest
-            reload(molass_legacy.Solvers.UltraNest.SolverUltraNest)
-            from molass_legacy.Solvers.UltraNest.SolverUltraNest import SolverUltraNest
+            try:
+                import molass_legacy.Solvers.UltraNest.SolverUltraNest
+                reload(molass_legacy.Solvers.UltraNest.SolverUltraNest)
+                from molass_legacy.Solvers.UltraNest.SolverUltraNest import SolverUltraNest
+            except ImportError as exc:
+                raise ImportError(
+                    "The 'NS' (nested sampling) solver requires the optional package "
+                    f"'ultranest', which is not installed ({exc}). Install it with: "
+                    "pip install molass_legacy[ultranest]"
+                ) from exc
             ultranest = SolverUltraNest(self)
             result = ultranest.minimize(self.objective_func_wrapper, norm_params, niter=niter, seed=seed, bounds=bounds, narrow_bounds=ns_narrow_bounds, adaptive_nsteps=ns_adaptive_nsteps, nsteps=ns_nsteps)
  

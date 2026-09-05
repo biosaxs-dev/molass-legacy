@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "molass_legacy"
-version = "1.6.16"
+version = "1.6.18"
 
 dependencies = [
   "numpy",
@@ -24,8 +24,6 @@ dependencies = [
   "pyperclip",
   "wmi",
   "numba",
-  "ruptures",
-  "ultranest",
   "termcolor",
   "tksheet",
   "ipywidgets",
@@ -55,6 +53,18 @@ classifiers = [
 [project.optional-dependencies]
 excel = [
   "pywin32"
+]
+# Only needed for the 'NS' (nested sampling) solver option; ships Cython
+# extensions that may lack prebuilt wheels for very new Python versions,
+# requiring a C++ compiler to build from source. Install with:
+#   pip install molass_legacy[ultranest]
+ultranest = [
+  "ultranest"
+]
+# Only needed by the manual GuinierTools/Alsaker2017.py dev tool (not on any
+# default pipeline path). Install with: pip install molass_legacy[alsaker]
+alsaker = [
+  "ruptures"
 ]
 
 [project.scripts]

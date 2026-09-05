@@ -4,12 +4,12 @@
     Copyright (c) 2024, SAXS Team, KEK-PF
 """
 import numpy as np
-import ruptures as rpt
+from molass.Geometric.ChangePointDetection import Dynp
 import molass_legacy.KekLib.DebugPlot as plt
 
 def guess_x0_impl(x, y, debug=False):
 
-    algo = rpt.Dynp(model="l2").fit(y)
+    algo = Dynp(model="l2").fit(y)
     breakpoints = algo.predict(n_bkps=4)
     i = breakpoints[0]
 

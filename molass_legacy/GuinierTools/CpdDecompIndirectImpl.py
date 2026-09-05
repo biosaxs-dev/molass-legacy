@@ -5,7 +5,6 @@
 """
 import numpy as np
 from scipy.optimize import minimize
-import ruptures as rpt
 import molass_legacy.KekLib.DebugPlot as plt
 from molass_legacy.GuinierTools.CpdDecompUtils import compute_end_points
 
