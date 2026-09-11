@@ -22,7 +22,7 @@ from molass_legacy.Optimizer.BasicOptimizer import BasicOptimizer, PENALTY_SCALE
 from molass_legacy.Optimizer.NumericalUtils import safe_ratios
 from molass_legacy._MOLASS.SerialSettings import get_setting
 from molass_legacy.Optimizer.TheDebugUtils import convert_score_list
-from molass_legacy.Optimizer.PenaltyUtils import compute_mapping_penalty
+from molass_legacy.Optimizer.PenaltyUtils import compute_mapping_penalty, compute_lkm_mass_transfer_penalty
 
 LRF_RESIDUAL_FAKED = 10
 XR_VALID = 0.001
@@ -127,8 +127,14 @@ class G1400(BasicOptimizer):
             R_values = lkmcol_params[3::2]
             order_penalty = PENALTY_SCALE * float(np.sum(np.maximum(0.0, R_values[:-1] - R_values[1:]) ** 2))
 
+            # Mass-transfer floor: discourage k_MT collapsing toward zero, which produces
+            # unrealistically broad components (SAMPLE5 LKM broadness investigation; see
+            # molass-library/Copilot/refactor/DESIGN_lkm_mass_transfer_floor.md).
+            k_MT_values = lkmcol_params[4::2]
+            mass_transfer_penalty = compute_lkm_mass_transfer_penalty(Pe, t0, R_values, k_MT_values)
+
             penalties = [mapping_penalty, negative_penalty, baseline_penalty,
-                         outofbounds_penalty, order_penalty]
+                         outofbounds_penalty, order_penalty, mass_transfer_penalty]
 
             fv, score_list = self.compute_fv(
                 lrf_info, xr_params, rg_params, lkmcol_params, penalties, p, debug=debug)
@@ -186,6 +192,19 @@ class G1400(BasicOptimizer):
             reload(molass_legacy.Optimizer.Strategies.BasicStrategy)
         from molass_legacy.Optimizer.Strategies.BasicStrategy import BasicStrategy
         return BasicStrategy()
+
+    def get_score_names(self, major_only=False):
+        # Override: insert "mass_transfer_penalty" right after "order_penalty" to match
+        # the actual runtime penalties list order (mapping, negative, baseline,
+        # outofbounds, order, mass_transfer, then control/consistency appended inside
+        # compute_fv). Without this override, get_score_breakdown()/diagnose() would
+        # silently misalign or drop this penalty from the named breakdown (base
+        # BasicOptimizer.get_score_names() has no slot for it).
+        names = super().get_score_names(major_only=major_only)
+        if major_only:
+            return names
+        idx = names.index("order_penalty") + 1
+        return names[:idx] + ["mass_transfer_penalty"] + names[idx:]
 
     def is_stochastic(self):
         return True
