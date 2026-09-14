@@ -554,6 +554,7 @@ class SdmEstimator(BaseEstimator):
 
     def get_colparam_bounds(self):
         from molass_legacy.Models.Stochastic.ParamLimits import MNP_BOUNDS, LN_MU_BOUND, LN_SIGMA_BOUND, KT_BOUND
+        from molass_legacy._MOLASS.SerialSettings import get_setting
         mnp_bounds = list(MNP_BOUNDS).copy()  # shallow-copy list; tuples are immutable
 
         # Adapt K bounds to the dataset-specific estimated K (molass-legacy#84).
@@ -564,13 +565,26 @@ class SdmEstimator(BaseEstimator):
             K_hi = K_est * 4.0   # ceiling max(..., KT_BOUND[1]) dropped: numerically safe (29l)
             mnp_bounds[1] = (K_lo, K_hi)
 
+        # N0 (mobile-phase plate number) is a column/flow-rate property, not sample-
+        # dependent -- anchor on the column's rated plate count (num_plates_pc) rather
+        # than a static (1600,60000) default or a per-dataset moment-matching estimate
+        # (the latter is unstable for closely-spaced/ambiguous peaks: verified on a
+        # 3-component BSA-like dataset where the Stage-1 estimate-based bound excluded
+        # both DE's and BH's converged good-SV results; the num_plates_pc-based bound
+        # comfortably contained them). See molass-legacy#98.
+        num_plates_pc = get_setting("num_plates_pc")
+        if num_plates_pc is not None and num_plates_pc > 0:
+            n0_bound = (num_plates_pc * 0.5, num_plates_pc * 2.0)
+        else:
+            n0_bound = (1600, 60000)
+
         if self.pore_dist == 'lognormal':
             # G1300: [N, K, x0, mu, sigma, N0, tI, k_gamma] (8 params)
             return list(mnp_bounds[:3]) + [LN_MU_BOUND, LN_SIGMA_BOUND,
-                                           (1600, 60000), (-1000, 0), (0.5, 10.0)]
+                                           n0_bound, (-1000, 0), (0.5, 10.0)]
         else:
             # G1200: [N, K, x0, poresize, N0, tI, k_gamma] (7 params)
-            return list(mnp_bounds) + [(1600, 60000), (-1000, 0), (0.5, 10.0)]
+            return list(mnp_bounds) + [n0_bound, (-1000, 0), (0.5, 10.0)]
 
 def onthefly_test(editor):
     estimator = SdmEstimator(editor)
