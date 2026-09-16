@@ -67,6 +67,12 @@ SMALL_Q2_BOUNDARY       = MAX_START_Q2/2
 SCORE_RATIO_BOUNDARY    = 0.7
 WST_AT_LEAST_TRIALS     = 2
 LQ_AT_LEAST_TRIALS      = 3
+# evaluate_interval() stops sweeping candidate stops after this many qRg-valid
+# ones are found (searched in decreasing order from the widest, so this favors
+# longer windows and can skip a shorter, better-scoring one further down the
+# sweep -- see molass-researcher experiments/38_guinier_analysis/38d for a
+# traced example and molass-legacy issue #100 for making this configurable.
+MAX_INTERVAL_CANDIDATES = 4
 
 EXCEPTION_LOG   = True
 DEBUG_PLOT      = False
@@ -712,6 +718,19 @@ class SimpleGuinier:
         self.worst_quality = self.basic_quality < QUALITY_BOUNDARY_WORST
 
     def make_cadidate_pairs( self, qrg_limit ):
+        """
+        Build one (start, stop) candidate window per `start` in
+        [self.peak, start_limit): for each `start`, `stop` is the *widest*
+        index such that qRg stays under `qrg_limit + wide_allow` (a
+        quality-tier-dependent tolerance, wider than usual so that
+        `evaluate_interval` below has real candidates to sweep and score).
+
+        `wide_allow` is deliberately looser than `qrg_allow` (used later, in
+        `evaluate_interval`/`guinier_interval`, to actually accept/reject a
+        fit): this function only stakes out the search space, it doesn't
+        judge quality. The two tolerances are set independently by the same
+        `basic_quality` tiers and can differ -- don't assume they match.
+        """
         # print( 'make_cadidate_pairs: qrg_limit=', qrg_limit )
 
         if self.worst_quality:
@@ -794,8 +813,21 @@ class SimpleGuinier:
         # print( 'pairs=', pairs )
         return pairs
 
-    def evaluate_interval( self, i, start, stop_a, qrg_limit, qrg_allow ):
+    def evaluate_interval( self, i, start, stop_a, qrg_limit, qrg_allow, max_candidates=MAX_INTERVAL_CANDIDATES ):
+        """
+        For a fixed `start`, sweep `stop` downward from `stop_a` (the widest
+        candidate `make_cadidate_pairs` found for this `start`), scoring each
+        qRg-valid window via `evaluate_guinier_interval` and keeping the
+        global best (`self.candidate`/`self.score`) across every `start`.
 
+        Stops early after `max_candidates` qRg-valid windows have been scored
+        for this `start` -- since the sweep runs widest-first, this means only
+        the longest windows at this `start` are considered by default; a
+        shorter, possibly better-scoring window further down is never reached
+        unless `max_candidates` is raised (see molass-legacy issue #99/#100).
+        Pass `max_candidates=None` to disable the throttle and sweep to the
+        end (down to `start + MIN_GUINIER_SIZE`).
+        """
         qrg_limit_ = qrg_limit + qrg_allow
 
         candidate_count = 0
@@ -855,15 +887,26 @@ class SimpleGuinier:
                         self.smallq_score       = interval_score
                         self.smallq_candidate   = candidate_rec
 
-                if candidate_count > 3:
+                if max_candidates is not None and candidate_count > max_candidates - 1:
                     break
 
-    def guinier_interval( self, qrg_limit=1.3 ):
+    def guinier_interval( self, qrg_limit=1.3, max_candidates=MAX_INTERVAL_CANDIDATES ):
         """
         q*Rg < 1.3
         log_y = log(G) - x**2 * Rg**2/3
         slope = -Rg**2/3
         Rg = sqrt(-3*slope)
+
+        Two-pass search: `make_cadidate_pairs(qrg_limit)` first stakes out one
+        wide candidate window per `start` (tolerance `wide_allow`), then
+        `evaluate_interval` is called per pair to sweep/score windows within
+        the tighter `qrg_limit + qrg_allow` and track the single best-scoring
+        one seen so far, across all `start` values. `wide_allow` and
+        `qrg_allow` are independent, quality-tier-dependent tolerances (see
+        `make_cadidate_pairs`) -- don't assume they're equal.
+
+        `max_candidates` is forwarded to `evaluate_interval` (see there);
+        pass `None` to disable the per-`start` candidate-count throttle.
         """
         if self.anim_data:
             self.anim_cand_list = []
@@ -888,7 +931,7 @@ class SimpleGuinier:
         wst_candidate_count = 0
         pairs = self.make_cadidate_pairs( qrg_limit )
         for i, pair in enumerate(pairs):
-            self.evaluate_interval( i, pair[0], pair[1], qrg_limit, qrg_allow )
+            self.evaluate_interval( i, pair[0], pair[1], qrg_limit, qrg_allow, max_candidates=max_candidates )
             if self.worst_quality:
                 if self.candidate is not None:
                     wst_candidate_count += 1
