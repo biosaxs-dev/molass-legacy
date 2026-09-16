@@ -86,11 +86,11 @@ class AdapterQualiy:
     def update_quality( self ):
         self.quality =  np.sum( self.get_factors() )
         if np.isnan( self.quality ):
-            # TODO: remove this case
-            print( 'quality factors=', self.get_factors() )
+            # expected/common on buffer-region frames (no real particle signal) --
+            # debug, not warning/print, so default logging stays quiet.
             import logging
             logger = logging.getLogger( __name__ )
-            logger.warning( 'quality is set to 0; quality factors=' + str(self.get_factors()) )
+            logger.debug( 'quality is set to 0; quality factors=' + str(self.get_factors()) )
             self.quality = 0
 
         if self.quality <= 0.3:
