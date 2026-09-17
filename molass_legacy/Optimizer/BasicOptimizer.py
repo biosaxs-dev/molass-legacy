@@ -67,6 +67,10 @@ UV_XR_RATIO_ALLOW = 0.5
 UV_XR_RATIO_SCALE = 100
 WEAK_PENALTY_SCALE = 0.01
 SUPERIOR_2D_LRF_ALLOW = 0.1
+# Rg-order penalty is soft: per-component Guinier Rg is noisy for low-abundance/overlapping
+# components (molass-researcher 40_initial_penalties exploration), so small reversals below
+# this tolerance (Å) are not penalized at all -- only genuine violations are.
+RG_ORDER_TOLERANCE = 2.0
 BASELINE_ALLOWANCE = 0.05  # fractional allowance for baseline endpoints (as fraction of xr_curve.max_y)
 SCALE_MAX_RATIO = 1.5
 PARAMS_SCALE = 10
@@ -727,8 +731,11 @@ class BasicOptimizer:
         # common order_penalty
         valid_rg_params = rg_params[self.valid_components]
         if len(valid_rg_params) > 1:
-            # Rg order_penalty
-            penalties[4] += PENALTY_SCALE * np.sum(np.min([self.zeros_valid_rg, valid_rg_params[:-1] - valid_rg_params[1:]], axis=0)**2)
+            # Rg order_penalty (soft: allow up to RG_ORDER_TOLERANCE Å of reversal before
+            # penalizing -- per-component Guinier Rg is noisy, not just a hard rank ordering)
+            diffs = valid_rg_params[:-1] - valid_rg_params[1:]  # should be >= 0 (Rg decreasing)
+            violation = np.minimum(0, diffs + RG_ORDER_TOLERANCE)
+            penalties[4] += PENALTY_SCALE * np.sum(violation ** 2)
 
         if EVAL_PEAK_DEVIATION:
             penalties[4] += PENALTY_SCALE * self.compute_peak_deviation(xr_params, debug=debug)
