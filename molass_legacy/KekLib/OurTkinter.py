@@ -158,7 +158,17 @@ class Dialog(Tk.Toplevel):
         Tk.Toplevel.destroy(self)
 
         # to avoid "Tcl_AsyncDelete: async handler deleted by the wrong thread" error
-        #   from https://pysimplegui.readthedocs.io/en/latest/#multiple-threads
+        # Root cause (matplotlib maintainer explanation, still open as of 2024):
+        # some Tk-related teardown only runs in __del__, so if a reference cycle
+        # keeps those objects alive, they can get garbage-collected on whichever
+        # thread's allocations happen to trigger the next GC pass -- not
+        # necessarily the main thread. Forcing gc.collect() here, right after
+        # destroy(), makes that collection happen deterministically now, on the
+        # main thread. https://github.com/matplotlib/matplotlib/issues/27713
+        # (the older https://pysimplegui.readthedocs.io/en/latest/#multiple-threads
+        # citation this comment used to point to no longer contains the recipe --
+        # see also https://github.com/PySimpleGUI/PySimpleGUI/issues/2510, which
+        # cites the same now-stale anchor)
         gc.collect()
 
     #
