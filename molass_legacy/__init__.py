@@ -53,3 +53,22 @@ def get_version(toml_only=False):
         assert toml_only is False, "toml_only is not expected in this context"
         import importlib.metadata
         return importlib.metadata.version(__package__)
+
+def context_path():
+    """Return the absolute path to CONTEXT.md, the AI-assistant context file
+    shipped inside this package. See :func:`molass.context_path` for the
+    main (molass-library) context file this one supplements.
+    """
+    return os.path.join(os.path.dirname(__file__), "CONTEXT.md")
+
+def print_context():
+    """Print CONTEXT.md (see :func:`context_path`) to stdout."""
+    with open(context_path(), encoding="utf-8") as fh:
+        text = fh.read()
+    try:
+        print(text)
+    except UnicodeEncodeError:
+        # e.g. cp932 consoles on Japanese Windows can't encode en-dashes/arrows;
+        # fall back to a safe, lossy print rather than crashing.
+        import sys
+        print(text.encode(sys.stdout.encoding or "ascii", errors="replace").decode(sys.stdout.encoding or "ascii"))
