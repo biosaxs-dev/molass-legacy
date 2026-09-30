@@ -21,6 +21,7 @@ from .FvSynthesizer import synthesize
 from .OptLrfInfo import OptLrfInfo
 from molass_legacy._MOLASS.Version import is_developing_version
 from .ValidComponents import ValidComponents
+from .NumericalUtils import compute_uv_domain_mask
 
 USE_COLUMN_INTERP = True
 
@@ -212,6 +213,10 @@ class BasicOptimizer:
         self.uv_norm2 = self.xr_norm2 * uv_scale
         self.uv_i = np.arange(uvD.shape[0])
         self.uv_j = uv_curve.x
+        # real measured UV frame range (mapped uv_x outside this is spline/interp
+        # extrapolation, not real data -- see uv_valid mask in compute_fv)
+        self.uv_domain_lo = float(uv_curve.x.min())
+        self.uv_domain_hi = float(uv_curve.x.max())
 
         if USE_NORMALIZED_RMSD or USE_FROBENIUS_XDIFFMAX:
             self.uv2d_adjust = ADJUST_2D_TARGET - np.log10(self.uv_norm1)
@@ -668,23 +673,28 @@ class BasicOptimizer:
     def compute_fv(self, lrf_info, xr_params, rg_params, seccol_params, penalties, p, debug=False):
         Pxr, Cxr, Puv, Cuv, mapped_UvD = lrf_info.matrices
 
+        # uv_x maps every XR frame into UV coordinates (uv_x = a*x+b), but UV was
+        # only actually measured within [uv_domain_lo, uv_domain_hi]; frames outside
+        # that are spline/interp extrapolation and should not count against UV scores.
+        uv_valid = compute_uv_domain_mask(lrf_info.uv_x, self.uv_domain_lo, self.uv_domain_hi)
+
         if USE_NORMALIZED_RMSD:
             XR_2D_fitting = normalized_rmsd(lrf_info.xr_ty, lrf_info.y, adjust=self.xr2d_adjust)
-            UV_2D_fitting = normalized_rmsd(lrf_info.uv_ty, lrf_info.uv_y, adjust=self.uv2d_adjust)
+            UV_2D_fitting = normalized_rmsd(lrf_info.uv_ty[uv_valid], lrf_info.uv_y[uv_valid], adjust=self.uv2d_adjust)
         elif USE_FROBENIUS_XDIFFMAX:
             XR_2D_fitting = frobenius_xdiffmax(lrf_info.xr_ty, lrf_info.y, adjust=self.xr2d_adjust)
-            UV_2D_fitting = frobenius_xdiffmax(lrf_info.uv_ty, lrf_info.uv_y, adjust=self.uv2d_adjust)            
+            UV_2D_fitting = frobenius_xdiffmax(lrf_info.uv_ty[uv_valid], lrf_info.uv_y[uv_valid], adjust=self.uv2d_adjust)
         elif USE_FEATURE_DEVIATION:
             XR_2D_fitting = feature_deviation(lrf_info.xr_ty, lrf_info.y, self.xr_curve.max_y, self.xr_norm1)
-            UV_2D_fitting = feature_deviation(lrf_info.uv_ty, lrf_info.uv_y, self.uv_curve.max_y, self.uv_norm1)
+            UV_2D_fitting = feature_deviation(lrf_info.uv_ty[uv_valid], lrf_info.uv_y[uv_valid], self.uv_curve.max_y, self.uv_norm1)
         elif USE_JSD:
             XR_2D_fitting = deformed_jsd(lrf_info.xr_ty, lrf_info.y)
-            UV_2D_fitting = deformed_jsd(lrf_info.uv_ty, lrf_info.uv_y)
+            UV_2D_fitting = deformed_jsd(lrf_info.uv_ty[uv_valid], lrf_info.uv_y[uv_valid])
         else:
             assert False, "invalid fitting method"
  
         XR_LRF_residual = np.log10(np.linalg.norm(self.W_*(Pxr @ Cxr - self.xrD_))/self.xr_norm2)
-        UV_LRF_residual = np.log10(np.linalg.norm(Puv @ Cuv - mapped_UvD)/self.uv_norm2)
+        UV_LRF_residual = np.log10(np.linalg.norm((Puv @ Cuv - mapped_UvD)[:, uv_valid])/self.uv_norm2)
 
         Guinier_deviation = self.get_guinier_deviation(Pxr, Cxr, rg_params)
         SEC_conformance = self.compute_comformance(xr_params, rg_params, seccol_params)

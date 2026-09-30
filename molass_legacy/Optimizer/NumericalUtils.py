@@ -9,6 +9,41 @@ import molass_legacy.KekLib.DebugPlot as plt
 
 OUTLIER_SCALE = 2
 OUTLIER_IGNORE_LIMIT = 1e-6
+UV_DOMAIN_MASK_MIN_VALID = 10
+
+def compute_uv_domain_mask(uv_x, uv_domain_lo, uv_domain_hi, min_valid=UV_DOMAIN_MASK_MIN_VALID):
+    """Boolean mask selecting frames within the really-measured UV domain.
+
+    ``uv_x`` maps every XR frame into UV coordinates (``uv_x = a*x+b`` in each
+    objective function), but UV is only actually measured within
+    ``[uv_domain_lo, uv_domain_hi]``; frames outside that range are
+    spline/interpolation extrapolation, not real data, and inflate
+    UV_2D_fitting/UV_LRF_residual if not excluded (see BasicOptimizer#286,
+    molass-library#270).
+
+    Falls back to an all-True mask if fewer than ``min_valid`` frames would
+    remain, to avoid degenerate (near-empty) norms during optimization when
+    the mapping is briefly far off (e.g. early BH/NS iterations).
+
+    Parameters
+    ----------
+    uv_x : array-like
+        Each XR frame's position mapped into UV coordinates.
+    uv_domain_lo, uv_domain_hi : float
+        The real, measured UV coordinate range (inclusive).
+    min_valid : int, optional
+        Minimum number of True entries required to use the mask as-is.
+
+    Returns
+    -------
+    ndarray of bool
+        Same shape as ``uv_x``.
+    """
+    uv_x = np.asarray(uv_x)
+    mask = (uv_x >= uv_domain_lo) & (uv_x <= uv_domain_hi)
+    if mask.sum() < min_valid:
+        return np.ones_like(mask, dtype=bool)
+    return mask
 
 def safe_ratios_debug_plot(x, y, xr_ty, xr_cy_list, rg_curve, rg_params):
     return
