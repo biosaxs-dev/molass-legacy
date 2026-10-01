@@ -11,17 +11,57 @@ from importlib import import_module, reload
 OBJFUNC_DIRNAME = "ObjectiveFunctions"
 
 def import_objective_function(class_code, logger=None):
+    """Import (hot-reloading) the ObjectiveFunctions class for ``class_code``.
+
+    Returns ``None`` only when the model is genuinely unsupported, i.e. there
+    is no ``ObjectiveFunctions/<class_code>.py`` module on disk -- the one
+    case callers (e.g. ``construct_legacy_optimizer``) are meant to turn into
+    a "model not supported" error.
+
+    Any other failure (BasicOptimizer or its dependencies failing to
+    (re)load, the module existing but raising on import, a missing/renamed
+    class attribute, ...) is a real bug, not an unsupported model, and is
+    re-raised after logging so the true cause is visible instead of being
+    silently swallowed into a misleading "not supported" message.
+
+    One such real bug (molass-legacy#102): editing ``BasicOptimizer.py`` (or
+    a module it imports, e.g. ``NumericalUtils.py``) while a long-running
+    process has it loaded can leave a stale, already-imported dependency
+    module in ``sys.modules`` -- ``reload()`` only re-executes the named
+    module, not its transitive imports -- so a newly added
+    ``from .NumericalUtils import compute_uv_domain_mask`` can raise
+    ``ImportError`` here even though the code is correct on disk.
+    """
+    from molass_legacy.KekLib.ExceptionTracebacker import log_exception
+
     try:
         import molass_legacy.Optimizer.BasicOptimizer
         reload(molass_legacy.Optimizer.BasicOptimizer)
+    except Exception:
+        # BasicOptimizer is shared infrastructure for every model -- a
+        # failure here is never "model not supported".
+        log_exception(logger, "reloading BasicOptimizer: ", n=5)
+        raise
 
-        module = import_module("molass_legacy.%s.%s" % (OBJFUNC_DIRNAME, class_code))
+    module_name = "molass_legacy.%s.%s" % (OBJFUNC_DIRNAME, class_code)
+    try:
+        module = import_module(module_name)
+    except ModuleNotFoundError as exc:
+        if exc.name == module_name:
+            # No such ObjectiveFunctions module for this model -- genuinely
+            # unsupported.
+            log_exception(logger, "importing ObjectiveFunctions: ", n=5)
+            return None
+        # The module exists but one of ITS imports is missing -- a real bug.
+        log_exception(logger, "importing ObjectiveFunctions: ", n=5)
+        raise
+
+    try:
         module = reload(module)
         class_ = getattr(module, class_code)
-    except:
-        from molass_legacy.KekLib.ExceptionTracebacker import log_exception
+    except Exception:
         log_exception(logger, "importing ObjectiveFunctions: ", n=5)
-        class_ = None
+        raise
     return class_
 
 def get_objective_function_info(logger=None, default_func_code=None, debug=False):
