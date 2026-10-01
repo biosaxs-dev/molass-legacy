@@ -247,11 +247,6 @@ class GrmParams(ParamsTypeBase):
         # Used for "normalised" parameter display (trans = Pe, t0, R_p, D_eff are shared)
         return -4, -3, -2, -1
 
-    def compute_comformance(self, xr_params, rg_params, grmcol_params,
-                            poresize_bounds=None):
-        """GRM has no pore-size constraint separate from D_eff; always returns 0."""
-        return 0
-
     def split_get_unified_sec_params(self, params):
         """Returns placeholder tuple for compatibility with display utilities."""
         grmcol = self.split_params_simple(params)[-1]

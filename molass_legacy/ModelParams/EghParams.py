@@ -7,7 +7,7 @@ import numpy as np
 from molass_legacy._MOLASS.SerialSettings import get_setting
 # from SecTheory.RetensionTime import make_initial_guess
 from molass_legacy.SecTheory.SecEstimator import guess_initial_secparams, NUM_SEC_PARAMS
-from .SimpleSecParams import SimpleSecParams, sec_comformance
+from .SimpleSecParams import SimpleSecParams
 from .BaselineParams import get_num_baseparams
 from molass_legacy.Optimizer.BasicOptimizer import AVOID_VANISHING_RATIO
 
@@ -73,10 +73,6 @@ class EghParamsBase:
 
     def compute_init_guess(self, *args):
         return self.init_method(*args)
-
-    def compute_comformance(self, *args, **kwargs):
-        # return self.conf_method(*args, **kwargs)       # bug in Python 3.10.7?
-        return sec_comformance(*args, **kwargs)          # bug fix
 
     def get_seccol_params_for_disp(self, seccol_params):
         # recosider whether this is required

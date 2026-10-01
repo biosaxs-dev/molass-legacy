@@ -235,11 +235,6 @@ class LkmParams:
     def get_trans_indeces(self):
         return -4, -3, -2, -1
 
-    def compute_comformance(self, xr_params, rg_params, lkmcol_params,
-                            poresize_bounds=None):
-        """LKM has no pore-size constraint; always returns 0."""
-        return 0
-
     def split_get_unified_sec_params(self, params):
         """Not fully applicable to LKM; returns placeholder tuple."""
         lkmcol = self.split_params_simple(params)[-1]

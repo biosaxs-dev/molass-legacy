@@ -253,10 +253,6 @@ class SdmParams:
         # m = me + mp
         return tI, t0, rp, N0, N*T, me+mp, N, T, me, mp, None, None, None
 
-    def compute_comformance(self, xr_params, rg_params, seccol_params, poresize_bounds=None):
-        # task:
-        return 0
-
     def get_peak_pos_array_list(self, x_array):
         nc = self.n_components - 1
         gr_start = self.get_rg_start_index()

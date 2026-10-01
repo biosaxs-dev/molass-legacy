@@ -231,20 +231,6 @@ class CedmParams:
         return bounds_mask
 
     # ------------------------------------------------------------------
-    # SEC conformance
-    # ------------------------------------------------------------------
-
-    def compute_comformance(self, xr_params_abc, rg_params, cedm_colparams, **kwargs):
-        """SEC conformance for CEDM.
-
-        Since the column parameters are constrained to be shared, the
-        conformance is inherently enforced by the model structure.  We
-        return the best possible (lowest) conformance value.
-        """
-        from molass_legacy.SecTheory.ColumnConstants import SECCONF_LOWER_BOUND
-        return SECCONF_LOWER_BOUND
-
-    # ------------------------------------------------------------------
     # index helpers
     # ------------------------------------------------------------------
 

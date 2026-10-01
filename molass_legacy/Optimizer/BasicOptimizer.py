@@ -671,6 +671,10 @@ class BasicOptimizer:
         lrf_info.update_optimizer(self)
 
     def compute_fv(self, lrf_info, xr_params, rg_params, seccol_params, penalties, p, debug=False):
+        # seccol_params: no longer used here (SEC_conformance is now the model-agnostic
+        # molass.SEC.Models.MartinSynge.conformance_score, computed from lrf_info's
+        # component moments alone -- molass-library#289). Kept in the signature since
+        # every G-series objective_func still passes it positionally.
         Pxr, Cxr, Puv, Cuv, mapped_UvD = lrf_info.matrices
 
         # uv_x maps every XR frame into UV coordinates (uv_x = a*x+b), but UV was
@@ -697,7 +701,7 @@ class BasicOptimizer:
         UV_LRF_residual = np.log10(np.linalg.norm((Puv @ Cuv - mapped_UvD)[:, uv_valid])/self.uv_norm2)
 
         Guinier_deviation = self.get_guinier_deviation(Pxr, Cxr, rg_params)
-        SEC_conformance = self.compute_comformance(xr_params, rg_params, seccol_params)
+        SEC_conformance = self.compute_comformance(lrf_info)
 
         qv = self.gdev.qv
         kratky_plot_smoothness = 0
@@ -1107,8 +1111,22 @@ class BasicOptimizer:
                 return
             return deviation*0.5 - 0.5
 
-    def compute_comformance(self, xr_params, rg_params, seccol_params):
-        conformance = self.params_type.compute_comformance(xr_params, rg_params, seccol_params, poresize_bounds=self.poresize_bounds)
+    def compute_comformance(self, lrf_info):
+        """Model-agnostic SEC_conformance -- see molass.SEC.Models.MartinSynge.conformance_score
+        and molass-researcher experiment 46 for the design derivation and empirical
+        validation (molass-library#289). Needs only each component's post-decomposition
+        moments (tR, sigma), computed identically regardless of elution model -- no Rg,
+        no pore size, no model-specific column parameters, unlike the per-model
+        ``ModelParams.compute_comformance`` this replaces.
+        """
+        from molass.SEC.Models.MartinSynge import conformance_score
+        from molass_legacy.Peaks.MomentsUtils import compute_moments
+
+        x = lrf_info.x
+        moments_list = [compute_moments(x, cy) for cy in lrf_info.scaled_xr_cy_array[0:-1]]  # excl. baseline
+        tR = [M[1] for M in moments_list]
+        sigma = [np.sqrt(M[2]) for M in moments_list]
+        conformance = conformance_score(tR, sigma)
         return conformance*0.5 - 0.1
 
     def compute_mw_integrity(self, P, C, preceder):

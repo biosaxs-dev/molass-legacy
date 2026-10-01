@@ -93,9 +93,6 @@ class EdmParams:
     def compute_init_guess(self, *args):
         assert False
 
-    def compute_comformance(self, *args, **kwargs):
-        assert False
-
     def estimate_conformance_params(self, *args):
         assert False
 
@@ -274,19 +271,6 @@ class EdmParams:
     def split_get_unified_sec_params(self, params):
         # should not be called
         assert False
-
-    def compute_comformance(self, xr_params, rg_params, edm_colparams, **kwargs):
-        # this is made in accordance to .SimpleSecParams.sec_comformance
-
-        from molass_legacy.SecTheory.ColumnConstants import SECCONF_LOWER_BOUND, BAD_CONFORMANCE_REDUCE
-
-        stdev = np.std(np.concatenate([xr_params[:,0], edm_colparams]))     # edm_colparams == [Tz]
-        log_conformance = np.log10(stdev)
-
-        if log_conformance > 0:
-            log_conformance *= BAD_CONFORMANCE_REDUCE   # large conformance at early stages can be misleading
-
-        return max(SECCONF_LOWER_BOUND, log_conformance)
 
     def get_paramslider_info(self, devel=True):
         if devel:
