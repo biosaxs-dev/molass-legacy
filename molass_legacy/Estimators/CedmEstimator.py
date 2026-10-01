@@ -13,13 +13,13 @@
         mappable_range  : (c, d)
         cedm_colparams  : [t0_sh, u_sh, e_sh, Dz_sh]  (shared, appended at end)
 
-    Strategy: delegate to molass-library's EdmEstimatorImpl.estimate_cedm_shared_params
+    Strategy: delegate to molass-library's EdmEstimatorImpl.estimate_edm_shared_params
     via a thin adapter.  This keeps the algorithm in a single place — any
     improvement to the library implementation is automatically inherited here.
 
       1. Get EGH component params from estimate_egh_params().
       2. Wrap each EGH component as an _EghCurveAdapter (.x, .y, get_y()).
-      3. Call molass.SEC.Models.EdmEstimatorImpl.estimate_cedm_shared_params
+      3. Call molass.SEC.Models.EdmEstimatorImpl.estimate_edm_shared_params
          → (cedm_colparams [t0_sh, u_sh, e_sh, Dz_sh], abc_params [nc×3]).
          This runs guess_multiple_impl (rough) then a shared-column L-BFGS-B
          optimisation, producing physically varied b values per component.
@@ -40,7 +40,7 @@ class CedmEstimator(EghEstimator):
         # Fast path: use library CEDM upgrade result directly.
         editor = self.editor
         model_decomp = getattr(editor, 'model_decomposition', None)
-        if model_decomp is not None and getattr(model_decomp, 'model', None) == 'cedm':
+        if model_decomp is not None and getattr(model_decomp, 'model', None) == 'edm':
             try:
                 from molass.Rigorous.LegacyBridgeUtils import make_basecurves_from_decomposition
                 _ssd_unc = getattr(editor, '_ssd_uncorrected', None)   # molass-legacy#87 pattern
@@ -57,7 +57,7 @@ class CedmEstimator(EghEstimator):
             from importlib import reload
             import molass.SEC.Models.EdmEstimatorImpl
             reload(molass.SEC.Models.EdmEstimatorImpl)
-        from molass.SEC.Models.EdmEstimatorImpl import estimate_cedm_shared_params
+        from molass.SEC.Models.EdmEstimatorImpl import estimate_edm_shared_params
 
         (init_xr_params, init_xr_baseparams, temp_rgs, init_mapping,
          init_uv_heights, init_uv_baseparams, init_mappable_range,
@@ -76,7 +76,7 @@ class CedmEstimator(EghEstimator):
         # Delegate to library: rough EDM fit → shared-column L-BFGS-B optimisation.
         # Returns cedm_colparams [t0_sh, u_sh, e_sh, Dz_sh] and abc_params (nc×3).
         adapters = [_EghCurveAdapter(x, init_xr_params[k]) for k in range(nc)]
-        cedm_colparams, abc_params = estimate_cedm_shared_params(x, y, adapters, debug=debug)
+        cedm_colparams, abc_params = estimate_edm_shared_params(x, y, adapters, debug=debug)
 
         progress += 1
         editor.pbar["value"] = progress
