@@ -1,5 +1,5 @@
 """
-    Estimators.EdmEstimator.py
+    Estimators.NedmEstimator.py
 
     Copyright (c) 2022-2025, SAXS Team, KEK-PF
 """
@@ -9,33 +9,20 @@ from molass_legacy._MOLASS.SerialSettings import get_setting
 from molass_legacy.Peaks.PeProgressConstants import MAXNUM_STEPS, STOCH_INIT_STEPS
 from .EghEstimator import EghEstimator
 
-class EdmEstimator(EghEstimator):
+class NedmEstimator(EghEstimator):
     def __init__(self, editor, n_components):
         self.n_components = n_components
         EghEstimator.__init__(self, editor)
 
     def estimate_params(self, debug=False):
-        """G1800/non-CEDM EDM init.
+        """G2010/NEDM (non-constrained EDM) init.
 
-        Fast path: if ``editor.model_decomposition`` holds a library EDM upgrade
-        result, use ``make_rigorous_initparams`` directly.
-        Falls back to the legacy per-component EDM fitting approach.
+        molass-library has no implementation of this non-shared-column variant
+        (its free-EDM path was removed; ``upgrade('EDM')`` now always returns
+        the shared-column/constrained model used by G2020), so there is no
+        library fast path here -- this always uses the legacy per-component
+        EDM fitting approach below.
         """
-        # Fast path: use library EDM upgrade result directly.
-        editor = self.editor
-        model_decomp = getattr(editor, 'model_decomposition', None)
-        if model_decomp is not None and getattr(model_decomp, 'model', None) == 'edm':
-            try:
-                from molass.Rigorous.LegacyBridgeUtils import make_basecurves_from_decomposition
-                _, baseparams = make_basecurves_from_decomposition(model_decomp)
-                init_params = model_decomp.make_rigorous_initparams(baseparams)
-                self.logger.info("EdmEstimator: used library EDM upgrade result directly")
-                return init_params
-            except Exception as _e:
-                self.logger.warning(
-                    "EdmEstimator: library fast path failed (%s); falling back to legacy path", _e
-                )
-
         if debug:
             from importlib import reload
             import molass_legacy.Models.RateTheory.EDM
@@ -47,7 +34,7 @@ class EdmEstimator(EghEstimator):
 
         editor = self.editor
         progress = MAXNUM_STEPS - STOCH_INIT_STEPS
-        editor.update_status_bar("Estimating EDM initial parameters.")
+        editor.update_status_bar("Estimating NEDM initial parameters.")
 
         nc = self.n_components - 1   # num components without baseline
 
@@ -65,7 +52,7 @@ class EdmEstimator(EghEstimator):
             xr_params = _legacy_gmi(x, y, nc, debug=debug)
 
         # Per-component UV weights via peak-lookup — same method as UvOptimizer.
-        # Evaluate each EDM component curve; look up UV value at mapped peak frame.
+        # Evaluate each NEDM component curve; look up UV value at mapped peak frame.
         from .EghEstimator import estimate_uv_weights_from_peaks
         model_curves = [edm_impl(x, *xr_params[k]) for k in range(nc)]
         uv_w = estimate_uv_weights_from_peaks(
@@ -89,14 +76,14 @@ class EdmEstimator(EghEstimator):
 
         progress += 1
         editor.pbar["value"] = progress
-        editor.update_status_bar("EDM initial parameters are ready.")
+        editor.update_status_bar("NEDM initial parameters are ready.")
 
         return init_params
 
 def onthefly_test(editor):
     optimizer = editor.optimizer
     n_components = optimizer.params_type.n_components
-    estimator = EdmEstimator(editor, n_components)
+    estimator = NedmEstimator(editor, n_components)
     print("estimating...")
     init_params = estimator.estimate_params(debug=True)
     print("done.")
@@ -111,7 +98,7 @@ def onthefly_test(editor):
         fig, (ax1, ax2, ax3) = plt.subplots(ncols=3, figsize=(18,5))
         axt = ax2.twinx()
         axt.grid(False)
-        fig.suptitle("EdmEstimator onthefly_test at PeakEditor")
+        fig.suptitle("NedmEstimator onthefly_test at PeakEditor")
         draw_params(init_params, fig, (ax1, ax2, ax3, axt))
         fig.tight_layout()
         ret = plt.show()

@@ -1,5 +1,5 @@
 """
-    Estimators.EdmEstimatorDevel.py
+    Estimators.NedmEstimatorDevel.py
 """
 import numpy as np
 import matplotlib.pyplot as plt
@@ -19,7 +19,7 @@ class SsdProxy:
     def get_mapping(self):
         return self.mapping
 
-class EdmEstimatorDevel(EghEstimator):
+class NedmEstimatorDevel(EghEstimator):
     def __init__(self, editor, n_components):
         self.n_components = n_components
         EghEstimator.__init__(self, editor)
@@ -56,7 +56,7 @@ class EdmEstimatorDevel(EghEstimator):
         decomposition = Decomposition(ssd, xr_icurve, egh_xr_ccurves, uv_icurve, egh_uv_ccurves)
         if debug:
             fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(10,4))
-            fig.suptitle("EGH Initial Parameters by EdmEstimatorDevel")
+            fig.suptitle("EGH Initial Parameters by NedmEstimatorDevel")
             plot_elution_curve(ax1, uv_curve, egh_uv_ccurves)
             plot_elution_curve(ax2, xr_curve, egh_xr_ccurves)
             plt.show()
@@ -66,7 +66,7 @@ class EdmEstimatorDevel(EghEstimator):
         edm_xr_ccurves = edm_decomposition.xr_ccurves
         if debug:
             fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(10,4))
-            fig.suptitle("EDM Initial Parameters by EdmEstimatorDevel")
+            fig.suptitle("EDM Initial Parameters by NedmEstimatorDevel")
             plot_elution_curve(ax1, uv_curve, edm_uv_ccurves)
             plot_elution_curve(ax2, xr_curve, edm_xr_ccurves)
             plt.show()

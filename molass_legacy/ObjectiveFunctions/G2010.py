@@ -1,10 +1,11 @@
 """
-    G2010.py — 7-score EDM objective function
+    G2010.py — 7-score NEDM (non-constrained EDM) objective function
 
-    Elution model: EDM (Equilibrium Dispersive Model)
+    Elution model: NEDM (non-constrained Equilibrium Dispersive Model)
     Scores: XR_2D_fitting, XR_LRF_residual, UV_2D_fitting, UV_LRF_residual,
             Guinier_deviation, Kratky_smoothness, SEC_conformance
-    Uses EdmParams for rate-theory-based column modeling.
+    Uses NedmParams for rate-theory-based column modeling. Distinct from
+    G2020's constrained/shared-column model, which is called "EDM".
 
     Copyright (c) 2023-2024, SAXS Team, KEK-PF
 """
@@ -25,17 +26,18 @@ IGNORE_OUT_OF_BOUNDS = True
 
 class G2010(BasicOptimizer):
     """
-    Equilibrium Dispersive Model
+    Non-constrained Equilibrium Dispersive Model (NEDM).
+    See G2020 for the constrained/shared-column model called "EDM".
     """
     def __init__(self, dsets, n_components, **kwargs):
 
         if True:
             from importlib import reload
-            import molass_legacy.ModelParams.EdmParams
-            reload(molass_legacy.ModelParams.EdmParams)
-        from molass_legacy.ModelParams.EdmParams import EdmParams
+            import molass_legacy.ModelParams.NedmParams
+            reload(molass_legacy.ModelParams.NedmParams)
+        from molass_legacy.ModelParams.NedmParams import NedmParams
 
-        params_type = EdmParams(n_components)
+        params_type = NedmParams(n_components)
         BasicOptimizer.__init__(self, dsets, n_components, params_type, kwargs)
         # BasicOptimizer.__init__ may return early (when for_split_only=True) before
         # setting self.xr_curve.  Extract x directly from dsets to avoid AttributeError.

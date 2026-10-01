@@ -84,14 +84,14 @@ def SDM_estimator_test_impl(editor):
 
     return ret
 
-def EDM_estimator_test_impl(editor):
+def NEDM_estimator_test_impl(editor):
     from importlib import reload
-    import Estimators.EdmEstimator
-    reload(Estimators.EdmEstimator)
-    from Estimators.EdmEstimator import EdmEstimator
+    import Estimators.NedmEstimator
+    reload(Estimators.NedmEstimator)
+    from Estimators.NedmEstimator import NedmEstimator
     n_components = editor.get_n_components()
     print("estimator_test_impl: n_components=", n_components)
-    estimator = EdmEstimator(editor, n_components=n_components)
+    estimator = NedmEstimator(editor, n_components=n_components)
     estimator.estimate_params(debug=True)
 
 def estimator_test_impl(editor):
@@ -99,7 +99,7 @@ def estimator_test_impl(editor):
     extra_button_specs = [
         ("EGH Edtimator", lambda: EGH_estimator_test_impl(editor)),
         ("SDM Edtimator", lambda: SDM_estimator_test_impl(editor)),
-        ("EDM Edtimator", lambda: EDM_estimator_test_impl(editor)),
+        ("NEDM Edtimator", lambda: NEDM_estimator_test_impl(editor)),
     ]
 
     with plt.Dp(extra_button_specs=extra_button_specs):

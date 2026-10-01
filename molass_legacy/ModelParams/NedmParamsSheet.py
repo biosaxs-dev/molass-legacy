@@ -1,5 +1,5 @@
 """
-    Optimizer.ParamSetType.EdmParamsSheet.py
+    Optimizer.ParamSetType.NedmParamsSheet.py
 
     Copyright (c) 2023, SAXS Team, KEK-PF
 """
@@ -9,7 +9,7 @@ from tksheet import Sheet
 from molass_legacy._MOLASS.SerialSettings import get_setting
 from .ParamsSheetBase import ParamsSheetBase
 
-class EdmParamsSheet(ParamsSheetBase):
+class NedmParamsSheet(ParamsSheetBase):
     def __init__(self, parent, params, dsets, optimizer):
         ParamsSheetBase.__init__(self, parent, params, dsets, optimizer)
 

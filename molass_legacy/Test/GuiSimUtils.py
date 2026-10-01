@@ -46,7 +46,10 @@ _UPGRADE_MAP = {
     'G1300': ('SDM',  {'pore_dist': 'lognormal'}),
     'G1400': ('LKM',  {}),
     'G1500': ('GRM',  {}),
-    'G2010': ('CEDM', {}),
+    # G2010 (NEDM, non-constrained EDM) intentionally has no entry:
+    # molass-library implements only the constrained/shared-column
+    # model (called "EDM"); there is no library counterpart for
+    # NEDM, so it always falls back to the legacy estimator path.
     'G2020': ('EDM',  {}),
 }
 

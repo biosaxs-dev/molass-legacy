@@ -1,5 +1,5 @@
 """
-    EdmParams.py
+    NedmParams.py
 
     Copyright (c) 2023-2025, SAXS Team, KEK-PF
 """
@@ -26,8 +26,10 @@ def get_common_parameter_names(nc):
 
     return xr_names, rg_names, mapping_names, uv_names, mr_names, edmcol_names
 
-class EdmParams:
-    """Parameter layout for EDM (Equilibrium Dispersive Model) rigorous optimization.
+class NedmParams:
+    """Parameter layout for NEDM (non-constrained Equilibrium Dispersive Model,
+    G2010) rigorous optimization. Distinct from G2020's constrained/shared-column
+    model, which molass-library and molass-legacy call "EDM".
 
     .. note:: n_components includes the baseline component;
               biological component count = n_components - 1.
@@ -63,7 +65,7 @@ class EdmParams:
         self.logger.info("pos=%s", str(self.pos))
 
     def __str__(self):
-        return "EdmParams(nc=%d)" % (self.n_components)
+        return "NedmParams(nc=%d)" % (self.n_components)
 
     def get_model_name(self):
         return 'NEDM'
@@ -75,18 +77,18 @@ class EdmParams:
         if developing:
             if debug:
                 from importlib import reload
-                import molass_legacy.Estimators.EdmEstimatorDevel
-                reload(molass_legacy.Estimators.EdmEstimatorDevel)
-            from molass_legacy.Estimators.EdmEstimatorDevel import EdmEstimatorDevel
-            estimator = EdmEstimatorDevel(editor, self.n_components)
+                import molass_legacy.Estimators.NedmEstimatorDevel
+                reload(molass_legacy.Estimators.NedmEstimatorDevel)
+            from molass_legacy.Estimators.NedmEstimatorDevel import NedmEstimatorDevel
+            estimator = NedmEstimatorDevel(editor, self.n_components)
             # self.t0_upper_bound = estimator.get_t0_upper_bound()
         else:
             if debug:
                 from importlib import reload
-                import molass_legacy.Estimators.EdmEstimator
-                reload(molass_legacy.Estimators.EdmEstimator)
-            from molass_legacy.Estimators.EdmEstimator import EdmEstimator
-            estimator = EdmEstimator(editor, self.n_components)
+                import molass_legacy.Estimators.NedmEstimator
+                reload(molass_legacy.Estimators.NedmEstimator)
+            from molass_legacy.Estimators.NedmEstimator import NedmEstimator
+            estimator = NedmEstimator(editor, self.n_components)
             self.t0_upper_bound = estimator.get_t0_upper_bound()
         return estimator
 
@@ -193,10 +195,10 @@ class EdmParams:
     def get_params_sheet(self, parent, params, dsets, optimizer, debug=True):
         if debug:
             from importlib import reload
-            import molass_legacy.ModelParams.EdmParamsSheet
-            reload(molass_legacy.ModelParams.EdmParamsSheet)
-        from .EdmParamsSheet import EdmParamsSheet
-        return EdmParamsSheet(parent, params, dsets, optimizer)
+            import molass_legacy.ModelParams.NedmParamsSheet
+            reload(molass_legacy.ModelParams.NedmParamsSheet)
+        from .NedmParamsSheet import NedmParamsSheet
+        return NedmParamsSheet(parent, params, dsets, optimizer)
 
     def get_adjuster(self, debug=True):
         if debug:
@@ -275,8 +277,8 @@ class EdmParams:
     def get_paramslider_info(self, devel=True):
         if devel:
             from importlib import reload
-            import molass_legacy.ModelParams.EdmSliderInfo
-            reload(molass_legacy.ModelParams.EdmSliderInfo)
-        from .EdmSliderInfo import EdmSliderInfo
+            import molass_legacy.ModelParams.NedmSliderInfo
+            reload(molass_legacy.ModelParams.NedmSliderInfo)
+        from .NedmSliderInfo import NedmSliderInfo
         nc = self.n_components - 1
-        return EdmSliderInfo(nc=nc)
+        return NedmSliderInfo(nc=nc)

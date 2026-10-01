@@ -10,7 +10,7 @@ MODEL_NAME_DICT = {
     "G0346": "EGH",
     "G0367": "EGH",
     "G1100": "SDM",
-    "G2010": "EDM",
+    "G2010": "NEDM",
 }
 
 def show_adhoc_figure_impl(js_canvas):

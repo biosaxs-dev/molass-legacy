@@ -1,11 +1,11 @@
 """
-    ModelParams.EdmSliderInfo.py
+    ModelParams.NedmSliderInfo.py
 
     Copyright (c) 2024-2025, SAXS Team, KEK-PF
 """
 from .BaseSliderInfo import BaseSliderInfo
 
-class EdmSliderInfo(BaseSliderInfo):
+class NedmSliderInfo(BaseSliderInfo):
     def __init__(self, nc): 
         cmpparam_names = ["t0", "u", "a", "b", "e", "Dz", "c_inj", "Rg"]
 

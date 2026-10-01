@@ -198,17 +198,17 @@ def embed_cushion_impl_ParamsIterator(caller):
         from molass_legacy.KekLib.ExceptionTracebacker import log_exception
         log_exception(caller.logger, "iterator_test_from_dialog: ", n=10)
 
-def embed_cushion_impl_EdmEstimator(caller):
+def embed_cushion_impl_NedmEstimator(caller):
     from importlib import reload
-    import Estimators.EdmEstimator
-    reload(Estimators.EdmEstimator)
-    from Estimators.EdmEstimator import onthefly_test
+    import Estimators.NedmEstimator
+    reload(Estimators.NedmEstimator)
+    from Estimators.NedmEstimator import onthefly_test
 
     try:
         onthefly_test(caller)
     except:
         from molass_legacy.KekLib.ExceptionTracebacker import log_exception
-        log_exception(caller.logger, "EdmEstimator onthefly_test: ", n=10)
+        log_exception(caller.logger, "NedmEstimator onthefly_test: ", n=10)
 
 def embed_cushion_impl_RatioInterpretIllust(caller):
     from importlib import reload

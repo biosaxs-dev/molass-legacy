@@ -8,7 +8,7 @@ from .BaseSliderInfo import BaseSliderInfo
 class LkmSliderInfo(BaseSliderInfo):
     def __init__(self, nc):
         # LKM per-component params: [scale]  (n_=1)
-        # Rg params follow at nc*n_ (same convention as EdmSliderInfo)
+        # Rg params follow at nc*n_ (same convention as NedmSliderInfo)
         cmpparam_names = ["scale", "Rg"]
 
         n_ = 1
