@@ -1,9 +1,9 @@
 """
-    Estimators.CedmEstimator.py
+    Estimators.EdmEstimator.py
 
-    Estimates initial parameters for Constrained-EDM (G2020 / CedmParams).
+    Estimates initial parameters for EDM (constrained/shared-column, G2020 / EdmParams).
 
-    CEDM layout (see CedmParams.py):
+    EDM layout (see EdmParams.py):
         xr_params       : (nc × 3)  [a_k, b_k, c_inj_k]   per component
         xr_baseparams   : num_baseparams
         rg_params       : nc
@@ -11,7 +11,7 @@
         uv_params       : nc
         uv_baseparams   : 5 + num_baseparams
         mappable_range  : (c, d)
-        cedm_colparams  : [t0_sh, u_sh, e_sh, Dz_sh]  (shared, appended at end)
+        edm_colparams   : [t0_sh, u_sh, e_sh, Dz_sh]  (shared, appended at end)
 
     Strategy: delegate to molass-library's EdmEstimatorImpl.estimate_edm_shared_params
     via a thin adapter.  This keeps the algorithm in a single place — any
@@ -20,7 +20,7 @@
       1. Get EGH component params from estimate_egh_params().
       2. Wrap each EGH component as an _EghCurveAdapter (.x, .y, get_y()).
       3. Call molass.SEC.Models.EdmEstimatorImpl.estimate_edm_shared_params
-         → (cedm_colparams [t0_sh, u_sh, e_sh, Dz_sh], abc_params [nc×3]).
+         → (edm_colparams [t0_sh, u_sh, e_sh, Dz_sh], abc_params [nc×3]).
          This runs guess_multiple_impl (rough) then a shared-column L-BFGS-B
          optimisation, producing physically varied b values per component.
 
@@ -31,13 +31,13 @@ from molass_legacy.Peaks.PeProgressConstants import MAXNUM_STEPS, STOCH_INIT_STE
 from .EghEstimator import EghEstimator, _EghCurveAdapter
 
 
-class CedmEstimator(EghEstimator):
+class EdmEstimator(EghEstimator):
     def __init__(self, editor, n_components):
         self.n_components = n_components
         EghEstimator.__init__(self, editor)
 
     def estimate_params(self, debug=False):
-        # Fast path: use library CEDM upgrade result directly.
+        # Fast path: use library EDM upgrade result directly.
         editor = self.editor
         model_decomp = getattr(editor, 'model_decomposition', None)
         if model_decomp is not None and getattr(model_decomp, 'model', None) == 'edm':
@@ -46,11 +46,11 @@ class CedmEstimator(EghEstimator):
                 _ssd_unc = getattr(editor, '_ssd_uncorrected', None)   # molass-legacy#87 pattern
                 _, baseparams = make_basecurves_from_decomposition(model_decomp, data_ssd=_ssd_unc)
                 init_params = model_decomp.make_rigorous_initparams(baseparams)
-                self.logger.info("CedmEstimator: used library CEDM upgrade result directly")
+                self.logger.info("EdmEstimator: used library EDM upgrade result directly")
                 return init_params
             except Exception as _e:
                 self.logger.warning(
-                    "CedmEstimator: library fast path failed (%s); falling back to legacy path", _e
+                    "EdmEstimator: library fast path failed (%s); falling back to legacy path", _e
                 )
 
         if debug:
@@ -65,7 +65,7 @@ class CedmEstimator(EghEstimator):
 
         editor = self.editor
         progress = MAXNUM_STEPS - STOCH_INIT_STEPS
-        editor.update_status_bar("Estimating CEDM initial parameters.")
+        editor.update_status_bar("Estimating EDM initial parameters.")
 
         nc = self.n_components - 1   # num components without baseline
 
@@ -74,19 +74,19 @@ class CedmEstimator(EghEstimator):
         y = xr_curve.y
 
         # Delegate to library: rough EDM fit → shared-column L-BFGS-B optimisation.
-        # Returns cedm_colparams [t0_sh, u_sh, e_sh, Dz_sh] and abc_params (nc×3).
+        # Returns edm_colparams [t0_sh, u_sh, e_sh, Dz_sh] and abc_params (nc×3).
         adapters = [_EghCurveAdapter(x, init_xr_params[k]) for k in range(nc)]
-        cedm_colparams, abc_params = estimate_edm_shared_params(x, y, adapters, debug=debug)
+        edm_colparams, abc_params = estimate_edm_shared_params(x, y, adapters, debug=debug)
 
         progress += 1
         editor.pbar["value"] = progress
         editor.update()
 
         # Per-component UV weights via peak-lookup — same method as UvOptimizer.
-        # Evaluate each CEDM component curve using shared column params.
+        # Evaluate each EDM component curve using shared column params.
         from .EghEstimator import estimate_uv_weights_from_peaks
         from molass_legacy.Models.RateTheory.EDM import edm_impl
-        t0_sh, u_sh, e_sh, Dz_sh = cedm_colparams
+        t0_sh, u_sh, e_sh, Dz_sh = edm_colparams
         model_curves = [
             edm_impl(x, t0_sh, u_sh, abc_params[k, 0], abc_params[k, 1],
                      e_sh, Dz_sh, abc_params[k, 2])
@@ -95,7 +95,7 @@ class CedmEstimator(EghEstimator):
         uv_w = estimate_uv_weights_from_peaks(
             model_curves, x, init_mapping, uv_curve.x, uv_curve.y)
 
-        editor.update_status_bar("CEDM initial parameters are ready.")
+        editor.update_status_bar("EDM initial parameters are ready.")
 
         return np.concatenate([
             abc_params.flatten(),       # nc × 3: [a_k, b_k, c_inj_k]
@@ -105,5 +105,5 @@ class CedmEstimator(EghEstimator):
             uv_w,                       # nc
             init_uv_baseparams,         # 5 + num_baseparams
             init_mappable_range,        # (c, d)
-            cedm_colparams,             # [t0_sh, u_sh, e_sh, Dz_sh]
+            edm_colparams,              # [t0_sh, u_sh, e_sh, Dz_sh]
         ])

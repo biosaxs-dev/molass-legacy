@@ -561,7 +561,7 @@ class JobStateCanvas(Tk.Frame):
         Calls ``decomposition_from_optimizer_params`` in the Bridge layer, which
         reuses the existing ``ComponentUtils.get_xr_ccurves`` dispatch table to
         reconstruct model-correct component curves for all five models (EGH, SDM,
-        EDM/CEDM, LKM).  On failure, self.decomposition is left unchanged so the
+        EDM, LKM).  On failure, self.decomposition is left unchanged so the
         initial decomposition (or any previously updated one) is still shown.
         """
         try:

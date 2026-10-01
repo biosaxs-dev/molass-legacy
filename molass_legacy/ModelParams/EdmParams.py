@@ -1,5 +1,5 @@
 """
-    CedmParams.py — parameter class for Constrained-EDM (G2020)
+    EdmParams.py — parameter class for EDM (constrained/shared-column, G2020)
 
     Parameter layout (all but colparams inside split_params):
         xr_params       : (nc × 3)  — [a_k, b_k, c_inj_k]  per component
@@ -10,7 +10,7 @@
         uv_baseparams   : 5 + num_baseparams
         mappable_range  : (c, d)
     Appended at the end (outside split_params):
-        cedm_colparams  : [t0_sh, u_sh, e_sh, Dz_sh]   (4 values)
+        edm_colparams   : [t0_sh, u_sh, e_sh, Dz_sh]   (4 values)
 
     Copyright (c) 2024-2025, SAXS Team, KEK-PF
 """
@@ -25,8 +25,8 @@ NUM_COL_PARAMS = 4       # t0_sh, u_sh, e_sh, Dz_sh
 NUM_ELEMENT_PARAMS = 3   # a, b, c_inj  per component
 
 
-class CedmParams:
-    """Parameter type for Constrained-EDM rigorous optimisation (G2020).
+class EdmParams:
+    """Parameter type for EDM rigorous optimisation (constrained/shared-column, G2020).
 
     The four column parameters (t0, u, e, Dz) are shared across all
     components; only the per-component physical parameters (a = K_SEC, b, c_inj)
@@ -62,10 +62,10 @@ class CedmParams:
         self.pos.append(sep)                        # [7] end (excl. colparams)
 
         self.num_params = sep
-        self.logger.info("CedmParams pos=%s", str(self.pos))
+        self.logger.info("EdmParams pos=%s", str(self.pos))
 
     def __str__(self):
-        return "CedmParams(nc=%d)" % (self.n_components)
+        return "EdmParams(nc=%d)" % (self.n_components)
 
     def get_model_name(self):
         return 'EDM'
@@ -100,17 +100,17 @@ class CedmParams:
         -------
         list of 8 elements:
             [xr_params (nc×3), xr_baseparams, rg_params, mapping,
-             uv_params, uv_baseparams, mappable_range, cedm_colparams]
+             uv_params, uv_baseparams, mappable_range, edm_colparams]
         """
         decomp_params = params[:-NUM_COL_PARAMS]
-        cedm_colparams = params[-NUM_COL_PARAMS:]
+        edm_colparams = params[-NUM_COL_PARAMS:]
         self.separate_params = (
-            self.split_params(self.n_components, decomp_params) + [cedm_colparams]
+            self.split_params(self.n_components, decomp_params) + [edm_colparams]
         )
         return self.separate_params
 
     def split_as_unified_params(self, params, **kwargs):
-        raise NotImplementedError("CedmParams.split_as_unified_params is not supported")
+        raise NotImplementedError("EdmParams.split_as_unified_params is not supported")
 
     # ------------------------------------------------------------------
     # bounds
@@ -135,9 +135,9 @@ class CedmParams:
             bounds.append((max(MIN_C_INJ, c_inj_min), min(MAX_C_INJ, c_inj_max * 2)))  # c_inj
         return bounds
 
-    def get_cedm_col_bounds(self, cedm_colparams):
+    def get_edm_col_bounds(self, edm_colparams):
         """Return bounds for the 4 shared column parameters."""
-        t0, u, e, Dz = cedm_colparams
+        t0, u, e, Dz = edm_colparams
         return [
             (-500.0, 1000.0),      # t0_sh
             (0.00001, 50.0),       # u_sh
@@ -149,7 +149,7 @@ class CedmParams:
         """Return one (lo, hi) pair for every element of params."""
         (init_xr_params_abc, init_xr_baseparams, init_rgs, init_mapping,
          init_uv_params, init_uv_baseparams, init_mappable_range,
-         init_cedm_colparams) = self.split_params_simple(params)
+         init_edm_colparams) = self.split_params_simple(params)
 
         m_allow = 100
 
@@ -184,7 +184,7 @@ class CedmParams:
         dx = (t - f) * 0.1
         range_bounds = [(f - dx, f + dx), (t - dx, t + dx)]
 
-        col_bounds = self.get_cedm_col_bounds(init_cedm_colparams)
+        col_bounds = self.get_edm_col_bounds(init_edm_colparams)
 
         all_bounds = (
             xr_bounds + rg_bounds + mapping_bounds + uv_bounds
@@ -276,8 +276,8 @@ class CedmParams:
         pos_array_list = []
         for params in x_array:
             xr_params_abc = params[: nc * NUM_ELEMENT_PARAMS].reshape((nc, NUM_ELEMENT_PARAMS))
-            cedm_colparams = params[-NUM_COL_PARAMS:]
-            t0_sh, u_sh, e_sh, Dz_sh = cedm_colparams
+            edm_colparams = params[-NUM_COL_PARAMS:]
+            t0_sh, u_sh, e_sh, Dz_sh = edm_colparams
             pos = []
             for a_k, b_k, c_inj_k in xr_params_abc:
                 cy = edm_impl(x, t0_sh, u_sh, a_k, b_k, e_sh, Dz_sh, c_inj_k)
@@ -294,10 +294,10 @@ class CedmParams:
     def get_estimator(self, editor, developing=False, debug=False):
         if debug:
             from importlib import reload
-            import molass_legacy.Estimators.CedmEstimator
-            reload(molass_legacy.Estimators.CedmEstimator)
-        from molass_legacy.Estimators.CedmEstimator import CedmEstimator
-        return CedmEstimator(editor, self.n_components)
+            import molass_legacy.Estimators.EdmEstimator
+            reload(molass_legacy.Estimators.EdmEstimator)
+        from molass_legacy.Estimators.EdmEstimator import EdmEstimator
+        return EdmEstimator(editor, self.n_components)
 
     def get_adjuster(self, debug=True):
         from .StcAdjuster import StcAdjuster
@@ -306,19 +306,19 @@ class CedmParams:
     def get_params_sheet(self, parent, params, dsets, optimizer, debug=True):
         if debug:
             from importlib import reload
-            import molass_legacy.ModelParams.CedmParamsSheet
-            reload(molass_legacy.ModelParams.CedmParamsSheet)
-        from .CedmParamsSheet import CedmParamsSheet
-        return CedmParamsSheet(parent, params, dsets, optimizer)
+            import molass_legacy.ModelParams.EdmParamsSheet
+            reload(molass_legacy.ModelParams.EdmParamsSheet)
+        from .EdmParamsSheet import EdmParamsSheet
+        return EdmParamsSheet(parent, params, dsets, optimizer)
 
     def get_paramslider_info(self, devel=True):
         if devel:
             from importlib import reload
-            import molass_legacy.ModelParams.CedmSliderInfo
-            reload(molass_legacy.ModelParams.CedmSliderInfo)
-        from .CedmSliderInfo import CedmSliderInfo
+            import molass_legacy.ModelParams.EdmSliderInfo
+            reload(molass_legacy.ModelParams.EdmSliderInfo)
+        from .EdmSliderInfo import EdmSliderInfo
         nc = self.n_components - 1
-        return CedmSliderInfo(nc=nc)
+        return EdmSliderInfo(nc=nc)
 
     def get_trans_indeces(self):
-        raise NotImplementedError("CedmParams.get_trans_indeces is not supported (use_K=False)")
+        raise NotImplementedError("EdmParams.get_trans_indeces is not supported (use_K=False)")

@@ -26,7 +26,7 @@ def plot_objective_state(score_list_pair, fv, xm,
     else:
         xr_params, xr_baseparams, rg_params_not_used, (a, b), uv_params, uv_baseparams, (c, d), sec_params = func.split_params_simple(params)
         # sec_params length depends on the column model:
-        #   SDM/CEDM  (n_comp=3): 6 params → t0, rp, N, me, T, mp
+        #   SDM/EDM  (n_comp=3): 6 params → t0, rp, N, me, T, mp
         #   LKM       (n_comp=3): also 6 params (Pe, t0, R_0, k_MT_0, R_1, k_MT_1)
         #   LKM       (n_comp=2): only 4 params → unpack of 6 would crash
         #   LKM       (n_comp=1): only 2 params → same

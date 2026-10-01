@@ -111,7 +111,7 @@ def set_optimizer_settings(num_components=3, model="EGH", method="BH", param_ini
     # ── Model registry ────────────────────────────────────────────────────────
     # This is the canonical registration point for new elution models.
     # Add a new elif branch here and assign an unused elution_model integer.
-    # Current assignments: EGH=0, SDM=1, EDM/NEDM/CEDM=5, LKM=6, GRM=7
+    # Current assignments: EGH=0, SDM=1, EDM/NEDM=5, LKM=6, GRM=7
     # (These match the GUI MODEL_LIST indices in OptStrategyDialog.py)
     elution_model = 0
     model = model.upper()
@@ -119,8 +119,8 @@ def set_optimizer_settings(num_components=3, model="EGH", method="BH", param_ini
         elution_model = 0
     elif model == "SDM":
         elution_model = 2
-    elif model in ("EDM", "NEDM", "CEDM"):
-        elution_model = 5   # G2000–G2999 range covers both NEDM (G2010) and EDM/CEDM (G2020)
+    elif model in ("EDM", "NEDM"):
+        elution_model = 5   # G2000–G2999 range covers both NEDM (G2010) and EDM (G2020)
     elif model == "LKM":
         elution_model = 6   # G1400 (matches OptStrategyDialog MODEL_LIST index 6)
     elif model == "GRM":

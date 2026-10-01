@@ -1,7 +1,7 @@
 """
-    ModelParams.CedmParamsSheet.py
+    ModelParams.EdmParamsSheet.py
 
-    Parameter inspection sheet for Constrained-EDM (G2020 / CedmParams).
+    Parameter inspection sheet for EDM (constrained/shared-column, G2020 / EdmParams).
 
     XR layout per component: [a, b, c_inj]   (no per-component t0/u/e/Dz)
     Shared column params appended at end: [t0_sh, u_sh, e_sh, Dz_sh]
@@ -14,7 +14,7 @@ from tksheet import Sheet
 from .ParamsSheetBase import ParamsSheetBase
 
 
-class CedmParamsSheet(ParamsSheetBase):
+class EdmParamsSheet(ParamsSheetBase):
     def __init__(self, parent, params, dsets, optimizer):
         ParamsSheetBase.__init__(self, parent, params, dsets, optimizer)
 
@@ -26,12 +26,12 @@ class CedmParamsSheet(ParamsSheetBase):
         body_frame = Tk.Frame(self)
         body_frame.pack()
 
-        # split_params_simple returns 8 elements for CEDM:
+        # split_params_simple returns 8 elements for EDM:
         # [xr_params (nc×3), xr_baseparams, rg_params, mapping,
-        #  uv_params, uv_baseparams, mappable_range, cedm_colparams]
+        #  uv_params, uv_baseparams, mappable_range, edm_colparams]
         (xr_params, xr_baseparams, rgs, mapping,
          uv_params, uv_baseparams, mappable_range,
-         cedm_colparams) = optimizer.split_params_simple(params)
+         edm_colparams) = optimizer.split_params_simple(params)
 
         # Base indices for params_addr mapping
         xr_base    = 0
@@ -41,7 +41,7 @@ class CedmParamsSheet(ParamsSheetBase):
         uv_base    = mp_base + len(mapping)
         uv_bp_base = uv_base + len(uv_params)
         mr_base    = uv_bp_base + len(uv_baseparams)
-        # cedm_colparams are the last 4 values (appended outside split_params)
+        # edm_colparams are the last 4 values (appended outside split_params)
         col_base   = mr_base + len(mappable_range)
 
         # Compute per-component area proportions when dsets available
@@ -52,7 +52,7 @@ class CedmParamsSheet(ParamsSheetBase):
         else:
             from molass_legacy.Models.RateTheory.EDM import edm_impl
             num_columns = 10
-            t0_sh, u_sh, e_sh, Dz_sh = cedm_colparams
+            t0_sh, u_sh, e_sh, Dz_sh = edm_colparams
             a_mp, b_mp = mapping
             (xr_curve, xrD), rg_curve, (uv_curve, uvD) = dsets
             xr_x = xr_curve.x
@@ -66,7 +66,7 @@ class CedmParamsSheet(ParamsSheetBase):
             xr_proportions = np.array(xr_proportions) / max(np.sum(xr_proportions), 1e-15)
             uv_proportions = np.array(uv_proportions) / max(np.sum(uv_proportions), 1e-15)
 
-        num_extended_rows = 2 + 4  # 2 blank separators + 4 cedm_colparam rows
+        num_extended_rows = 2 + 4  # 2 blank separators + 4 edm_colparam rows
 
         num_rows = self.n * 2 + 2 + 8 + num_extended_rows
         data_list = [["" for _ in range(num_columns)] for _ in range(num_rows)]
@@ -155,12 +155,12 @@ class CedmParamsSheet(ParamsSheetBase):
             data_list[row_offset][5 + j] = "%g" % mappable_range[j]
             self.set_params_addr(mr_base + j, (row_offset, 5 + j))
 
-        # --- CEDM shared column params ---
+        # --- EDM shared column params ---
         row_offset += 1
         for i, name in enumerate(["t0_sh", "u_sh", "e_sh", "Dz_sh"]):
             row_offset += 1
             data_list[row_offset][0] = name
-            data_list[row_offset][1] = "%g" % cedm_colparams[i]
+            data_list[row_offset][1] = "%g" % edm_colparams[i]
             self.set_params_addr(col_base + i, (row_offset, 1))
 
         self.num_valid_rows = row_offset + 2

@@ -1,13 +1,13 @@
 """
-    ModelParams.CedmSliderInfo.py
+    ModelParams.EdmSliderInfo.py
 
     Copyright (c) 2025, SAXS Team, KEK-PF
 """
 from .BaseSliderInfo import BaseSliderInfo
 
-class CedmSliderInfo(BaseSliderInfo):
+class EdmSliderInfo(BaseSliderInfo):
     def __init__(self, nc):
-        # CEDM per-component params: [a, b, c_inj]  (n_=3)
+        # EDM per-component params: [a, b, c_inj]  (n_=3)
         # Rg params follow at nc*n_ (same convention as NedmSliderInfo)
         cmpparam_names = ["a", "b", "c_inj", "Rg"]
 

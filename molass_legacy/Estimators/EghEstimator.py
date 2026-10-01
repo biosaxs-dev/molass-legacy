@@ -150,7 +150,7 @@ def estimate_uv_weights_from_peaks(model_curves, x, mapping, uv_x, uv_y):
     position divided by the XR model peak value.
 
     This is the same approach used by molass.SEC.Models.UvOptimizer and
-    can be called from any model estimator (EDM, CEDM, LKM, ...).
+    can be called from any model estimator (EDM, LKM, ...).
 
     Parameters
     ----------

@@ -147,7 +147,7 @@ class MockEditor(FullBatch):
         self.model_decomposition = model_decomposition
 
         # Uncorrected SSD for baseparams consistency (molass-legacy#87 pattern).
-        # SdmEstimator._estimate_mono and CedmEstimator.estimate_params pass this as
+        # SdmEstimator._estimate_mono and EdmEstimator.estimate_params pass this as
         # data_ssd to make_basecurves_from_decomposition so baseline params are computed
         # from the same (uncorrected) data as the dsets used by the optimizer.
         self._ssd_uncorrected = ssd_uncorrected

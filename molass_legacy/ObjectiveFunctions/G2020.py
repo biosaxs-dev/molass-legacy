@@ -1,7 +1,7 @@
 """
-    G2020.py — 7-score Constrained-EDM objective function
+    G2020.py — 7-score EDM (constrained/shared-column) objective function
 
-    Elution model: Constrained EDM (CEDM)
+    Elution model: EDM (constrained/shared-column Equilibrium Dispersive Model)
     Column parameters t0, u, e, Dz are SHARED across all components.
     Per-component free parameters: a (K_SEC), b, c_inj.
 
@@ -25,7 +25,7 @@ IGNORE_OUT_OF_BOUNDS = True
 
 class G2020(BasicOptimizer):
     """
-    Constrained Equilibrium Dispersive Model (CEDM).
+    EDM (constrained/shared-column Equilibrium Dispersive Model).
 
     Four column parameters (t0, u, e, Dz) are shared across all
     components; only a (K_SEC), b, and c_inj are free per component.
@@ -34,11 +34,11 @@ class G2020(BasicOptimizer):
     def __init__(self, dsets, n_components, **kwargs):
         if True:
             from importlib import reload
-            import molass_legacy.ModelParams.CedmParams
-            reload(molass_legacy.ModelParams.CedmParams)
-        from molass_legacy.ModelParams.CedmParams import CedmParams
+            import molass_legacy.ModelParams.EdmParams
+            reload(molass_legacy.ModelParams.EdmParams)
+        from molass_legacy.ModelParams.EdmParams import EdmParams
 
-        params_type = CedmParams(n_components)
+        params_type = EdmParams(n_components)
         BasicOptimizer.__init__(self, dsets, n_components, params_type, kwargs)
         (xr_curve_for_x, _), _, _ = dsets
         params_type.set_x(xr_curve_for_x.x)
@@ -54,11 +54,11 @@ class G2020(BasicOptimizer):
         try:
             (xr_params_abc, xr_baseparams, rg_params,
              (map_a, map_b), uv_params, uv_baseparams,
-             (c, d), cedm_colparams) = self.split_params_simple(p)
+             (c, d), edm_colparams) = self.split_params_simple(p)
         except ValueError:
             return BAD_PARAMS_RETURN
 
-        t0_sh, u_sh, e_sh, Dz_sh = cedm_colparams
+        t0_sh, u_sh, e_sh, Dz_sh = edm_colparams
 
         x = self.xr_curve.x
         y = self.xr_curve.y
@@ -112,7 +112,7 @@ class G2020(BasicOptimizer):
         #      - Mathematical structure prevents negative concentrations
         #
         #   2. UV scale bounds already enforce positivity:
-        #      - CedmParams.py sets uv_bounds = [(0.02*uv_h_max, 2.0*uv_h_max), ...]
+        #      - EdmParams.py sets uv_bounds = [(0.02*uv_h_max, 2.0*uv_h_max), ...]
         #      - Lower bound is always positive (AVOID_VANISHING_RATIO = 0.02)
         #
         # The negative UV components observed in Issue #225 were caused by Issue #226
@@ -168,7 +168,7 @@ class G2020(BasicOptimizer):
             ]
 
             fv, score_list = self.compute_fv(
-                lrf_info, xr_params_abc, rg_params, cedm_colparams,
+                lrf_info, xr_params_abc, rg_params, edm_colparams,
                 penalties, p, debug=debug
             )
         except Exception:
