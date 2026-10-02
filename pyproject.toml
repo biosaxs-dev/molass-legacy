@@ -4,14 +4,14 @@ build-backend = "hatchling.build"
 
 [project]
 name = "molass_legacy"
-version = "1.6.20"
+version = "1.7.0"
 
 dependencies = [
   "numpy",
   "scipy",
   "matplotlib",
   "pybaselines>=1.2.0",
-  "molass>=1.0.3",
+  "molass>=1.1.2",
   "statsmodels>=0.14.5",
   "scikit-learn",
   "toml",
