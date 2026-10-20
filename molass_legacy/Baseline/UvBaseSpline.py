@@ -18,6 +18,9 @@ PENALTY_SCALE = 1e8
 CERTAINTY_LIMIT = 0.5
 BETTER_LOWER_NEEDED_RATIO = 0.5
 TRY_ADJUST_EX_SIGMOID = True
+# The flow-change (sigmoid) model is off by default: recent experiments have no
+# flow-change anomaly, and a spurious step lets the baseline absorb real signal.
+USE_FLOW_CHANGE_MODEL = False
 
 class UvBaseSpline:
     def __init__(self, sd, curve1=None, spline=None):
@@ -30,7 +33,59 @@ class UvBaseSpline:
         self.lower_xy = None
         self.base_xy = None
 
-    def guess_params(self, curve2, pp, slice_, fc_point=None, debug=False):
+    def guess_line_params(self, curve2, slice_, debug=False):
+        """Initial params with the sigmoid part reduced to a line (L=0, s1=s2).
+
+        The layout [L, x0, k, b, s1, s2, diff_ratio(, intreg_scale)] is kept.
+        diff_ratio is fitted on the reference curve `curve2` together with a line,
+        while the line itself is taken from the linear baseline of `curve1`.
+        """
+        x = curve2.x
+        y = curve2.y
+        x_ = x[slice_]
+        y_ = smooth(y[slice_]) if SMOOTHING else y[slice_]
+        x0 = x[0]
+
+        def make_params(b, s, diff_ratio):
+            return np.array([0, x0, 1, b, s, s, diff_ratio], dtype=float)
+
+        def obj_func(p):
+            fy = compute_baseline_impl(x_, make_params(*p), self.diff_spline)
+            return np.sum((fy - y_)**2)
+
+        s_init, b_init = np.polyfit(x_ - x0, y_, 1)
+        opt_ret = None
+        for scale in [-1, 1]:
+            ret = minimize(obj_func, (b_init, s_init, scale), method='Nelder-Mead')
+            if opt_ret is None or ret.fun < opt_ret.fun:
+                opt_ret = ret
+        diff_ratio = opt_ret.x[2]
+
+        from molass_legacy.Baseline.ScatteringBaseline import ScatteringBaseline
+        x1 = self.curve1.x
+        y1 = self.curve1.y
+        A, B = ScatteringBaseline(y1, x=x1).solve()
+        adjusted_params = make_params(A*x0 + B, A, diff_ratio)
+
+        self.lower_xy = x1, A*x1 + B
+        self.base_xy = self.lower_xy
+
+        if self.baseline_type in (2, 3):
+            intreg_scale = 0
+            ret_params = np.concatenate([adjusted_params, [intreg_scale]])
+        else:
+            assert self.baseline_type == 1
+            ret_params = adjusted_params
+
+        ret_params[4:6] *= SLOPE_SCALE
+        return ret_params
+
+    def guess_params(self, curve2, pp, slice_, fc_point=None, flow_change_model=None, debug=False):
+        if flow_change_model is None:
+            flow_change_model = USE_FLOW_CHANGE_MODEL
+        if not flow_change_model:
+            return self.guess_line_params(curve2, slice_, debug=debug)
+
         x = curve2.x
         y = curve2.y
 
