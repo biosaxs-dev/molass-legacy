@@ -176,15 +176,22 @@ def edm_func(t, u, a, b, e, Dz, c_inj, cinit=0, c0=0.0001, t_inj=1.0, L=30, z=30
     xi = x - tau/R
 
     U = 2/(lam*Pe)
+    ret_y = np.zeros(np.shape(tau))
     with np.errstate(divide='ignore', invalid='ignore'):
-        V = xi**2/(4*tau/RPe)
-        W = np.sqrt(np.pi*tau/RPe)
-        Y = xi/(2*np.sqrt(tau/RPe))
+        # The formula below is NaN (or 0/0) where tau/RPe <= 0, i.e. before the injection
+        # reaches the outlet, and that is replaced by 0 at the end. Skipping those points
+        # avoids the overflow of exp(-V) they would otherwise raise as RuntimeWarning.
+        valid = tau/RPe > 0
+        tau_ = tau[valid]
+        xi_ = xi[valid]
+        V = xi_**2/(4*tau_/RPe)
+        W = np.sqrt(np.pi*tau_/RPe)
+        Y = xi_/(2*np.sqrt(tau_/RPe))
         # numer = U*( -np.exp(-V) + np.exp(Beta - V) )
         # denom = W*( np.exp(Beta)* erfc(-Y) + erfc(Y) )
         expB = np.exp(Beta)
         numer = U*(expB - 1)*np.exp(-V)
         denom = W*( expB * erfc(-Y) + erfc(Y) )
-        ret_y = numer / denom
+        ret_y[valid] = numer / denom
     ret_y[np.isnan(ret_y)] = 0
     return ret_y
