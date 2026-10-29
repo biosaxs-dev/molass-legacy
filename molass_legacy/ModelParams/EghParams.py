@@ -86,13 +86,21 @@ class EghParamsBase:
         xr_h_min = xr_h_max*AVOID_VANISHING_RATIO
         m_allow = np.max(temp_xr_params[:,1])*0.2
         s_allow = np.average(np.abs(temp_xr_params[:,2]))*1.0
+        # fronting_flags (molass-library#350): one bool per elution component, set by the library from the
+        # quick EGH fit. Only a component flagged True may have a negative tau (a fronting peak); the others
+        # keep tau >= 0, and so does everything when no flags are given (the former behavior).
+        fronting_flags = getattr(self, 'fronting_flags', None)
         xr_bounds = []
-        for h, m, s, t in temp_xr_params:
+        for k, (h, m, s, t) in enumerate(temp_xr_params):
             s = abs(s)
             xr_bounds.append((xr_h_min, xr_h_max*2))                # h
             xr_bounds.append((max(0, m - m_allow), m + m_allow))    # m
             xr_bounds.append((max(3, s - s_allow), s + s_allow))    # s
-            xr_bounds.append((0, s + s_allow))                      # t
+            if fronting_flags is not None and k < len(fronting_flags) and fronting_flags[k]:
+                t_lower = min(-(s + s_allow), 2*t)                  # t, may be negative: the start is inside
+            else:
+                t_lower = 0
+            xr_bounds.append((t_lower, s + s_allow))                # t
         return xr_bounds
 
     def get_extended_bounds(self, init_sec_params):

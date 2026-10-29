@@ -128,10 +128,17 @@ class EdmParams:
         """
         c_inj_max = np.max(xr_params_abc[:, 2])       # c_inj is column 2
         c_inj_min = c_inj_max * AVOID_VANISHING_RATIO
+        # fronting_flags (molass-library#350): one bool per component, set by the library from the quick EGH
+        # fit. b < 0 gives a fronting peak (b > 0 a tailing one): only a component flagged True may use it,
+        # the others get b >= 0; with no flags every component keeps the wide range (the former behavior).
+        fronting_flags = getattr(self, 'fronting_flags', None)
         bounds = []
-        for a_k, b_k, c_inj_k in xr_params_abc:
+        for k, (a_k, b_k, c_inj_k) in enumerate(xr_params_abc):
             bounds.append((0.0001, 5.0))                        # a  (K_SEC; finite upper for BasicOptimizer)
-            bounds.append((-50.0, 50.0))                        # b  (wide; covers fitted ≈ ±31)
+            if fronting_flags is not None and k < len(fronting_flags) and not fronting_flags[k]:
+                bounds.append((0.0, 50.0))                      # b  (no fronting)
+            else:
+                bounds.append((-50.0, 50.0))                    # b  (wide; covers fitted ≈ ±31)
             bounds.append((max(MIN_C_INJ, c_inj_min), min(MAX_C_INJ, c_inj_max * 2)))  # c_inj
         return bounds
 
