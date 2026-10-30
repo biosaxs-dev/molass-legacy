@@ -27,7 +27,9 @@ class Edm:
         b : float
             Langmuir nonlinearity.  b < 0 → fronting (aggregation in SEC);
             b > 0 → tailing (secondary adsorption); b = 0 → linear isotherm.
-            Note: b = 0 causes ZeroDivisionError (lam = 0 → U = 2/(lam*Pe) fails).
+            Note: b = 0 raises ZeroDivisionError in this class (lam = 0 -> U = 2/(lam*Pe) fails).
+            The function ``edm_func`` (and molass.SEC.Models.EdmFunction.edm_curve) handles b = 0
+            analytically; use that for b = 0.
         e : float
             Mobile-phase fraction of the *accessible* volume:
                 e = V0 / (V0 + Vp)
