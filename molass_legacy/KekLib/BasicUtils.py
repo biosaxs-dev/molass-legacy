@@ -94,6 +94,14 @@ def get_filename_extension( filename ):
     return ext
 
 def exe_name():
+    """Name of the settings (and log) folder under ``~/.KekTools``: the running script's name,
+    or the environment variable ``MOLASS_SETTINGS_NAME`` if set, so that parallel runs of one
+    script do not share a settings folder (molass-library#393)."""
+    override = os.environ.get( 'MOLASS_SETTINGS_NAME', '' ).strip()
+    if override:
+        if os.sep in override or '/' in override:
+            raise ValueError( "MOLASS_SETTINGS_NAME must be a folder name, not a path: %r" % override )
+        return override
     name_ =  os.path.split( sys.argv[0] )[-1]
     for ext in ( '.exe', '.py' ):
         name_ = name_.replace( ext, '' )
