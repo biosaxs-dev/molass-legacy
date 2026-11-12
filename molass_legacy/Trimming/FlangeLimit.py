@@ -118,6 +118,9 @@ class FlangeLimit:
                 self.logger.info("flange limit candidate has been discarded due to peak width of %.3g at Q=%.3g", qw, self.q_vector[sf])
             return ret_judge
 
+        # stay unset when every candidate raises AssertionError below (smooth error without a flange, molass-legacy#104)
+        is_limit = False
+        pp = f = safe_f = check_ratio = None
         for k, q_limit_ratio in enumerate(Q_LIMIT_RATIOS):
             try:
                 pp, f, safe_f = find_limit_cadidate(q_limit_ratio)
@@ -151,10 +154,10 @@ class FlangeLimit:
         else:
             self.limit_type = LIMIT_TYPE_FLANGE
 
-        f_ = i + f
+        f_ = None if f is None else i + f
         safe_f_ = i + safe_f
 
-        if debug:
+        if debug and f is not None:
             print('pp=', pp)
             print('check_ratio=', check_ratio)
             from molass_legacy.SerialAnalyzer.DataUtils import get_in_folder
