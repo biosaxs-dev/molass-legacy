@@ -16,8 +16,14 @@ matplotlib.use('Agg')
 
 def create_optimizer_from_recipe(work_folder, n_components, class_code):
     """Thin wrapper — delegates to the testable library implementation."""
+    import inspect
     from molass.Rigorous.RecipeRunner import create_optimizer_from_recipe as _impl
-    return _impl(work_folder, class_code).optimizer
+    kwargs = {}
+    if 'watch_manifest' in inspect.signature(_impl).parameters:
+        # this is the optimizer subprocess: keep RUN_MANIFEST.json current while it runs (molass-library#397);
+        # a molass-library from before the option has no such parameter
+        kwargs['watch_manifest'] = True
+    return _impl(work_folder, class_code, **kwargs).optimizer
 
 
 def main_recipe():
