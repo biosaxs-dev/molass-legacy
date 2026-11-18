@@ -6,6 +6,8 @@ so it is current for whatever version you have.
 Find this file's absolute path at runtime: `python -c "import molass_legacy; print(molass_legacy.context_path())"`
 (or `molass_legacy.print_context()` to dump it directly).
 
+`CHANGELOG.md` sits next to this file: per version, what changed in behavior, what was added, and what it requires.
+
 If you're developing this repo itself (not just depending on the package),
 see `.github/copilot-instructions.md` in the source repository instead —
 that covers branching policy, the multi-repo workspace, and dated
